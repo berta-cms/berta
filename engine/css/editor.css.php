@@ -163,38 +163,15 @@ body .tox-tinymce-aux {
 
 .xNgEditable,
 .xNgEditableTA,
-.xEditableSelect,
-.xEditableSelectRC,
-.xEditableFontSelect,
 .xEditableMCE,
 .xEditableRC {
     cursor: default;
 }
 
-.xEditableSelect:before,
-.xEditableSelectRC:before,
-.xEditableFontSelect:before {
-    content: url('/engine/layout/drop-down.gif');
-}
-.xEditing.xEditableSelect:before,
-.xEditing.xEditableSelectRC:before,
-.xEditing.xEditableFontSelect:before {
-    content: "";
-}
-
-.xAction {
-    cursor:pointer;
-}
-
 .xNgEditable:hover,
 .xNgEditableTA:hover,
-.xEditableSelect:hover,
-.xEditableSelectRC:hover,
-.xEditableFontSelect:hover,
 .xEditableMCE:hover,
-.xEditableRC:hover,
-.xEditableYesNo:hover,
-.xAction:hover {
+.xEditableRC:hover {
     background-color: rgba(255, 255, 153, .79);
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -223,32 +200,6 @@ body .tox-tinymce-aux {
 /*a.xEditorLink, a.xEditorLink * {
     text-decoration: underline;
 }*/
-.xEditableImage {}
-.xEditableICO {}
-    .xEditableImage span.file, .xEditableICO span.file, .xEditableImage span.name, .xEditableICO span.name {
-        display: block;
-        float: left;
-        margin-right: 10px;
-    }
-    .xEditableImage a, .xEditableICO a {
-        display: block;
-        float: left;
-        margin-right: 10px;
-    }
-  .xEditableImage input[type="file"], .xEditableICO input[type="file"] {
-    display: none;
-  }
-
-.xEditableYesNo {}
-    .xEditableYesNo a {
-        font-weight: normal;
-        outline: none;
-    }
-    .xEditableYesNo a.active {
-        font-weight: bold !important;
-        text-transform: uppercase;
-        text-decoration: none !important;
-    }
 
 .xEditOverlay {
     position: absolute;

@@ -83,11 +83,6 @@ var BertaEditor = new Class({
           );
         });
 
-        // action links
-        $$(this.options.xActionClass).each(function (el) {
-          this.elementEdit_init(el, this.options.xBertaEditorClassAction);
-        }, this);
-
         break;
 
       case "entries":
@@ -344,23 +339,6 @@ var BertaEditor = new Class({
       }.bind(this)
     );
 
-    // selects and font-selects /////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassFontSelect).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassFontSelect);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassSelect).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSelect);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassSelectRC).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC);
-      }.bind(this)
-    );
-
     // dragging /////////////////////////////////////////////////////////////////////////////////////////
     var draggableElements = $$(this.options.xBertaEditorClassDragXY);
     if (draggableElements.length) {
@@ -370,18 +348,6 @@ var BertaEditor = new Class({
     draggableElements.each(
       function (el) {
         this.elementEdit_init(el, this.options.xBertaEditorClassDragXY);
-      }.bind(this)
-    );
-
-    // uploads //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassImage).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassImage);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassICO).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassICO);
       }.bind(this)
     );
 

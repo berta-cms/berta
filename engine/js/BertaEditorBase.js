@@ -31,21 +31,11 @@ var BertaEditorBase = new Class({
   Implements: [Options, Events],
 
   options: {
-    xBertaEditorClassSelect: ".xEditableSelect",
-    xBertaEditorClassSelectRC: ".xEditableSelectRC",
-    xBertaEditorClassFontSelect: ".xEditableFontSelect",
     xBertaEditorClassMCE: ".xEditableMCE",
     xBertaEditorClassMCESimple: ".xEditableMCESimple",
     xBertaEditorClassRC: ".xEditableRC",
-    xBertaEditorClassImage: ".xEditableImage",
-    xBertaEditorClassICO: ".xEditableICO",
-    xBertaEditorClassYesNo: ".xEditableYesNo",
     xBertaEditorClassDragXY: ".xEditableDragXY",
-
-    xBertaEditorClassAction: ".xAction",
-    xBertaEditorClassReset: ".xReset",
     xEmptyClass: ".xEmpty",
-    updateUrl: "/engine/update.php",
   },
 
   tinyMCESettings: {
@@ -62,16 +52,8 @@ var BertaEditorBase = new Class({
 
   query: null,
 
-  intialize: function () {
-    this.initConsoleReplacement();
-  },
-
   initConsoleReplacement: function () {
     this.query = window.location.search.replace("?", "").parseQueryString();
-    if (this.query.site) {
-      this.options.updateUrl =
-        this.options.updateUrl + "?site=" + this.query.site;
-    }
     if (!window.console) window.console = {};
     if (!window.console.debug) window.console.debug = function () {};
     if (!window.console.error) window.console.error = function () {};
@@ -130,8 +112,8 @@ var BertaEditorBase = new Class({
     if (el.retrieve("elementEdit_init")) return false; // already initialized
     el.store("elementEdit_init", true);
 
-    var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
-      self = this;
+    this.makePlaceholderIfEmpty(el);
+    var self = this;
 
     switch (editorClass) {
       case this.options.xBertaEditorClassMCE:
@@ -195,230 +177,6 @@ var BertaEditorBase = new Class({
             }
           }.bindWithEvent(el, this)
         );
-        break;
-
-      case this.options.xBertaEditorClassSelect:
-      case this.options.xBertaEditorClassSelectRC:
-      case this.options.xBertaEditorClassFontSelect:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              this.addClass("xEditing");
-
-              if (this.inlineIsEmpty()) this.innerHTML = "";
-              editor.elementEdit_instances.push(
-                this.inlineEdit({
-                  type: "select",
-                  subtype: this.hasClass(
-                    editor.options.xBertaEditorClassFontSelect.substr(1)
-                  )
-                    ? "font"
-                    : this.hasClass(
-                        editor.options.xBertaEditorClassSelectRC.substr(1)
-                      )
-                    ? "rc"
-                    : "",
-                  selectOptions: this.getProperty("x_options").split("||"),
-                  onComplete: editor.elementEdit_save.bind(editor),
-                })
-              );
-              editor.fireEvent(BertaEditorBase.EDITABLE_START, [
-                el,
-                editor.elementEdit_instances[
-                  editor.elementEdit_instances.length - 1
-                ],
-              ]);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
-      case this.options.xBertaEditorClassYesNo:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        var isSetToYes = bPlaceholderSet
-          ? false
-          : el.get("html") == "1"
-          ? true
-          : false;
-        el.empty();
-        var prop = el.getClassStoredValue("xProperty");
-
-        var aYes = new Element("a", {
-          href: "#",
-          class: (isSetToYes ? "active" : "") + " xValue-1",
-        }).set("html", "yes");
-        var aNo = new Element("a", {
-          href: "#",
-          class: (isSetToYes ? "" : "active") + " xValue-0",
-        }).set("html", "no");
-        el.grab(aYes).appendText(" / ").grab(aNo);
-        aNo.addEvent("click", this.eSup_onYesNoClick.bindWithEvent(this));
-        aYes.addEvent("click", this.eSup_onYesNoClick.bindWithEvent(this));
-        break;
-
-      case this.options.xBertaEditorClassImage:
-      case this.options.xBertaEditorClassICO:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        var currentFile = bPlaceholderSet ? "" : el.get("html");
-        el.empty();
-        var prop = el.getClassStoredValue("xProperty");
-
-        // construct uploader
-        var fileNameContainer = new Element("span", {
-          class: "name",
-        })
-          .set("html", currentFile)
-          .inject(el);
-        var aNew = new Element("a", {
-          href: "#",
-        })
-          .set("html", "choose file")
-          .inject(el);
-        var aDelete = new Element("a", {
-          href: "#",
-        })
-          .set("html", "delete")
-          .inject(el);
-        var fileInput = new Element("input", {
-          type: "file",
-        }).inject(el);
-
-        aNew.addEvent("click", function (e) {
-          e.preventDefault();
-          fileInput.click();
-        });
-
-        if (!currentFile) aDelete.setStyle("display", "none");
-        aDelete.addEvent(
-          "click",
-          this.eSup_onImageDeleteClick.bindWithEvent(this)
-        );
-
-        var params = [];
-        var paramNames = ["xMinWidth", "xMinHeight", "xMaxWidth", "xMaxHeight"],
-          urlParamNames = [
-            "min_width",
-            "min_height",
-            "max_width",
-            "max_height",
-          ],
-          p;
-        for (var i = 0; i < paramNames.length; i++) {
-          p = el.getClassStoredValue(paramNames[i]);
-          if (p) params.push(urlParamNames[i] + "=" + p);
-        }
-        if (this.query.site) {
-          params.push("site=" + this.query.site);
-        }
-
-        params.push("session_id=" + this.options.session_id);
-
-        var allowedExtensions = ["jpg", "jpeg", "gif", "png"];
-
-        if (editorClass == this.options.xBertaEditorClassICO) {
-          allowedExtensions = ["ico"];
-        }
-
-        var xhr = new XMLHttpRequest();
-
-        var updateComplete = function (data) {
-          fileNameContainer.empty();
-          fileNameContainer.set("html", data.value);
-          aDelete.setStyle("display", "block");
-          el.removeClass("xSaving").addClass("xEditing");
-        };
-
-        xhr.addEventListener(
-          "load",
-          function () {
-            var updateAction;
-            var data = JSON.decode(xhr.responseText);
-
-            if (xhr.status == 401) {
-              window.location.href = this.options.paths.engineRoot;
-            } else if (data.status > 0) {
-              var path = el.dataset.path;
-              var path_arr = [];
-
-              if (path) {
-                path_arr = path.split("/");
-
-                if (path_arr[1] === "settings") {
-                  updateAction = Actions.initUpdateSiteSettings;
-                }
-
-                if (path_arr[1] === "site_template_settings") {
-                  updateAction = Actions.initUpdateSiteTemplateSettings;
-                }
-
-                if (typeof updateAction === "function") {
-                  // @TODO Handle file upload in API endpoint,
-                  // currently we are updating only state here
-                  // which calls endpoint and saves value again
-                  redux_store.dispatch(
-                    updateAction(path, data.filename, updateComplete)
-                  );
-                } else {
-                  console.error(
-                    "BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!"
-                  );
-                }
-              } else {
-                updateComplete({
-                  value: data.filename,
-                });
-              }
-            } else {
-              alert(data.error);
-            }
-          }.bindWithEvent(this),
-          false
-        );
-
-        xhr.addEventListener(
-          "error",
-          function () {
-            el.removeClass("xSaving").addClass("xEditing");
-          },
-          false
-        );
-
-        fileInput.addEvent(
-          "change",
-          function () {
-            var inputFile = $$(fileInput);
-
-            if (inputFile.length) {
-              var formData = new FormData();
-              var fileName = inputFile[0].files[0].name;
-              var fileExtension = fileName.split(".").pop();
-
-              if (allowedExtensions.indexOf(fileExtension) === -1) {
-                alert(
-                  "Allowed file extensions: " + allowedExtensions.join(", ")
-                );
-                return false;
-              }
-
-              formData.append("Filedata", inputFile[0].files[0], fileName);
-              var url =
-                this.options.paths.engineRoot +
-                "upload.php?property=" +
-                prop +
-                "&" +
-                params.join("&");
-              el.removeClass("xEditing").addClass("xSaving");
-              xhr.open("POST", url, true);
-              xhr.send(formData);
-            }
-          }.bindWithEvent(this)
-        );
-
         break;
 
       case this.options.xBertaEditorClassDragXY:
@@ -602,37 +360,6 @@ var BertaEditorBase = new Class({
         });
         break;
 
-      case this.options.xBertaEditorClassAction:
-        el.store("onActionComplete", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              var action = this.getClassStoredValue("xCommand");
-              var params = this.getClassStoredValue("xParams");
-              if (action) editor.elementEdit_action(el, action, params);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
-      case this.options.xBertaEditorClassReset:
-        el.store("onActionComplete", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            event.stop();
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              var action = this.getClassStoredValue("xCommand");
-              var params = this.getClassStoredValue("xParams");
-              if (action) editor.elementEdit_reset(el, action, params);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
       default:
         break;
     }
@@ -666,80 +393,6 @@ var BertaEditorBase = new Class({
     var y = el.getStyle("left");
     this.xGuideLineX.setStyle("top", x);
     this.xGuideLineY.setStyle("left", y);
-  },
-
-  eSup_onYesNoClick: function (event) {
-    event.stop();
-    var target = $(event.target);
-    var el = target.getParent();
-    var value = target.getClassStoredValue("xValue");
-
-    this.elementEdit_save(null, el, null, null, value, value);
-  },
-
-  eSup_onImageDeleteClick: function (event) {
-    event.stop();
-    var target = $(event.target);
-    var el = target.getParent();
-    var prop = el.getClassStoredValue("xProperty");
-    var data = {
-      property: prop,
-      params: "delete",
-      value: "",
-    };
-    var path = el.dataset.path;
-    var path_arr = [];
-    var updateAction;
-
-    el.removeClass("xEditing");
-    el.addClass("xSaving");
-
-    if (path) {
-      path_arr = path.split("/");
-
-      if (path_arr[1] === "settings") {
-        updateAction = Actions.initUpdateSiteSettings;
-      }
-
-      if (path_arr[1] === "site_template_settings") {
-        updateAction = Actions.initUpdateSiteTemplateSettings;
-      }
-
-      var onComplete = function () {
-        el.getElement("span.name").set("html", "");
-        target.setStyle("display", "none");
-        el.removeClass("xSaving");
-        el.addClass("xEditing");
-      };
-
-      if (typeof updateAction === "function") {
-        redux_store.dispatch(updateAction(path, "", onComplete));
-      } else {
-        console.error(
-          "BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!"
-        );
-      }
-    } else {
-      new Request.JSON({
-        url: this.options.updateUrl,
-        data: JSON.stringify(data),
-        urlEncoded: false,
-        onComplete: function (resp, respRaw) {
-          if (resp.error_message) alert(resp.error_message);
-          else {
-            el.getElement("span.name").set("html", "");
-            target.setStyle("display", "none");
-          }
-          el.removeClass("xSaving");
-          el.addClass("xEditing");
-        },
-        /* Called when on JSON conversion error:
-         * Will use this as error handler for now, because server only returns non-JSON on exception */
-        onError: function (responseBody) {
-          console.error(responseBody);
-        },
-      }).post();
-    }
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -795,7 +448,6 @@ var BertaEditorBase = new Class({
       var isCartAttributes = property == "cartAttributes";
       var noHTMLEntities = el.hasClass("xNoHTMLEntities");
       var isLink = el.hasClass("xLink");
-      var editorParams = el.getClassStoredValue("xParam");
       var entryInfo = this.getEntryInfoForElement(el);
       if (entryInfo.section == "") entryInfo.section = this.sectionName;
 
@@ -811,10 +463,7 @@ var BertaEditorBase = new Class({
       }
 
       // check if new content is not empty and revert it to default value, if specified
-      if (
-        !el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)) &&
-        (!newContent || newContent.test("^([s\xA0]|&nbsp;)+$"))
-      ) {
+      if (!newContent || newContent.test("^([s\xA0]|&nbsp;)+$")) {
         var isRequired = el.getClassStoredValue("xRequired");
         newContent = newContentText = isRequired ? el.get("title") : "";
         el.set("html", newContentText);
@@ -909,16 +558,6 @@ var BertaEditorBase = new Class({
       el.removeClass("xEditing");
       el.addClass("xSaving");
 
-      // Get action for Gallery type, Autoplay, Full screen & Image size
-      var action = el.getClassStoredValue("xCommand");
-      if (action) {
-        if (action == "SET_BG_CAPTION_BACK_COLOR") {
-          editorParams = newContentText.hexToRgb(true).join(",");
-        } else {
-          editorParams = this.escapeForJSON(newContentText);
-        }
-      }
-
       var path = el.dataset.path;
       var path_arr = [];
       var prop;
@@ -973,36 +612,6 @@ var BertaEditorBase = new Class({
             "BertaEditorBase.elementEdit_save: Undefined updateAction!"
           );
         }
-      } else {
-        var data = {
-          site: entryInfo.site,
-          section: entryInfo.section,
-          entry: entryInfo.entryId,
-          property: property,
-          params: editorParams,
-          value: value,
-          action: action,
-          before: this.escapeForJSON(
-            el.get("old_content") ? el.get("old_content") : oldContent
-          ),
-          before_real: this.escapeForJSON(
-            el.get("title") ? el.get("title") : oldContent
-          ),
-          format_modifier: el.getClassStoredValue("xFormatModifier"),
-          /*use_css_units: useCSSUnits*/
-        };
-        // @@@:TODO: Remove this when migration to redux is done
-        new Request.JSON({
-          url: this.options.updateUrl,
-          data: JSON.stringify(data),
-          urlEncoded: false,
-          /* Called when on JSON conversion error:
-             Will use this as error handler for now, because server only returns non-JSON on exception */
-          onError: function (responseBody) {
-            console.error(responseBody);
-          },
-          onComplete: callback,
-        }).post();
       }
     }
   },
@@ -1018,63 +627,6 @@ var BertaEditorBase = new Class({
           case !resp.update:
             // update with the placeholder
             this.makePlaceholder(el);
-            break;
-
-          case el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)):
-            el.getElements("a").removeClass("active");
-            el.getElement("a.xValue-" + resp.update).addClass("active");
-            break;
-
-          case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
-          case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
-            var editInitializer =
-                this.elementEdit_instances[
-                  this.elementEdit_instances.length - 1
-                ].editting,
-              oldValue;
-            if (editInitializer.hasClass("xEntrySlideNumberVisibility")) {
-              if (resp.update == "no") oldValue = "yes";
-              else oldValue = "no";
-
-              editInitializer
-                .getParent(".xGalleryContainer")
-                .removeClass("xSlideNumbersVisible-" + oldValue)
-                .addClass("xSlideNumbersVisible-" + resp.update);
-            }
-
-            // for the RC selects we check:
-            // 1) either the returned update equals the newly set content, which means that the saving was successful
-            if (resp.update == newContent) {
-              el.set("html", newContentText);
-
-              // 2) the returned update differs from the newly set content
-              //      => look for the returned "real" value in the select's options
-            } else {
-              var curOption;
-              newContentText = false;
-              for (var i = 0; i < this.options.selectOptions.length; i++) {
-                curOption = this.options.selectOptions[i].split("|");
-                if (curOption[0] == resp.real) {
-                  resp.update = curOption[1];
-                  break;
-                }
-              }
-              el.set("html", resp.update);
-            }
-
-            if (el.hasClass("xEntrySetGalType")) {
-              $$(".galleryTypeSettings").addClass("xHidden");
-            }
-
-            if (newContentText == "slideshow") {
-              el.getSiblings(".xEntrySlideshowSettings").removeClass("xHidden");
-            }
-            if (newContentText == "row") {
-              el.getSiblings(".xEntryRowSettings").removeClass("xHidden");
-            }
-            if (newContentText == "link") {
-              el.getSiblings(".xEntryLinkSettings").removeClass("xHidden");
-            }
             break;
 
           case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
@@ -1125,84 +677,6 @@ var BertaEditorBase = new Class({
         messyMess.copyrightStickToBottom();
       }
     }.bind(this);
-  },
-
-  elementEdit_action: function (el, action, params) {
-    el.addClass("xSaving");
-    var entryInfo = this.getEntryInfoForElement(el);
-    if (entryInfo.section == "") entryInfo.section = this.sectionName;
-    var data = {
-      section: entryInfo.section,
-      entry: entryInfo.entryId,
-      action: action,
-      property: null,
-      value: null,
-      params: params,
-    };
-
-    new Request.JSON({
-      url: this.options.updateUrl,
-      data: JSON.stringify(data),
-      urlEncoded: false,
-      onComplete: function (resp) {
-        if (!resp) {
-          alert(
-            "server produced an error while performing the requested action! something went sooooo wrong..."
-          );
-        } else if (resp && !resp.error_message) {
-        } else {
-          alert(resp.error_message);
-        }
-        if (el) {
-          el.removeClass.delay(500, el, "xSaving");
-          var onComplete = el.retrieve("onActionComplete");
-          if (onComplete) onComplete(el, action, params, resp);
-        }
-      }.bind(this),
-      /* Called when on JSON conversion error:
-       * Will use this as error handler for now, because server only returns non-JSON on exception */
-      onError: function (responseBody) {
-        console.error(responseBody);
-      },
-    }).post();
-  },
-
-  elementEdit_reset: function (el, action, params) {
-    if (
-      el.hasClass("xBgColorReset") &&
-      confirm("Berta asks:\n\nAre you sure you want to remove this color?")
-    ) {
-      el.addClass("xSaving");
-      var entryInfo = this.getEntryInfoForElement(el);
-      if (entryInfo.section == "") entryInfo.section = this.sectionName;
-
-      var path = el.dataset.path;
-
-      redux_store.dispatch(
-        Actions.resetSiteSection(
-          path,
-          function (resp) {
-            if (!resp) {
-              alert(
-                "server produced an error while performing the requested action! something went sooooo wrong..."
-              );
-            } else if (resp && !resp.error_message) {
-            } else {
-              alert(resp.error_message);
-            }
-            if (el) {
-              el.removeClass.delay(500, el, "xSaving");
-              elem = el.getSiblings(".xCommand-" + params);
-              if (elem.length == 0)
-                elem = el.getSiblings(".xProperty-" + params);
-              elem.each(function (item) {
-                item.set("title", "#ffffff").set("text", "none");
-              });
-            }
-          }.bind(this)
-        )
-      );
-    }
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1293,10 +767,6 @@ var BertaEditorBase = new Class({
     return false;
   },
 
-  makeEmptyIfEmpty: function (el) {
-    if (el.inlineIsEmpty()) el.innerHTML = "";
-  },
-
   escapeForJSON: function (str) {
     // Replace &quot: some editors read value from element html instead of text
     return String(str).replace(/\&quot;/g, '"');
@@ -1334,15 +804,6 @@ var BertaEditorBase = new Class({
     return retObj;
   },
 
-  getSectionNameForElement: function (el) {
-    var retString;
-
-    retString = el.getClassStoredValue("xSection")
-      ? el.getClassStoredValue("xSection")
-      : null;
-
-    return retString;
-  },
 });
 
 BertaEditorBase.EDITABLE_START = "editable_start";
