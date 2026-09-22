@@ -204,11 +204,9 @@ body .tox-tinymce-aux {
     cursor: move;
 }
 
-.xEditableRealCheck,
 .xNgEditableCheckBox {
 
 }
-    .xEditableRealCheck input,
     .xNgEditableCheckBox input {
         width: 18px;
         height: 18px;
@@ -217,7 +215,6 @@ body .tox-tinymce-aux {
         background: url('/engine/layout/icon-checkbox.png') no-repeat 50% 50%;
         outline: none;
     }
-    .xEditableRealCheck input.checked,
     .xNgEditableCheckBox input.checked {
         background-image: url('/engine/layout/icon-checkbox-checked.png');
     }
@@ -424,13 +421,11 @@ body .tox-tinymce-aux {
         vertical-align: top;
     }
 
-    .xEntryDropdownBox .xEditableRealCheck input,
     .xEntryDropdownBox .xNgEditableCheckBox input {
         background: none;
         width: 18px;
     }
 
-    .xEntryDropdownBox .xEditableRealCheck input.checked,
     .xEntryDropdownBox .xNgEditableCheckBox input.checked {
         background: url('/engine/layout/check.png') no-repeat center 0;
     }

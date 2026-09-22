@@ -40,7 +40,6 @@ var BertaEditorBase = new Class({
     xBertaEditorClassImage: ".xEditableImage",
     xBertaEditorClassICO: ".xEditableICO",
     xBertaEditorClassYesNo: ".xEditableYesNo",
-    xEditableRealCheck: ".xEditableRealCheck",
     xBertaEditorClassDragXY: ".xEditableDragXY",
 
     xBertaEditorClassAction: ".xAction",
@@ -422,25 +421,6 @@ var BertaEditorBase = new Class({
 
         break;
 
-      case this.options.xEditableRealCheck:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        var value = String(el.get("html"));
-
-        el.empty();
-        var checkEl = new Element("input", {
-          type: "button",
-          class: value == 1 ? "checked" : "",
-          value: "",
-        }).inject(el);
-
-        el.addEvent(
-          "click",
-          this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl])
-        );
-        break;
-
       case this.options.xBertaEditorClassDragXY:
         el.store("onElementSave", onElementSave);
         el.addClass(editorClass.substr(1));
@@ -695,36 +675,6 @@ var BertaEditorBase = new Class({
     var value = target.getClassStoredValue("xValue");
 
     this.elementEdit_save(null, el, null, null, value, value);
-  },
-
-  eSup_onRealCheckClick: function (event, el, checkBoxEl) {
-    if (!el.hasClass("xSaving")) {
-      checkBoxEl.toggleClass("checked");
-      var value = checkBoxEl.hasClass("checked") ? "1" : "0";
-
-      if (el.hasClass("xProperty-fixed")) {
-        var entry = el.getParent(".xEntry");
-        if (value == "1") {
-          entry.addClass("xFixed");
-          if (this.container.hasClass("xCentered")) {
-            var left =
-              parseInt(entry.getStyle("left")) +
-              (window.getSize().x - this.container.getSize().x) / 2;
-            entry.setStyle("left", left + "px");
-          }
-        } else {
-          entry.removeClass("xFixed");
-          if (this.container.hasClass("xCentered")) {
-            var left =
-              parseInt(entry.getStyle("left")) -
-              (window.getSize().x - this.container.getSize().x) / 2;
-            entry.setStyle("left", left + "px");
-          }
-        }
-      }
-
-      this.elementEdit_save(null, el, null, null, value, value);
-    }
   },
 
   eSup_onImageDeleteClick: function (event) {

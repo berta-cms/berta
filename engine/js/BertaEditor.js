@@ -373,13 +373,6 @@ var BertaEditor = new Class({
       }.bind(this)
     );
 
-    // input fields //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xEditableRealCheck).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xEditableRealCheck);
-      }.bind(this)
-    );
-
     // uploads //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $$(this.options.xBertaEditorClassImage).each(
       function (el) {
