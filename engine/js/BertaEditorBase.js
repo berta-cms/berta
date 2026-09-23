@@ -31,17 +31,9 @@ var BertaEditorBase = new Class({
   Implements: [Options, Events],
 
   options: {
-    xBertaEditorClassMCE: ".xEditableMCE",
-    xBertaEditorClassMCESimple: ".xEditableMCESimple",
     xBertaEditorClassRC: ".xEditableRC",
     xBertaEditorClassDragXY: ".xEditableDragXY",
     xEmptyClass: ".xEmpty",
-  },
-
-  tinyMCESettings: {
-    Base: null, // base class
-    simple: null,
-    full: null,
   },
 
   elementEdit_instances: new Array(),
@@ -116,42 +108,6 @@ var BertaEditorBase = new Class({
     var self = this;
 
     switch (editorClass) {
-      case this.options.xBertaEditorClassMCE:
-      case this.options.xBertaEditorClassMCESimple:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            $$(".xEditOverlay").destroy();
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              el.addClass("xEditing");
-              if (this.inlineIsEmpty()) this.innerHTML = "";
-              editor.elementEdit_instances.push(
-                this.inlineEdit({
-                  type: "textarea",
-                  WYSIWYGSettings: el.hasClass(
-                    editor.options.xBertaEditorClassMCESimple.substr(1)
-                  )
-                    ? editor.tinyMCESettings.simple.options
-                    : editor.tinyMCESettings.full.options,
-                  onComplete: editor.elementEdit_save.bind(editor),
-                })
-              );
-              editor.fireEvent(BertaEditorBase.EDITABLE_START, [
-                el,
-                editor.elementEdit_instances[
-                  editor.elementEdit_instances.length - 1
-                ],
-              ]);
-            }
-          }.bindWithEvent(el, this)
-        );
-
-        self.initEditOverlay(el);
-        break;
-
       case this.options.xBertaEditorClassRC:
         el.store("onElementSave", onElementSave);
         el.addClass(editorClass.substr(1));
@@ -369,25 +325,6 @@ var BertaEditorBase = new Class({
   ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  initEditOverlay: function (el) {
-    var editButton = new Element("a", {
-      class: "xEditOverlay",
-    });
-
-    el.addEvents({
-      mouseenter: function () {
-        if (!el.hasClass("xEditing")) {
-          editButton.style.width = el.getSize().x + "px";
-          editButton.style.height = el.getSize().y + "px";
-          editButton.inject(el);
-        }
-      },
-      mouseleave: function () {
-        editButton.destroy();
-      },
-    });
-  },
-
   drawGuideLines: function (el) {
     var x = el.getStyle("top");
     var y = el.getStyle("left");
@@ -398,17 +335,6 @@ var BertaEditorBase = new Class({
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  Saving edited element  |////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  findEditByReplacement: function (replacementElement) {
-    var editToReturn;
-    replacementElement = $(replacementElement);
-    this.elementEdit_instances.each(function (edit) {
-      if (edit.inputBox == replacementElement) {
-        editToReturn = edit;
-      }
-    });
-    return editToReturn;
-  },
 
   elementEdit_save: function (
     elEditor,
@@ -651,10 +577,6 @@ var BertaEditorBase = new Class({
         el.removeClass("xSaving");
         el.removeClass("xEditing");
         el.removeProperty("old_content");
-
-        try {
-          this.setWmodeTransparent();
-        } catch (e) {}
       }
 
       // if there is a stored onSave event, execute it
@@ -668,57 +590,6 @@ var BertaEditorBase = new Class({
         messyMess.copyrightStickToBottom();
       }
     }.bind(this);
-  },
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///  tinyMCE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  tinyMCE_onSave: function (mceInstance) {
-    if (mceInstance) {
-      var tAElement = mceInstance.getElement();
-      mceInstance.remove();
-      tAElement.setStyle("visibility", "hidden");
-
-      var elInlineEdit = this.findEditByReplacement(tAElement);
-      elInlineEdit.onSave.delay(100, elInlineEdit);
-    }
-  },
-
-  tinyMCE_ConfigurationsInit: function () {
-    this.tinyMCESettings.Base = new Class({
-      Implements: Options,
-      options: {
-        icons_url: "../_lib/tinymce/icons.js",
-        icons: "berta",
-        license_key: "gpl",
-        promotion: false,
-        branding: false,
-        menubar: false,
-        plugins: "save code table lists link",
-        toolbar:
-          "save undo redo bold italic forecolor backcolor bullist numlist link unlink code | fontsize blocks alignleft aligncenter alignright alignjustify outdent indent table removeformat",
-        width: "563px",
-        height: "300",
-        save_enablewhendirty: false,
-        save_onsavecallback: this.tinyMCE_onSave.bind(this),
-        invalid_elements: "script",
-        block_formats: "Paragraph=p;  Heading 2=h2; Heading 3=h3",
-        convert_urls: false,
-        relative_urls: false,
-        sandbox_iframes: false,
-      },
-      initialize: function (options) {
-        this.setOptions(options);
-      },
-    });
-
-    this.tinyMCESettings.full = new this.tinyMCESettings.Base();
-    this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
-      width: "100%",
-      plugins: "save link code",
-      toolbar: "save bold italic link unlink removeformat code",
-    });
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

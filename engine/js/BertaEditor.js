@@ -29,7 +29,6 @@ var BertaEditor = new Class({
   initialize: function (options) {
     this.setOptions(options);
     this.initConsoleReplacement();
-    this.tinyMCE_ConfigurationsInit();
 
     this.processHandler = new UnlinearProcessHandler();
     this.processHandler.addObservable(this);
@@ -61,9 +60,6 @@ var BertaEditor = new Class({
   onDOMReadyDo: function () {
     this.edittingMode = $$("body")[0].get("x_mode");
     if (!this.edittingMode) this.edittingMode = "entries";
-
-    //set wmode to transparent
-    this.setWmodeTransparent();
 
     switch (this.edittingMode) {
       case "multipage":
@@ -304,18 +300,6 @@ var BertaEditor = new Class({
 
   editablesInit: function () {
     // instantiate all xEditable elements in the page
-    // mce textareas ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassMCE).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassMCE);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassMCESimple).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassMCE);
-      }.bind(this)
-    );
-
     // "real content" fields ////////////////////////////////////////////////////////////////////////////////////////////////////
     $$(this.options.xBertaEditorClassRC).each(
       function (el) {
@@ -354,23 +338,6 @@ var BertaEditor = new Class({
         }
       }
     }
-  },
-
-  //sets iframe mode to transparent to allow click and edit in tiny mce
-  setWmodeTransparent: function () {
-    var objects = document.getElements("iframe");
-
-    objects.each(function (obj) {
-      var srcAttr = obj.src;
-      if (srcAttr && !srcAttr.match(/javascript:/gi)) {
-        var uri = new URI(srcAttr);
-        try {
-          uri.setData("wmode", "transparent");
-          uri = uri.toString();
-          obj.set("src", uri);
-        } catch (err) {}
-      }
-    });
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

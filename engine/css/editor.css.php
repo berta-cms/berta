@@ -141,31 +141,10 @@ input[type="submit"]:hover {
 
 /* editables ---------------------------------------------------------------------------------------------- */
 
-.xEditableMCE {
-    min-height: 1em;
-}
-
-.xEditableMCE .tox-tinymce {
-    border-radius: 0;
-}
-
-body .tox-tinymce-aux {
-    z-index: 100002;
-}
-
-.xEditableMCE .tox:not(.tox-tinymce-inline) .tox-editor-header {
-    padding: 0;
-}
-
-.xEditableMCE .tox .tox-toolbar__group {
-    padding: 0 4px 0 5px;
-}
-
 .xNgEditable,
 .xNgEditableTA,
 .xNgEditableRTE,
 .xNgEditableRTESimple,
-.xEditableMCE,
 .xEditableRC {
     cursor: default;
 }
@@ -174,7 +153,6 @@ body .tox-tinymce-aux {
 .xNgEditableTA:hover,
 .xNgEditableRTE:hover,
 .xNgEditableRTESimple:hover,
-.xEditableMCE:hover,
 .xEditableRC:hover {
     background-color: rgba(255, 255, 153, .79);
     -moz-border-radius: 5px;
@@ -220,13 +198,6 @@ body .tox-tinymce-aux {
 /*a.xEditorLink, a.xEditorLink * {
     text-decoration: underline;
 }*/
-
-.xEditOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-}
 
 
 /* panel css ------------------------------------------------------------------------------------------- */

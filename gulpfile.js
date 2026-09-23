@@ -37,12 +37,6 @@ const vendorAssets = [
   "node_modules/photoswipe/dist/default-skin/*.{png,gif,svg}",
 ];
 
-const tinymceSkinFiles = [
-  "node_modules/tinymce/skins/ui/oxide/skin.min.css",
-  "node_modules/tinymce/skins/ui/oxide/content.min.css",
-  "node_modules/tinymce/skins/content/default/content.min.css",
-];
-
 const backendCssFiles = [
   "node_modules/swiper/swiper-bundle.min.css",
   "engine/_lib/berta/default.css",
@@ -79,17 +73,6 @@ const backendJsFiles = [
   "engine/js/BertaEditorBase.js",
   "engine/js/inline_edit.js",
   "engine/js/BertaEditor.js",
-  "node_modules/tinymce/tinymce.min.js",
-  "node_modules/tinymce/themes/silver/theme.min.js",
-  "node_modules/tinymce/icons/default/icons.min.js",
-  "node_modules/tinymce/models/dom/model.min.js",
-  "node_modules/tinymce/plugins/save/plugin.min.js",
-  "node_modules/tinymce/plugins/code/plugin.min.js",
-  "node_modules/tinymce/plugins/table/plugin.min.js",
-  "node_modules/tinymce/plugins/lists/plugin.min.js",
-  "node_modules/tinymce/plugins/link/plugin.min.js",
-  "node_modules/promise-polyfill/dist/polyfill.min.js",
-  "node_modules/whatwg-fetch/fetch.js",
   "node_modules/immutable/dist/immutable.min.js",
   "node_modules/redux/dist/redux.min.js",
   "node_modules/redux-thunk/dist/redux-thunk.min.js",
@@ -148,17 +131,6 @@ const cleanupVendorAssets = () => {
 const copyVendorAssets = () => {
   return src(vendorAssets, { base: "./node_modules/" }).pipe(
     dest("engine/css/vendor")
-  );
-};
-
-const cleanupTinymceSkinFiles = () => {
-  return src("engine/js/skins", { read: false, allowEmpty: true }).pipe(
-    clean({ force: true })
-  );
-};
-const copyTinymceSkinFiles = () => {
-  return src(tinymceSkinFiles, { base: "./node_modules/tinymce/" }).pipe(
-    dest("engine/js")
   );
 };
 
@@ -304,8 +276,6 @@ const backendNgJs = () => {
 const tasks = series(
   cleanupVendorAssets,
   copyVendorAssets,
-  cleanupTinymceSkinFiles,
-  copyTinymceSkinFiles,
   parallel(
     templatesCss,
     backendCss,

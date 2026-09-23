@@ -4,7 +4,6 @@ var inlineEdit = new Class({
       onComplete: function (el, oldContent, newContent) {},
       type: "input",
       subtype: "", // 'font' for font selector (type = 'select')
-      WYSIWYGSettings: 0,
       selectOptions: new Array(),
       dontHideOnBlur: false,
     };
@@ -41,10 +40,8 @@ var inlineEdit = new Class({
       // get element's content
       this.oldContent = this.oldContentText = element.innerHTML;
       var content = this.oldContent.trim();
-      if (!this.options.WYSIWYGSettings) {
-        content = content.replace(new RegExp("<br.*?/?>", "gi"), "\n");
-        content = this.removeHTMLEntities(content);
-      }
+      content = content.replace(new RegExp("<br.*?/?>", "gi"), "\n");
+      content = this.removeHTMLEntities(content);
 
       var inputBoxId =
         "_replacement" + $random(0, 9999) + $random(0, 9999) + $random(0, 9999);
@@ -125,46 +122,10 @@ var inlineEdit = new Class({
         .bind(this)
         .delay(300);
 
-      if (this.options.WYSIWYGSettings) {
-        var WYSIWYGSettings = this;
-        var ed = new tinymce.Editor(
-          inputBoxId,
-          this.options.WYSIWYGSettings,
-          tinymce.EditorManager
-        );
-        tinymce.EditorManager.add(ed);
-        ed.render();
-
-        // update editor height - this is needed, if desired height is below 100.
-        // tinymce wouldn't allow heights smaller than 100
-        (function () {
-          var e = $(ed.id + "_tbl"),
-            ifr = $(ed.id + "_ifr");
-          if (e) {
-            e.setStyle(
-              "height",
-              WYSIWYGSettings.options.WYSIWYGSettings.height
-            );
-            ifr.setStyle(
-              "height",
-              WYSIWYGSettings.options.WYSIWYGSettings.height
-            );
-          }
-
-          // set styles for the tinymce body element
-          WYSIWYGSettings.setAllStylesMCE(element, ed);
-
-          //correct footer position
-          if (typeof messyMess == "object") {
-            messyMess.copyrightStickToBottom();
-          }
-        }).delay(1000);
-      } else {
-        // add events
-        this.inputBox.addEvent("change", this.onSave.bind(this));
-        if (!this.options.dontHideOnBlur)
-          this.inputBox.addEvent("blur", this.onSave.bind(this));
-      }
+      // add events
+      this.inputBox.addEvent("change", this.onSave.bind(this));
+      if (!this.options.dontHideOnBlur)
+        this.inputBox.addEvent("blur", this.onSave.bind(this));
     }
   },
 
@@ -173,12 +134,9 @@ var inlineEdit = new Class({
 
     this.inputBox.removeEvents();
 
-    this.newContent = this.options.WYSIWYGSettings
-      ? this.inputBox.get("value").trim()
-      : this.addHTMLEntities(this.inputBox.get("value").trim()).replace(
-          new RegExp("\n", "gi"),
-          "<br />"
-        );
+    this.newContent = this.addHTMLEntities(
+      this.inputBox.get("value").trim()
+    ).replace(new RegExp("\n", "gi"), "<br />");
 
     this.newContentText = this.newContent;
     if (
@@ -243,31 +201,6 @@ var inlineEdit = new Class({
       var value = selector.getStyle(style);
       if (value) {
         editor.setStyle(style, value);
-      }
-    });
-  },
-
-  setAllStylesMCE: function (element, mceEditor) {
-    var stylesToCopy = [
-      "font-size",
-      "font-family",
-      "font-weight",
-      "font-style",
-      "text-transform",
-      "line-height",
-      "letter-spacing",
-      "font",
-      "color",
-      "background-color",
-    ];
-    var editorBody = mceEditor.dom.select("body");
-
-    stylesToCopy.map(function (style) {
-      var selector =
-        style === "background-color" ? element.getParent("body") : element;
-      var value = selector.getStyle(style);
-      if (value) {
-        mceEditor.dom.setStyle(editorBody, style, value);
       }
     });
   },
