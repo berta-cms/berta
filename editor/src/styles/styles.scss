@@ -133,3 +133,25 @@ berta-profile-dropdown {
 .overlay {
   background: rgba(variables.$black, 0.3);
 }
+
+// TinyMCE (`berta-inline-edit-rich-text-overlay`) renders its own floating
+// UI (dialogs, menus, tooltips) with a default z-index around 1100-1300
+// (its oxide skin CSS). Rather than fighting to push TinyMCE's popups
+// above CDK, this keeps only this editor's own pane/backdrop *below* them.
+// This only works combined with `usePopover: false` on that overlay's
+// config (inline-edit.service.ts): Angular CDK 21 promotes overlays to the
+// browser's native Popover API (top layer) by default, which ignores
+// z-index entirely (CDK's own stylesheet even sets
+// `.cdk-overlay-popover .cdk-overlay-backdrop { z-index: auto }`) — so
+// without opting out, this rule would be a no-op. CDK's own
+// `.cdk-overlay-pane`/`.cdk-overlay-backdrop` z-index rules are wrapped in
+// `@layer cdk-overlay` (see `@angular/cdk/fesm2022/_overlay-module-chunk.mjs`),
+// which always loses to any *unlayered* rule regardless of specificity, so
+// this reliably wins for just these two classes without touching the
+// shared `.cdk-overlay-container` other overlays in the app rely on
+// staying above ordinary page content (nothing else here uses z-index
+// above 11).
+.berta-rich-text-overlay-pane,
+.berta-rich-text-overlay-backdrop {
+  z-index: 50;
+}

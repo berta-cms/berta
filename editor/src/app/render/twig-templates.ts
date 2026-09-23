@@ -812,7 +812,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 {% endif %}
 
 {% if showDescription %}
-  <div class="entryText xEditableMCE xProperty-description"{{ attributes.description|raw }}>{{ content.description|raw }}</div>
+  <div class="entryText xNgEditableRTE xProperty-description"{{ attributes.description|raw }}>{% if content.description %}{{ content.description|raw }}{% else %}<span class="xEmpty">&nbsp;description&nbsp;</span>{% endif %}</div>
 {% endif %}
 
 {% if galleryPosition == 'below description' %}
@@ -992,7 +992,11 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 </div>
 `,
   'Sites/Sections/additionalFooterText': `<div{{ attributes|raw }}>
-  {{ content|raw }}
+  {% if content %}
+    {{ content|raw }}
+  {% elseif isEditMode %}
+    <span class="xEmpty">&nbsp;additional footer text&nbsp;</span>
+  {% endif %}
 </div>
 `,
   'Sites/Sections/additionalText': `<div{{ wrapperAttributes|raw }}>
@@ -1000,11 +1004,9 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     <div class="xHandle"></div>
   {% endif %}
   {% if content.attributes %}
-    <div{{ content.attributes|raw }}>
-  {% endif %}
+    <div{{ content.attributes|raw }}>{% if content.html %}{{ content.html|raw }}{% else %}<span class="xEmpty">&nbsp;additional text&nbsp;</span>{% endif %}</div>
+  {% else %}
     {{ content.html|raw }}
-  {% if content.attributes %}
-    </div>
   {% endif %}
 </div>
 `,

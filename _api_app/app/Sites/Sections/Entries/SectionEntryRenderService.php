@@ -156,6 +156,7 @@ class SectionEntryRenderService
             'attributes' => [
                 'description' => Helpers::arrayToHtmlAttributes([
                     'data-path' => $isEditMode ? "{$apiPath}content/description" : null,
+                    'data-empty-caption' => $isEditMode ? 'description' : null,
                 ]),
                 'url' => Helpers::arrayToHtmlAttributes([
                     'data-path' => $isEditMode ? "{$apiPath}content/url" : null,

@@ -8,14 +8,46 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Store } from '@ngxs/store';
 
 import { InlineEditOverlayComponent } from './inline-edit-overlay.component';
+import {
+  InlineEditRichTextOverlayComponent,
+  RICH_TEXT_MIN_HEIGHT,
+} from './inline-edit-rich-text-overlay.component';
 import { resolveInlineEditAction } from './inline-edit-path.resolver';
 
 const EDITABLE_SELECTOR = '.xNgEditable, .xNgEditableTA';
 const MULTILINE_CLASS = 'xNgEditableTA';
+const RICH_TEXT_SELECTOR = '.xNgEditableRTE, .xNgEditableRTESimple';
+const RICH_TEXT_SIMPLE_CLASS = 'xNgEditableRTESimple';
 const DROPDOWN_BOX_SELECTOR = '.xEntryDropdownBox';
 const CHECKBOX_SELECTOR = '.xNgEditableCheckBox';
 const FIXED_PROPERTY_CLASS = 'xProperty-fixed';
 const SAVING_CLASS = 'xSaving';
+const RICH_TEXT_STYLES_TO_COPY = [
+  'font-size',
+  'font-family',
+  'font-weight',
+  'font-style',
+  'text-transform',
+  'line-height',
+  'letter-spacing',
+  'color',
+];
+// CDK's flexible-position strategy shrinks the overlay's width to fit
+// whatever space remains near a viewport edge by default — these are the
+// floor it's never allowed to shrink below, so the toolbar doesn't get
+// cramped for a field sitting close to the edge. `width` (below) stays the
+// preferred size; `minWidth` only kicks in when there isn't room for it.
+const RICH_TEXT_MIN_WIDTH_FULL = 560;
+const RICH_TEXT_MIN_WIDTH_SIMPLE = 300;
+// TinyMCE loads/renders asynchronously, so without a starting height the
+// overlay would start at its (empty) natural height and visibly pop once
+// ready. Pre-size to TinyMCE's own `min_height` floor plus a rough
+// single-toolbar-row estimate — close enough that the first `resize`
+// emission (which immediately corrects this to the real measured height)
+// rarely needs to grow it by much.
+const RICH_TEXT_TOOLBAR_CHROME_ESTIMATE = 44;
+const RICH_TEXT_INITIAL_HEIGHT =
+  RICH_TEXT_MIN_HEIGHT + RICH_TEXT_TOOLBAR_CHROME_ESTIMATE;
 
 interface CheckBoxRollback {
   entryWasFixed: boolean;
@@ -30,6 +62,11 @@ interface OpenEdit {
   positionStrategy: FlexibleConnectedPositionStrategy;
   dropdownBox: HTMLElement | null;
   suppressDropdownClose: (event: Event) => void;
+  // Rich-text overlays use a fixed size (matching legacy's own hardcoded
+  // TinyMCE dimensions) rather than tracking the edited element's own
+  // (much smaller) rendered box, so geometry refreshes must reposition
+  // without also resetting the overlay back to that box's size.
+  syncSizeOnRefresh: boolean;
 }
 
 /**
@@ -108,6 +145,20 @@ export class InlineEditService {
       event.preventDefault();
       event.stopPropagation();
       this.toggleCheckBox(target, iframe);
+    });
+
+    doc.addEventListener('click', (event) => {
+      const target = (event.target as HTMLElement)?.closest(
+        RICH_TEXT_SELECTOR,
+      ) as HTMLElement | null;
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      this.openRichTextEditor(target, iframe);
     });
 
     // The previewed site's own page can scroll independently of the app
@@ -189,9 +240,8 @@ export class InlineEditService {
     iframe: HTMLIFrameElement,
   ) {
     const contentWindow = iframe.contentWindow;
-    const container = iframe.contentDocument?.getElementById(
-      'contentContainer',
-    );
+    const container =
+      iframe.contentDocument?.getElementById('contentContainer');
 
     entry.classList.toggle('xFixed', becomingFixed);
 
@@ -349,6 +399,7 @@ export class InlineEditService {
       positionStrategy,
       dropdownBox,
       suppressDropdownClose,
+      syncSizeOnRefresh: true,
     };
 
     componentRef.instance.input.subscribe((draftValue: string) => {
@@ -398,6 +449,178 @@ export class InlineEditService {
   }
 
   /**
+   * `.xNgEditableRTE`/`.xNgEditableRTESimple` fields (TinyMCE-backed rich
+   * text). Unlike `openEditor`'s plain-text overlay, the value is raw HTML
+   * (no entity-encoding round-trip), sizing is fixed rather than tracking
+   * the field's own (usually much smaller) rendered box, and there's no
+   * live-draft mirroring into `el` while typing — TinyMCE's own canvas is
+   * the editing surface. Saving only happens via the overlay's TinyMCE
+   * toolbar Save button; a CDK backdrop discards the draft on click-away
+   * (see `InlineEditRichTextOverlayComponent`).
+   */
+  private openRichTextEditor(el: HTMLElement, iframe: HTMLIFrameElement) {
+    const path = el.dataset['path'];
+
+    if (!path) {
+      return;
+    }
+
+    this.closeOpenOverlay();
+
+    const simple = el.classList.contains(RICH_TEXT_SIMPLE_CLASS);
+    const initialValue = this.readRichTextValue(el);
+    const contentStyle = this.readRichTextStyles(el);
+    const originalHtml = el.innerHTML;
+
+    el.style.visibility = 'hidden';
+
+    const origin = this.createVirtualOrigin(el, iframe);
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(origin)
+      .withPositions([
+        {
+          originX: 'start',
+          originY: 'top',
+          overlayX: 'start',
+          overlayY: 'top',
+        },
+      ]);
+    // Full toolbar matches legacy's own hardcoded 563px regardless of the
+    // field's own width; simple toolbar matches the field's width, same as
+    // legacy's "100%" (of the edited element's own box). Kept in a local
+    // since the `resize` subscription below needs to reuse it on every
+    // resize, not just at creation.
+    const overlayWidth = simple ? origin.width : 563;
+    const overlayRef = this.overlay.create({
+      positionStrategy,
+      width: overlayWidth,
+      minWidth: simple ? RICH_TEXT_MIN_WIDTH_SIMPLE : RICH_TEXT_MIN_WIDTH_FULL,
+      // Pre-sized close to TinyMCE's own `min_height` floor so there's no
+      // visible pop for content that fits within it — the `resize`
+      // subscription below immediately corrects this once TinyMCE reports
+      // its actual rendered height, and again on every resize as the user
+      // types (the `autoresize` plugin grows/shrinks the content area to
+      // fit).
+      height: RICH_TEXT_INITIAL_HEIGHT,
+      hasBackdrop: true,
+      // Angular CDK 21 renders overlays via the native Popover API by
+      // default (host gets `popover="manual"`), which promotes them to the
+      // browser's top layer — unconditionally above the entire normal
+      // stacking order, regardless of z-index. TinyMCE's own popups
+      // (dialogs/menus/tooltips) are ordinary CSS-positioned elements, not
+      // top-layer, so a top-layer overlay always renders above them no
+      // matter what z-index either side uses. Opting out here drops back
+      // to classic z-index stacking, where the low z-index on
+      // `.berta-rich-text-overlay-pane`/`-backdrop` (styles.scss) actually
+      // means something: TinyMCE's own default z-index (1100-1300) then
+      // properly outranks it.
+      usePopover: false,
+      backdropClass: [
+        'cdk-overlay-transparent-backdrop',
+        'berta-rich-text-overlay-backdrop',
+      ],
+      panelClass: 'berta-rich-text-overlay-pane',
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    });
+
+    const componentRef = overlayRef.attach(
+      new ComponentPortal(InlineEditRichTextOverlayComponent),
+    );
+    componentRef.instance.value = initialValue;
+    componentRef.instance.simple = simple;
+    componentRef.instance.contentStyle = contentStyle;
+
+    this.openEdit = {
+      el,
+      iframe,
+      originalHtml,
+      overlayRef,
+      positionStrategy,
+      dropdownBox: null,
+      suppressDropdownClose: () => {},
+      syncSizeOnRefresh: false,
+    };
+
+    overlayRef.backdropClick().subscribe(() => this.closeOpenOverlay());
+
+    // TinyMCE loads/renders asynchronously and then grows/shrinks with the
+    // `autoresize` plugin as the user types — CDK has no built-in awareness
+    // of content changing size, so every `resize` emission both resizes the
+    // overlay to match and re-runs positioning (growth could push it
+    // off-screen for a field near a viewport edge).
+    componentRef.instance.resize.subscribe((height: number) => {
+      overlayRef.updateSize({ width: overlayWidth, height });
+      this.refreshOpenEditGeometry();
+    });
+
+    componentRef.instance.save.subscribe((html: string) => {
+      let action;
+
+      try {
+        action = resolveInlineEditAction(path, html);
+      } catch (error) {
+        console.error(error);
+        this.closeOpenOverlay();
+        return;
+      }
+
+      this.store.dispatch(action).subscribe({
+        next: () => {
+          this.writeRichTextValue(el, html);
+          this.closeOpenOverlay(false);
+        },
+        error: () => this.closeOpenOverlay(),
+      });
+    });
+  }
+
+  private readRichTextValue(el: HTMLElement): string {
+    const isPlaceholder = !!el.querySelector(':scope > .xEmpty');
+
+    return isPlaceholder ? '' : el.innerHTML.trim();
+  }
+
+  private writeRichTextValue(el: HTMLElement, html: string) {
+    el.innerHTML = html.trim() !== '' ? html : this.emptyPlaceholderHtml(el);
+  }
+
+  /**
+   * Equivalent of legacy's `setAllStylesMCE` (`engine/js/inline_edit.js`):
+   * copies the field's computed font/color styling onto the TinyMCE body so
+   * the edited text doesn't look like a generic editor. Read before `el` is
+   * hidden, same ordering as `readFontStyle`/`createVirtualOrigin` above.
+   */
+  private readRichTextStyles(el: HTMLElement): Record<string, string> {
+    const view = el.ownerDocument.defaultView;
+
+    if (!view) {
+      return {};
+    }
+
+    const computed = view.getComputedStyle(el);
+    const style: Record<string, string> = {};
+
+    RICH_TEXT_STYLES_TO_COPY.forEach((prop) => {
+      const value = computed.getPropertyValue(prop);
+      if (value) {
+        style[prop] = value;
+      }
+    });
+
+    const body = el.closest('body');
+    const bodyBackground = body
+      ? view.getComputedStyle(body).getPropertyValue('background-color')
+      : '';
+
+    if (bodyBackground) {
+      style['background-color'] = bodyBackground;
+    }
+
+    return style;
+  }
+
+  /**
    * When empty, the server renders a visible `.xEmpty` placeholder span
    * inside the element (mirroring the legacy `makePlaceholderIfEmpty`
    * mechanism in `BertaEditorBase.js`) so the field stays visible/clickable.
@@ -432,8 +655,12 @@ export class InlineEditService {
       return;
     }
 
+    el.innerHTML = this.emptyPlaceholderHtml(el);
+  }
+
+  private emptyPlaceholderHtml(el: HTMLElement): string {
     const caption = el.dataset['emptyCaption'];
-    el.innerHTML = caption
+    return caption
       ? `<span class="xEmpty">&nbsp;${this.escapeHtml(caption)}&nbsp;</span>`
       : '';
   }
@@ -476,7 +703,10 @@ export class InlineEditService {
    * round-trip: `&`/`<`/`>` are encoded, `"` is deliberately left literal.
    */
   private encodeEntities(value: string): string {
-    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 
   /**
@@ -580,12 +810,16 @@ export class InlineEditService {
       return;
     }
 
-    const { el, iframe, overlayRef, positionStrategy } = this.openEdit;
+    const { el, iframe, overlayRef, positionStrategy, syncSizeOnRefresh } =
+      this.openEdit;
     const rect = this.createVirtualOrigin(el, iframe);
 
     positionStrategy.setOrigin(rect);
     overlayRef.updatePosition();
-    overlayRef.updateSize({ width: rect.width, height: rect.height });
+
+    if (syncSizeOnRefresh) {
+      overlayRef.updateSize({ width: rect.width, height: rect.height });
+    }
   }
 
   /**

@@ -13,7 +13,7 @@
 {% endif %}
 
 {% if showDescription %}
-  <div class="entryText xEditableMCE xProperty-description"{{ attributes.description|raw }}>{{ content.description|raw }}</div>
+  <div class="entryText xNgEditableRTE xProperty-description"{{ attributes.description|raw }}>{% if content.description %}{{ content.description|raw }}{% else %}<span class="xEmpty">&nbsp;description&nbsp;</span>{% endif %}</div>
 {% endif %}
 
 {% if galleryPosition == 'below description' %}

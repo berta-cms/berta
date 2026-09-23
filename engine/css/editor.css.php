@@ -163,6 +163,8 @@ body .tox-tinymce-aux {
 
 .xNgEditable,
 .xNgEditableTA,
+.xNgEditableRTE,
+.xNgEditableRTESimple,
 .xEditableMCE,
 .xEditableRC {
     cursor: default;
@@ -170,6 +172,8 @@ body .tox-tinymce-aux {
 
 .xNgEditable:hover,
 .xNgEditableTA:hover,
+.xNgEditableRTE:hover,
+.xNgEditableRTESimple:hover,
 .xEditableMCE:hover,
 .xEditableRC:hover {
     background-color: rgba(255, 255, 153, .79);
@@ -179,6 +183,22 @@ body .tox-tinymce-aux {
 }
 .xEditableDragXY {
     cursor: move;
+}
+
+/*
+ * A click that visually lands on an embedded iframe (e.g. a pasted video
+ * embed) never bubbles to the parent document at all — iframes are a
+ * separate browsing context, so InlineEditService's delegated click
+ * listener structurally cannot see it. This makes such a click pass
+ * through to the containing editable element instead of reaching the
+ * iframe's own page, so it bubbles normally and opens the editor like any
+ * other click on the field. Legacy solved the same problem with a
+ * transparent hover-injected overlay element (`.xEditOverlay`); this is a
+ * simpler modern equivalent for the same two field types.
+ */
+.xNgEditableRTE iframe,
+.xNgEditableRTESimple iframe {
+    pointer-events: none;
 }
 
 .xNgEditableCheckBox {

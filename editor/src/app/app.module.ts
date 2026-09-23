@@ -27,6 +27,7 @@ import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
 import { PreviewComponent } from './preview/preview.component';
 import { InlineEditOverlayComponent } from './preview/inline-edit/inline-edit-overlay.component';
+import { InlineEditRichTextOverlayComponent } from './preview/inline-edit/inline-edit-rich-text-overlay.component';
 import { PopupComponent } from './popup/popup.component';
 import { SetupWizardComponent } from './setup/setup-wizard.component';
 import { ErrorState } from './error-state/error.state';
@@ -58,6 +59,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     LoginComponent,
     PreviewComponent,
     InlineEditOverlayComponent,
+    InlineEditRichTextOverlayComponent,
     ThemesComponent,
     PopupComponent,
     SetupWizardComponent,
