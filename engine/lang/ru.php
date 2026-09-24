@@ -119,10 +119,6 @@ return [
     '<META> description' => '<META> описание',
     /* help text */
     'Site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
-    /* setting name */
-    '<META> keywords' => '<META> ключевые слова',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ключевые слова видны только поисковым системам, таким как Google. Они могут улучшить позиции вашего сайта в результатах поиска. Желательно, чтобы они соответствовали содержанию страницы.',
 
     /* setting tab */
     'Navigation' => 'Навигация',

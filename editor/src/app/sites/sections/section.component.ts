@@ -113,15 +113,6 @@ import { SettingConfigModel } from '../../shared/interfaces';
 
           <div class="setting">
             <berta-long-text-input
-              [label]="'Keywords'"
-              [value]="section.seoKeywords"
-              (inputFocus)="updateComponentFocus($event)"
-              (update)="updateTextField('seoKeywords', $event)"
-            ></berta-long-text-input>
-          </div>
-
-          <div class="setting">
-            <berta-long-text-input
               [label]="'Description'"
               [value]="section.seoDescription"
               (inputFocus)="updateComponentFocus($event)"

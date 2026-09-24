@@ -285,7 +285,6 @@ class SectionHeadRenderService
         $isAutoResponsive = ! $isResponsive && isset($siteTemplateSettings['pageLayout']['autoResponsive']) && $siteTemplateSettings['pageLayout']['autoResponsive'] == 'yes';
 
         $data['title'] = $this->getTitle($siteSettings, $currentSection, $sectionTags, $tagSlug);
-        $data['keywords'] = ! empty($currentSection['seoKeywords']) ? $currentSection['seoKeywords'] : $siteSettings['texts']['metaKeywords'];
         $data['description'] = ! empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
         $data['baseUrl'] = request()->getSchemeAndHttpHost();

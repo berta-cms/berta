@@ -23,7 +23,6 @@ interface WizardFields {
   siteHeading: WizardField;
   ownerName: WizardField;
   metaDescription: WizardField;
-  metaKeywords: WizardField;
 }
 
 /**
@@ -77,20 +76,6 @@ interface WizardFields {
               )
             "
             (update)="updateSetting(fields.metaDescription.group, $event)"
-          ></berta-setting>
-        </div>
-
-        <div class="setting-group">
-          <berta-setting
-            [setting]="fields.metaKeywords.setting"
-            [config]="fields.metaKeywords.config"
-            [disabled]="
-              isSaving(
-                fields.metaKeywords.group,
-                fields.metaKeywords.setting.slug
-              )
-            "
-            (update)="updateSetting(fields.metaKeywords.group, $event)"
           ></berta-setting>
         </div>
 
@@ -178,18 +163,11 @@ export class SetupWizardComponent implements OnInit {
       'texts',
       'metaDescription',
     );
-    const metaKeywords = this.findField(
-      settings,
-      config,
-      'texts',
-      'metaKeywords',
-    );
-
-    if (!siteHeading || !ownerName || !metaDescription || !metaKeywords) {
+    if (!siteHeading || !ownerName || !metaDescription) {
       return null;
     }
 
-    return { siteHeading, ownerName, metaDescription, metaKeywords };
+    return { siteHeading, ownerName, metaDescription };
   }
 
   private findField(

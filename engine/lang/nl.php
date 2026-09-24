@@ -119,10 +119,6 @@ return [
     '<META> description' => '<META> description',
     /* help text */
     'Short site description. It should not be longer than one or two sentences.' => 'Site beschrijving. Gebruik hiervoor niet meer dan twee regels',
-    /* setting name */
-    '<META> keywords' => '<META> keywords',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Keywords die alleen zichtbaar zijn voor zoekmachines. Het gebruik van keywords, samen met de description (beschrijving) van jouw site kunnen ervoor zorgen dat je beter via zoekmachines vindbaar bent.',
 
     /* setting tab */
     'Navigation' => 'Navigatie',

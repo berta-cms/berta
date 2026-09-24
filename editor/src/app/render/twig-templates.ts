@@ -1332,7 +1332,6 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   {% if isResponsive or isAutoResponsive %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% endif %}
-  <meta name="keywords" content="{{ keywords }}">
   <meta name="description" content="{{ description }}">
   <meta name="author" content="{{ author }}">
   <meta property="og:site_name" content="{{ author }}">

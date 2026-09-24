@@ -119,10 +119,6 @@ return [
     '<META> description' => '<META> description',
     /* help text */
     'Site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
-    /* setting name */
-    '<META> keywords' => '<META> mots-clés',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ces mots-clés ne sont visibles que pour les moteurs de recherche. Associés à la description, ils permettent d’améliorer votre positionnement dans les moteurs.',
 
     /* setting tab */
     'Navigation' => 'Navigation',
