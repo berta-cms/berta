@@ -300,13 +300,6 @@ var BertaEditor = new Class({
 
   editablesInit: function () {
     // instantiate all xEditable elements in the page
-    // "real content" fields ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassRC).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassRC);
-      }.bind(this)
-    );
-
     // dragging /////////////////////////////////////////////////////////////////////////////////////////
     var draggableElements = $$(this.options.xBertaEditorClassDragXY);
     if (draggableElements.length) {
@@ -485,12 +478,7 @@ var BertaEditor = new Class({
       target = target.getParent(".xEntry");
     }
 
-    var tagsListInput = target.getElement(".tagsList input");
-
-    // If submenu input is not focused
-    if (!tagsListInput) {
-      target.removeClass("xEntryHover");
-    }
+    target.removeClass("xEntryHover");
     target.setAttribute("data-hover", "off");
   },
 

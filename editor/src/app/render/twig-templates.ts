@@ -850,7 +850,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     {% endif %}
 
     <div class="tagsList">
-      <div title="{{ tagList }}" class="xEditableRC xNoHTMLEntities xProperty-submenu xFormatModifier-toTags xSkipSetStyles-1" data-path="{{apiPath}}tags/tag">{{ tagList }}</div>
+      <div title="{{ tagList }}" class="xNgEditable xNoHTMLEntities xProperty-submenu xFormatModifier-toTags" data-path="{{apiPath}}tags/tag" data-ng-edit-via-title="1" data-empty-caption="tags">{% if tagList %}{{ tagList }}{% else %}<span class="xEmpty">&nbsp;tags&nbsp;</span>{% endif %}</div>
     </div>
     <div class="xEntryDropdown"></div>
     <br class="clear" />
@@ -873,7 +873,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
         </li>
         <li>
           <div class="customWidth">
-            <div title="{{ entryWidth }}" class="xEditableRC xCSSUnits-1 xSkipSetStyles-1 xProperty-width" data-path="{{apiPath}}content/width">{{ entryWidth }}</div>
+            <div title="{{ entryWidth }}" class="xNgEditable xCSSUnits-1 xProperty-width" data-path="{{apiPath}}content/width" data-ng-edit-via-title="1" data-empty-caption="width">{% if entryWidth %}{{ entryWidth }}{% else %}<span class="xEmpty">&nbsp;width&nbsp;</span>{% endif %}</div>
           </div>
         </li>
       {% endif %}
@@ -961,7 +961,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 `,
   'Sites/Sections/Entries/shop/_addToCart': `<div class="addToCart" data-uniqid="{{ uniqid }}">
   {% if isEditMode %}
-    <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{{ content.cartPrice }}"{{ attributes.cartPrice|raw }}>{{ cartPriceFormatted }}</div>
+    <div class="cartPrice xNgEditable xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{{ content.cartPrice }}" data-ng-edit-via-title="1" data-empty-caption="price"{{ attributes.cartPrice|raw }}>{% if cartPriceFormatted %}{{ cartPriceFormatted }}{% else %}<span class="xEmpty">&nbsp;price&nbsp;</span>{% endif %}</div>
   {% else %}
     <div class="cartPrice" title="{{ content.cartPrice }}" data-weight="{{ content.weight }}">{{ cartPriceFormatted }}</div>
   {% endif %}
@@ -987,8 +987,8 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   'Sites/Sections/Entries/shop/_productAttributesEditor': `<div class="xEntrySeperator"></div>
 <div class="xEntryBoxParams">
   <b>Attribute</b>
-  <div class="xNgEditable xProperty-cartAttributes xCaption-attribute cCartAttributes xSkipSetStyles-1" data-path="{{apiPath}}content/cartAttributes" data-empty-caption="attribute">{% if cartAttributesEdit %}{{ cartAttributesEdit }}{% else %}<span class="xEmpty">&nbsp;attribute&nbsp;</span>{% endif %}</div>
-  <div class="xNgEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }} xSkipSetStyles-1" data-path="{{apiPath}}content/weight" data-empty-caption="weight">{% if entryWeight %}{{ entryWeight }}{% else %}<span class="xEmpty">&nbsp;weight&nbsp;</span>{% endif %}</div>
+  <div class="xNgEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="{{apiPath}}content/cartAttributes" data-empty-caption="attribute">{% if cartAttributesEdit %}{{ cartAttributesEdit }}{% else %}<span class="xEmpty">&nbsp;attribute&nbsp;</span>{% endif %}</div>
+  <div class="xNgEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }}" data-path="{{apiPath}}content/weight" data-empty-caption="weight">{% if entryWeight %}{{ entryWeight }}{% else %}<span class="xEmpty">&nbsp;weight&nbsp;</span>{% endif %}</div>
 </div>
 `,
   'Sites/Sections/additionalFooterText': `<div{{ attributes|raw }}>

@@ -71,7 +71,6 @@ const backendJsFiles = [
   "engine/js/BertaPortfolio.js",
   "engine/js/Assets.js",
   "engine/js/BertaEditorBase.js",
-  "engine/js/inline_edit.js",
   "engine/js/BertaEditor.js",
   "node_modules/immutable/dist/immutable.min.js",
   "node_modules/redux/dist/redux.min.js",

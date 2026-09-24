@@ -9,10 +9,9 @@ import {
   ViewChild,
 } from '@angular/core';
 
-// Same floppy-disk icon legacy registers via `engine/_lib/tinymce/icons.js`
-// (`tinymce.IconManager.add("berta", { icons: { save: ... } })`, loaded
-// there via `icons_url`). TinyMCE falls back to the "default" icon pack for
-// any icon a named pack doesn't define, so only `save` needs overriding.
+// Berta's floppy-disk Save icon, registered as a custom icon pack. TinyMCE
+// falls back to the "default" icon pack for any icon a named pack doesn't
+// define, so only `save` needs overriding.
 const BERTA_ICON_PACK = 'berta';
 const BERTA_SAVE_ICON =
   '<svg width="24" height="24"><path d="m5 2c-1.645 0-3 1.355-3 3v14c0 1.645 1.355 3 3 3h14c1.645 0 3-1.355 3-3v-11a1.0001 1.0001 0 0 0-0.29297-0.70703l-5-5a1.0001 1.0001 0 0 0-0.70703-0.29297h-9zm0 2h1v4a1.0001 1.0001 0 0 0 1 1h8a1 1 0 0 0 1-1 1 1 0 0 0-1-1h-7v-3h7.5859l4.4141 4.4141v10.586c0 0.56413-0.43587 1-1 1h-1v-7a1.0001 1.0001 0 0 0-1-1h-10a1.0001 1.0001 0 0 0-1 1v7h-1c-0.56413 0-1-0.43587-1-1v-14c0-0.56413 0.43587-1 1-1zm3 10h8v6h-8z"/></svg>';
@@ -39,10 +38,9 @@ const RICH_TEXT_BASE_CONFIG = {
   block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3',
   convert_urls: false,
   relative_urls: false,
-  // Matches legacy's own MCE config (`BertaEditorBase.js`'s
-  // `tinyMCESettings.Base`): without this, TinyMCE 6+'s default sandboxing
-  // of its own editing iframe changes how embedded content (e.g. a pasted
-  // video embed) behaves while being re-edited.
+  // Without this, TinyMCE 6+'s default sandboxing of its own editing iframe
+  // changes how embedded content (e.g. a pasted video embed) behaves while
+  // being re-edited.
   sandbox_iframes: false,
   icons: BERTA_ICON_PACK,
 };
@@ -63,11 +61,9 @@ const RICH_TEXT_SIMPLE_CONFIG = {
 /**
  * Hosts a TinyMCE instance for `.xNgEditableRTE`/`.xNgEditableRTESimple`
  * fields. Unlike `InlineEditOverlayComponent`'s plain `<textarea>`, saving
- * happens via TinyMCE's own toolbar Save button (`save_onsavecallback`) —
- * matching legacy's MCE fields exactly, which have never had a blur- or
- * click-away-to-save/cancel mechanism of their own (see
- * `engine/js/inline_edit.js`'s WYSIWYG branch). `InlineEditService` supplies
- * the click-away-to-discard behavior instead, via a CDK backdrop.
+ * happens only via TinyMCE's own toolbar Save button
+ * (`save_onsavecallback`); there is no blur-to-save. `InlineEditService`
+ * supplies the click-away-to-discard behavior instead, via a CDK backdrop.
  */
 @Component({
   selector: 'berta-inline-edit-rich-text-overlay',

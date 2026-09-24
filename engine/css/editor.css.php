@@ -144,16 +144,14 @@ input[type="submit"]:hover {
 .xNgEditable,
 .xNgEditableTA,
 .xNgEditableRTE,
-.xNgEditableRTESimple,
-.xEditableRC {
+.xNgEditableRTESimple {
     cursor: default;
 }
 
 .xNgEditable:hover,
 .xNgEditableTA:hover,
 .xNgEditableRTE:hover,
-.xNgEditableRTESimple:hover,
-.xEditableRC:hover {
+.xNgEditableRTESimple:hover {
     background-color: rgba(255, 255, 153, .79);
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;

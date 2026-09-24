@@ -19,6 +19,8 @@ const MULTILINE_CLASS = 'xNgEditableTA';
 const RICH_TEXT_SELECTOR = '.xNgEditableRTE, .xNgEditableRTESimple';
 const RICH_TEXT_SIMPLE_CLASS = 'xNgEditableRTESimple';
 const DROPDOWN_BOX_SELECTOR = '.xEntryDropdownBox';
+const EDIT_WRAP_BUTTONS_SELECTOR = '.xEntryEditWrapButtons';
+const EDIT_WRAP_SELECTOR = '.xEntryEditWrap';
 const CHECKBOX_SELECTOR = '.xNgEditableCheckBox';
 const FIXED_PROPERTY_CLASS = 'xProperty-fixed';
 const SAVING_CLASS = 'xSaving';
@@ -60,24 +62,20 @@ interface OpenEdit {
   originalHtml: string;
   overlayRef: OverlayRef;
   positionStrategy: FlexibleConnectedPositionStrategy;
-  dropdownBox: HTMLElement | null;
-  suppressDropdownClose: (event: Event) => void;
-  // Rich-text overlays use a fixed size (matching legacy's own hardcoded
-  // TinyMCE dimensions) rather than tracking the edited element's own
-  // (much smaller) rendered box, so geometry refreshes must reposition
+  legacyHideContainer: HTMLElement | null;
+  suppressLegacyHideClose: (event: Event) => void;
+  // Rich-text overlays use a fixed toolbar-driven size rather than tracking
+  // the edited element's own (much smaller) rendered box, so geometry refreshes must reposition
   // without also resetting the overlay back to that box's size.
   syncSizeOnRefresh: boolean;
 }
 
 /**
  * Click-to-edit for `.xNgEditable` (single-line) and `.xNgEditableTA`
- * (multi-line) elements rendered inside the (same-origin) preview iframe.
- * This is the Angular-native replacement for the legacy MooTools
- * `elementEdit_init`/`inlineEdit` mechanism in `engine/js/BertaEditorBase.js`
- * / `engine/js/inline_edit.js` — adopted one field at a time by swapping a
- * field's server-rendered class from `xEditable`/`xEditableTA` to the
- * `xNgEditable`/`xNgEditableTA` markers this service listens for, so
- * migrated and not-yet-migrated fields can coexist on the same page.
+ * (multi-line) elements rendered inside the (same-origin) preview iframe,
+ * plus `.xNgEditableRTE`/`.xNgEditableRTESimple` rich-text fields and
+ * `.xNgEditableCheckBox` toggles. Editing happens in a CDK overlay in the
+ * parent document, positioned over the edited element.
  */
 @Injectable({
   providedIn: 'root',
@@ -229,8 +227,8 @@ export class InlineEditService {
    * `.xEntry` and, when the page layout is centered, compensates the
    * entry's inline `left` for the coordinate-frame change `.xFixed` causes
    * (`position: fixed` switches it from container-relative to
-   * viewport-relative). This compensation must stay exact: the
-   * drag-and-drop handler in `BertaEditorBase.js` reads/re-applies the same
+   * viewport-relative). This compensation must stay exact: the engine's
+   * drag-and-drop handler (`BertaEditorBase.js`) reads/re-applies the same
    * formula at drag-end, so an uncompensated value here would be silently
    * corrupted the next time the entry is dragged.
    */
@@ -270,6 +268,44 @@ export class InlineEditService {
       entry.classList.toggle('xFixed', rollback.entryWasFixed);
       entry.style.left = rollback.entryLeft;
     }
+  }
+
+  /**
+   * Finds the ancestor element (if any) whose `mouseleave` handler in the
+   * engine's `BertaEditor.js` would prematurely hide `el`'s editor purely
+   * because the CDK overlay covering `el` lives in the parent document, not
+   * the iframe — see `openEditor`'s `suppressLegacyHideClose` for how the
+   * returned element is used. Two distinct hide mechanisms are covered,
+   * each toggling a different CSS-driven visibility class on a different
+   * ancestor:
+   *  - `.xEntryDropdownBox` (width/weight/cartAttributes, nested inside the
+   *    entry's "..." dropdown menu): `mouseleave` is bound directly on this
+   *    element, toggling its own `.xVisible` class.
+   *  - the tags field (nested inside `.xEntryEditWrapButtons`): `mouseleave`
+   *    is bound on `.xEntryEditWrap` — the OUTER wrapper, not
+   *    `.xEntryEditWrapButtons` itself (`BertaEditor.js`'s
+   *    `entryOnHover`/`entryOnUnHover`) — removing `.xEntryHover` from the
+   *    ancestor `.xEntry`, which `.xEntryEditWrapButtons`'s own visibility
+   *    is styled to depend on (`editor.css.php`). `.xEntryEditWrap` also
+   *    contains title/url/description (via `entryContents`), which have no
+   *    such mouseleave-driven hide behavior at all, so this only applies
+   *    when `el` is specifically inside `.xEntryEditWrapButtons` — never
+   *    unconditionally for every field under `.xEntryEditWrap`.
+   */
+  private findLegacyHideContainer(el: HTMLElement): HTMLElement | null {
+    const dropdownBox = el.closest(DROPDOWN_BOX_SELECTOR) as HTMLElement | null;
+
+    if (dropdownBox) {
+      return dropdownBox;
+    }
+
+    const editWrapButtons = el.closest(
+      EDIT_WRAP_BUTTONS_SELECTOR,
+    ) as HTMLElement | null;
+
+    return editWrapButtons
+      ? (editWrapButtons.closest(EDIT_WRAP_SELECTOR) as HTMLElement | null)
+      : null;
   }
 
   private openEditor(el: HTMLElement, iframe: HTMLIFrameElement) {
@@ -351,25 +387,28 @@ export class InlineEditService {
 
     // The overlay lives in the parent document, so whenever it covers `el`,
     // the iframe stops receiving pointer events there — from its own
-    // perspective, the mouse just left whatever was underneath. A field
-    // nested inside `.xEntryDropdownBox` (e.g. cartAttributes/weight) sits
-    // inside a menu that legacy (`BertaEditor.js`) closes on exactly that
-    // `mouseleave`, which never happened before since legacy's own inline
-    // editor replaces content in place, inside the same iframe document —
-    // the mouse never actually left. The overlay's computed bounds can be
-    // fractional/subpixel and don't always cover `el` with pixel-perfect
-    // precision, so moving the cursor within the field can fire more than
-    // one of these spurious events, not just one at open time — classify
-    // each one instead of only eating the first: if the cursor is still
-    // geometrically over the overlay when this fires, it's spurious
-    // (suppress); if the cursor has genuinely moved elsewhere, it's a real
-    // departure — let it through so the menu still closes exactly as before
-    // migration, and also close our own overlay in sync (via a real blur,
-    // running the normal save/cancel logic) since legacy's in-place editor
-    // would have been auto-blurred by its container hiding, which an
-    // overlay in a different document never gets for free.
-    const dropdownBox = el.closest(DROPDOWN_BOX_SELECTOR) as HTMLElement | null;
-    const suppressDropdownClose = (event: MouseEvent) => {
+    // perspective, the mouse just left whatever was underneath. Two
+    // different `BertaEditor.js` `mouseleave` handlers can react to
+    // that as if the mouse had genuinely left the field's whole surrounding
+    // area, closing something that should have stayed open while editing:
+    // `.xEntryDropdownBox` (e.g. cartAttributes/weight, nested inside the
+    // entry's dropdown menu) removes its own `.xVisible` on `mouseleave`;
+    // `.xEntryEditWrap` (e.g. the tags field, nested inside
+    // `.xEntryEditWrapButtons`) removes `.xEntryHover` from the ancestor
+    // `.xEntry` on `mouseleave`, which `.xEntryEditWrapButtons`'s own
+    // visibility is styled to depend on. The overlay's computed bounds can be fractional/subpixel and
+    // don't always cover `el` with pixel-perfect precision, so moving the
+    // cursor within the field can fire more than one of these spurious
+    // events, not just one at open time — classify each one instead of only
+    // eating the first: if the cursor is still geometrically over the
+    // overlay when this fires, it's spurious (suppress); if the cursor has
+    // genuinely moved elsewhere, it's a real departure — let it through so
+    // the container still closes/hides, and also close our own overlay in
+    // sync (via a real blur, running the normal save/cancel logic) since an
+    // overlay in a different document never gets auto-blurred by its
+    // container hiding.
+    const legacyHideContainer = this.findLegacyHideContainer(el);
+    const suppressLegacyHideClose = (event: MouseEvent) => {
       const overlayRect = overlayRef.overlayElement.getBoundingClientRect();
       const iframeRect = iframe.getBoundingClientRect();
       const x = iframeRect.left + event.clientX;
@@ -387,8 +426,12 @@ export class InlineEditService {
       }
     };
 
-    if (dropdownBox) {
-      dropdownBox.addEventListener('mouseleave', suppressDropdownClose, true);
+    if (legacyHideContainer) {
+      legacyHideContainer.addEventListener(
+        'mouseleave',
+        suppressLegacyHideClose,
+        true,
+      );
     }
 
     this.openEdit = {
@@ -397,8 +440,8 @@ export class InlineEditService {
       originalHtml,
       overlayRef,
       positionStrategy,
-      dropdownBox,
-      suppressDropdownClose,
+      legacyHideContainer,
+      suppressLegacyHideClose,
       syncSizeOnRefresh: true,
     };
 
@@ -427,6 +470,8 @@ export class InlineEditService {
         storedValue = this.textToHtml(newValue);
       } else {
         finalValue = this.applyUnits(el, newValue);
+        finalValue = this.applyCssUnits(el, finalValue);
+        finalValue = this.applyPriceParsing(el, finalValue);
         storedValue = this.applyRawEncoding(el, finalValue);
       }
 
@@ -440,7 +485,12 @@ export class InlineEditService {
 
       this.store.dispatch(action).subscribe({
         next: () => {
-          this.writeFieldValue(el, finalValue, multiline);
+          const tags = el.classList.contains('xFormatModifier-toTags')
+            ? this.formatTags(finalValue)
+            : null;
+
+          this.writeFieldValue(el, tags ? tags.display : finalValue, multiline);
+          this.syncTitle(el, tags ? tags.real : finalValue);
           this.closeOpenOverlay(false);
         },
         error: () => this.closeOpenOverlay(),
@@ -486,9 +536,8 @@ export class InlineEditService {
           overlayY: 'top',
         },
       ]);
-    // Full toolbar matches legacy's own hardcoded 563px regardless of the
-    // field's own width; simple toolbar matches the field's width, same as
-    // legacy's "100%" (of the edited element's own box). Kept in a local
+    // Full toolbar uses a fixed 563px regardless of the field's own width;
+    // simple toolbar matches the field's width. Kept in a local
     // since the `resize` subscription below needs to reuse it on every
     // resize, not just at creation.
     const overlayWidth = simple ? origin.width : 563;
@@ -531,14 +580,17 @@ export class InlineEditService {
     componentRef.instance.simple = simple;
     componentRef.instance.contentStyle = contentStyle;
 
+    // The only `.xNgEditableRTE` field (`description`, `_entryContents.twig`)
+    // never sits inside `.xEntryEditWrapButtons` or `.xEntryDropdownBox`, so
+    // there's no hide container to suppress here.
     this.openEdit = {
       el,
       iframe,
       originalHtml,
       overlayRef,
       positionStrategy,
-      dropdownBox: null,
-      suppressDropdownClose: () => {},
+      legacyHideContainer: null,
+      suppressLegacyHideClose: () => {},
       syncSizeOnRefresh: false,
     };
 
@@ -586,8 +638,7 @@ export class InlineEditService {
   }
 
   /**
-   * Equivalent of legacy's `setAllStylesMCE` (`engine/js/inline_edit.js`):
-   * copies the field's computed font/color styling onto the TinyMCE body so
+   * Copies the field's computed font/color styling onto the TinyMCE body so
    * the edited text doesn't look like a generic editor. Read before `el` is
    * hidden, same ordering as `readFontStyle`/`createVirtualOrigin` above.
    */
@@ -622,13 +673,11 @@ export class InlineEditService {
 
   /**
    * When empty, the server renders a visible `.xEmpty` placeholder span
-   * inside the element (mirroring the legacy `makePlaceholderIfEmpty`
-   * mechanism in `BertaEditorBase.js`) so the field stays visible/clickable.
+   * inside the element so the field stays visible/clickable.
    * The placeholder text is not the field's actual value, so it must be
    * excluded when reading the current value back out.
    *
-   * Trimmed the same way legacy does (`inline_edit.js`'s
-   * `this.oldContent.trim()`), since server templates are free to format
+   * The value is trimmed, since server templates are free to format
    * markup across multiple indented lines — harmless in normal CSS flow
    * (leading/trailing whitespace collapses), but it would otherwise leak
    * into the value verbatim once read via `innerHTML`/`textContent`.
@@ -638,6 +687,15 @@ export class InlineEditService {
 
     if (isPlaceholder) {
       return '';
+    }
+
+    // `data-ng-edit-via-title` fields (entry width, cart price, tags) read
+    // their editable raw value from `title` rather than the displayed
+    // content. For cartPrice/tags the two differ (formatted/joined display
+    // vs. raw value); width's two happen to be identical, but the flag stays
+    // generic rather than special-casing which field needs it.
+    if (!multiline && el.dataset['ngEditViaTitle']) {
+      return (el.title ?? '').trim();
     }
 
     return multiline
@@ -666,12 +724,11 @@ export class InlineEditService {
   }
 
   /**
-   * Matches legacy's generic `xUnits-*` handling in `elementEdit_save`
-   * (`BertaEditorBase.js`): a field carrying this class (e.g. `weight` via
+   * A field carrying an `xUnits-*` class (e.g. `weight` via
    * `xUnits-{{ weightUnits }}`) stores an integer with the unit suffix
    * appended (e.g. "5" with units "kg" saves as "5kg"), regardless of what
    * property it is — detected generically from the class, not hardcoded to
-   * one field, so it covers any other `xUnits-*` field migrated later.
+   * one field.
    */
   private applyUnits(el: HTMLElement, value: string): string {
     const match = el.className.match(/xUnits-(\S+)/);
@@ -686,10 +743,90 @@ export class InlineEditService {
   }
 
   /**
+   * A field carrying `xCSSUnits-1` (currently only `content/width`) first
+   * has a single space before a trailing unit collapsed ("300 px" ->
+   * "300px"), then gets "px" appended when the value is a non-zero pure
+   * integer; "0" is left as "0" (no suffix). An empty value fails the
+   * numeric check (`parseInt("")` is `NaN`) and passes through untouched, so
+   * the field is simply cleared. `Number(value) === parseInt(value, 10)` is
+   * true only for values that are wholly an integer (e.g. rejects "12.5"
+   * and "12abc").
+   */
+  private applyCssUnits(el: HTMLElement, value: string): string {
+    if (!el.classList.contains('xCSSUnits-1')) {
+      return value;
+    }
+
+    const normalized = value.replace(/\s(px|pt|em)$/i, '$1');
+
+    if (Number(normalized) !== parseInt(normalized, 10)) {
+      return normalized;
+    }
+
+    return normalized === '0' ? '0' : `${normalized}px`;
+  }
+
+  /**
+   * On `xFormatModifier-toPrice` fields the saved value becomes a bare
+   * `parseFloat` result, dropping any trailing formatting the user typed
+   * (e.g. "19.990" -> "19.99"). A zero or unparseable result saves as
+   * empty, so the field falls back to its `price` placeholder. The
+   * currency-formatted display (`formatPrice`) comes from the entry rerender
+   * that follows every successful entry save
+   * (`TemplateRerenderService.handleSectionEntryUpdateRerender`), not from
+   * the value written back here.
+   */
+  private applyPriceParsing(el: HTMLElement, value: string): string {
+    if (!el.classList.contains('xFormatModifier-toPrice')) {
+      return value;
+    }
+
+    const price = parseFloat(value);
+
+    return price ? String(price) : '';
+  }
+
+  /**
+   * Mirrors `Helpers::toTags` (`_api_app/app/Shared/Helpers.php`) and the two
+   * differently-joined values `SectionEntriesDataService::saveValueByPath`
+   * computes for a tags save: `display` becomes the visible content
+   * (space-slash joined), `real` becomes `title` (comma-space joined).
+   * Computed client-side rather than read out of the save response, so the
+   * write-back can reuse the same success-callback shape as every other
+   * field instead of threading the raw HTTP payload back to the
+   * click-handling code. The entry rerender that follows the save
+   * (`TemplateRerenderService.handleSectionEntryUpdateRerender`) then
+   * replaces both with the state-rendered `tagList`.
+   */
+  private formatTags(value: string): { display: string; real: string } {
+    const tags = Array.from(
+      new Set(
+        value
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0),
+      ),
+    );
+
+    return { display: tags.join(' / '), real: tags.join(', ') };
+  }
+
+  /**
+   * Resyncs `title` after a successful save for `data-ng-edit-via-title`
+   * fields, so the next edit opens with the new raw value. Assigning the DOM
+   * `.title` property stores plain text, so no entity encoding/decoding is
+   * needed. No-op for every other field.
+   */
+  private syncTitle(el: HTMLElement, value: string) {
+    if (el.dataset['ngEditViaTitle']) {
+      el.title = value;
+    }
+  }
+
+  /**
    * Fields rendered with Twig's `|raw` filter (opted in via `data-ng-raw`,
    * e.g. site heading) bypass Twig's auto-escaping, so the stored value must
-   * already be safe HTML — matching legacy's universal `addHTMLEntities`
-   * encoding. Fields rendered without `|raw` (the majority) must NOT be
+   * already be safe HTML. Fields rendered without `|raw` (the majority) must NOT be
    * pre-encoded here: Twig already escapes them at render time, so encoding
    * on top would double-escape (e.g. a saved "&amp;" would render literally
    * as "&amp;amp;" instead of "&").
@@ -699,8 +836,8 @@ export class InlineEditService {
   }
 
   /**
-   * Matches the net effect of legacy's `addHTMLEntities` + `escapeForJSON`
-   * round-trip: `&`/`<`/`>` are encoded, `"` is deliberately left literal.
+   * Encodes `&`/`<`/`>` for stored `|raw` values; `"` is deliberately left
+   * literal, matching the existing stored-content convention.
    */
   private encodeEntities(value: string): string {
     return value
@@ -714,7 +851,7 @@ export class InlineEditService {
    * this service constructs itself — the `.xEmpty` placeholder span and
    * `.xNgEditableTA` content via `textToHtml`/`textToDisplayHtml`. Distinct
    * from `encodeEntities`, which intentionally leaves `"` literal to match
-   * legacy's specific saved-value convention.
+   * the stored-content convention.
    */
   private escapeHtml(value: string): string {
     return value
@@ -726,9 +863,7 @@ export class InlineEditService {
 
   /**
    * `.xNgEditableTA` (multi-line) fields store literal `<br />` tags for line
-   * breaks rather than real newlines, matching the legacy `.xEditableTA`
-   * convention (`engine/js/inline_edit.js`'s `onSave`/`initialize`) so
-   * existing stored content and unescaped-HTML template rendering
+   * breaks rather than real newlines, so existing stored content and unescaped-HTML template rendering
    * (`{{ ...|raw }}`) stay compatible. The true inverse of `textToHtml`: `<br>`
    * tags become newlines first, then parsing the result and reading
    * `textContent` decodes every HTML entity `escapeHtml` produced back to its
@@ -842,10 +977,10 @@ export class InlineEditService {
     this.openEdit.el.style.width = '';
     this.openEdit.el.style.visibility = '';
 
-    if (this.openEdit.dropdownBox) {
-      this.openEdit.dropdownBox.removeEventListener(
+    if (this.openEdit.legacyHideContainer) {
+      this.openEdit.legacyHideContainer.removeEventListener(
         'mouseleave',
-        this.openEdit.suppressDropdownClose,
+        this.openEdit.suppressLegacyHideClose,
         true,
       );
     }

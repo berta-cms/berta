@@ -31,12 +31,9 @@ var BertaEditorBase = new Class({
   Implements: [Options, Events],
 
   options: {
-    xBertaEditorClassRC: ".xEditableRC",
     xBertaEditorClassDragXY: ".xEditableDragXY",
     xEmptyClass: ".xEmpty",
   },
-
-  elementEdit_instances: new Array(),
 
   shiftPressed: false,
   xGuideLineX: null,
@@ -108,33 +105,6 @@ var BertaEditorBase = new Class({
     var self = this;
 
     switch (editorClass) {
-      case this.options.xBertaEditorClassRC:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              el.addClass("xEditing");
-              if (this.inlineIsEmpty()) this.innerHTML = "";
-              this.set("old_content", this.innerHTML);
-              this.set("text", this.get("title"));
-              editor.elementEdit_instances.push(
-                this.inlineEdit({
-                  onComplete: editor.elementEdit_save.bind(editor),
-                })
-              );
-              editor.fireEvent(BertaEditorBase.EDITABLE_START, [
-                el,
-                editor.elementEdit_instances[
-                  editor.elementEdit_instances.length - 1
-                ],
-              ]);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
       case this.options.xBertaEditorClassDragXY:
         el.store("onElementSave", onElementSave);
         el.addClass(editorClass.substr(1));
@@ -344,141 +314,8 @@ var BertaEditorBase = new Class({
     newContent,
     newContentText
   ) {
-    var args = arguments;
-    var params = [
-      "elEditor",
-      "el",
-      "oldContent",
-      "oldContentText",
-      "newContent",
-      "newContentText",
-    ];
-
-    if (oldContent == newContent && !el.hasClass("xBgColor")) {
-      var content = oldContent;
-      if (content.test("^([s\xA0]|&nbsp;)+$")) content = ""; // empty, if contains only rubbish (\xA0 == &nbsp;)
-      if (content) {
-        el.set(
-          "html",
-          el.get("old_content") ? el.get("old_content") : oldContentText
-        );
-      } else {
-        this.makePlaceholder(el);
-      }
-      el.removeClass("xEditing");
-    } else if (oldContent != newContent || el.hasClass("xBgColor")) {
-      var property = el.getClassStoredValue("xProperty");
-      var useCSSUnits = el.getClassStoredValue("xCSSUnits") > 0;
-      var xUnits = el.getClassStoredValue("xUnits");
-      var isToPrice = el.getClassStoredValue("xFormatModifier") == "toPrice";
-      var isCartAttributes = property == "cartAttributes";
-      var noHTMLEntities = el.hasClass("xNoHTMLEntities");
-      var isLink = el.hasClass("xLink");
-      var entryInfo = this.getEntryInfoForElement(el);
-      if (entryInfo.section == "") entryInfo.section = this.sectionName;
-
-      // px/em/pt value validator
-      if (el.hasClass(this.options.xBertaEditorClassRC.substr(1))) {
-        if (/(\spx|\spt|\sem)$/i.test(newContent)) {
-          newContent = newContent.replace(
-            /(\spx|\spt|\sem)$/i,
-            newContent.substr(-2)
-          );
-          newContentText = newContent;
-        }
-      }
-
-      // check if new content is not empty and revert it to default value, if specified
-      if (!newContent || newContent.test("^([s\xA0]|&nbsp;)+$")) {
-        var isRequired = el.getClassStoredValue("xRequired");
-        newContent = newContentText = isRequired ? el.get("title") : "";
-        el.set("html", newContentText);
-      }
-
+    if (oldContent != newContent) {
       newContent = newContent ? newContent.trim() : "";
-      if (noHTMLEntities && elEditor && elEditor.removeHTMLEntities)
-        newContent = elEditor.removeHTMLEntities(newContent);
-      //console.debug(newContent, parseInt(newContent), newContent == parseInt(newContent));
-      if (newContent == parseInt(newContent) && useCSSUnits) {
-        if (!newContent || newContent == "0") newContent = "0";
-        else {
-          newContent = String(newContent) + "px";
-        }
-      }
-
-      //for integer numbers with custom units
-      if (xUnits && xUnits.length) {
-        newContent = parseInt(newContent);
-        newContent = newContent ? newContent : 0;
-        newContent = String(newContent) + xUnits;
-      }
-
-      //create prefix for links
-      if (isLink) {
-        if (newContent.length && newContent.search(":") < 0) {
-          newContent = "http://" + newContent;
-        }
-      }
-
-      if (isToPrice) {
-        //add "add to cart" button
-        var aele = el.getNext(".aele");
-        var cartAttributes = el.getNext(".cartAttributes");
-        if (aele) {
-          newContent = parseFloat(newContent);
-
-          if (newContent) {
-            aele.removeClass("hidden");
-            cartAttributes.removeClass("hidden");
-          } else {
-            aele.addClass("hidden");
-            cartAttributes.addClass("hidden");
-          }
-        }
-      }
-
-      if (isCartAttributes) {
-        var cartAttributes = el
-          .getParent(".xEntry")
-          .getElement(".cartAttributes");
-        var cartPrice = el
-          .getParent(".xEntry")
-          .getElement(".cartPrice")
-          .get("text");
-        var values = newContent.split(",");
-        var isList = !(values.length == 1 && values[0] == "");
-
-        cartAttributes.set("text", "").addClass("hidden");
-
-        //generate select box on the fly - is price is > 0
-        if (isList) {
-          var selectBox = new Element("select", {
-            class: "cart_attributes",
-          });
-          for (var i = 0; i < values.length; i++) {
-            var val = values[i].trim();
-            val = this.unescapeHtml(val);
-            var selectBoxOption = new Element("option", {
-              value: val,
-            });
-            selectBoxOption.set("text", val);
-            selectBoxOption.inject(selectBox);
-          }
-          selectBox.inject(cartAttributes);
-          if (parseInt(cartPrice) > 0) {
-            cartAttributes.removeClass("hidden");
-          }
-        }
-      }
-
-      if (el.hasClass("xProperty-width")) {
-        var entry = el.getParent(".xEntry");
-        if (newContent.length) {
-          entry.setStyle("width", newContent);
-        } else {
-          entry.setStyle("width", null);
-        }
-      }
 
       // SAVE
       el.removeClass("xEditing");
@@ -546,23 +383,6 @@ var BertaEditorBase = new Class({
             this.makePlaceholder(el);
             break;
 
-          case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
-            // for simple RC textfields we additionally set the real_content property
-            if (
-              (el.hasClass("xEntryAutoPlay") || el.hasClass("xBgAutoPlay")) &&
-              !/^\d+$/.test(newContentText)
-            ) {
-              el.set("title", 0);
-              el.set("text", 0);
-            } else if (el.hasClass("xEntryLinkAddress") && !newContentText) {
-              el.set("title", "http://");
-              el.set("html", "http://");
-            } else {
-              el.set("title", elEditor.removeHTMLEntities(resp.real));
-              el.set("html", resp.update);
-            }
-            break;
-
           default:
             // for all other cases just update the HTML, if the editor instance is present
             // (editor instance is not present, for instance, in real input fields (checkbox, etc..))
@@ -576,7 +396,6 @@ var BertaEditorBase = new Class({
 
         el.removeClass("xSaving");
         el.removeClass("xEditing");
-        el.removeProperty("old_content");
       }
 
       // if there is a stored onSave event, execute it
@@ -595,14 +414,6 @@ var BertaEditorBase = new Class({
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///  Utilities  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  unescapeHtml: function (str) {
-    var temp = document.createElement("div");
-    temp.innerHTML = str;
-    var result = temp.childNodes[0].nodeValue;
-    temp.removeChild(temp.firstChild);
-    return result;
-  },
 
   getEmptyPlaceholder: function (property, caption) {
     if (caption) property = caption.replace(/\+/g, " ");
@@ -668,5 +479,4 @@ var BertaEditorBase = new Class({
 
 });
 
-BertaEditorBase.EDITABLE_START = "editable_start";
 BertaEditorBase.EDITABLE_FINISH = "editable_finish";
