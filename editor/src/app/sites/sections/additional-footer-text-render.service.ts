@@ -65,6 +65,7 @@ export class AdditionalFooterTextRenderService {
     return {
       content: content,
       attributes: this.getAttributes(showAdditionalFooterText, siteSlug),
+      isEditMode: true,
     };
   }
 

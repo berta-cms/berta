@@ -117,6 +117,7 @@ export class InlineEditRichTextOverlayComponent
 
   private editor: any = null;
   private destroyed = false;
+  private saving = false;
 
   async ngAfterViewInit() {
     this.targetEl.nativeElement.innerHTML = this.value;
@@ -156,7 +157,16 @@ export class InlineEditRichTextOverlayComponent
     tinymce.init({
       target: this.targetEl.nativeElement,
       ...config,
-      save_onsavecallback: () => this.save.emit(this.editor.getContent()),
+      // The service closes the overlay once the save settles either way,
+      // so one emission per overlay is all that's ever needed — this stops
+      // a double-click on Save dispatching the same save twice.
+      save_onsavecallback: () => {
+        if (this.saving) {
+          return;
+        }
+        this.saving = true;
+        this.save.emit(this.editor.getContent());
+      },
       setup: (editor: any) => {
         this.editor = editor;
         const emitHeight = () =>

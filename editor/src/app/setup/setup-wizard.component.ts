@@ -261,7 +261,8 @@ export class SetupWizardComponent implements OnInit {
     if (ownerName) {
       actions.push(
         new UpdateSiteSettingsAction('siteTexts', {
-          siteFooter: `${ownerName} &copy; `,
+          // `siteFooter` renders with `|raw`, so the name must be escaped.
+          siteFooter: `${this.escapeHtml(String(ownerName))} &copy; `,
         }),
       );
     }
@@ -275,5 +276,13 @@ export class SetupWizardComponent implements OnInit {
     actions.push(new UpdateSiteSettingsAction('berta', { installed: 1 }));
 
     return actions;
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 }
