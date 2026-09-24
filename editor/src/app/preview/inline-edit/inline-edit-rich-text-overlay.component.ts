@@ -116,6 +116,7 @@ export class InlineEditRichTextOverlayComponent
   @ViewChild('targetEl') private targetEl!: ElementRef<HTMLElement>;
 
   private editor: any = null;
+  private destroyed = false;
 
   async ngAfterViewInit() {
     this.targetEl.nativeElement.innerHTML = this.value;
@@ -136,6 +137,13 @@ export class InlineEditRichTextOverlayComponent
       import('tinymce/skins/ui/oxide/content.js'),
       import('tinymce/skins/content/default/content.js'),
     ]);
+
+    // The overlay can be closed (backdrop click) while TinyMCE is still
+    // loading — initializing it then would leave an orphaned editor bound
+    // to a detached element.
+    if (this.destroyed) {
+      return;
+    }
 
     tinymce.IconManager.add(BERTA_ICON_PACK, {
       icons: { save: BERTA_SAVE_ICON },
@@ -164,6 +172,7 @@ export class InlineEditRichTextOverlayComponent
   }
 
   ngOnDestroy() {
+    this.destroyed = true;
     this.editor?.remove();
   }
 

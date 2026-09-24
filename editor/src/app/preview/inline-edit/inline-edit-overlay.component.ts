@@ -19,7 +19,7 @@ import {
       [ngStyle]="fontStyle"
       (input)="onInput($event)"
       (keydown)="onKeydown($event)"
-      (blur)="onBlur($event)"
+      (blur)="onBlur()"
     ></textarea>
   `,
   styles: [
@@ -117,14 +117,28 @@ export class InlineEditOverlayComponent implements AfterViewInit {
     }
   }
 
-  onBlur(event: FocusEvent) {
+  onBlur() {
+    this.commit();
+  }
+
+  /**
+   * Ends editing exactly like a blur would (save if changed, cancel if
+   * not), but without depending on the textarea currently having focus —
+   * for when the service needs to end the edit because the edited element
+   * vanished from the page (see `InlineEditService.handleDetachedEdit`).
+   */
+  commit() {
     if (this.closed || this.saving) {
       return;
     }
 
-    const newValue = this.normalize(
-      (event.target as HTMLTextAreaElement).value,
-    );
+    if (!this.viewReady) {
+      this.closed = true;
+      this.cancel.emit();
+      return;
+    }
+
+    const newValue = this.normalize(this.textareaEl.nativeElement.value);
 
     if (newValue === this.value) {
       this.closed = true;

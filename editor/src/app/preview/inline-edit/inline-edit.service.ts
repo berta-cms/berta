@@ -68,6 +68,14 @@ interface OpenEdit {
   // the edited element's own (much smaller) rendered box, so geometry refreshes must reposition
   // without also resetting the overlay back to that box's size.
   syncSizeOnRefresh: boolean;
+  // Re-attach support (see `handleDetachedEdit`): entry saves re-render
+  // whole regions of the preview, which can replace the element being
+  // edited with a fresh copy while its overlay is still open.
+  path: string;
+  selector: string;
+  prepareEl: (el: HTMLElement) => void;
+  onElementLost: () => void;
+  lost: boolean;
 }
 
 /**
@@ -83,6 +91,7 @@ interface OpenEdit {
 export class InlineEditService {
   private boundDocument: Document | null = null;
   private openEdit: OpenEdit | null = null;
+  private replacementObserver: MutationObserver | null = null;
 
   constructor(
     private overlay: Overlay,
@@ -163,6 +172,68 @@ export class InlineEditService {
     // shell around it.
     iframe.contentWindow?.addEventListener('scroll', () =>
       this.refreshOpenEditGeometry(),
+    );
+
+    // Entry saves re-render whole regions of the page (e.g. all of
+    // `#pageEntries`), so the element under an open editor can be swapped
+    // out while the user is still typing in it.
+    this.replacementObserver?.disconnect();
+    this.replacementObserver = new MutationObserver(() => {
+      if (this.openEdit && !this.openEdit.el.isConnected) {
+        this.handleDetachedEdit();
+      }
+    });
+    this.replacementObserver.observe(doc.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  /**
+   * The open edit's element was removed from the page by a re-render.
+   * Re-attaches the editor to the freshly rendered element with the same
+   * `data-path`, keeping the draft. Fields inside a legacy hide container
+   * (tags, width, cart attributes, weight) are ended instead: the re-render
+   * resets the hover/dropdown state their container's visibility depends
+   * on, so the replacement comes back hidden.
+   */
+  private handleDetachedEdit() {
+    const edit = this.openEdit;
+
+    if (!edit || edit.lost) {
+      return;
+    }
+
+    const replacement = edit.legacyHideContainer
+      ? null
+      : this.findReplacement(edit.path, edit.selector);
+
+    if (!replacement) {
+      edit.lost = true;
+      edit.onElementLost();
+      return;
+    }
+
+    edit.el = replacement;
+    edit.originalHtml = replacement.innerHTML;
+    edit.prepareEl(replacement);
+    this.refreshOpenEditGeometry();
+  }
+
+  private findReplacement(path: string, selector: string): HTMLElement | null {
+    if (!this.boundDocument) {
+      return null;
+    }
+
+    const candidates = Array.from(
+      this.boundDocument.querySelectorAll<HTMLElement>('[data-path]'),
+    );
+
+    return (
+      candidates.find(
+        (candidate) =>
+          candidate.dataset['path'] === path && candidate.matches(selector),
+      ) ?? null
     );
   }
 
@@ -320,44 +391,69 @@ export class InlineEditService {
     const multiline = el.classList.contains(MULTILINE_CLASS);
     const initialValue = this.readFieldValue(el, multiline);
     const originalHtml = el.innerHTML;
+    let lastDraft: string | null = null;
 
-    // Server templates are free to format markup across multiple indented
-    // lines, leaving real leading/trailing whitespace in `el`'s content —
-    // harmless under normal CSS collapsing, but it must be removed before
-    // measuring/editing (not just trimmed from the *string* `readFieldValue`
-    // reads out), otherwise the `pre-wrap` override below turns that
-    // incidental whitespace into a visible line break.
-    el.innerHTML = el.innerHTML.trim();
+    // Writes the draft into the real element so its actual rendered box can
+    // be re-measured: the page's own CSS (container width, wrapping, text
+    // alignment) already knows how to lay this out correctly, so the overlay
+    // can just match it instead of reimplementing text wrapping.
+    const writeDraft = (target: HTMLElement, draftValue: string) => {
+      if (multiline) {
+        target.innerHTML = this.textToDisplayHtml(draftValue);
+      } else {
+        target.textContent = draftValue.trim().length ? draftValue : ' ';
+      }
+    };
 
-    // A <textarea> always preserves whitespace and soft-wraps, regardless of
-    // CSS `white-space` on it — that's not something we can override. `el`
-    // normally collapses whitespace instead (default `white-space: normal`),
-    // so while editing, make it match the textarea's actual behavior instead
-    // of the other way around — otherwise a leading/repeated space collapses
-    // in `el`'s measurement but not in the textarea's display, undersizing
-    // the overlay. `pre-wrap` still wraps normally, so the existing
-    // wrap-to-multiple-lines behavior is unaffected. Set *before* the first
-    // measurement below, so the initial overlay size/position already
-    // reflects the same rendering used throughout editing.
-    el.style.whiteSpace = 'pre-wrap';
+    // Puts `target` into its editing state — run on `el` now, and again on
+    // its replacement if a re-render swaps it out (`handleDetachedEdit`).
+    const prepareEl = (target: HTMLElement) => {
+      // Server templates are free to format markup across multiple indented
+      // lines, leaving real leading/trailing whitespace in the content —
+      // harmless under normal CSS collapsing, but it must be removed before
+      // measuring/editing (not just trimmed from the *string*
+      // `readFieldValue` reads out), otherwise the `pre-wrap` override below
+      // turns that incidental whitespace into a visible line break.
+      target.innerHTML = target.innerHTML.trim();
 
-    // A block-level `el` (e.g. a narrow table-column field) stretches to
-    // fill its container's width regardless of content, unlike an inline
-    // element — so a single unbroken word longer than that container
-    // silently overflows past `el`'s own measured box instead of growing
-    // it. `fit-content` uses the standard shrink-to-fit algorithm: content
-    // that already wraps within the available width is unaffected, but an
-    // overflowing unbroken word is now reflected in the measured width
-    // instead of being invisibly clamped.
-    el.style.width = 'fit-content';
+      // A <textarea> always preserves whitespace and soft-wraps, regardless
+      // of CSS `white-space` on it — that's not something we can override.
+      // The field normally collapses whitespace instead (default
+      // `white-space: normal`), so while editing, make it match the
+      // textarea's actual behavior instead of the other way around —
+      // otherwise a leading/repeated space collapses in the field's
+      // measurement but not in the textarea's display, undersizing the
+      // overlay. `pre-wrap` still wraps normally, so the existing
+      // wrap-to-multiple-lines behavior is unaffected. Set *before* the
+      // first measurement, so the initial overlay size/position already
+      // reflects the same rendering used throughout editing.
+      target.style.whiteSpace = 'pre-wrap';
 
-    // Safety net regardless of measurement precision: hide `el`'s own
-    // rendering while editing (dimensions/wrapping are unaffected, so
-    // measurement still works) so nothing it renders — overflow from the
-    // above or any other edge case — can ever show through/around the
-    // overlay. `visibility` (not `opacity`) also stops it receiving pointer
-    // events, in case the overlay's coverage is ever imperfect for a frame.
-    el.style.visibility = 'hidden';
+      // A block-level field (e.g. a narrow table-column field) stretches to
+      // fill its container's width regardless of content, unlike an inline
+      // element — so a single unbroken word longer than that container
+      // silently overflows past the field's own measured box instead of
+      // growing it. `fit-content` uses the standard shrink-to-fit
+      // algorithm: content that already wraps within the available width is
+      // unaffected, but an overflowing unbroken word is now reflected in the
+      // measured width instead of being invisibly clamped.
+      target.style.width = 'fit-content';
+
+      // Safety net regardless of measurement precision: hide the field's
+      // own rendering while editing (dimensions/wrapping are unaffected, so
+      // measurement still works) so nothing it renders — overflow from the
+      // above or any other edge case — can ever show through/around the
+      // overlay. `visibility` (not `opacity`) also stops it receiving
+      // pointer events, in case the overlay's coverage is ever imperfect
+      // for a frame.
+      target.style.visibility = 'hidden';
+
+      if (lastDraft !== null) {
+        writeDraft(target, lastDraft);
+      }
+    };
+
+    prepareEl(el);
 
     const origin = this.createVirtualOrigin(el, iframe);
     const positionStrategy = this.overlay
@@ -443,19 +539,17 @@ export class InlineEditService {
       legacyHideContainer,
       suppressLegacyHideClose,
       syncSizeOnRefresh: true,
+      path,
+      selector: EDITABLE_SELECTOR,
+      prepareEl,
+      onElementLost: () => componentRef.instance.commit(),
+      lost: false,
     };
+    const edit = this.openEdit;
 
     componentRef.instance.input.subscribe((draftValue: string) => {
-      // Write the draft into the real element and re-measure its actual
-      // rendered box: the page's own CSS (container width, wrapping, text
-      // alignment) already knows how to lay this out correctly, so the
-      // overlay can just match it instead of reimplementing text wrapping.
-      if (multiline) {
-        el.innerHTML = this.textToDisplayHtml(draftValue);
-      } else {
-        el.textContent = draftValue.trim().length ? draftValue : '\u00A0';
-      }
-
+      lastDraft = draftValue;
+      writeDraft(edit.el, draftValue);
       this.refreshOpenEditGeometry();
     });
 
@@ -469,31 +563,35 @@ export class InlineEditService {
       if (multiline) {
         storedValue = this.textToHtml(newValue);
       } else {
-        finalValue = this.applyUnits(el, newValue);
-        finalValue = this.applyCssUnits(el, finalValue);
-        finalValue = this.applyPriceParsing(el, finalValue);
-        storedValue = this.applyRawEncoding(el, finalValue);
+        finalValue = this.applyUnits(edit.el, newValue);
+        finalValue = this.applyCssUnits(edit.el, finalValue);
+        finalValue = this.applyPriceParsing(edit.el, finalValue);
+        storedValue = this.applyRawEncoding(edit.el, finalValue);
       }
 
       try {
         action = resolveInlineEditAction(path, storedValue);
       } catch (error) {
         console.error(error);
-        this.closeOpenOverlay();
+        this.closeEditIfOpen(edit);
         return;
       }
 
       this.store.dispatch(action).subscribe({
         next: () => {
-          const tags = el.classList.contains('xFormatModifier-toTags')
+          const tags = edit.el.classList.contains('xFormatModifier-toTags')
             ? this.formatTags(finalValue)
             : null;
 
-          this.writeFieldValue(el, tags ? tags.display : finalValue, multiline);
-          this.syncTitle(el, tags ? tags.real : finalValue);
-          this.closeOpenOverlay(false);
+          this.writeFieldValue(
+            edit.el,
+            tags ? tags.display : finalValue,
+            multiline,
+          );
+          this.syncTitle(edit.el, tags ? tags.real : finalValue);
+          this.closeEditIfOpen(edit, false);
         },
-        error: () => this.closeOpenOverlay(),
+        error: () => this.closeEditIfOpen(edit),
       });
     });
   }
@@ -592,7 +690,15 @@ export class InlineEditService {
       legacyHideContainer: null,
       suppressLegacyHideClose: () => {},
       syncSizeOnRefresh: false,
+      path,
+      selector: RICH_TEXT_SELECTOR,
+      prepareEl: (target) => {
+        target.style.visibility = 'hidden';
+      },
+      onElementLost: () => this.closeOpenOverlay(),
+      lost: false,
     };
+    const edit = this.openEdit;
 
     overlayRef.backdropClick().subscribe(() => this.closeOpenOverlay());
 
@@ -613,16 +719,16 @@ export class InlineEditService {
         action = resolveInlineEditAction(path, html);
       } catch (error) {
         console.error(error);
-        this.closeOpenOverlay();
+        this.closeEditIfOpen(edit);
         return;
       }
 
       this.store.dispatch(action).subscribe({
         next: () => {
-          this.writeRichTextValue(el, html);
-          this.closeOpenOverlay(false);
+          this.writeRichTextValue(edit.el, html);
+          this.closeEditIfOpen(edit, false);
         },
-        error: () => this.closeOpenOverlay(),
+        error: () => this.closeEditIfOpen(edit),
       });
     });
   }
@@ -947,6 +1053,13 @@ export class InlineEditService {
 
     const { el, iframe, overlayRef, positionStrategy, syncSizeOnRefresh } =
       this.openEdit;
+
+    // A detached element measures as an empty box at 0,0 — keep the last
+    // good geometry while `handleDetachedEdit` re-attaches or ends the edit.
+    if (!el.isConnected) {
+      return;
+    }
+
     const rect = this.createVirtualOrigin(el, iframe);
 
     positionStrategy.setOrigin(rect);
@@ -954,6 +1067,18 @@ export class InlineEditService {
 
     if (syncSizeOnRefresh) {
       overlayRef.updateSize({ width: rect.width, height: rect.height });
+    }
+  }
+
+  /**
+   * Closes `edit` only if it's still the open one. A save's response can
+   * arrive after the user has already moved on to another field (clicking
+   * it blurs — and so saves — the previous one), and must not close that
+   * newer editor.
+   */
+  private closeEditIfOpen(edit: OpenEdit, restore = true) {
+    if (this.openEdit === edit) {
+      this.closeOpenOverlay(restore);
     }
   }
 

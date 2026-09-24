@@ -138,4 +138,91 @@ describe('InlineEditService (field value transforms)', () => {
       );
     });
   });
+
+  describe('re-attach after re-render', () => {
+    const path = 'site/entry/section/1/content/title';
+    let container: HTMLElement;
+
+    function editable(html: string): HTMLElement {
+      const el = document.createElement('span');
+      el.className = 'xNgEditable';
+      el.dataset['path'] = path;
+      el.innerHTML = html;
+      return el;
+    }
+
+    function openEditOn(el: HTMLElement, overrides: object = {}) {
+      const edit = {
+        el,
+        iframe: document.createElement('iframe'),
+        originalHtml: el.innerHTML,
+        overlayRef: jasmine.createSpyObj('OverlayRef', [
+          'updatePosition',
+          'updateSize',
+        ]),
+        positionStrategy: jasmine.createSpyObj('Strategy', ['setOrigin']),
+        legacyHideContainer: null,
+        suppressLegacyHideClose: () => {},
+        syncSizeOnRefresh: true,
+        path,
+        selector: '.xNgEditable, .xNgEditableTA',
+        prepareEl: jasmine.createSpy('prepareEl'),
+        onElementLost: jasmine.createSpy('onElementLost'),
+        lost: false,
+        ...overrides,
+      };
+      (service as any).openEdit = edit;
+      return edit;
+    }
+
+    beforeEach(() => {
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      (service as any).boundDocument = document;
+    });
+
+    afterEach(() => container.remove());
+
+    it('re-attaches to the replacement with the same data-path', () => {
+      const original = editable('old');
+      container.appendChild(original);
+      const edit = openEditOn(original);
+
+      const replacement = editable('new');
+      container.replaceChildren(replacement);
+      (service as any).handleDetachedEdit();
+
+      expect(edit.el).toBe(replacement);
+      expect(edit.originalHtml).toBe('new');
+      expect(edit.prepareEl).toHaveBeenCalledWith(replacement);
+      expect(edit.onElementLost).not.toHaveBeenCalled();
+    });
+
+    it('ends the edit once when no replacement exists', () => {
+      const original = editable('old');
+      container.appendChild(original);
+      const edit = openEditOn(original);
+
+      container.replaceChildren();
+      (service as any).handleDetachedEdit();
+      (service as any).handleDetachedEdit();
+
+      expect(edit.onElementLost).toHaveBeenCalledTimes(1);
+      expect(edit.prepareEl).not.toHaveBeenCalled();
+    });
+
+    it('ends the edit for fields in a legacy hide container', () => {
+      const original = editable('old');
+      container.appendChild(original);
+      const edit = openEditOn(original, {
+        legacyHideContainer: document.createElement('div'),
+      });
+
+      container.replaceChildren(editable('new'));
+      (service as any).handleDetachedEdit();
+
+      expect(edit.onElementLost).toHaveBeenCalledTimes(1);
+      expect(edit.el).toBe(original);
+    });
+  });
 });

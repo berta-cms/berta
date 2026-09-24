@@ -29,7 +29,6 @@
     <texts>
         <ownerName><![CDATA[John Doe]]></ownerName>
         <pageTitle><![CDATA[My site]]></pageTitle>
-        <metaKeywords><![CDATA[john, doe, portfolio]]></metaKeywords>
         <metaDescription><![CDATA[My personal website]]></metaDescription>
     </texts>
     <settings>

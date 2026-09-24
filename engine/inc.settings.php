@@ -62,7 +62,7 @@ $settingsDefinition = [
             'allow_blank' => true,
             'default' => null,
             'title' => I18n::_('Site heading'),
-            'description' => 'Name or your site. Visible in all sections.',
+            'description' => I18n::_('Name of your site. Visible in all sections.'),
         ],
     ],
 

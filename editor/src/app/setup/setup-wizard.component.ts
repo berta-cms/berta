@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Observable, combineLatest, from } from 'rxjs';
-import { concatMap, filter, map } from 'rxjs/operators';
+import { Observable, combineLatest, forkJoin, from, of } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  defaultIfEmpty,
+  filter,
+  finalize,
+  map,
+  shareReplay,
+} from 'rxjs/operators';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 import { UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
 import { PreviewService } from '../preview/preview.service';
@@ -84,7 +92,7 @@ interface WizardFields {
             type="button"
             class="button"
             [disabled]="saving"
-            (click)="finishSetup(fields)"
+            (click)="finishSetup()"
           >
             Done!
           </button>
@@ -120,6 +128,7 @@ export class SetupWizardComponent implements OnInit {
   fields$: Observable<WizardFields>;
   saving = false;
   private settingUpdate: { [k: string]: boolean } = {};
+  private pendingUpdates = new Set<Observable<unknown>>();
 
   constructor(
     private store: Store,
@@ -196,25 +205,57 @@ export class SetupWizardComponent implements OnInit {
     const key = `${group}:${event.field}`;
     this.settingUpdate[key] = true;
 
-    this.store
+    const update$ = this.store
       .dispatch(
         new UpdateSiteSettingsAction(group, { [event.field]: event.value }),
       )
-      .subscribe({
-        next: () => {
+      .pipe(
+        catchError(() => of(null)),
+        finalize(() => {
           this.settingUpdate[key] = false;
+          this.pendingUpdates.delete(update$);
+        }),
+        shareReplay(1),
+      );
+
+    this.pendingUpdates.add(update$);
+    update$.subscribe();
+  }
+
+  finishSetup() {
+    this.saving = true;
+
+    // Fields save on blur, so clicking "Done!" straight from a field starts
+    // that field's save in the same gesture — wait for it, then read the
+    // just-saved values from the store rather than the (stale) snapshot the
+    // template rendered with.
+    forkJoin([...this.pendingUpdates])
+      .pipe(
+        defaultIfEmpty(null),
+        concatMap(() => from(this.buildFinishActions())),
+        concatMap((action) => this.store.dispatch(action)),
+      )
+      .subscribe({
+        complete: () => {
+          this.previewService.reloadIframe();
+          this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
         },
         error: () => {
-          this.settingUpdate[key] = false;
+          this.saving = false;
         },
       });
   }
 
-  finishSetup(fields: WizardFields) {
-    this.saving = true;
+  private buildFinishActions(): UpdateSiteSettingsAction[] {
+    const settings =
+      this.store.selectSnapshot(SiteSettingsState.getCurrentSiteSettings) || [];
+    const valueOf = (group: string, slug: string) =>
+      settings
+        .find((g) => g.slug === group)
+        ?.settings.find((s) => s.slug === slug)?.value;
 
-    const ownerName = fields.ownerName.setting.value;
-    const siteHeading = fields.siteHeading.setting.value;
+    const ownerName = valueOf('texts', 'ownerName');
+    const siteHeading = valueOf('siteTexts', 'siteHeading');
     const actions: UpdateSiteSettingsAction[] = [];
 
     if (ownerName) {
@@ -233,16 +274,6 @@ export class SetupWizardComponent implements OnInit {
 
     actions.push(new UpdateSiteSettingsAction('berta', { installed: 1 }));
 
-    from(actions)
-      .pipe(concatMap((action) => this.store.dispatch(action)))
-      .subscribe({
-        complete: () => {
-          this.previewService.reloadIframe();
-          this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
-        },
-        error: () => {
-          this.saving = false;
-        },
-      });
+    return actions;
   }
 }
