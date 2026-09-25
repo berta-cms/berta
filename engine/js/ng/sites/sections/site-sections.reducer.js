@@ -40,32 +40,6 @@
           });
 
 
-        case ActionTypes.RENAME_SITE_SECTIONS_SITENAME:
-          var old_name = action.data.site.get('name');
-          value = action.data.site_name;
-
-          return state.map(function (section) {
-            if (section.get('site_name') === old_name) {
-              return section.set('site_name', value);
-            }
-            return section;
-          });
-
-
-        case ActionTypes.RESET_SITE_SECTION:
-          path = action.path.split('/');
-          site_name = path[0] === '0' ? '' : path[0];
-          order = parseInt(path[2], 10);
-          prop = path.slice(3);
-
-          return state.map(function (section) {
-            if (section.get('site_name') === site_name && section.get('order') === order) {
-              return section.deleteIn(prop);
-            }
-            return section;
-          });
-
-
         case ActionTypes.ORDER_SITE_SECTIONS:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site) {
@@ -96,12 +70,6 @@
               }
             }
             return section;
-          });
-
-
-        case ActionTypes.DELETE_SITE_SECTIONS:
-          return state.filter(function (section) {
-            return section.get('site_name') !== action.data.site_name;
           });
 
 

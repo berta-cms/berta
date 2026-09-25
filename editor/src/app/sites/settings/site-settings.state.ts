@@ -1,5 +1,5 @@
 import { concat } from 'rxjs';
-import { take, switchMap, tap } from 'rxjs/operators';
+import { filter, take, switchMap, tap } from 'rxjs/operators';
 import {
   State,
   Action,
@@ -19,6 +19,7 @@ import { SettingsGroupModel } from '../../shared/interfaces';
 import { FileUploadService } from '../shared/file-upload.service';
 import { AppStateService } from '../../app-state/app-state.service';
 import { AppState } from '../../app-state/app.state';
+import { UpdateAppStateAction } from '../../app-state/app.actions';
 import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
@@ -84,6 +85,20 @@ export class SiteSettingsState implements NgxsOnInit {
     return language && language.value;
   }
 
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getCurrentSiteInstalled(currentSiteSettings): string | undefined {
+    if (!currentSiteSettings) {
+      return undefined;
+    }
+    const bertaSettings = currentSiteSettings.find(
+      (settingGroup) => settingGroup.slug === 'berta',
+    );
+    const installed =
+      bertaSettings &&
+      bertaSettings.settings.find((setting) => setting.slug === 'installed');
+    return installed && installed.value;
+  }
+
   constructor(
     private store: Store,
     private actions$: Actions,
@@ -108,6 +123,13 @@ export class SiteSettingsState implements NgxsOnInit {
       },
       error: (error) => console.error(error),
     });
+
+    this.store
+      .select(SiteSettingsState.getCurrentSiteInstalled)
+      .pipe(filter((installed) => installed !== undefined))
+      .subscribe((installed) => {
+        dispatch(new UpdateAppStateAction({ setup: !Number(installed) }));
+      });
   }
 
   @Action(CreateSiteSettingsAction)
@@ -182,6 +204,10 @@ export class SiteSettingsState implements NgxsOnInit {
                 ),
               );
               break;
+          }
+
+          if (response.section) {
+            dispatch(new AddSiteSectionAction(response.section));
           }
         }
       }),

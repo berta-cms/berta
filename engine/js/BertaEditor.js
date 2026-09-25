@@ -29,7 +29,6 @@ var BertaEditor = new Class({
   initialize: function (options) {
     this.setOptions(options);
     this.initConsoleReplacement();
-    this.tinyMCE_ConfigurationsInit();
 
     this.processHandler = new UnlinearProcessHandler();
     this.processHandler.addObservable(this);
@@ -62,32 +61,8 @@ var BertaEditor = new Class({
     this.edittingMode = $$("body")[0].get("x_mode");
     if (!this.edittingMode) this.edittingMode = "entries";
 
-    //set wmode to transparent
-    this.setWmodeTransparent();
-
     switch (this.edittingMode) {
       case "multipage":
-        break;
-
-      case "settings":
-        this.editablesInit();
-
-        // Finish berta install button
-        $("xFinishInstall").addEvent("click", function (e) {
-          var path = e.target.data("data-path");
-
-          redux_store.dispatch(
-            Actions.initUpdateSiteSettings(path, 1, function () {
-              window.location.reload();
-            })
-          );
-        });
-
-        // action links
-        $$(this.options.xActionClass).each(function (el) {
-          this.elementEdit_init(el, this.options.xBertaEditorClassAction);
-        }, this);
-
         break;
 
       case "entries":
@@ -145,6 +120,9 @@ var BertaEditor = new Class({
             )
               createNewEntryText = this.options.i18n["create new entry here"];
             else createNewEntryText = this.options.i18n["create new entry"];
+            var existingCreateNewEntry =
+              this.entriesList.getNext(".xCreateNewEntry");
+            if (existingCreateNewEntry) existingCreateNewEntry.destroy();
             new Element("A", {
               class: "xCreateNewEntry xPanel xAction-entryCreateNew",
               href: "#",
@@ -322,56 +300,6 @@ var BertaEditor = new Class({
 
   editablesInit: function () {
     // instantiate all xEditable elements in the page
-    // simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassSimple).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSimple);
-      }.bind(this)
-    );
-
-    // textareas ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassTA).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassTA);
-      }.bind(this)
-    );
-
-    // mce textareas ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassMCE).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassMCE);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassMCESimple).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassMCE);
-      }.bind(this)
-    );
-
-    // "real content" fields ////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassRC).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassRC);
-      }.bind(this)
-    );
-
-    // selects and font-selects /////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassFontSelect).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassFontSelect);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassSelect).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSelect);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassSelectRC).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC);
-      }.bind(this)
-    );
-
     // dragging /////////////////////////////////////////////////////////////////////////////////////////
     var draggableElements = $$(this.options.xBertaEditorClassDragXY);
     if (draggableElements.length) {
@@ -381,25 +309,6 @@ var BertaEditor = new Class({
     draggableElements.each(
       function (el) {
         this.elementEdit_init(el, this.options.xBertaEditorClassDragXY);
-      }.bind(this)
-    );
-
-    // input fields //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xEditableRealCheck).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xEditableRealCheck);
-      }.bind(this)
-    );
-
-    // uploads //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassImage).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassImage);
-      }.bind(this)
-    );
-    $$(this.options.xBertaEditorClassICO).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassICO);
       }.bind(this)
     );
 
@@ -422,23 +331,6 @@ var BertaEditor = new Class({
         }
       }
     }
-  },
-
-  //sets iframe mode to transparent to allow click and edit in tiny mce
-  setWmodeTransparent: function () {
-    var objects = document.getElements("iframe");
-
-    objects.each(function (obj) {
-      var srcAttr = obj.src;
-      if (srcAttr && !srcAttr.match(/javascript:/gi)) {
-        var uri = new URI(srcAttr);
-        try {
-          uri.setData("wmode", "transparent");
-          uri = uri.toString();
-          obj.set("src", uri);
-        } catch (err) {}
-      }
-    });
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -586,12 +478,7 @@ var BertaEditor = new Class({
       target = target.getParent(".xEntry");
     }
 
-    var tagsListInput = target.getElement(".tagsList input");
-
-    // If submenu input is not focused
-    if (!tagsListInput) {
-      target.removeClass("xEntryHover");
-    }
+    target.removeClass("xEntryHover");
     target.setAttribute("data-hover", "off");
   },
 

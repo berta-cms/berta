@@ -476,3 +476,17 @@ color-picker {
     white-space: nowrap;
   }
 }
+
+.setup-wizard {
+  .form-group {
+    label {
+      align-items: start;
+      flex-direction: column;
+      row-gap: 1em;
+    }
+
+    .text-input-wrapper {
+      margin-left: 0;
+    }
+  }
+}

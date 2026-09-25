@@ -6,7 +6,6 @@ export interface SiteSectionStateModel {
   link?: string;
   target?: string;
   seoTitle?: string;
-  seoKeywords?: string;
   seoDescription?: string;
   backgroundVideoEmbed?: string;
   positionXY?: string;

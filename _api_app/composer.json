@@ -12,6 +12,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
         "firebase/php-jwt": "^7.0",
         "intervention/image": "^3.11",
         "laravel/ai": "^0.3.0",

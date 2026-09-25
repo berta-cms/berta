@@ -141,60 +141,17 @@ input[type="submit"]:hover {
 
 /* editables ---------------------------------------------------------------------------------------------- */
 
-.xEditableMCE {
-    min-height: 1em;
-}
-
-.xEditableMCE .tox-tinymce {
-    border-radius: 0;
-}
-
-body .tox-tinymce-aux {
-    z-index: 100002;
-}
-
-.xEditableMCE .tox:not(.tox-tinymce-inline) .tox-editor-header {
-    padding: 0;
-}
-
-.xEditableMCE .tox .tox-toolbar__group {
-    padding: 0 4px 0 5px;
-}
-
-.xEditable,
-.xEditableSelect,
-.xEditableSelectRC,
-.xEditableFontSelect,
-.xEditableTA,
-.xEditableMCE,
-.xEditableRC {
+.xNgEditable,
+.xNgEditableTA,
+.xNgEditableRTE,
+.xNgEditableRTESimple {
     cursor: default;
 }
 
-.xEditableSelect:before,
-.xEditableSelectRC:before,
-.xEditableFontSelect:before {
-    content: url('/engine/layout/drop-down.gif');
-}
-.xEditing.xEditableSelect:before,
-.xEditing.xEditableSelectRC:before,
-.xEditing.xEditableFontSelect:before {
-    content: "";
-}
-
-.xAction {
-    cursor:pointer;
-}
-
-.xEditable:hover,
-.xEditableSelect:hover,
-.xEditableSelectRC:hover,
-.xEditableFontSelect:hover,
-.xEditableTA:hover,
-.xEditableMCE:hover,
-.xEditableRC:hover,
-.xEditableYesNo:hover,
-.xAction:hover {
+.xNgEditable:hover,
+.xNgEditableTA:hover,
+.xNgEditableRTE:hover,
+.xNgEditableRTESimple:hover {
     background-color: rgba(255, 255, 153, .79);
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -204,10 +161,26 @@ body .tox-tinymce-aux {
     cursor: move;
 }
 
-.xEditableRealCheck {
+/*
+ * A click that visually lands on an embedded iframe (e.g. a pasted video
+ * embed) never bubbles to the parent document at all — iframes are a
+ * separate browsing context, so InlineEditService's delegated click
+ * listener structurally cannot see it. This makes such a click pass
+ * through to the containing editable element instead of reaching the
+ * iframe's own page, so it bubbles normally and opens the editor like any
+ * other click on the field. Legacy solved the same problem with a
+ * transparent hover-injected overlay element (`.xEditOverlay`); this is a
+ * simpler modern equivalent for the same two field types.
+ */
+.xNgEditableRTE iframe,
+.xNgEditableRTESimple iframe {
+    pointer-events: none;
+}
+
+.xNgEditableCheckBox {
 
 }
-    .xEditableRealCheck input {
+    .xNgEditableCheckBox input {
         width: 18px;
         height: 18px;
         border: none;
@@ -215,7 +188,7 @@ body .tox-tinymce-aux {
         background: url('/engine/layout/icon-checkbox.png') no-repeat 50% 50%;
         outline: none;
     }
-    .xEditableRealCheck input.checked {
+    .xNgEditableCheckBox input.checked {
         background-image: url('/engine/layout/icon-checkbox-checked.png');
     }
 
@@ -223,39 +196,6 @@ body .tox-tinymce-aux {
 /*a.xEditorLink, a.xEditorLink * {
     text-decoration: underline;
 }*/
-.xEditableImage {}
-.xEditableICO {}
-    .xEditableImage span.file, .xEditableICO span.file, .xEditableImage span.name, .xEditableICO span.name {
-        display: block;
-        float: left;
-        margin-right: 10px;
-    }
-    .xEditableImage a, .xEditableICO a {
-        display: block;
-        float: left;
-        margin-right: 10px;
-    }
-  .xEditableImage input[type="file"], .xEditableICO input[type="file"] {
-    display: none;
-  }
-
-.xEditableYesNo {}
-    .xEditableYesNo a {
-        font-weight: normal;
-        outline: none;
-    }
-    .xEditableYesNo a.active {
-        font-weight: bold !important;
-        text-transform: uppercase;
-        text-decoration: none !important;
-    }
-
-.xEditOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-}
 
 
 /* panel css ------------------------------------------------------------------------------------------- */
@@ -421,12 +361,12 @@ body .tox-tinymce-aux {
         vertical-align: top;
     }
 
-    .xEntryDropdownBox .xEditableRealCheck input {
+    .xEntryDropdownBox .xNgEditableCheckBox input {
         background: none;
         width: 18px;
     }
 
-    .xEntryDropdownBox .xEditableRealCheck input.checked {
+    .xEntryDropdownBox .xNgEditableCheckBox input.checked {
         background: url('/engine/layout/check.png') no-repeat center 0;
     }
 
@@ -656,20 +596,6 @@ input#xFirstTimeCheckContinue {
     width: 210px;
     margin: 10px 0 25px;
 }
-
-#xFirstTimeWizzard {
-
-}
-    #xFirstTimeWizzard p.subInfo { color: #999; margin-top: -6px; font-size: 90%; }
-    #xFirstTimeWizzard p.xEditable {
-        padding: 5px !important;
-        margin-bottom: 20px !important;
-    }
-    #xFirstTimeWizzard p.xEditable:before {
-        content: "› ";
-    }
-    #xFirstTimeWizzard p.xEditable, #xFirstTimeWizzard p.xEditable * { font-size: 16px !important;	}
-
 
     #multisites li.selected {
         font-weight: bold;

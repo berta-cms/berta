@@ -53,7 +53,6 @@ class SiteSectionsDataService extends Storage
                 'name' => ['type' => 'string'],
                 'title' => ['type' => 'string'],
                 'seoTitle' => ['type' => 'string'],
-                'seoKeywords' => ['type' => 'string'],
                 'seoDescription' => ['type' => 'string'],
                 'backgroundVideoEmbed' => ['type' => 'string'],
                 'mediafolder' => ['type' => 'string'],

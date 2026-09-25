@@ -30,12 +30,22 @@ import { SiteSettingsState } from '../sites/settings/site-settings.state';
   providedIn: 'root',
 })
 export class PreviewService {
+  private currentIframe: HTMLIFrameElement | null = null;
+
   constructor(
     private appService: AppStateService,
     private popupService: PopupService,
     private rerenderService: RerenderService,
     private store: Store,
   ) {}
+
+  setCurrentIframe(iframe: HTMLIFrameElement) {
+    this.currentIframe = iframe;
+  }
+
+  reloadIframe() {
+    this.currentIframe?.contentWindow?.location.reload();
+  }
 
   sync(url, data, method) {
     const urlParts = this.parseSyncUrl(url);

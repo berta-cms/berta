@@ -11,7 +11,7 @@ import { TwigTemplateRenderService } from '../../render/twig-template-render.ser
 export class AdditionalFooterTextRenderService {
   USED_IN_TEMPLATES = ['messy', 'default'];
   EDITABLE_CLASSES = [
-    'xEditableMCESimple',
+    'xNgEditableRTESimple',
     'xProperty-additionalFooterText',
     'xCaption-additional-footer-text',
   ];
@@ -32,6 +32,7 @@ export class AdditionalFooterTextRenderService {
       classes = [...classes, ...this.EDITABLE_CLASSES];
       attributes['data-path'] =
         `${siteSlug}/settings/siteTexts/additionalFooterText`;
+      attributes['data-empty-caption'] = 'additional footer text';
     }
 
     attributes['class'] = classes.join(' ');
@@ -64,6 +65,7 @@ export class AdditionalFooterTextRenderService {
     return {
       content: content,
       attributes: this.getAttributes(showAdditionalFooterText, siteSlug),
+      isEditMode: true,
     };
   }
 

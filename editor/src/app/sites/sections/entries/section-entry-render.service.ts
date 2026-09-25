@@ -309,6 +309,7 @@ export class SectionEntryRenderService {
             attributes: {
               description: toHtmlAttributes({
                 'data-path': `${apiPath}content/description`,
+                'data-empty-caption': 'description',
               }),
               url: toHtmlAttributes({
                 'data-path': `${apiPath}content/url`,

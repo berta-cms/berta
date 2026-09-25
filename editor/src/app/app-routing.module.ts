@@ -15,8 +15,16 @@ import { SiteMediaComponent } from './sites/media/site-media.component';
 import { EntryGalleryEditorComponent } from './sites/media/entry-gallery-editor.component';
 import { EntryGalleryImageEditorComponent } from './sites/media/entry-gallery-image-editor.component';
 import { BackgroundGalleryEditorComponent } from './sites/sections/background-gallery-editor.component';
+import { SetupWizardComponent } from './setup/setup-wizard.component';
+import { SetupCanDeactivateGuard } from './setup/setup-can-deactivate.guard';
 
 const routes: Routes = [
+  {
+    path: 'setup',
+    component: SetupWizardComponent,
+    canActivate: [AuthGuardService],
+    canDeactivate: [SetupCanDeactivateGuard],
+  },
   {
     path: 'multisite',
     component: SitesComponent,

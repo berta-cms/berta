@@ -16,10 +16,6 @@
           return Immutable.fromJS(action.state.section_tags);
 
 
-        case ActionTypes.ADD_SITE_SECTIONS_TAGS:
-          return state.set(action.data.site_name, action.data.tags);
-
-
         case ActionTypes.ADD_SECTION_TAGS:
           return state.map(function (site, site_name) {
             if (action.data.site_name === site_name) {
@@ -103,17 +99,6 @@
           });
 
 
-        case ActionTypes.RENAME_SECTION_TAGS_SITENAME:
-          var site_old_name = action.data.site.get('name');
-
-          return state.mapKeys(function (site_name) {
-            if (site_name === site_old_name) {
-              return action.data.site_name;
-            }
-            return site_name;
-          });
-
-
         case ActionTypes.DELETE_SECTION_TAGS:
           site_name = action.data.site_name === '0' ? '' : action.data.site_name;
 
@@ -126,12 +111,6 @@
               });
             }
             return site;
-          });
-
-
-        case ActionTypes.DELETE_SITE_SECTIONS_TAGS:
-          return state.filter(function (tags, site_name) {
-            return site_name !== action.data.site_name;
           });
 
 

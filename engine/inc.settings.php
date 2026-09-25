@@ -62,7 +62,7 @@ $settingsDefinition = [
             'allow_blank' => true,
             'default' => null,
             'title' => I18n::_('Site heading'),
-            'description' => '',
+            'description' => I18n::_('Name of your site. Visible in all sections.'),
         ],
     ],
 
@@ -117,13 +117,6 @@ $settingsDefinition = [
             'default' => 'Personal portfolio built with Berta',
             'title' => I18n::_('<META> description'),
             'description' => I18n::_('Short site description. It should not be longer than one or two sentences.'),
-        ],
-        'metaKeywords' => [
-            'format' => 'text',
-            'allow_blank' => true,
-            'default' => 'berta',
-            'title' => I18n::_('<META> keywords'),
-            'description' => I18n::_('Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.'),
         ],
     ],
 

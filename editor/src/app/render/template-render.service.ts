@@ -58,13 +58,17 @@ export class TemplateRenderService {
   ) {}
 
   getUserCopyright(siteSlug, siteSettings): UserCopyright {
-    const content =
+    const rawContent =
       siteSettings.siteTexts && siteSettings.siteTexts.siteFooter
         ? siteSettings.siteTexts.siteFooter
         : '';
+    const content = rawContent
+      ? rawContent
+      : '<span class="xEmpty">&nbsp;footer text&nbsp;</span>';
     const attributes = {
-      class: 'xEditableTA xProperty-siteFooter',
+      class: 'xNgEditableTA xProperty-siteFooter',
       'data-path': `${siteSlug}/settings/siteTexts/siteFooter`,
+      'data-empty-caption': 'footer text',
     };
 
     return {
@@ -82,7 +86,7 @@ export class TemplateRenderService {
     }
 
     // @todo: load current language translation here, we don't have all translations in state
-    return 'Built with <a href="http://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
+    return 'Built with <a href="https://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
   }
 
   getEntries(

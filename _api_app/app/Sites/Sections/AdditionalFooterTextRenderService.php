@@ -10,7 +10,7 @@ class AdditionalFooterTextRenderService
 
     private $USED_IN_TEMPLATES = ['messy', 'default'];
 
-    private $EDITABLE_CLASSES = ['xEditableMCESimple', 'xProperty-additionalFooterText', 'xCaption-additional-footer-text'];
+    private $EDITABLE_CLASSES = ['xNgEditableRTESimple', 'xProperty-additionalFooterText', 'xCaption-additional-footer-text'];
 
     public function __construct($socialMediaLinksRS)
     {
@@ -25,6 +25,7 @@ class AdditionalFooterTextRenderService
         if ($isEditMode && $showAdditionalFooterText) {
             $classes = array_merge($classes, $this->EDITABLE_CLASSES);
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalFooterText";
+            $attributes['data-empty-caption'] = 'additional footer text';
         }
 
         $attributes['class'] = implode(' ', $classes);
@@ -52,6 +53,7 @@ class AdditionalFooterTextRenderService
         return [
             'content' => $content,
             'attributes' => $attributes,
+            'isEditMode' => $isEditMode,
         ];
     }
 

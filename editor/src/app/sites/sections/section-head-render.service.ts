@@ -24,7 +24,6 @@ export class SectionHeadRenderService {
   ) {
     // skip some template variables, no need for them in editor
     // title
-    // keywords
     // description
     // author
     // noindex

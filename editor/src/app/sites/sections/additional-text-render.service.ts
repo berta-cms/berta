@@ -9,7 +9,7 @@ import { TwigTemplateRenderService } from '../../render/twig-template-render.ser
 export class AdditionalTextRenderService {
   DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
   EDITABLE_CLASSES = [
-    'xEditableMCESimple',
+    'xNgEditableRTESimple',
     'xProperty-additionalText',
     'xCaption-additional-text',
   ];
@@ -66,6 +66,7 @@ export class AdditionalTextRenderService {
     return toHtmlAttributes({
       class: this.EDITABLE_CLASSES.join(' '),
       'data-path': `${siteSlug}/settings/siteTexts/additionalText`,
+      'data-empty-caption': 'additional text',
     });
   }
 
