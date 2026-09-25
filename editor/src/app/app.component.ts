@@ -56,6 +56,7 @@ import { AppStateService } from './app-state/app-state.service';
     ></div>
     <berta-popup></berta-popup>
     <berta-ai-assistant></berta-ai-assistant>
+    <berta-server-requirements></berta-server-requirements>
   `,
   styles: [
     `

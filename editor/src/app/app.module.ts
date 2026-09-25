@@ -30,6 +30,7 @@ import { InlineEditOverlayComponent } from './preview/inline-edit/inline-edit-ov
 import { InlineEditRichTextOverlayComponent } from './preview/inline-edit/inline-edit-rich-text-overlay.component';
 import { PopupComponent } from './popup/popup.component';
 import { SetupWizardComponent } from './setup/setup-wizard.component';
+import { ServerRequirementsComponent } from './setup/server-requirements/server-requirements.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
 import { StyleService } from './preview/style.service';
@@ -63,6 +64,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     ThemesComponent,
     PopupComponent,
     SetupWizardComponent,
+    ServerRequirementsComponent,
   ],
   bootstrap: [AppComponent],
   imports: [

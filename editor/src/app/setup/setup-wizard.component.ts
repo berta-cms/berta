@@ -34,12 +34,9 @@ interface WizardFields {
 }
 
 /**
- * Real Angular replacement for the legacy first-run setup page
- * (`INSTALL/includes/wizzard.php`), which rendered its 3 fields as
- * `xEditable`-class inline-edit spans inside the preview iframe. Reuses the
- * exact same `<berta-setting>` input components and `UpdateSiteSettingsAction`
- * the normal Settings page (`SiteSettingsComponent`) already uses for these
- * same fields, so only the presentation changes, not the save mechanism.
+ * First-run setup wizard, shown while the site is not installed. Reuses the
+ * same `<berta-setting>` input components and `UpdateSiteSettingsAction` the
+ * normal Settings page (`SiteSettingsComponent`) uses for these fields.
  */
 @Component({
   selector: 'berta-setup-wizard',

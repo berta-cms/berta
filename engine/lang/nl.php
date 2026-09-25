@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'berta_copyright_text' => 'Gemaakt met <a href="http://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta.me</a>',
+    'berta_copyright_text' => 'Gemaakt met <a href="https://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -24,29 +24,6 @@ return [
 
     'Logout ok. Please wait...' => 'Uitloggen. Wacht even A.U.B.…',
     'Log in' => 'Inloggen',
-
-    // First visit
-
-    'welcome' => 'Welkom!',
-    'welcome_text__not_installed' => '<h2>Goed dat je Berta.me gebruikt!</h2>
-        <p>Berta is nog niet geconfigureerd.<br /><a href="%s">Log in</a> en volg de set up procedure.</p>',
-
-    'welcome_text__not_supported' => '<h2>Goed dat je Berta.me gebruikt!</h2>
-        <p>Deze server voldoet helaas niet aan Berta\'s minimum eisen.<br />
-                                        PHP versie 5 of hoger moet op de server geinstalleerd zijn.</p>',
-
-    'Setup your site' => 'Richt jouw site in',
-    'setup_info_text' => 'Klik op de geelgekleurde velden om deze te editen.
-                            Om te bewaren toets Enter of klik buiten het geelgekleurde veld.
-                            Dit werkt zo door de hele site; alles met een gele achtergrondkleur is editable. Je kan deze instellingen later ook veranderen.',
-    'What is the title of your site?' => 'Wat is de titel (naam) van jouw site?',
-    'Site title will be visible in all sections of your site.' => 'De titel (naam) van jouw site is zichtbaar in alle Sections van jouw site.',
-    'What is your name?' => 'Wat is jouw naam?',
-    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Jouw naam wordt in de copyright-notice onderin (in de footer) het beeld gezet. Je mag dit ook leeg laten.',
-    'What is this website about?' => 'Hoe zou je -in één zin- jouw site beschrijven?',
-    'It will appear under your site name in search engine results.' => 'Dit zal verschijnen als samenvatting onder de sitenaam in de (Google) zoekresultaten.',
-    'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Tip: de velden die al een waarde hebben verschijnen alleen als gele velden als je eroverheen gaat met je cursor . Klik op[ onderstaande tekst om deze aan te passen.',
-    'Done!' => 'Klaar!',
 
     // Translatins from sections editor (sections.php)
 
@@ -260,8 +237,6 @@ return [
 
     /* setting tab */
     'Background' => 'Background',
-    /* setting name */
-    'Background color' => 'Background color',
     /* help text */
     'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'Belangrijk! Deze instellingen worden overschreven als je de background gallery gebruikt. Je kan deze openen met de "edit background" button rechtbovenin je scherm in elke Section.',
     /* setting name */
@@ -297,7 +272,7 @@ return [
     /* help name */
     'Content width if layout is centered.' => 'Breedte van de content als deze gecentreerd is.',
     /* setting name */
-    'Centered content width' => 'Centering guides kleurschema',
+    'Centering guides color tone' => 'Centering guides kleurschema',
     /* help name */
     'Color tone for centering guides (dark for bright background colors, bright for dark background colors).' => 'Kleurschema voor de centering guides (dark voor heldere backgroundcolors, bright voor donkere backgroundcolors).',
 
@@ -494,7 +469,7 @@ return [
     'description_tagsMenu_y' => 'Submenu Y positie in pixels (bijv. 10px)',
     'description_menu_position' => 'Menu positie',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Banner link \'http://\' moet zich voor het adres bevinden',
+    'description_banner_link' => 'Banner link \'https://\' moet zich voor het adres bevinden',
     'description_language' => 'Kies hier de taal van de Berta interface. Refresh site om toe te passen.',
     'Heading position' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',
     'description_heading_position' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',

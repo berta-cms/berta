@@ -14,6 +14,7 @@ import { AppState } from '../app-state/app.state';
 import { PopupService } from '../popup/popup.service';
 import { UserLoginAction } from '../user/user.actions';
 import { UserState } from '../user/user.state';
+import { ServerRequirementsService } from '../setup/server-requirements/server-requirements.service';
 
 @Component({
   selector: 'berta-login',
@@ -22,6 +23,11 @@ import { UserState } from '../user/user.state';
       @if (!(isLoggedIn$ | async)) {
         <div class="login-container setting-group">
           <h3><img src="/engine/layout/berta.png" /></h3>
+          @if (isNotInstalled$ | async) {
+            <p class="setup-notice">
+              Your site is not yet set up. Log in to create your website.
+            </p>
+          }
           @if (isLoading$ | async) {
             <div class="bt-login-loading">
               <berta-loading></berta-loading>
@@ -109,13 +115,16 @@ export class LoginComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
   isLoading$: Observable<boolean>;
   appState$: Observable<AppStateModel>;
+  isNotInstalled$: Observable<boolean>;
 
   constructor(
     private store: Store,
     private route: ActivatedRoute,
     private popupService: PopupService,
     private router: Router,
+    private serverRequirementsService: ServerRequirementsService,
   ) {
+    this.isNotInstalled$ = this.serverRequirementsService.isNotInstalled();
     this.isLoggedIn$ = this.store.select(UserState.isLoggedIn);
     this.isLoading$ = this.store.select(AppState.getShowLoading);
     this.appState$ = this.store.select((state) => state.app);

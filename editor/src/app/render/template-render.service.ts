@@ -86,7 +86,7 @@ export class TemplateRenderService {
     }
 
     // @todo: load current language translation here, we don't have all translations in state
-    return 'Built with <a href="http://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
+    return 'Built with <a href="https://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
   }
 
   getEntries(
