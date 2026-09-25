@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Создайте собственное портфолио за считанные минуты с Berta.me!">Berta.me</a>',
+    'berta_copyright_text' => '<a href="https://www.berta.me/" target="_blank" title="Создайте собственное портфолио за считанные минуты с Berta.me!">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -24,29 +24,6 @@ return [
 
     'Logout ok. Please wait...' => 'Пожалуйста, подождите...',
     'Log in' => 'Войти',
-
-    // First visit
-
-    'welcome' => 'Добро пожаловать!',
-    'welcome_text__not_installed' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
-                                                                          <p>Berta не установлена.<br />Пожалуйста <a href="%s">войдите</a> и следуйте процедуре установки.</p>',
-
-    'welcome_text__not_supported' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
-                                                                                <p>Этот сервер не соответствует требованиями Berta.<br />
-                                                                                Пожалуйста, проверьте, чтобы на сервере была установлена версия PHP 5 или выше.</p>',
-
-    'Setup your site' => 'Установка сайта',
-    'setup_info_text' => 'Нажмите на поля, выделенные желтым, чтобы редактировать.
-                                                        Затем нажмите Enter или кликните в любой точке вне поля, чтобы сохранить изменения.
-                                                        Таким образом это будет отображаться на вашей странице — все, выделенное желтым, редактируется. Вы сможете изменить эти настройки позже.',
-    'What is the title of your site?' => 'Как будет называться сайт?',
-    'Site title will be visible in all sections of your site.' => 'Название сайта будет отображаться во всех разделах',
-    'What is your name?' => 'Как ваше имя?',
-    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Ваше имя будет отображаться с символом(c) внизу сайта. Можете оставить это поле пустым.',
-    'What is this website about?' => 'Опишите ваш сайт одним предложением',
-    'It will appear under your site name in search engine results.' => 'Описание будет отображаться в поисковых системах под названием сайта.',
-    'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Примечание: заполненные поля становятся желтыми, только при наведении курсора мыши. Нажмите на текст ниже, чтобы редактировать.',
-    'Done!' => 'Готово!',
 
     // Translatins from sections editor (sections.php)
 
@@ -245,8 +222,6 @@ return [
 
     /* setting tab */
     'Background' => 'Фон',
-    /* setting name */
-    'Background color' => 'Цвет фона',
     /* help text */
     'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'ВАЖНО! Данные настройки не активны, если использована функция фоновой галереи. Перейти к редактированию можно по кнопке  "редактировать фоновую галерею".',
     /* setting name */
@@ -466,7 +441,7 @@ return [
     'description_tagsMenu_y' => 'Положение подменю на оси Y в пикселях (например: 50px)',
     'description_menu_position' => 'Позиционирование меню',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Ссылка баннера. Добавьте http:// перед адресом ссылки (например: http://www.berta.me)',
+    'description_banner_link' => 'Ссылка баннера. Добавьте https:// перед адресом ссылки (например: https://www.berta.me)',
     'description_language' => 'Выберите язык интерфейса berta. Обновите страницу, чтобы активировать изменения.',
     'Heading position' => 'Положение заголовка',
     'description_heading_position' => 'Положение шапки, фиксированное или нефиксированное ',

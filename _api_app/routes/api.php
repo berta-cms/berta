@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StateController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\SetupMiddleware;
+use App\Setup\ServerRequirementsController;
 use App\Sites\Sections\Entries\SectionEntriesController;
 use App\Sites\Sections\SiteSectionsController;
 use App\Sites\Sections\Tags\SectionTagsController;
@@ -20,6 +21,7 @@ Route::middleware(SetupMiddleware::class)->group(function () {
 
     Route::get('v1/meta', [StateController::class, 'getMeta'])->name('meta');
     Route::get('v1/sentry-dsn', [StateController::class, 'getSentryDSN'])->name('sentry');
+    Route::get('v1/requirements', [ServerRequirementsController::class, 'index'])->name('requirements');
 });
 
 Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->group(function () {

@@ -104,18 +104,6 @@ if (! empty($options['MULTISITE'])) {
  */
 require 'inc.hosting.php';
 
-// if hosted on HIP, need to show "hosted on HIP"
-// $options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
-$options['hip_ipaddr'] = [];
-
-// external
-$options['remote_update_uri'] = [
-    'http://www.berta.me/news_ticker_videos_update.php',
-];
-foreach ($options['hip_ipaddr'] as $ip) {
-    $options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
-}
-
 $options['images']['small_width'] = 200;
 $options['images']['small_height'] = 200;
 

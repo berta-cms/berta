@@ -60,17 +60,6 @@ if (empty($ENGINE_ROOT_URL)) {
     $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 }
 
-$hasSupportedPhpVersion = version_compare(PHP_VERSION, '8.4', '>=');
-
-if (! $hasSupportedPhpVersion) {
-    if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
-        $CHECK_INCLUDED = true;
-        include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
-    } else {
-        exit('Berta needs PHP >= 8.4 support on server.');
-    }
-}
-
 include 'inc.error_handling.php';
 include_once 'inc.functions.php';
 
@@ -143,35 +132,12 @@ if (! defined('SETTINGS_INSTALLREQUIRED')) {
     define('SETTINGS_INSTALLREQUIRED', true);
 }
 if (SETTINGS_INSTALLREQUIRED && ! $berta->settings->get('berta', 'installed')) {
-    if ($berta->security->userLoggedIn) {
-        $step = ! empty($_REQUEST['_berta_install_step']) ? (int) $_REQUEST['_berta_install_step'] : 1;
-        if ($step < 1) {
-            $step = 1;
-        }
-        if ($step > 2) {
-            $step = 2;
-        }
-
-        switch ($step) {
-            case 1:
-                if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/check.php')) {
-                    $CHECK_INCLUDED = true;
-                    include $SITE_ROOT_PATH . 'INSTALL/includes/check.php';
-                    exit;
-                }
-                break;
-            case 2:
-                exit;
-        }
-    } else {
-        if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php')) {
-            $CHECK_INCLUDED = true;
-            include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php';
-        } else {
-            exit('Berta not installed.');
-        }
-        exit;
+    // Logged in users get the requirements check and the setup wizard in the Angular editor,
+    // the site itself has nothing to render yet.
+    if (! $berta->security->userLoggedIn) {
+        bertaRenderEditorRedirect($ENGINE_ROOT_URL . 'login' . (! empty($options['MULTISITE']) ? '?site=' . rawurlencode($options['MULTISITE']) : ''));
     }
+    exit;
 }
 
 // check installation ------------------------------------------------------------------------------------------------------------------------------------------
