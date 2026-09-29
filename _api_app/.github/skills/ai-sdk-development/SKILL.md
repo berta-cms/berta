@@ -1,6 +1,9 @@
 ---
 name: ai-sdk-development
-description: Builds AI agents, generates text and chat responses, produces images, synthesizes audio, transcribes speech, generates vector embeddings, reranks documents, and manages files and vector stores using the Laravel AI SDK (laravel/ai). Supports structured output, streaming, tools, conversation memory, middleware, queueing, broadcasting, and provider failover. Use when building, editing, updating, debugging, or testing any AI functionality, including agents, LLMs, chatbots, text generation, image generation, audio, transcription, embeddings, RAG, similarity search, vector stores, prompting, structured output, or any AI provider (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
+description: TRIGGER when working with ai-sdk, Laravel's official first-party AI SDK. Activate when building or editing AI agents, chatbots, text generation, image generation, audio/TTS, transcription/STT, embeddings, RAG, vector stores, reranking, structured output, streaming, conversation memory, tools, MCP servers, queueing, broadcasting, and provider failover across OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, ElevenLabs, Cohere, Jina, and VoyageAI. Invoke when the user references ai-sdk, the `Laravel\Ai\` namespace, or this project's AI features — not for other AI packages used directly.
+license: MIT
+metadata:
+  author: laravel
 ---
 
 # Developing with the Laravel AI SDK
@@ -53,6 +56,7 @@ Vector stores? → `Stores::create()`
 
 ```php
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 
 class SalesCoach implements Agent
@@ -68,6 +72,17 @@ class SalesCoach implements Agent
 // Prompting
 $response = (new SalesCoach)->prompt('Analyze this transcript...');
 echo $response->text;
+
+// Container resolution with dependency injection
+$agent = SalesCoach::make(user: $user);
+
+// Override provider, model, or timeout per-prompt
+$response = (new SalesCoach)->prompt(
+    'Analyze this transcript...',
+    provider: Lab::Anthropic,
+    model: 'claude-haiku-4-5-20251001',
+    timeout: 120,
+);
 
 // Streaming (returns SSE response from a route)
 return (new SalesCoach)->stream('Analyze this transcript...');
@@ -245,9 +260,11 @@ $store->add(Document::fromStorage('manual.pdf')); // Store + add in one step
 ### PHP Attributes
 
 ```php
-use Laravel\Ai\Attributes\{Provider, MaxSteps, MaxTokens, Temperature, Timeout};
+use Laravel\Ai\Attributes\{Provider, Model, MaxSteps, MaxTokens, Temperature, Timeout};
+use Laravel\Ai\Enums\Lab;
 
-#[Provider('anthropic')]
+#[Provider(Lab::Anthropic)]
+#[Model('claude-haiku-4-5-20251001')]
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
 #[Temperature(0.7)]
@@ -260,6 +277,34 @@ class MyAgent implements Agent
 ```
 
 The `#[UseCheapestModel]` and `#[UseSmartestModel]` attributes are also available for automatic model selection.
+
+Use `#[RepairToolCalls]` to let an agent recover when a model calls an unknown local tool. The failed call is returned to the model with the available local tool names, and the implicit step budget includes one repair step. Explicit `#[MaxSteps]` limits remain unchanged.
+
+```php
+use Laravel\Ai\Attributes\RepairToolCalls;
+
+#[RepairToolCalls]
+class SupportAgent implements Agent, HasTools
+{
+    use Promptable;
+
+    // ...
+}
+```
+
+The `#[WithoutBroadcasting]` attribute stops the given stream event types from broadcasting (e.g. data-heavy `ToolResult` payloads that exceed the WebSocket frame limit). The events are still streamed and persisted; they just never hit the channel:
+
+```php
+use Laravel\Ai\Attributes\WithoutBroadcasting;
+use Laravel\Ai\Streaming\Events\{ToolCall, ToolResult};
+
+#[WithoutBroadcasting(ToolResult::class, ToolCall::class)]
+class SearchAgent implements Agent, HasTools
+{
+    use Promptable;
+    // ...
+}
+```
 
 ### Tools
 
@@ -294,6 +339,31 @@ public function tools(): iterable
 }
 ```
 
+### MCP Servers
+
+Register the server once, then return its tools from `tools()`. The SDK automatically wraps each `Laravel\Mcp\Client\Primitives\Tool` and presents it to the model as `mcp_tools_<name>`. Return your own `Laravel\Mcp\Server\Tool` instances in the same way and they retain their names and run in-process.
+
+```php
+use Laravel\Mcp\Client;
+use Laravel\Mcp\Facades\Mcp;
+
+// In a service provider or routes/ai.php
+Mcp::registerClient('linear', fn () => Client::web('https://mcp.linear.app/mcp')
+    ->withToken(config('services.linear.token')));
+
+class SupportAgent implements Agent, HasTools
+{
+    use Promptable;
+
+    public function tools(): iterable
+    {
+        return Mcp::client('linear')->tools();
+    }
+}
+```
+
+The client connects on its first call, so call `connect()` only when you need to control the timing. Use `Client::local('npx', ['-y', 'some-server'])` for servers that run over stdio.
+
 ### Conversation Memory
 
 ```php
@@ -313,7 +383,7 @@ $response = (new ChatBot)->continue($conversationId, as: $user)->prompt('More...
 ### Failover
 
 ```php
-$response = (new MyAgent)->prompt('Hello', provider: ['openai', 'anthropic']);
+$response = (new MyAgent)->prompt('Hello', provider: [Lab::OpenAI, Lab::Anthropic]);
 ```
 
 ## Testing and Faking
@@ -370,8 +440,50 @@ $store->assertAdded('file_id');
 - Agent pattern: Implement the `Agent` interface and use the `Promptable` trait
 - Optional interfaces: `HasTools`, `HasMiddleware`, `HasStructuredOutput`, `Conversational`
 - Entry-point classes: `Image`, `Audio`, `Transcription`, `Embeddings`, `Reranking`, `Stores`
+- Provider enum: `Laravel\Ai\Enums\Lab` (prefer over plain strings)
 - Artisan commands: `php artisan make:agent`, `php artisan make:tool`
 - Global helper: `agent()` for anonymous agents
+
+## OpenAI-Compatible Provider
+
+Point the SDK at any OpenAI-compatible endpoint (LM Studio, vLLM, Together, etc.) with the config-driven `openai-compatible` driver. Define named instances in `config/ai.php`, no code required:
+
+```php
+'my-llm' => [
+    'driver' => 'openai-compatible',
+    'url' => env('MY_LLM_URL'),        // required
+    'key' => env('MY_LLM_API_KEY'),    // optional Bearer token
+    'models' => [
+        'text' => ['default' => 'some-chat-model'],
+        'embeddings' => [
+            'default' => 'some-embedding-model',
+            'dimensions' => 1024, // optional; omit to use native dimensions
+        ],
+        'transcription' => ['default' => 'some-transcription-model'],
+    ],
+],
+```
+
+Reference it by config key (or `Lab::OpenAiCompatible`). A model is required via the corresponding `models` configuration or per-call `model:`:
+
+```php
+agent()->prompt('Hello', provider: 'my-llm', model: 'some-model');
+
+Embeddings::for(['Hello'])->generate(
+    provider: 'my-llm',
+    model: 'some-embedding-model',
+);
+```
+
+It uses OpenAI-standard shapes and supports text, streaming, tools, structured output, image attachments, text embeddings, and audio transcription. Embedding dimensions are optional; omit them to use the model's native dimensions. For extra request-body fields, implement `HasProviderOptions` — the returned array is merged into the body.
+
+Transcription uploads standard multipart (`file` + `model` + optional `language`) and defaults to `response_format: json`. Because endpoints vary, provider options override the defaults — pass `response_format: 'verbose_json'` for segments, or use `diarize()` on servers that implement `diarized_json`:
+
+```php
+Transcription::fromDisk('recordings', $path)
+    ->withProviderOptions(['response_format' => 'verbose_json'])
+    ->generate(provider: 'my-llm');
+```
 
 ## Common Pitfalls
 
@@ -394,20 +506,26 @@ use Laravel\AI\Agent;
 
 Calling a capability not supported by a provider throws a `LogicException`. Refer to the provider support table below.
 
-### Never Use Prism Directly
-
-Use agents and entry-point classes (`Image`, `Audio`, etc.) — not `Prism::text()` directly. The AI SDK wraps Prism internally.
-
 ## Provider Support
 
-| Provider   | Text | Image | Audio | STT | Embeddings | Reranking | Files | Stores |
-| ---------- | ---- | ----- | ----- | --- | ---------- | --------- | ----- | ------ |
-| OpenAI     | Y    | Y     | Y     | Y   | Y          | -         | Y     | Y      |
-| Anthropic  | Y    | -     | -     | -   | -          | -         | Y     | -      |
-| Gemini     | Y    | Y     | -     | -   | Y          | -         | Y     | Y      |
-| xAI        | Y    | Y     | -     | -   | -          | -         | -     | -      |
-| Groq       | Y    | -     | -     | -   | -          | -         | -     | -      |
-| OpenRouter | Y    | -     | -     | -   | -          | -         | -     | -      |
-| ElevenLabs | -    | -     | Y     | Y   | -          | -         | -     | -      |
-| Cohere     | -    | -     | -     | -   | Y          | Y         | -     | -      |
-| Jina       | -    | -     | -     | -   | Y          | Y         | -     | -      |
+| Feature    | Providers                                                       |
+| ---------- | --------------------------------------------------------------- |
+| Text       | OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter, OpenAI-compatible |
+| Images     | OpenAI, Gemini, xAI                                            |
+| TTS        | OpenAI, ElevenLabs, Mistral                                     |
+| STT        | OpenAI, ElevenLabs, Mistral, Groq, OpenAI-compatible            |
+| Embeddings | OpenAI, OpenAI-compatible, Gemini, Azure, Cohere, Mistral, Jina, VoyageAI |
+| Reranking  | Cohere, Jina                                                    |
+| Files      | OpenAI, Anthropic, Gemini                                       |
+
+Use the `Laravel\Ai\Enums\Lab` enum to reference providers in code instead of plain strings:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+Lab::Anthropic;
+Lab::OpenAI;
+Lab::Gemini;
+Lab::OpenAiCompatible; // configurable OpenAI-compatible endpoint
+// ...
+```
