@@ -1,1 +1,1 @@
-<h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{{ attributes.title|raw }}>{{ content.title }}</span></h2>
+<h2><span class="xNgEditable xProperty-title xCaption-entry&nbsp;title"{{ attributes.title|raw }}>{% if content.title %}{{ content.title }}{% else %}<span class="xEmpty">&nbsp;entry title&nbsp;</span>{% endif %}</span></h2>

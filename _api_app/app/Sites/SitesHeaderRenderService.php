@@ -10,7 +10,7 @@ class SitesHeaderRenderService
 {
     private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-siteHeadingXY'];
 
-    private $EDITABLE_CLASSES = ['xEditable', 'xProperty-siteHeading'];
+    private $EDITABLE_CLASSES = ['xNgEditable', 'xProperty-siteHeading'];
 
     private $HEADER_IMAGE_TEMPLATE_SETTING_GROUP = [
         'default' => 'pageHeading',
@@ -113,6 +113,8 @@ class SitesHeaderRenderService
         $attributes = [
             'class' => implode(' ', $this->EDITABLE_CLASSES),
             'data-path' => $siteName . '/settings/siteTexts/siteHeading',
+            'data-empty-caption' => 'heading',
+            'data-ng-raw' => '1',
         ];
 
         return Helpers::arrayToHtmlAttributes($attributes);

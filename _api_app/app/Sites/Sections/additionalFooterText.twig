@@ -1,3 +1,7 @@
 <div{{ attributes|raw }}>
-  {{ content|raw }}
+  {% if content %}
+    {{ content|raw }}
+  {% elseif isEditMode %}
+    <span class="xEmpty">&nbsp;additional footer text&nbsp;</span>
+  {% endif %}
 </div>

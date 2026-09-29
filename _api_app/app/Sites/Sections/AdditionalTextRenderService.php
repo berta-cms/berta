@@ -10,7 +10,7 @@ class AdditionalTextRenderService
 
     private $DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
 
-    private $EDITABLE_CLASSES = ['xEditableMCESimple', 'xProperty-additionalText', 'xCaption-additional-text'];
+    private $EDITABLE_CLASSES = ['xNgEditableRTESimple', 'xProperty-additionalText', 'xCaption-additional-text'];
 
     public function __construct($socialMediaLinksRS)
     {
@@ -83,6 +83,7 @@ class AdditionalTextRenderService
         if ($isEditMode) {
             $attributes['class'] = implode(' ', $this->EDITABLE_CLASSES);
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalText";
+            $attributes['data-empty-caption'] = 'additional text';
         }
 
         return Helpers::arrayToHtmlAttributes($attributes);

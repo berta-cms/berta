@@ -11,7 +11,7 @@
     "sentry:sourcemaps": "npm run build && sentry-cli sourcemaps inject --org hello-world-ik --project berta-frontend --release $npm_package_version ../engine/dist && sentry-cli sourcemaps upload --org hello-world-ik --project berta-frontend --release $npm_package_version ../engine/dist"
   },
   "engines": {
-    "node": "^20.19.0 || ^22.12.0 || ^24.0.0"
+    "node": "^22.12.0 || ^24.0.0"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +34,7 @@
     "ngx-image-cropper": "^9.1.5",
     "ngx-tooltip-directives": "^21.0.2",
     "rxjs": "^7.8.2",
+    "tinymce": "^7.9.3",
     "tslib": "^2.0.0",
     "twig": "^2.0.0",
     "webfontloader": "^1.6.28",

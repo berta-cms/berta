@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Create your own portfolio with Berta.me in minutes!">Berta.me</a>',
+    'berta_copyright_text' => '<a href="https://www.berta.me/" target="_blank" title="Create your own portfolio with Berta.me in minutes!">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -24,27 +24,6 @@ return [
 
     'Logout ok. Please wait...' => 'Lūdzu, uzgaidi...',
     'Log in' => 'Ielogoties',
-
-    // First visit
-
-    'welcome' => 'Esi sveicināts!',
-    'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Berta.me!</h2>
-                                         <p>Berta nav uzstādīta.<br />Lūdzu <a href="%s">ielogojies</a> un seko uzstādīšanas procedūrai.</p>',
-
-    'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Berta.me!</h2>
-                                        <p>This server does not meet Berta\'s requirements.<br />
-                                        Please check that PHP version 5 or above is installed on the server.</p>',
-
-    'Setup your site' => 'Setup your site',
-    'setup_info_text' => 'Dzeltenās krāsas lauki ir labojami. Lai saglabātu ierakstu, nospied ENTER vai klikšķini ārpus datu lauka. Šādi iespējams ievadīt vai labot saturu Berta.me rīkā.',
-    'What is the title of your site?' => 'Kāds ir tavas lapas virsraksts?',
-    'Site title will be visible in all sections of your site.' => 'Lapas virsraksts būs redzams visās sadaļās',
-    'What is your name?' => 'Ievadi savu vārdu',
-    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Vārds tiks pievienots pie (c) simbola lapas apakšā. Lauku var atstāt arī tukšu.',
-    'What is this website about?' => 'Lapas apraksts.',
-    'It will appear under your site name in search engine results.' => 'Meklētāj-programmās tas parādīsies zem tavas lapas nosaukuma kā apraksts.',
-    'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Piezīme: aizpildītie lauki kļūst dzelteni tiem uzbraucot ar peles kursoru. Klikšķini uz teksta zemāk, lai labotu.',
-    'Done!' => 'Darīts!',
 
     // Translatins from sections editor (sections.php)
 
@@ -117,10 +96,6 @@ return [
     '<META> description' => '<META> apraksts',
     /* help text */
     'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
-    /* setting name */
-    '<META> keywords' => '<META> atslēgvārdi',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Atslēgvārdi ir redzami tikai meklētājiem, tādiem kā Google. Tie var uzlabot tavas lapas pozīciju meklēšanas rezultātos. Vēlams, lai tie ir atbilstoši lapas saturam.',
 
     /* setting tab */
     'Navigation' => 'Navigācija',
@@ -180,8 +155,6 @@ return [
     'Is enabled by default' => 'Pēc noklusējuma ieslēgts',
     /* help text */
     'Enables gallery fullscreen mode for new entries.' => 'Ieslēdz galerijas pilnekrāna režīmu jauniem ierakstiem.',
-    /* setting name */
-    'Background color' => 'fona krāsa',
     /* help text */
     'Color of the fullscreen gallery background.' => 'Galerijas pilnekrāna fona krāsa.',
     /* setting name */
@@ -489,7 +462,7 @@ return [
     'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
     'description_menu_position' => 'Izvēlnes pozicionēšana',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.me)',
+    'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot https:// (piem.: https://www.berta.me)',
     'description_language' => 'Izvēlies interfeisa valodu.',
     'Heading position' => 'Galvenes pozīcija',
     'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
@@ -546,12 +519,10 @@ return [
     'Discount in precents when user enters valid promo code' => 'Atlaides procentuāls apjoms uz precēm, ja pircējs ievadījis pareizu kodu.',
     'Weight units' => 'Svara mērvienība',
     'Weight units (g, oz) used for postage cost calculation.' => 'Svara mērvienība (g, oz), kas tie lietota pie pasta izdevumu aprēķina.',
-    'Design' => 'Dizains',
     'Shop entry width' => 'Veikala ieraksta platums',
     'Title' => 'Virsraksts',
     'What is SEO?' => 'Kas ir SEO?',
     'seo_help_text' => 'Search Engine Optimization (SEO) palīdz uzlabot mājaslapas reitingu Google meklēšanas rezultātos. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Uzzini vairāk, kā tas strādā</a>.',
-    'Keywords' => 'Atslēgvārdi',
     'Content description' => 'Satura apraksts',
     'section_type' => 'Veids',
     'section_type_tip' => 'Nosaka sadaļas funkcionalitāti un satura izklājumu.',

@@ -304,7 +304,7 @@ class BertaUtils extends BertaBase
                     'host' => $_SERVER['HTTP_HOST'],
                     'action' => $action,
                 ];
-                $url = 'http://hosting.berta.me/stats';
+                $url = 'https://hosting.berta.me/stats';
                 $ch = curl_init();
                 $timeout = 30;
                 curl_setopt($ch, CURLOPT_URL, $url);

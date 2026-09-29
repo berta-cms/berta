@@ -103,6 +103,11 @@ berta-login {
     }
   }
 
+  .setup-notice {
+    font-size: variables.$input-font-size;
+    margin: 0 1.3em;
+  }
+
   .error-message {
     color: variables.$error-color;
     font-size: variables.$input-font-size;

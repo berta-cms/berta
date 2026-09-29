@@ -6,6 +6,18 @@
 
 use Illuminate\Http\Request;
 
+require_once __DIR__ . '/inc.editor_redirect.php';
+
+// Laravel can't boot on a too old PHP or without vendor/, send visitors to the
+// editor, which shows the failed requirements
+$bertaFailedRequirements = require __DIR__ . '/../_api_app/bootstrap/requirements_check.php';
+if ($bertaFailedRequirements) {
+    http_response_code(503);
+    bertaRenderEditorRedirect((! empty($ENGINE_ROOT_URL) ? $ENGINE_ROOT_URL : (! empty($SITE_ROOT_URL) ? $SITE_ROOT_URL : '/') . 'engine/') . 'login');
+    exit;
+}
+unset($bertaFailedRequirements);
+
 require_once __DIR__ . '/../_api_app/bootstrap/load_app.php';
 (require_once __DIR__ . '/../_api_app/bootstrap/app.php')->handle(Request::capture());
 

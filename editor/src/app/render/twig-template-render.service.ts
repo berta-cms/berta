@@ -34,10 +34,15 @@ export class TwigTemplateRenderService {
       throw new Error(`Template not found: ${templateName}`);
     }
 
-    // Compile the template
+    // Compile the template. Twig.js defaults `autoescape` to false, unlike
+    // PHP Twig (which these bundled templates are also rendered through on
+    // the real site, and defaults it to true) — without this, a non-`|raw`
+    // field's value would render as live, executing HTML here even though
+    // the exact same template renders it safely escaped server-side.
     const template = Twig.twig({
       data: twigContent,
       allowInlineIncludes: false,
+      autoescape: true,
     });
 
     // Cache it

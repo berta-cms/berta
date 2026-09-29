@@ -1,6 +1,6 @@
 <div class="addToCart" data-uniqid="{{ uniqid }}">
   {% if isEditMode %}
-    <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{{ content.cartPrice }}"{{ attributes.cartPrice|raw }}>{{ cartPriceFormatted }}</div>
+    <div class="cartPrice xNgEditable xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{{ content.cartPrice }}" data-ng-edit-via-title="1" data-empty-caption="price"{{ attributes.cartPrice|raw }}>{% if cartPriceFormatted %}{{ cartPriceFormatted }}{% else %}<span class="xEmpty">&nbsp;price&nbsp;</span>{% endif %}</div>
   {% else %}
     <div class="cartPrice" title="{{ content.cartPrice }}" data-weight="{{ content.weight }}">{{ cartPriceFormatted }}</div>
   {% endif %}

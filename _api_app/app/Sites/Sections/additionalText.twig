@@ -3,10 +3,8 @@
     <div class="xHandle"></div>
   {% endif %}
   {% if content.attributes %}
-    <div{{ content.attributes|raw }}>
-  {% endif %}
+    <div{{ content.attributes|raw }}>{% if content.html %}{{ content.html|raw }}{% else %}<span class="xEmpty">&nbsp;additional text&nbsp;</span>{% endif %}</div>
+  {% else %}
     {{ content.html|raw }}
-  {% if content.attributes %}
-    </div>
   {% endif %}
 </div>

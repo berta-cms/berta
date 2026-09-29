@@ -11,7 +11,7 @@ export class SitesHeaderRenderService {
     'xEditableDragXY',
     'xProperty-siteHeadingXY',
   ];
-  EDITABLE_CLASSES = ['xEditable', 'xProperty-siteHeading'];
+  EDITABLE_CLASSES = ['xNgEditable', 'xProperty-siteHeading'];
   HEADER_IMAGE_TEMPLATE_SETTING_GROUP = {
     default: 'pageHeading',
     messy: 'heading',
@@ -102,6 +102,8 @@ export class SitesHeaderRenderService {
     return toHtmlAttributes({
       class: this.EDITABLE_CLASSES.join(' '),
       'data-path': `${siteSlug}/settings/siteTexts/siteHeading`,
+      'data-empty-caption': 'heading',
+      'data-ng-raw': '1',
     });
   }
 

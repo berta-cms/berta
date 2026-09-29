@@ -26,7 +26,10 @@ import {
   ResetShopProductsAction,
   InitShopProductsAction,
 } from './shop-products.actions';
-import { UpdateSectionEntryFromSyncAction } from '../../sites/sections/entries/entries-state/section-entries.actions';
+import {
+  UpdateSectionEntryAction,
+  UpdateSectionEntryFromSyncAction,
+} from '../../sites/sections/entries/entries-state/section-entries.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -79,6 +82,7 @@ export class ShopProductsState implements NgxsOnInit {
       this.actions$.pipe(
         ofActionSuccessful(
           UpdateSectionEntryFromSyncAction,
+          UpdateSectionEntryAction,
           SwapContentsSitesAction,
         ),
         filter((action) => {
@@ -86,7 +90,7 @@ export class ShopProductsState implements NgxsOnInit {
           if (action instanceof SwapContentsSitesAction) {
             return true;
           }
-          // Apply filter for UpdateSectionEntryFromSyncAction
+          // Apply filter for entry update actions
           const actions = ['cartTitle', 'cartPrice', 'cartAttributes'];
           const prop = action.path.split('/').pop();
           return actions.indexOf(prop) > -1;

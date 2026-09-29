@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta.me w kilka minut!">Berta.me</a>',
+    'berta_copyright_text' => '<a href="https://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta.me w kilka minut!">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -24,29 +24,6 @@ return [
 
     'Logout ok. Please wait...' => 'Proszę, czekać...',
     'Log in' => 'Zalogować się',
-
-    // First visit
-
-    'welcome' => 'Witamy!',
-    'welcome_text__not_installed' => '<h2>Dziękujemy,<br/>że wybrałeś Berta.me!</h2>
-                                                          <p>Berta nie jest zainstalowana.<br />Proszę <a href="%s">zaloguj się</a> i przejdź proces instalacji.</p>',
-
-    'welcome_text__not_supported' => '<h2>Dziękujemy,<br/>że wybrałeś Berta.me!</h2>
-                                                                <p>This server does not meet Berta\'s requirements.<br />
-                                                                   Please check that PHP version 5 or above is installed on the server.</p>',
-
-    'Setup your site' => 'Setup your site',
-    'setup_info_text' => 'Click on the fields with yellow background to edit them.
-                                      Then press Enter or click anywhere outside the field to save.
-                                       This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
-    'What is the title of your site?' => 'Jaki jest tytuł twojej strony?',
-    'Site title will be visible in all sections of your site.' => 'Tytuł strony będzie widoczny w każdym dziale',
-    'What is your name?' => 'Wprowadź swoje imię',
-    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Imię będzie dodane do symbolu (c) na dole strony. Pole można również zostawić puste.',
-    'What is this website about?' => 'Jak byś opisał swoją stronę w jednym zdaniu?',
-    'It will appear under your site name in search engine results.' => 'To pojawi się w wyszukiwarce pod tytułem twojej strony jako opis.',
-    'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Uwaga: wypełnione pole stają się żółte przy najechaniu na nich kursorem myszki. Klikaj na tekście poniżej, aby poprawiać.',
-    'Done!' => 'Wykonane!',
 
     // Translatins from sections editor (sections.php)
 
@@ -119,10 +96,6 @@ return [
     '<META> description' => '<META> opis',
     /* help text */
     'Site description. It should not be longer than one or two sentences.' => 'Opis strony. Nie powinien być dłuższy niż 2 zdania.',
-    /* setting name */
-    '<META> keywords' => '<META> słowa kluczowe',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Słowa kluczowe są widoczne tylko dla wyszukiwarek, takich jak Google. Może to poprawić pozycję twojej strony w wynikach wyszukiwania. Powinny odpowiadać treści strony.',
 
     /* setting tab */
     'Navigation' => 'Navigacja',
@@ -249,8 +222,6 @@ return [
 
     /* setting tab */
     'Background' => 'Tło',
-    /* setting name */
-    'Background color' => 'Kolor tła',
     /* help text */
     'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'UWAGA! Te ustawienia nie są brane pod uwagę, jeżeli jest używana galeria tła.',
     /* setting name */
@@ -481,7 +452,7 @@ return [
     'description_tagsMenu_y' => 'Pozycja Y w menu podrzędnym w pikselach (np.: 50px)',
     'description_menu_position' => 'Pozycjonowanie menu',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Link banera. Przed adresem nie zapomnij dodać http:// (piem.: http://www.berta.me)',
+    'description_banner_link' => 'Link banera. Przed adresem nie zapomnij dodać https:// (piem.: https://www.berta.me)',
     'description_language' => 'Choose language of interface.',
     'Heading position' => 'Pozycja nagłówka',
     'description_heading_position' => 'Pozycja nagłówka, niezmienna lub zmienna',
@@ -538,7 +509,6 @@ return [
     'Discount in precents when user enters valid promo code' => 'Wartość rabatu w procentach na towary, jeżeli kupujący wprowadził poprawny kod.',
     'Weight units' => 'Jednostka wagi',
     'Weight units (g, oz) used for postage cost calculation.' => 'Jednostka wagi (g, oz), która jest używana, obliczając koszty wysyłki pocztowej.',
-    'Design' => 'Projekt',
     'Shop entry width' => 'Szerokość wpisu sklepu',
     'section_type' => 'Type',
     'section_type_tip' => 'Defines the layout and functionality of the section.',

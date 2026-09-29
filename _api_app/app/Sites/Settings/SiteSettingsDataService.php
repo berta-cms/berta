@@ -39,7 +39,6 @@ use Illuminate\Support\Str;
  *   <texts>
  *     <ownerName><![CDATA[John Doe]]></ownerName>
  *     <pageTitle><![CDATA[My site]]></pageTitle>
- *     <metaKeywords><![CDATA[john, doe, portfolio]]></metaKeywords>
  *     <metaDescription><![CDATA[My personal website]]></metaDescription>
  *   </texts>
  *   <settings>
@@ -147,7 +146,6 @@ class SiteSettingsDataService extends Storage
                 'properties' => [
                     'ownerName' => ['type' => 'string'],
                     'pageTitle' => ['type' => 'string'],
-                    'metaKeywords' => ['type' => 'string'],
                     'metaDescription' => ['type' => 'string'],
                 ],
             ],

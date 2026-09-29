@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'berta_copyright_text' => 'Développé avec <a href="http://www.berta.me/" target="_blank" title="Créez votre portfolio avec Berta.me en quelques minutes !">Berta.me</a>',
+    'berta_copyright_text' => 'Développé avec <a href="https://www.berta.me/" target="_blank" title="Créez votre portfolio avec Berta.me en quelques minutes !">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -24,29 +24,6 @@ return [
 
     'Logout ok. Please wait...' => 'Déconnexion. Merci de patienter…',
     'Log in' => 'Se connecter',
-
-    // First visit
-
-    'welcome' => 'Bienvenue !',
-    'welcome_text__not_installed' => '<h2>Merci d\'avoir choisi Berta.me!</h2>
-        <p>Berta n\'est pas encore installé.<br />Merci de vous <a href="%s">connecter</a> et de suivre la procédure d\'installation.</p>',
-
-    'welcome_text__not_supported' => '<h2>Merci d\'avoir choisi Berta.me!</h2>
-        <p>Ce serveur n\'est pas compatible avec Berta.<br />
-        Merci de vérifier que la version de PHP installée sur le serveur est égale ou supérieure à 5.</p>',
-
-    'Setup your site' => 'Paramétrez votre site',
-    'setup_info_text' => 'Cliquez sur les champs sur fond jaune pour les éditer.
-        Puis, appuyez sur Entrée ou cliquez ailleurs pour enregistrer.
-        Chaque élément de votre site ayant un fond jaune est donc modifiable. Vous serez en mesure de changer ces paramètres plus tard.',
-    'What is the title of your site?' => 'Quel est le titre de votre site ,',
-    'Site title will be visible in all sections of your site.' => 'Le titre du site est visible dans toutes les sections du site',
-    'What is your name?' => 'Quel est votre nom ?',
-    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Votre nom sera affiché dans la note de copyright en bas de site. Vous pouvez laisser le champ vide.',
-    'What is this website about?' => 'En une phrase, décrivez votre site.',
-    'It will appear under your site name in search engine results.' => 'Cela aparaitra en dessous du titre de votre site dans les moteurs de recherche.',
-    'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'À noter : Les champs déjà saisis n’aparaissent en jaune qu’au survol. Cliquez sur le texte survolé pour l’éditer.',
-    'Done!' => 'Fait !',
 
     // Translatins from sections editor (sections.php)
 
@@ -119,10 +96,6 @@ return [
     '<META> description' => '<META> description',
     /* help text */
     'Site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
-    /* setting name */
-    '<META> keywords' => '<META> mots-clés',
-    /* help text */
-    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ces mots-clés ne sont visibles que pour les moteurs de recherche. Associés à la description, ils permettent d’améliorer votre positionnement dans les moteurs.',
 
     /* setting tab */
     'Navigation' => 'Navigation',
@@ -167,8 +140,6 @@ return [
     'Media' => 'Média',
     /* setting name */
     'Is enabled by default' => 'Activée par défaut',
-    /* setting name */
-    'Background color' => 'Couleur de fond',
     /* setting name */
     'Image numbers' => 'Numéros d’image',
     /* setting name */
@@ -469,7 +440,7 @@ return [
 
     'description_menu_position' => 'Position du menu',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'N’oubliez pas « http:// » devant les liens de bannière.',
+    'description_banner_link' => 'N’oubliez pas « https:// » devant les liens de bannière.',
     'description_language' => 'Choisissez votre langue pour l’interface de Berta. Rafraîchissez la page pour pour appliquer les modifications.',
     'Heading position' => 'Position de l’entête',
     'description_heading_position' => 'Position de la description d’entête : fixe (Fixed) ou absolue (Absolute). La position fixe restera toujours en place sur la page, la positions absolue se déplace avec le contenu au défilement.',

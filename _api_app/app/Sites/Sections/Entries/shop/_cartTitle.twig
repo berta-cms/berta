@@ -1,1 +1,1 @@
-<h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle|raw }}>{{ content.cartTitle }}</span></h2>
+<h2><span class="xNgEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle|raw }}>{% if content.cartTitle %}{{ content.cartTitle }}{% else %}<span class="xEmpty">&nbsp;item name&nbsp;</span>{% endif %}</span></h2>

@@ -39,7 +39,6 @@ export interface SiteSettingsSiteResponse {
   texts?: {
     ownerName?: string;
     pageTitle?: string;
-    metaKeywords?: string;
     metaDescription?: string;
   };
   settings?: {
