@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Berta is a file-based CMS (no database required for content storage). It has three distinct sub-applications that are developed and built independently:
 
-1. **`_api_app/`** — Laravel 12 API backend (PHP 8.4+)
+1. **`_api_app/`** — Laravel 13 API backend (PHP 8.4+)
 2. **`editor/`** — Angular 20 admin editor (TypeScript)
 3. **`engine/`** — Legacy PHP rendering engine with Gulp-built assets
 
