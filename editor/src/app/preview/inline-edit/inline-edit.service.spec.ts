@@ -139,6 +139,38 @@ describe('InlineEditService (field value transforms)', () => {
     });
   });
 
+  describe('font stylesheets', () => {
+    const fontUrl = 'https://fonts.googleapis.com/css?family=Roboto:400';
+
+    afterEach(() => {
+      document.head
+        .querySelectorAll('link[data-inline-edit-font]')
+        .forEach((link) => link.remove());
+    });
+
+    it('reads absolute Google Fonts urls and ignores other stylesheets', () => {
+      const doc = document.implementation.createHTMLDocument('');
+      doc.head.innerHTML = `
+        <link rel="stylesheet" href="${fontUrl}">
+        <link rel="stylesheet" href="${fontUrl}">
+        <link rel="stylesheet" href="https://example.com/style.css">
+      `;
+
+      expect((service as any).readFontStylesheetUrls(doc)).toEqual([fontUrl]);
+    });
+
+    it('adds each font stylesheet to the document only once', () => {
+      (service as any).loadFontStylesheets([fontUrl]);
+      (service as any).loadFontStylesheets([fontUrl]);
+
+      const links = document.head.querySelectorAll<HTMLLinkElement>(
+        'link[data-inline-edit-font]',
+      );
+      expect(links.length).toBe(1);
+      expect(links[0].href).toBe(fontUrl);
+    });
+  });
+
   describe('re-attach after re-render', () => {
     const path = 'site/entry/section/1/content/title';
     let container: HTMLElement;

@@ -24,6 +24,12 @@ const EDIT_WRAP_SELECTOR = '.xEntryEditWrap';
 const CHECKBOX_SELECTOR = '.xNgEditableCheckBox';
 const FIXED_PROPERTY_CLASS = 'xProperty-fixed';
 const SAVING_CLASS = 'xSaving';
+// Google Fonts picked in Design settings are loaded only into the preview
+// iframe (server-rendered `<link>`, or `WebFont.load` for live changes), but
+// the overlays render outside it — see `readFontStylesheetUrls`.
+const FONT_STYLESHEET_SELECTOR =
+  'link[rel~="stylesheet"][href*="fonts.googleapis.com"]';
+const FONT_STYLESHEET_ATTR = 'data-inline-edit-font';
 const RICH_TEXT_STYLES_TO_COPY = [
   'font-size',
   'font-family',
@@ -478,6 +484,7 @@ export class InlineEditService {
       new ComponentPortal(InlineEditOverlayComponent),
     );
     componentRef.instance.value = initialValue;
+    this.loadFontStylesheets(this.readFontStylesheetUrls(el.ownerDocument));
     componentRef.instance.fontStyle = this.readFontStyle(el);
     componentRef.instance.multiline = multiline;
 
@@ -618,6 +625,7 @@ export class InlineEditService {
     const simple = el.classList.contains(RICH_TEXT_SIMPLE_CLASS);
     const initialValue = this.readRichTextValue(el);
     const contentStyle = this.readRichTextStyles(el);
+    const fontStylesheets = this.readFontStylesheetUrls(el.ownerDocument);
     const originalHtml = el.innerHTML;
 
     el.style.visibility = 'hidden';
@@ -677,6 +685,7 @@ export class InlineEditService {
     componentRef.instance.value = initialValue;
     componentRef.instance.simple = simple;
     componentRef.instance.contentStyle = contentStyle;
+    componentRef.instance.fontStylesheets = fontStylesheets;
 
     // The only `.xNgEditableRTE` field (`description`, `_entryContents.twig`)
     // never sits inside `.xEntryEditWrapButtons` or `.xEntryDropdownBox`, so
@@ -1007,7 +1016,9 @@ export class InlineEditService {
 
   /**
    * Copies the field's computed font styling onto the overlay input so it
-   * doesn't look like a generic browser input.
+   * doesn't look like a generic browser input. The `font-family` only
+   * resolves if the font is loaded in the overlay's own document too — see
+   * `loadFontStylesheets`.
    */
   private readFontStyle(el: HTMLElement): Record<string, string> {
     const computed = el.ownerDocument.defaultView?.getComputedStyle(el);
@@ -1026,6 +1037,46 @@ export class InlineEditService {
       'letter-spacing': computed.letterSpacing,
       'text-transform': computed.textTransform,
     };
+  }
+
+  /**
+   * Absolute URLs of the Google Fonts stylesheets loaded in the preview
+   * iframe. Reads the `href` property (not the attribute) so the
+   * protocol-relative `//fonts.googleapis.com/...` the templates emit
+   * resolves to a full URL usable from another document.
+   */
+  private readFontStylesheetUrls(doc: Document): string[] {
+    const links = Array.from(
+      doc.querySelectorAll<HTMLLinkElement>(FONT_STYLESHEET_SELECTOR),
+    );
+
+    return [...new Set(links.map((link) => link.href))];
+  }
+
+  /**
+   * Loads the given font stylesheets into the editor's own document, where
+   * the plain-text overlay renders. Left in place once the overlay closes:
+   * they're cached and a site only uses a couple of fonts, so there's no
+   * point re-adding them on every edit.
+   */
+  private loadFontStylesheets(urls: string[]) {
+    const loaded = new Set(
+      Array.from(
+        document.head.querySelectorAll<HTMLLinkElement>(
+          `link[${FONT_STYLESHEET_ATTR}]`,
+        ),
+      ).map((link) => link.href),
+    );
+
+    urls
+      .filter((url) => !loaded.has(url))
+      .forEach((url) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.setAttribute(FONT_STYLESHEET_ATTR, '');
+        document.head.appendChild(link);
+      });
   }
 
   private createVirtualOrigin(el: HTMLElement, iframe: HTMLIFrameElement) {

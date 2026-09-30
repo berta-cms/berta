@@ -102,6 +102,11 @@ export class InlineEditRichTextOverlayComponent
   @Input() value = '';
   @Input() simple = false;
   @Input() contentStyle: Record<string, string> = {};
+  /**
+   * Google Fonts stylesheets from the preview page, loaded into TinyMCE's
+   * editing iframe so a `font-family` from `contentStyle` actually resolves.
+   */
+  @Input() fontStylesheets: string[] = [];
   @Output() save = new EventEmitter<string>();
   /**
    * Fires with the editor's current rendered height (toolbar chrome +
@@ -157,6 +162,8 @@ export class InlineEditRichTextOverlayComponent
     tinymce.init({
       target: this.targetEl.nativeElement,
       ...config,
+      // `default` is TinyMCE's own content skin (its default value here).
+      content_css: ['default', ...this.fontStylesheets],
       // The service closes the overlay once the save settles either way,
       // so one emission per overlay is all that's ever needed — this stops
       // a double-click on Save dispatching the same save twice.
