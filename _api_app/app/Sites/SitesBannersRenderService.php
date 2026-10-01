@@ -14,7 +14,7 @@ class SitesBannersRenderService
         $classes[] = 'banner-' . $banner->index;
 
         if ($isEditMode && ! $isResponsive) {
-            $classes[] = 'xEditableDragXY';
+            $classes[] = 'xNgEditableDragXY';
             $classes[] = 'xProperty-banner' . $banner->index . 'XY';
         }
 

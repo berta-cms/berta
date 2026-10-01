@@ -14,7 +14,7 @@ if (! 1) { ?><style type="text/css"><?php } ?>
 		left: 0; top: 0;
 	}
 
-	.xEntry.xEditableDragXY { cursor: default; }
+	.xEntry.xNgEditableDragXY { cursor: default; }
 	.xEntry.xSaving * {
 		opacity: 0.7;
 		-moz-opacity: 0.7;

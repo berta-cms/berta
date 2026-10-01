@@ -235,7 +235,7 @@ class SectionEntryRenderService
             }
 
             if ($isResponsive == 'no') {
-                $classes = array_merge($classes, ['mess', 'xEditableDragXY', 'xProperty-positionXY']);
+                $classes = array_merge($classes, ['mess', 'xNgEditableDragXY', 'xProperty-positionXY']);
             }
         }
 

@@ -6,7 +6,7 @@ use App\Shared\Helpers;
 
 class SectionsMenuRenderService
 {
-    private $DRAGGABLE_MENU_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-positionXY'];
+    private $DRAGGABLE_MENU_CLASSES = ['mess', 'xNgEditableDragXY', 'xProperty-positionXY'];
 
     private function getTags($sectionTags, $sectionSlug, $tagSlug)
     {

@@ -154,11 +154,6 @@ var BertaEditor = new Class({
                   },
                 })
               );
-
-              var $xCreateNewEntry = $$(".xCreateNewEntry");
-              $xCreateNewEntry.makeDraggable({
-                handle: $xCreateNewEntry.getElement(".xHandle"),
-              });
             }
 
             // galleries
@@ -172,9 +167,6 @@ var BertaEditor = new Class({
             this.entriesList
               .getElements(".xGalleryEditButton")
               .addEvent("click", this.onGalleryEditClick.bindWithEvent(this));
-
-            // editables
-            this.editablesInit();
 
             // entry sorting
             if (!this.entriesList.hasClass("xNoEntryOrdering")) {
@@ -258,8 +250,6 @@ var BertaEditor = new Class({
               h1.hide();
             }
           }
-        } else {
-          this.editablesInit();
         }
         break;
     }
@@ -297,23 +287,6 @@ var BertaEditor = new Class({
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  INIT  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  editablesInit: function () {
-    // instantiate all xEditable elements in the page
-    // dragging /////////////////////////////////////////////////////////////////////////////////////////
-    var draggableElements = $$(this.options.xBertaEditorClassDragXY);
-    if (draggableElements.length) {
-      this.initGuideLines();
-    }
-
-    draggableElements.each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassDragXY);
-      }.bind(this)
-    );
-
-    this.fireEvent(BertaEditor.EDITABLES_INIT);
-  },
 
   highlightNewEntry: function () {
     var idToHighlight = Cookie.read("_berta__entry_highlight");
@@ -554,7 +527,5 @@ var BertaEditor = new Class({
     );
   },
 });
-
-BertaEditor.EDITABLES_INIT = "editables_init";
 
 window.bertaEditor = new BertaEditor(window.bertaGlobalOptions);

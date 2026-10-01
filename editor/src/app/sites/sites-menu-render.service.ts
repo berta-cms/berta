@@ -6,7 +6,7 @@ import { TwigTemplateRenderService } from '../render/twig-template-render.servic
   providedIn: 'root',
 })
 export class SitesMenuRenderService {
-  DRAGGABLE_MENU_CLASSES = 'mess xEditableDragXY xProperty-multisitesXY';
+  DRAGGABLE_MENU_CLASSES = 'mess xNgEditableDragXY xProperty-multisitesXY';
 
   constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 

@@ -8,7 +8,7 @@ import { TwigTemplateRenderService } from '../render/twig-template-render.servic
 export class SitesHeaderRenderService {
   DRAGGABLE_HEADING_CLASSES = [
     'mess',
-    'xEditableDragXY',
+    'xNgEditableDragXY',
     'xProperty-siteHeadingXY',
   ];
   EDITABLE_CLASSES = ['xNgEditable', 'xProperty-siteHeading'];

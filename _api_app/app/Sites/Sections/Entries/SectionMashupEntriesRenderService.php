@@ -83,7 +83,7 @@ class SectionMashupEntriesRenderService
         }
 
         if ($isEditMode && ! $isResponsive) {
-            $classes = array_merge($classes, ['xEditableDragXY', 'xProperty-positionXY']);
+            $classes = array_merge($classes, ['xNgEditableDragXY', 'xProperty-positionXY']);
         }
 
         $attributes['class'] = implode(' ', $classes);

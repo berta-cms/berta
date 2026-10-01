@@ -98,18 +98,8 @@ var MessyMess = new Class({
       that.copyrightStickToBottom();
     }, 1000);
 
-    var messyItems = $$('.mess');
-
     if (bertaGlobalOptions.environment == 'engine') {
-      messyItems.each(function (el) {
-        if (el.getChildren('.xHandle').length === 0 && !el.hasClass('xEntry')) {
-          el.adopt(new Element('div', { 'class': 'xHandle' }));
-        }
-      });
-      $$('.xEntryMove').addClass('xHandle');
       $$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
-
-      bertaEditor.fixDragHandlePos();
     }
 
 
@@ -387,7 +377,7 @@ var MessyMess = new Class({
 
     if (bottom) {
       var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
-      var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
+      var allDraggables = $$('.xNgEditableDragXY:not(.xFixed)');
       var maxY = y = 0;
       var windowH = window.getSize().y;
       var windowW = window.getSize().x;

@@ -29,7 +29,7 @@ export class ShopCartRenderService {
 
     return toHtmlAttributes({
       class: !isResponsive
-        ? ['mess', 'xEditableDragXY', 'xProperty-shoppingCartXY'].join(' ')
+        ? ['mess', 'xNgEditableDragXY', 'xProperty-shoppingCartXY'].join(' ')
         : null,
       style: styles.join(';'),
       'data-path': !isResponsive

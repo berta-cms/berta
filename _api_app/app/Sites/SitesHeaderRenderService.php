@@ -8,7 +8,7 @@ use App\Shared\Storage;
 
 class SitesHeaderRenderService
 {
-    private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-siteHeadingXY'];
+    private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xNgEditableDragXY', 'xProperty-siteHeadingXY'];
 
     private $EDITABLE_CLASSES = ['xNgEditable', 'xProperty-siteHeading'];
 

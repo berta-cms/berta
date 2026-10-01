@@ -7,7 +7,7 @@ import { TwigTemplateRenderService } from '../../render/twig-template-render.ser
   providedIn: 'root',
 })
 export class AdditionalTextRenderService {
-  DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
+  DRAGGABLE_CLASSES = ['xNgEditableDragXY', 'xProperty-additionalTextXY'];
   EDITABLE_CLASSES = [
     'xNgEditableRTESimple',
     'xProperty-additionalText',

@@ -101,6 +101,20 @@ export class UpdateSectionEntryAction {
   ) {}
 }
 
+/**
+ * Saves `content/positionXY` of one or more entries of a section in a single
+ * request (preview drag and drop). Deliberately not handled by the preview
+ * rerender, since the dragged elements are already in their final position.
+ */
+export class UpdateSectionEntriesPositionAction {
+  static readonly type = 'SECTION_ENTRIES:UPDATE_POSITION';
+  constructor(
+    public site: string,
+    public section: string,
+    public positions: { id: string; value: string }[],
+  ) {}
+}
+
 export class OrderSectionEntriesFromSyncAction {
   static readonly type = 'SECTION_ENTRIES:ORDER:SYNC';
   constructor(

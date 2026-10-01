@@ -13,6 +13,7 @@ import {
   RICH_TEXT_MIN_HEIGHT,
 } from './inline-edit-rich-text-overlay.component';
 import { resolveInlineEditAction } from './inline-edit-path.resolver';
+import { centeringOffset } from '../drag-position/drag-position.math';
 
 const EDITABLE_SELECTOR = '.xNgEditable, .xNgEditableTA';
 const MULTILINE_CLASS = 'xNgEditableTA';
@@ -304,10 +305,11 @@ export class InlineEditService {
    * `.xEntry` and, when the page layout is centered, compensates the
    * entry's inline `left` for the coordinate-frame change `.xFixed` causes
    * (`position: fixed` switches it from container-relative to
-   * viewport-relative). This compensation must stay exact: the engine's
-   * drag-and-drop handler (`BertaEditorBase.js`) reads/re-applies the same
-   * formula at drag-end, so an uncompensated value here would be silently
-   * corrupted the next time the entry is dragged.
+   * viewport-relative). This compensation must stay exact: the preview's
+   * drag-and-drop (`DragPositionService`) removes the same `centeringOffset`
+   * from `.xFixed` elements when saving their position, so an uncompensated
+   * value here would be silently corrupted the next time the entry is
+   * dragged.
    */
   private applyFixedPositionSideEffect(
     entry: HTMLElement,
@@ -316,16 +318,14 @@ export class InlineEditService {
   ) {
     const contentWindow = iframe.contentWindow;
     const container =
-      iframe.contentDocument?.getElementById('contentContainer');
+      iframe.contentDocument?.getElementById('contentContainer') ?? null;
 
     entry.classList.toggle('xFixed', becomingFixed);
 
     if (container?.classList.contains('xCentered') && contentWindow) {
       const currentLeft =
         parseInt(contentWindow.getComputedStyle(entry).left || '0', 10) || 0;
-      const delta =
-        (contentWindow.innerWidth - container.getBoundingClientRect().width) /
-        2;
+      const delta = centeringOffset(contentWindow, container);
 
       entry.style.left = `${becomingFixed ? currentLeft + delta : currentLeft - delta}px`;
     }

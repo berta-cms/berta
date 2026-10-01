@@ -50,7 +50,7 @@ export class SectionEntryRenderService {
       if (!isResponsive) {
         classes = [
           ...classes,
-          ...['mess', 'xEditableDragXY', 'xProperty-positionXY'],
+          ...['mess', 'xNgEditableDragXY', 'xProperty-positionXY'],
         ];
       }
     }

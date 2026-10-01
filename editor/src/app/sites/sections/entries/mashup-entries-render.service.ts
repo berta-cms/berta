@@ -126,7 +126,7 @@ export class MashupEntriesRenderService {
     }
 
     if (!isResponsive) {
-      classes = [...classes, ...['xEditableDragXY', 'xProperty-positionXY']];
+      classes = [...classes, ...['xNgEditableDragXY', 'xProperty-positionXY']];
     }
 
     return toHtmlAttributes({

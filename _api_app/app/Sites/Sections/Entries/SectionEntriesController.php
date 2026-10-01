@@ -39,6 +39,17 @@ class SectionEntriesController extends Controller
         return response()->json($res);
     }
 
+    /**
+     * Save `positionXY` of several entries in one request (editor drag and drop)
+     */
+    public function positions(UpdateEntryPositionsRequest $request)
+    {
+        $sectionEntriesDataService = new SectionEntriesDataService($request->validated('site') ?? '', $request->validated('section'));
+        $res = $sectionEntriesDataService->savePositions($request->validated('positions'));
+
+        return response()->json($res);
+    }
+
     public function order(Request $request)
     {
         $json = $request->json()->all();
