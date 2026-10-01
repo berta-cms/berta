@@ -8,7 +8,7 @@ import { TwigTemplateRenderService } from '../../render/twig-template-render.ser
   providedIn: 'root',
 })
 export class SectionsMenuRenderService {
-  DRAGGABLE_MENU_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-positionXY'];
+  DRAGGABLE_MENU_CLASSES = ['mess', 'xNgEditableDragXY', 'xProperty-positionXY'];
 
   constructor(
     public sectionRenderService: SectionRenderService,

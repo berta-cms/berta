@@ -12,7 +12,7 @@ export class SitesBannersRenderService {
     let classes = ['floating-banner', `banner-${banner.index}`];
 
     if (!isResponsive) {
-      classes.push('xEditableDragXY');
+      classes.push('xNgEditableDragXY');
       classes.push(`xProperty-banner${banner.index}XY`);
     }
 

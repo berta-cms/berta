@@ -433,6 +433,54 @@ class SectionEntriesDataService extends Storage
         return $ret;
     }
 
+    /**
+     * Saves `content/positionXY` for several entries with a single XML write.
+     * Unknown entry ids are skipped.
+     *
+     * @param  array<int, array{id: string|int, value: string}>  $positions
+     * @return array{site: string, section: string, positions: array<int, array{id: string, value: string}>}
+     */
+    public function savePositions(array $positions): array
+    {
+        $entries = $this->get();
+        $indexById = [];
+
+        foreach ($entries[self::$ROOT_LIST_ELEMENT] as $i => $entry) {
+            $indexById[(string) $entry['id']] = $i;
+        }
+
+        $saved = [];
+
+        foreach ($positions as $position) {
+            $id = (string) $position['id'];
+
+            if (! isset($indexById[$id])) {
+                continue;
+            }
+
+            $index = $indexById[$id];
+            $value = trim($position['value']);
+
+            if (! isset($entries[self::$ROOT_LIST_ELEMENT][$index]['content']) || ! is_array($entries[self::$ROOT_LIST_ELEMENT][$index]['content'])) {
+                $entries[self::$ROOT_LIST_ELEMENT][$index]['content'] = [];
+            }
+
+            $entries[self::$ROOT_LIST_ELEMENT][$index]['content']['positionXY'] = $value;
+            $saved[] = ['id' => $id, 'value' => $value];
+        }
+
+        if ($saved) {
+            $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+            SectionUpdated::dispatch($this->SITE, $this->SECTION_NAME);
+        }
+
+        return [
+            'site' => $this->SITE,
+            'section' => $this->SECTION_NAME,
+            'positions' => $saved,
+        ];
+    }
+
     public function create($name = null)
     {
         while (file_exists($this->XML_FILE)) {

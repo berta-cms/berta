@@ -39,6 +39,7 @@ import {
   DeleteEntryGalleryFileAction,
   UpdateEntryGalleryFileAction,
   UpdateSectionEntryAction,
+  UpdateSectionEntriesPositionAction,
   UpdateEntryGalleryVideoPosterAction,
   UpdateEntryGalleryImageCropAction,
   SwapContentsSitesSectionsEntriesAction,
@@ -500,6 +501,46 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
+        }),
+      );
+  }
+
+  @Action(UpdateSectionEntriesPositionAction)
+  updateSectionEntriesPosition(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: UpdateSectionEntriesPositionAction,
+  ) {
+    const siteName = action.site === '0' ? '' : action.site;
+
+    return this.appStateService
+      .sync('sectionEntriesPositions', {
+        site: siteName,
+        section: action.section,
+        positions: action.positions,
+      })
+      .pipe(
+        tap((response) => {
+          const saved = new Map<string, string>(
+            response.positions.map(({ id, value }) => [id, value]),
+          );
+          const currentState = getState();
+
+          patchState({
+            [siteName]: (currentState[siteName] ?? []).map((entry) => {
+              if (
+                entry.sectionName !== action.section ||
+                !saved.has(entry.id)
+              ) {
+                return entry;
+              }
+
+              return assignByPath(
+                entry,
+                'content/positionXY',
+                saved.get(entry.id),
+              );
+            }),
+          });
         }),
       );
   }

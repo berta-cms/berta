@@ -44,6 +44,7 @@ class StateController extends Controller
             'sectionTags' => route('section_tags'),
             'sectionEntries' => route('section_entries'),
             'sectionEntriesMove' => route('section_entries_move'),
+            'sectionEntriesPositions' => route('section_entries_positions'),
             'entryGallery' => route('entry_gallery'),
             'entryGalleryUpload' => route('entry_gallery_upload'),
         ];

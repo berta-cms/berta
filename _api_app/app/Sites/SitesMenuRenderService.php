@@ -6,7 +6,7 @@ use App\Shared\Helpers;
 
 class SitesMenuRenderService
 {
-    private $DRAGGABLE_MENU_CLASSES = 'mess xEditableDragXY xProperty-multisitesXY';
+    private $DRAGGABLE_MENU_CLASSES = 'mess xNgEditableDragXY xProperty-multisitesXY';
 
     private function getStyles($params)
     {

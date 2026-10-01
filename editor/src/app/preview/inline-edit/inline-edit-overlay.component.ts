@@ -164,8 +164,8 @@ export class InlineEditOverlayComponent implements AfterViewInit {
 
     const collapsed = value.replace(/\s*\n+\s*/g, ' ').trim();
 
-    // Matches legacy's `elementEdit_save` (BertaEditorBase.js): a value
-    // ending in " px"/" pt"/" em" drops the space before the unit.
+    // A value ending in " px"/" pt"/" em" drops the space before the unit
+    // (legacy behaviour).
     return collapsed.replace(/\s(px|pt|em)$/i, '$1');
   }
 }

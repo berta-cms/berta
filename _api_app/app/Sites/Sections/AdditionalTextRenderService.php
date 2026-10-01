@@ -8,7 +8,7 @@ class AdditionalTextRenderService
 {
     public $socialMediaLinksRS;
 
-    private $DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
+    private $DRAGGABLE_CLASSES = ['xNgEditableDragXY', 'xProperty-additionalTextXY'];
 
     private $EDITABLE_CLASSES = ['xNgEditableRTESimple', 'xProperty-additionalText', 'xCaption-additional-text'];
 

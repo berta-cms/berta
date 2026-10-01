@@ -95,6 +95,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     Route::put('entries', [SectionEntriesController::class, 'order']);
     Route::delete('entries', [SectionEntriesController::class, 'delete']);
     Route::patch('entries/move', [SectionEntriesController::class, 'move'])->name('section_entries_move');
+    Route::patch('entries/positions', [SectionEntriesController::class, 'positions'])->name('section_entries_positions');
     Route::put('entries/galleries', [SectionEntriesController::class, 'galleryOrder'])->name('entry_gallery');
     Route::post('entries/galleries', [SectionEntriesController::class, 'galleryUpload'])->name('entry_gallery_upload');
     Route::patch('entries/galleries', [SectionEntriesController::class, 'galleryCrop']);

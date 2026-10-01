@@ -157,8 +157,14 @@ input[type="submit"]:hover {
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
-.xEditableDragXY {
+.xNgEditableDragXY {
     cursor: move;
+}
+
+/* Dragged with pointer events (DragPositionService), so touch too */
+.xNgEditableDragXY .xHandle,
+.xCreateNewEntry .xHandle {
+    touch-action: none;
 }
 
 /*
