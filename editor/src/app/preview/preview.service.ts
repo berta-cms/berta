@@ -22,7 +22,6 @@ import {
 } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
-import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
 import { RerenderService } from '../rerender/rerender.service';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 
@@ -118,33 +117,6 @@ export class PreviewService {
                 update: data.value,
                 value: data.value,
                 section: section,
-              };
-            }),
-          );
-
-      case 'sites/sections/tags':
-        return this.store
-          .dispatch(
-            new OrderSectionTagsFromSyncAction(
-              data.site,
-              data.section,
-              data.tag,
-              data.value,
-            ),
-          )
-          .pipe(
-            map((state) => state['sectionTags']),
-            map((state) => {
-              const order = state[data.site].section
-                .find((section) => section['@attributes'].name === data.section)
-                .tag.map((tag) => tag)
-                .sort((a, b) => a.order - b.order)
-                .map((tag) => tag['@attributes'].name);
-
-              return {
-                site_name: data.site,
-                section_name: data.section,
-                order: order,
               };
             }),
           );

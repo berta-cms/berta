@@ -131,11 +131,11 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     ];
 
     if (tagSlug) {
-      classes.push(`xTag-${tagSlug}}`);
+      classes.push(`xTag-${tagSlug}`);
     }
 
     if (isResponsive && currentSection.columns) {
-      classes.push(`columns-${currentSection.columns}}`);
+      classes.push(`columns-${currentSection.columns}`);
     }
 
     if (!isResponsive) {

@@ -167,6 +167,46 @@ input[type="submit"]:hover {
     touch-action: none;
 }
 
+/* Sorted with pointer events (SortableService), so touch too */
+.xEntryEditWrapButtons a.xEntryMove,
+.portfolioThumbnail .xHandle,
+.subMenu.xAllowOrdering a.handle {
+    touch-action: none;
+}
+
+/* SortableService: the dragged item stays in its list as the drop placeholder… */
+.xSortDragging {
+    opacity: 0.25;
+    outline: 2px dashed rgba(0, 0, 0, 0.5);
+    outline-offset: -2px;
+}
+
+/* …while its preview follows the pointer */
+.xSortGhost {
+    opacity: 0.9;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.xSortGhost,
+.xSortGhost * {
+    pointer-events: none !important;
+}
+
+/* Preview of a tall item: its top part, fading out */
+.xSortGhostClipped {
+    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+    mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+.xSorting,
+.xSorting * {
+    cursor: grabbing !important;
+}
+
+.xSortActive .xCreateNewEntry {
+    visibility: hidden;
+}
+
 /*
  * A click that visually lands on an embedded iframe (e.g. a pasted video
  * embed) never bubbles to the parent document at all — iframes are a
