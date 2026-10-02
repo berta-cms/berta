@@ -1,6 +1,6 @@
 var BertaEditor = new Class({
   Extends: BertaEditorBase,
-  Implements: [Options, UnlinearProcessDispatcher, Events],
+  Implements: [Options, Events],
 
   options: {
     paths: null,
@@ -9,7 +9,6 @@ var BertaEditor = new Class({
   /* editing related variables */
   edittingMode: "entries",
   galleries: new Array(),
-  processHandler: null, // an instance of UnlinearProcessHandler
 
   /* DOM elements */
   entriesList: null, // the OL element thad contains the entries
@@ -24,11 +23,6 @@ var BertaEditor = new Class({
 
   initialize: function (options) {
     this.setOptions(options);
-    this.initConsoleReplacement();
-
-    this.processHandler = new UnlinearProcessHandler();
-    this.processHandler.addObservable(this);
-    this.processHandler.test = "aaa";
 
     ["sitesMenuRerendered", "sectionsMenuRerendered"].forEach(
       function (e) {
