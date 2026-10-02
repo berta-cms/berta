@@ -13,16 +13,12 @@ var BertaEditor = new Class({
 
   /* DOM elements */
   entriesList: null, // the OL element thad contains the entries
-  portfolioThumbnails: null,
-  subMenu: null,
 
   /* variables containing information */
   currentSection: null, // the name of the section opened
   currentTag: null, // the name of the tag selected
 
   /* old */
-  submenuSortables: new Array(),
-  orderSortables: null,
   tagsMenu: null,
   /* old */
 
@@ -69,7 +65,6 @@ var BertaEditor = new Class({
       default:
         this.container = document.getElementById("contentContainer");
         this.entriesList = $$(".xEntriesList")[0];
-        this.portfolioThumbnails = $$(".portfolioThumbnails");
 
         // section background editing
         if ($("xBgEditorPanelTrig"))
@@ -100,8 +95,6 @@ var BertaEditor = new Class({
             this.entriesList
               .getElements(".xEntry .xEntryDropdown")
               .addEvent("click", this.entryDropdownToggle.bindWithEvent(this));
-
-            this.submenuSortingInit();
 
             this.entriesList
               .getElements(".xEntry .xEntryDropdownBox")
@@ -167,56 +160,6 @@ var BertaEditor = new Class({
             this.entriesList
               .getElements(".xGalleryEditButton")
               .addEvent("click", this.onGalleryEditClick.bindWithEvent(this));
-
-            // entry sorting
-            if (!this.entriesList.hasClass("xNoEntryOrdering")) {
-              this.orderSortables = new Sortables(this.entriesList, {
-                handle: ".xEntryMove",
-                constrain: true,
-                clone: true,
-                opacity: 0.3,
-                revert: true,
-                onComplete: function (el) {
-                  this.entriesList
-                    .getElements(".xCreateNewEntry")
-                    .setStyle("visibility", "visible");
-                  this.entryOrderSave(el);
-                }.bind(this),
-                onStart: function () {
-                  this.entriesList
-                    .getElements(".xCreateNewEntry")
-                    .setStyle("visibility", "hidden");
-                }.bind(this),
-              });
-
-              if (this.portfolioThumbnails.length) {
-                new Sortables(this.portfolioThumbnails, {
-                  handle: ".xHandle",
-                  constrain: true,
-                  clone: function (_, el) {
-                    // We should create a new clone element with different tag name
-                    // to make nth-of-type css rule work
-                    // nth-of-type works with tag name not class selector
-                    return new Element("span", {
-                      class: "portfolioThumbnail",
-                    })
-                      .setStyles({
-                        display: "block",
-                        visibility: "hidden",
-                        position: "absolute",
-                        left: el.offsetLeft,
-                        top: el.offsetTop,
-                      })
-                      .set("html", el.get("html"));
-                  },
-                  opacity: 0.3,
-                  revert: true,
-                  onComplete: function (el) {
-                    this.portfolioThumbnailsOrderSave(el);
-                  }.bind(this),
-                });
-              }
-            }
 
             // Entry moving to other section
             document
@@ -413,28 +356,6 @@ var BertaEditor = new Class({
     );
   },
 
-  entryOrderSave: function (elJustMoved) {
-    var entryId = elJustMoved.getClassStoredValue("xEntryId");
-    var next = elJustMoved.getNext(".xEntry");
-    var value = next ? next.getClassStoredValue("xEntryId") : null;
-    var site = getCurrentSite();
-
-    redux_store.dispatch(
-      Actions.initOrderSectionEntries(site, this.currentSection, entryId, value)
-    );
-  },
-
-  portfolioThumbnailsOrderSave: function (elJustMoved) {
-    var entryId = elJustMoved.get("data-id");
-    var next = elJustMoved.getNext(".portfolioThumbnail");
-    var value = next ? next.get("data-id") : null;
-    var site = getCurrentSite();
-
-    redux_store.dispatch(
-      Actions.initOrderSectionEntries(site, this.currentSection, entryId, value)
-    );
-  },
-
   entryOnHover: function (event) {
     event = new Event(event);
     var target = $(event.target);
@@ -467,64 +388,6 @@ var BertaEditor = new Class({
     } else {
       dropdown.removeClass("xEntryDropdowHover");
     }
-  },
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///|  Submenu Sorting  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  submenuSortingInit: function () {
-    this.subMenu = $$(".subMenu");
-    if (!this.subMenu.length) {
-      return;
-    }
-
-    var subMenuAnchors = this.subMenu.getElements("a");
-    subMenuAnchors.each(function (item, index) {
-      item.addEvent("click", function (event) {
-        if (this.getParent("ul").hasClass("xSortNotClick")) {
-          event.preventDefault();
-        }
-      });
-    });
-
-    this.subMenu.each(
-      function (item, index) {
-        if (item.hasClass("xAllowOrdering")) {
-          this.submenuSortables[index] = new Sortables(item, {
-            handle: ".handle",
-            constrain: true,
-            clone: true,
-            opacity: 0.3,
-            revert: true,
-            onComplete: function (el) {
-              if (item.hasClass("xSortNotClick")) {
-                this.submenuOrderSave(el, item);
-                item.removeClass("xSortNotClick");
-              }
-            }.bind(this),
-            onStart: function (el, clone) {
-              item.addClass("xSortNotClick");
-            }.bind(this),
-          });
-        }
-      }.bind(this)
-    );
-  },
-
-  submenuOrderSave: function (elJustMoved, subMenu) {
-    subMenu.addClass("xSaving");
-    var site = getCurrentSite();
-    var section = subMenu.getClassStoredValue("xSection");
-    var tag = elJustMoved.getClassStoredValue("xTag");
-    var next = elJustMoved.getNext("li");
-    var value = next ? next.getClassStoredValue("xTag") : null;
-
-    redux_store.dispatch(
-      Actions.initOrderSectionTags(site, section, tag, value, function () {
-        subMenu.removeClass("xSaving");
-      })
-    );
   },
 });
 

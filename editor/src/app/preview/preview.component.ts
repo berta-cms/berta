@@ -13,6 +13,7 @@ import { SiteTemplateSettingsState } from '../sites/template-settings/site-templ
 import { PreviewService } from './preview.service';
 import { InlineEditService } from './inline-edit/inline-edit.service';
 import { DragPositionService } from './drag-position/drag-position.service';
+import { SortableService } from './sortable/sortable.service';
 import { AppShowLoading } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 import { StyleService } from './style.service';
@@ -71,6 +72,7 @@ export class PreviewComponent implements OnInit {
     private service: PreviewService,
     private inlineEditService: InlineEditService,
     private dragPositionService: DragPositionService,
+    private sortableService: SortableService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
@@ -255,6 +257,7 @@ export class PreviewComponent implements OnInit {
         this.service.loadRerenderService(iframe);
         this.inlineEditService.attach(iframe);
         this.dragPositionService.attach(iframe);
+        this.sortableService.attach(iframe);
 
         const styleElement = iframe.contentDocument.createElement('style');
         iframe.contentDocument.head.appendChild(styleElement);
