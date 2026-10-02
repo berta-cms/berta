@@ -1,67 +1,22 @@
-Element.implement({
-  getIndex: function (type) {
-    type = (type) ? type : '';
-    return $$(type).indexOf(this);
-  },
-
-  exists: function () {
-    return this;
-  },
-
-  getClassStoredValue: function (varName) {
-    var c = this.get('class').split(' ');
-    for (var i = 0; i < c.length; i++) {
-      if (c[i].substr(0, c[i].indexOf('-')) == varName) {
-        return c[i].substr(c[i].indexOf('-') + 1);
-      }
-    }
-    return null;
-  },
-
-  setClassStoredValue: function (varName, varValue) {
-    var c = this.get('class').split(' ');
-    var curValue = this.getClassStoredValue(varName);
-    if (curValue) {
-      this.removeClass(varName + '-' + curValue);
-    }
-    this.addClass(varName + '-' + varValue);
-  }
-});
-
-
-
 var Berta = new Class({
 
   Implements: Options,
 
   options: {
-    paths: null,
-    playerType: 'JWPlayer',
     iframeWrapperWhiteList: ['youtube', 'vimeo']
   },
 
-  entriesList: null,
-
   initialize: function (options) {
     this.setOptions(options);
-    window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
-    window.addEvent('load', this.onLoad.bindWithEvent(this));
-
-    if (!window.console) {
-      window.console = {
-        debug: function () {},
-        log: function () {}
-      };
-    }
+    window.addEvent('domready', this.onDOMReady.bind(this));
+    window.addEvent('load', this.onLoad.bind(this));
   },
 
-  onDOMReady: function (event) {
-    this.entriesList = $$('.xEntriesList');
-    if (this.entriesList) this.entriesList = this.entriesList[0];
+  onDOMReady: function () {
     this.windowResizeEvents();
   },
 
-  onLoad: function (event) {
+  onLoad: function () {
     // init entry galleries only in "load" event because otherwise in some browsers
     // (eg. safari), the CSS sometimes is not loaded in time to get the styles from
     // the elements with javascript
@@ -104,30 +59,29 @@ var Berta = new Class({
     var templateName = this.options.templateName.split('-');
     templateName = templateName[0];
 
-    var footerOverlayFix = function () {
-      var windowWidth = window.getSize().x;
-      var windowHeight = window.getSize().y;
-      var sideColumn = $('sideColumn');
-      var sideColumnTop = $('sideColumnTop');
-      var sideColumnBottom = $('sideColumnBottom');
-
-      if (sideColumnBottom && sideColumnBottom) {
-        var sideColumnTopHeight = sideColumnTop.getSize().y;
-        var sideColumnBottomHeight = sideColumnBottom.getSize().y;
-        if ((isResponsive && breakPointWidth > windowWidth) || (windowHeight < sideColumnTopHeight + sideColumnBottomHeight)) {
-          sideColumn.setStyle('position', 'absolute');
-          sideColumnBottom.setStyle('position', 'static');
-        } else {
-          sideColumn.setStyle('position', 'fixed');
-          sideColumnBottom.setStyle('position', 'absolute');
-        }
-      }
-    };
-
     if (templateName == 'mashup' || templateName == 'white') {
-
       var isResponsive = $$('.xResponsive').length;
       var breakPointWidth = 767;
+
+      var footerOverlayFix = function () {
+        var windowWidth = window.getSize().x;
+        var windowHeight = window.getSize().y;
+        var sideColumn = $('sideColumn');
+        var sideColumnTop = $('sideColumnTop');
+        var sideColumnBottom = $('sideColumnBottom');
+
+        if (sideColumnTop && sideColumnBottom) {
+          var sideColumnTopHeight = sideColumnTop.getSize().y;
+          var sideColumnBottomHeight = sideColumnBottom.getSize().y;
+          if ((isResponsive && breakPointWidth > windowWidth) || (windowHeight < sideColumnTopHeight + sideColumnBottomHeight)) {
+            sideColumn.setStyle('position', 'absolute');
+            sideColumnBottom.setStyle('position', 'static');
+          } else {
+            sideColumn.setStyle('position', 'fixed');
+            sideColumnBottom.setStyle('position', 'absolute');
+          }
+        }
+      };
 
       footerOverlayFix.delay(1000);
       $(window).addEvent('resize', footerOverlayFix);
