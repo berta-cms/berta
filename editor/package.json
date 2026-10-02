@@ -23,7 +23,7 @@
     "@angular/forms": "^21.2.22",
     "@angular/platform-browser": "^21.2.22",
     "@angular/platform-browser-dynamic": "^21.2.22",
-    "@angular/router": "^21.2.22",
+    "@angular/router": "^21.2.24",
     "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~21.0.0",
     "@sentry/angular": "^10.18.0",
