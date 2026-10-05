@@ -50,14 +50,12 @@ const frontendCssFiles = [
   "engine/_lib/berta/default.css",
   "engine/_lib/berta/swiper.css",
   "engine/_lib/berta/photoswipe.css",
-  "engine/_lib/milkbox/css/milkbox/milkbox.css",
 ];
 
 const backendJsFiles = [
   "engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js",
   "engine/_lib/mootools/mootools-1.2.5.1-more.js",
   "engine/_lib/picturefill/picturefill.min.js",
-  "engine/_lib/milkbox/js/milkbox.js",
   "engine/js/berta.helpers.js",
   "engine/js/BertaBackToTop.js",
   "engine/js/BertaGallerySlideshow.js",
@@ -108,7 +106,6 @@ const frontendJsFiles = [
   "engine/js/BertaGalleryFullscreen.js",
   "engine/js/BertaPortfolio.js",
   "engine/js/Berta.js",
-  "engine/_lib/milkbox/js/milkbox.js",
   "node_modules/swiper/swiper-bundle.min.js",
   "node_modules/photoswipe/dist/photoswipe.min.js",
   "node_modules/photoswipe/dist/photoswipe-ui-default.min.js",
