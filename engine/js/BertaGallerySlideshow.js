@@ -166,10 +166,9 @@ var BertaGallerySlideshow = class {
           }, this);
 
           swiperEl.querySelectorAll('video').forEach(function (video) {
-            video.addEventListener('loadeddata', function reloadSwiper(e) {
+            video.addEventListener('loadeddata', function () {
               this.gallerySwiper.update();
-              e.target.removeEventListener(e.type, reloadSwiper);
-            }.bind(this), false);
+            }.bind(this), { once: true });
           }, this);
 
           updateVideos(this.gallerySwiper);
