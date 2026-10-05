@@ -22,7 +22,6 @@ return [
     'Heading position' => 'Fija o absoluta la posición de la cabecera. Fijo siempre se queda en un solo lugar, absoluta se mueve junto con el contenido.',
     'description_heading_position' => 'Fija o absoluta la posición de la cabecera. Fijo siempre se queda en un solo lugar, absoluta se mueve junto con el contenido.',
     'description_submenu_alwaysopen' => 'Submenú está abierto cuando elemento de menú está actualizada.',
-    'mobile_device_detected' => '¡Usted no puede usar un dispositivo móvil para editar su sitio!',
     'javascript_include' => 'incluir código Javascript justo antes de cerrar el elemento &lt;/body&gt;. Obtenga más información de cómo <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="Cómo incluir código JavaScript">incluir código JavaScript</a>.',
     'description_custom_css' => 'Coloca el código CSS personalizado aquí. Cualquier definiciones CSS existentes se sobrescribirán. Para obtener más información, visite nuestro <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
     'section_type' => 'Type',

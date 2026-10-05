@@ -448,7 +448,6 @@ return [
     'description_submenu_alwaysopen' => 'Подменю всегда открыто',
     'Submenu is allways open' => 'Подменю всегда открыто',
     'Submenu is hidden' => 'Спрятать подменю',
-    'mobile_device_detected' => 'Невозможно редактировать содержание через данное мобильное устройство!',
     'javascript_include' => 'Код Javascript, который будет включен прямо перед элементом body. Узнайте больше о том, как <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">добавить код JavaScript.</a>',
     'description_custom_css' => 'Добавьте свой код CSS здесь. Ранее заданные дефиниции CSS будут обновлены. Больше информации найдете в нашем <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Справочнике</a>.',
 

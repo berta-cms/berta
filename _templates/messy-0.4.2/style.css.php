@@ -213,19 +213,11 @@ h1 a:active {
 }
 
 #xBackground #xBackgroundRight {
-    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
-        cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
-    <?php } else { ?>
-        cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
-    <?php } ?>
+    cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
 }
 
 #xBackground #xBackgroundLeft {
-    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
-        cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
-    <?php } else { ?>
-        cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
-    <?php } ?>
+    cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
 }
 
 #xBackground #xBackgroundRightCounter,
@@ -240,19 +232,11 @@ h1 a:active {
 }
 
 #xBackground #xBackgroundRightCounter .counterContent {
-    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
-        cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
-    <?php } else { ?>
-        cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
-    <?php } ?>
+    cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
 }
 
 #xBackground #xBackgroundLeftCounter .counterContent {
-    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
-        cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
-    <?php } else { ?>
-        cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
-    <?php } ?>
+    cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
 }
 
 #xBackgroundNext a,

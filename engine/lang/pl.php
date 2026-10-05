@@ -459,7 +459,6 @@ return [
     'description_submenu_alwaysopen' => 'Rozdziały zawsze są otwarte.',
     'Submenu is allways open' => 'Menu podrzędne zawsze otwarte',
     'Submenu is hidden' => 'Menu podrzędne schowane',
-    'mobile_device_detected' => 'Poprawiać treść stronie nie jest możliwe z tym urządzeniem mobilnym!',
     'javascript_include' => 'Kod javascript, który będzie dodany przed elementem &lt;/body&gt;. Dowiedz się więcej jak <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">Jak zawierać kod JavaScript.</a>',
     'description_custom_css' => 'Wprowadź swój kod CSS tu. Definicje CSS, które istniały wcześniej, zostaną przepisane. Do uzyskania więcej informacji obejrzyj   <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 

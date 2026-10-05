@@ -477,7 +477,6 @@ return [
 
     'Submenu is allways open' => 'Submenu is altijd open',
     'Submenu is hidden' => 'Submenu is verborgen',
-    'mobile_device_detected' => 'Je kan op jouw mobiele telefoon de site NIET editen! Jammer!',
     'javascript_include' => 'Javascript code invoegen voor closing &lt;/body&gt; element. Leer hier meer over <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
     'description_custom_css' => 'Plak jouw custom CSS code hier. Bestaande CSS definities worden overschreven. Voor meer informatie ga naar onze <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
     'Custom CSS' => 'Custom CSS.',

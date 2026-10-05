@@ -18,11 +18,6 @@ include_once 'loader.helper.php';
 // detect ajax request
 $IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ! empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-// Detects mobile devices
-include_once '_lib/mobile_device_detect/mobile_device_detect.php';
-$DEVICE_USER_AGENT = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-$MOBILE_DEVICE = mobile_device_detect($DEVICE_USER_AGENT);
-
 // Set multibyte encoding to UTF-8 for better canonization of strings
 if (function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding')) {
     @mb_internal_encoding('UTF-8');
