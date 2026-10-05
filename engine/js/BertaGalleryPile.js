@@ -8,6 +8,10 @@ var BertaGalleryPile = class {
     if (this.is_mobile_device) {
       container.classList.add('bt-is-mobile-device');
     }
+    // empty galleries render no images container
+    if (!container.querySelector('div.xGallery')) {
+      return;
+    }
     this.attach(container);
     this.loadFirst();
     window.addEventListener('resize', window.BertaHelpers.debounce(this.layout_update.bind(this), 200));

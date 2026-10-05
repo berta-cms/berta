@@ -47,7 +47,6 @@ var BertaGallerySlideshow = class {
 
       if (this.options.fullscreen || this.getNext()) {
         var swiperEl = this.imageContainer.querySelector('.swiper');
-        var videos = [];
 
         var loadVideo = function (video) {
           if (video.getAttribute('data-autoplay')) {
@@ -58,6 +57,25 @@ var BertaGallerySlideshow = class {
 
         var unLoadVideo = function (video) {
           video.pause();
+        };
+
+        // Loop mode moves slides around in the DOM, so find videos through the currently active slide
+        var updateVideos = function (gallerySwiper) {
+          var activeSlide = gallerySwiper.slides[gallerySwiper.activeIndex];
+          if (!activeSlide) {
+            return;
+          }
+
+          swiperEl.querySelectorAll('video').forEach(function (video) {
+            if (!activeSlide.contains(video)) {
+              unLoadVideo(video);
+            }
+          });
+
+          var activeVideo = activeSlide.querySelector('video');
+          if (activeVideo) {
+            loadVideo(activeVideo);
+          }
         };
 
         // Make gallery fit the screen in width for row gallery slideshow fallback
@@ -139,20 +157,14 @@ var BertaGallerySlideshow = class {
             }.bind(this));
           }, this);
 
-          swiperEl.querySelectorAll('.swiper-slide').forEach(function (slide, i) {
-            var video = slide.querySelector('video');
-            if (video) {
-              videos[i] = video;
-              video.addEventListener('loadeddata', function reloadSwiper(e) {
-                this.gallerySwiper.update();
-                e.target.removeEventListener(e.type, reloadSwiper);
-              }.bind(this), false);
-            }
+          swiperEl.querySelectorAll('video').forEach(function (video) {
+            video.addEventListener('loadeddata', function reloadSwiper(e) {
+              this.gallerySwiper.update();
+              e.target.removeEventListener(e.type, reloadSwiper);
+            }.bind(this), false);
           }, this);
 
-          if (videos[this.gallerySwiper.activeIndex]) {
-            loadVideo(videos[this.gallerySwiper.activeIndex]);
-          }
+          updateVideos(this.gallerySwiper);
         }.bind(this));
 
         this.gallerySwiper.on('init slideChange resize', function () {
@@ -168,13 +180,7 @@ var BertaGallerySlideshow = class {
 
         this.gallerySwiper.on('slideChange', function () {
           var gallerySwiper = this;
-          if (videos[gallerySwiper.previousIndex]) {
-            unLoadVideo(videos[gallerySwiper.previousIndex]);
-          }
-
-          if (videos[gallerySwiper.activeIndex]) {
-            loadVideo(videos[gallerySwiper.activeIndex]);
-          }
+          updateVideos(gallerySwiper);
 
           nav_highlightItem(navContainer.querySelectorAll('li')[gallerySwiper.realIndex]);
         });

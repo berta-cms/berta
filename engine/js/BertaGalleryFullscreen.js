@@ -30,8 +30,12 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
 
     // Video slide
     } else {
+      // Loop mode moves slides around in the DOM, find the slide by its real index
+      var videoItem = isLoopSlideshow
+        ? galleryEl.querySelector('.swiper-slide[data-swiper-slide-index="' + i + '"] .xGalleryItem')
+        : items[i];
       slide = {
-        html: items[i + (isLoopSlideshow ? 1 : 0)].outerHTML
+        html: videoItem.outerHTML
       };
     }
 
