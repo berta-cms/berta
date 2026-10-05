@@ -56,18 +56,14 @@ const frontendCssFiles = [
 const backendJsFiles = [
   "engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js",
   "engine/_lib/mootools/mootools-1.2.5.1-more.js",
-  "engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js",
-  "engine/_lib/mootools/Element.Data.js",
   "engine/_lib/picturefill/picturefill.min.js",
   "engine/_lib/milkbox/js/milkbox.js",
   "engine/js/berta.helpers.js",
-  "engine/js/berta.element.js",
   "engine/js/BertaBackToTop.js",
   "engine/js/BertaGallerySlideshow.js",
   "engine/js/BertaGalleryRow.js",
   "engine/js/BertaGalleryColumn.js",
   "engine/js/BertaGalleryPile.js",
-  "engine/js/BertaGalleryLink.js",
   "engine/js/BertaGalleryGrid.js",
   "engine/js/BertaPortfolio.js",
   "engine/js/BertaEditorBase.js",
@@ -101,17 +97,13 @@ var backendNgJsFiles = [
 const frontendJsFiles = [
   "engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js",
   "engine/_lib/mootools/mootools-1.2.5.1-more.js",
-  "engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js",
-  "engine/_lib/mootools/Element.Data.js",
   "engine/_lib/picturefill/picturefill.min.js",
   "engine/js/berta.helpers.js",
-  "engine/js/berta.element.js",
   "engine/js/BertaBackToTop.js",
   "engine/js/BertaGallerySlideshow.js",
   "engine/js/BertaGalleryRow.js",
   "engine/js/BertaGalleryColumn.js",
   "engine/js/BertaGalleryPile.js",
-  "engine/js/BertaGalleryLink.js",
   "engine/js/BertaGalleryGrid.js",
   "engine/js/BertaGalleryFullscreen.js",
   "engine/js/BertaPortfolio.js",
@@ -227,9 +219,7 @@ const backendJs = () => {
     .pipe(
       gulpif(
         (file) => production && !/\.min\.js$/i.test(file.path),
-        minifyJs().on("error", function (e) {
-          console.log(e);
-        })
+        minifyJs()
       )
     )
     .pipe(concat("backend.min.js"))
@@ -243,9 +233,7 @@ const frontendJs = () => {
     .pipe(
       gulpif(
         (file) => production && !/\.min\.js$/i.test(file.path),
-        minifyJs().on("error", function (e) {
-          console.log(e);
-        })
+        minifyJs()
       )
     )
     .pipe(concat("frontend.min.js"))
@@ -264,9 +252,7 @@ const backendNgJs = () => {
     .pipe(
       gulpif(
         production,
-        minifyJs().on("error", function (e) {
-          console.log(e);
-        })
+        minifyJs()
       )
     )
     .pipe(gulpif(production, sourcemaps.write("/maps")))
@@ -287,11 +273,12 @@ const tasks = series(
   )
 );
 
-const build = (cb) => {
+const enableProduction = (cb) => {
   production = true;
-  tasks();
   cb();
 };
+
+const build = series(enableProduction, tasks);
 
 const dev = (cb) => {
   tasks();

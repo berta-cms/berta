@@ -1,12 +1,9 @@
-var BertaGalleryGrid = new Class({
-  container: null,
-  imageContainer: null,
-
-  initialize: function (container) {
-    if (container.hasClass('xInitialized')) {
+var BertaGalleryGrid = class {
+  constructor(container) {
+    if (container.classList.contains('xInitialized')) {
       return;
     }
-    container.addClass('xInitialized');
+    container.classList.add('xInitialized');
     this.attach(container);
     this.layout_update();
 
@@ -14,30 +11,29 @@ var BertaGalleryGrid = new Class({
       this.attachFullscreen();
     }
 
-    window.addEvent('resize', window.BertaHelpers.debounce(this.layout_update.bindWithEvent(this), 200));
-  },
+    window.addEventListener('resize', window.BertaHelpers.debounce(this.layout_update.bind(this), 200));
+  }
 
-  attach: function (container) {
+  attach(container) {
     this.container = container;
-    this.fullscreen = this.container.get('data-fullscreen') !== null;
-    this.imageContainer = this.container.getElement('div.xGallery');
-  },
+    this.fullscreen = this.container.getAttribute('data-fullscreen') !== null;
+    this.imageContainer = this.container.querySelector('div.xGallery');
+  }
 
-  attachFullscreen: function () {
-    var items = this.container.getElements('.xGalleryItem');
-    items.each(function (item, i) {
-      if (item.hasClass('xGalleryItemType-video')) {
+  attachFullscreen() {
+    this.container.querySelectorAll('.xGalleryItem').forEach((item, i) => {
+      if (item.classList.contains('xGalleryItemType-video')) {
         return;
       }
 
-      item.setStyle('cursor', 'pointer');
-      item.addEvent('click', function () {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', () => {
         BertaGalleryFullscreen(this.container, i);
-      }.bindWithEvent(this));
-    }, this);
-  },
+      });
+    });
+  }
 
-  getColumnCount: function () {
+  getColumnCount() {
     if (!this.imageContainer) {
       return 1;
     }
@@ -45,25 +41,25 @@ var BertaGalleryGrid = new Class({
     var width = window.innerWidth;
 
     if (width >= 1200) {
-      return this.imageContainer.get('xGridColumnsLarge') || 3;
+      return this.imageContainer.getAttribute('xGridColumnsLarge') || 3;
     } else if (width >= 768) {
-      return this.imageContainer.get('xGridColumnsDesktop') || 2;
+      return this.imageContainer.getAttribute('xGridColumnsDesktop') || 2;
     }
 
-    return this.imageContainer.get('xGridColumnsMobile') || 1;
-  },
+    return this.imageContainer.getAttribute('xGridColumnsMobile') || 1;
+  }
 
-  layout_update: function () {
+  layout_update() {
     if (!this.imageContainer) {
       return;
     }
 
     var columns = this.getColumnCount();
-    this.imageContainer.setStyle('grid-template-columns', 'repeat(' + columns + ', 1fr)');
+    this.imageContainer.style.gridTemplateColumns = 'repeat(' + columns + ', 1fr)';
 
-    var gridGap = this.imageContainer.get('xGridGap');
+    var gridGap = this.imageContainer.getAttribute('xGridGap');
     if (gridGap) {
-      this.imageContainer.setStyle('gap', gridGap);
+      this.imageContainer.style.gap = gridGap;
     }
   }
-});
+};

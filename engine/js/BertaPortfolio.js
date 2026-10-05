@@ -1,28 +1,28 @@
-var BertaPortfolio = new Class({
+var BertaPortfolio = class {
+  constructor() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', this.onDOMReady.bind(this));
+    } else {
+      this.onDOMReady();
+    }
+    window.addEventListener('addEntry', this.onAddPortfolio.bind(this));
+  }
 
-  Implements: Options,
-
-  initialize: function (options) {
-    this.setOptions(options);
-    window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
-    window.addEventListener('addEntry',this.onAddPortfolio.bindWithEvent(this))
-  },
-
-  onAddPortfolio: function () {
+  onAddPortfolio() {
     // after adding portfolio entry
-    this.portfolioThumbnails()
-  },
-
-  onDOMReady: function () {
     this.portfolioThumbnails();
-  },
+  }
 
-  showEntry: function (entry) {
-    entry.removeClass('xHidden');
-    var galleries = entry.getElements('.xGalleryContainer');
+  onDOMReady() {
+    this.portfolioThumbnails();
+  }
+
+  showEntry(entry) {
+    entry.classList.remove('xHidden');
+    var galleries = entry.querySelectorAll('.xGalleryContainer');
 
     setTimeout(function () {
-      galleries[0].each(function (item) {
+      galleries.forEach(function (item) {
         if (bertaGlobalOptions.environment == 'site') {
           berta.initGallery(item);
         } else {
@@ -30,31 +30,36 @@ var BertaPortfolio = new Class({
         }
       });
     }, 500);
-  },
+  }
 
-  portfolioThumbnails: function () {
-    var container = $$('.portfolioThumbnails');
-    var entries = $$('.xEntry');
-    that = this;
-
-    if (container.length) {
-      var links = container.getElements('a');
-
-      $$(links).addEvent('click', function (event) {
-        var target = $$(this.get('href'));
-        entries.addClass('xHidden');
-        that.showEntry(target);
-      });
+  // Portfolio links and URL hash point to an entry id: `#entry-slug`
+  getEntryByHash(hash) {
+    if (!hash || hash.charAt(0) !== '#') {
+      return null;
     }
+    return document.getElementById(hash.slice(1));
+  }
 
-    var hash = window.location.hash;
-    if (hash.length) {
-      var link = $$(hash);
-      if (link.length) {
-        this.showEntry(link);
-      }
+  portfolioThumbnails() {
+    var entries = document.querySelectorAll('.xEntry');
+
+    document.querySelectorAll('.portfolioThumbnails a').forEach((link) => {
+      link.addEventListener('click', () => {
+        var target = this.getEntryByHash(link.getAttribute('href'));
+        entries.forEach(function (entry) {
+          entry.classList.add('xHidden');
+        });
+        if (target) {
+          this.showEntry(target);
+        }
+      });
+    });
+
+    var entry = this.getEntryByHash(window.location.hash);
+    if (entry) {
+      this.showEntry(entry);
     }
   }
-});
+};
 
 new BertaPortfolio();

@@ -9,6 +9,11 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
     var isImageSlide = item.classList.contains('xType-image');
 
     if (isImageSlide) {
+      var caption = item.nextElementSibling;
+      while (caption && !caption.matches('.xGalleryImageCaption')) {
+        caption = caption.nextElementSibling;
+      }
+
       slide = {
         originalImage: {
           src: item.getAttribute('data-original-src'),
@@ -20,7 +25,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
           w: parseInt(item.getAttribute('data-mobile-width'), 10),
           h: parseInt(item.getAttribute('data-mobile-height'), 10)
         },
-        title: item.getNext('.xGalleryImageCaption').innerHTML,
+        title: caption.innerHTML,
       };
 
     // Video slide

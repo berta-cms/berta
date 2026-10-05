@@ -69,8 +69,8 @@ var BertaEditor = new Class({
 
         if (this.entriesList) {
           this.currentSection =
-            this.entriesList.getClassStoredValue("xSection");
-          this.currentTag = this.entriesList.getClassStoredValue("xTag");
+            window.BertaHelpers.getClassStoredValue(this.entriesList, "xSection");
+          this.currentTag = window.BertaHelpers.getClassStoredValue(this.entriesList, "xTag");
 
           if (this.currentSection) {
             this.entriesList
@@ -194,7 +194,7 @@ var BertaEditor = new Class({
 
   initGallery: function (item) {
     var gallery;
-    var galleryType = item.getClassStoredValue("xGalleryType");
+    var galleryType = window.BertaHelpers.getClassStoredValue(item, "xGalleryType");
 
     switch (galleryType) {
       case "row":
@@ -207,8 +207,8 @@ var BertaEditor = new Class({
         gallery = new BertaGalleryPile(item);
         break;
       case "link":
-        gallery = new BertaGalleryLink(item);
-        break;
+        // link galleries are plain markup and need no JS
+        return;
       case "grid":
         gallery = new BertaGalleryGrid(item);
         break;
@@ -265,7 +265,7 @@ var BertaEditor = new Class({
     event.stop();
     var site = getCurrentSite();
     var entryObj = $(event.target).getParent(".xEntry");
-    var entryId = entryObj.getClassStoredValue("xEntryId");
+    var entryId = window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId");
 
     window.parent.postMessage(
       {
@@ -310,7 +310,7 @@ var BertaEditor = new Class({
     var site = getCurrentSite();
     var toSection = event.target.value;
     var entryObj = event.target.closest(".xEntry");
-    var entryId = entryObj.getClassStoredValue("xEntryId");
+    var entryId = window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId");
     var redirectUrl = window.BertaHelpers.updateQueryStringParameter(
       window.location.href,
       "section",
@@ -333,7 +333,7 @@ var BertaEditor = new Class({
   entryDelete: function (event) {
     event = new Event(event).stop();
     var entryObj = $(event.target).getParent(".xEntry");
-    var entryId = entryObj.getClassStoredValue("xEntryId");
+    var entryId = window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId");
     var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
     var site = getCurrentSite();
 

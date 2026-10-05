@@ -1,83 +1,61 @@
-var BertaGalleryRow = new Class({
-  container: null,
-  imageContainer: null,
-  navContainer: null,
-  rowClearElement: null,
-  newObjectInjectWhere: null,
-  newObjectInjectPosition: null,
-  currentSrc: null,
-  preload: null,
-  loadTimer: null,
-  loadedItems: 0,
-  currentItem: 0,
-
-
-  initialize: function (container) {
+var BertaGalleryRow = class {
+  constructor(container) {
     this.is_mobile_device = window.BertaHelpers.isMobile();
-    if (container.hasClass('xInitialized')) {
+    if (container.classList.contains('xInitialized')) {
       return;
     }
-    container.addClass('xInitialized');
+    container.classList.add('xInitialized');
     if (this.is_mobile_device) {
-      container.addClass('bt-is-mobile-device');
+      container.classList.add('bt-is-mobile-device');
     }
+    this.currentItem = 0;
     this.attach(container);
     this.loadFirst();
-    window.addEvent('resize', window.BertaHelpers.debounce(this.layout_update.bindWithEvent(this), 200));
-  },
+    window.addEventListener('resize', window.BertaHelpers.debounce(this.layout_update.bind(this), 200));
+  }
 
-  attach: function (container) {
+  attach(container) {
     this.container = container;
-    this.fullscreen = this.container.get('data-fullscreen') !== null;
-    this.imageContainer = this.container.getElement('div.xGallery');
-    this.navContainer = this.container.getElement('ul.xGalleryNav');
-    this.galleryEditButton = this.imageContainer.getElement('.xGalleryEditButton');
+    this.fullscreen = this.container.getAttribute('data-fullscreen') !== null;
+    this.imageContainer = this.container.querySelector('div.xGallery');
+    this.navContainer = this.container.querySelector('ul.xGalleryNav');
+    this.galleryEditButton = this.imageContainer.querySelector('.xGalleryEditButton');
 
-    var galleryLoader = this.imageContainer.getElement('.loading');
+    var galleryLoader = this.imageContainer.querySelector('.loading');
     if (galleryLoader) {
-      galleryLoader.dispose();
+      galleryLoader.remove();
     }
 
-    this.loadedItems = this.container.getElements('.xGalleryItem').length;
+    this.loadedItems = this.container.querySelectorAll('.xGalleryItem').length;
 
-    if (this.navContainer && this.navContainer.getElements('a').length > 0) {
-      this.rowClearElement = new Element('br', {
+    if (this.navContainer && this.navContainer.querySelectorAll('a').length > 0) {
+      this.rowClearElement = window.BertaHelpers.createElement('br', {
         'class': 'clear'
-      }).inject(this.imageContainer);
+      });
+      this.imageContainer.append(this.rowClearElement);
 
       this.newObjectInjectWhere = bertaGlobalOptions.environment == 'site' ? this.rowClearElement : this.galleryEditButton;
-      this.newObjectInjectPosition = 'before';
 
     } else
       this.navContainer = null;
-  },
+  }
 
-  detach: function () {
+  loadFirst() {
     if (this.navContainer) {
-      this.navContainer.getElements('a').each(function (item) {
-        item.removeEvents('click');
-      });
-    }
-    this.container = this.imageContainer = this.navContainer = null;
-    this.currentSrc = null;
-  },
-
-  loadFirst: function () {
-    if (this.navContainer) {
-      var li = this.navContainer.getElement('li');
+      var li = this.navContainer.querySelector('li');
       this.nav_highlightItem(li);
-      var aEl = this.navContainer.getElement('li a');
-      this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), 1, aEl.get('data-srcset'));
+      var aEl = this.navContainer.querySelector('li a');
+      this.loadItem(aEl, li, 1);
     }
-  },
+  }
 
-  loadNext: function (bRotate) {
+  loadNext() {
     if (this.navContainer) {
-      var nextLi = this.getNext(bRotate);
+      var nextLi = this.getNext();
       if (nextLi) {
         this.nav_highlightItem(nextLi);
-        var aEl = nextLi.getElement('a');
-        this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), aEl.getClassStoredValue('xImgIndex'), aEl.get('data-srcset'));
+        var aEl = nextLi.querySelector('a');
+        this.loadItem(aEl, nextLi, window.BertaHelpers.getClassStoredValue(aEl, 'xImgIndex'));
       } else {
         //after everything is loaded
 
@@ -88,101 +66,83 @@ var BertaGalleryRow = new Class({
 
         // update gallery edit button width
         if (this.galleryEditButton) {
-          this.galleryEditButton.setStyle('width', this.imageContainer.scrollWidth);
+          this.galleryEditButton.style.width = this.imageContainer.scrollWidth + 'px';
         }
       }
     }
-  },
+  }
 
-  attachFullscreen: function () {
-    var items = this.container.getElements('.xGalleryItem');
-    items.each(function (item, i) {
-      if (item.hasClass('xGalleryItemType-video')) {
+  // Load the gallery item described by a navigation link
+  loadItem(aEl, li, xImgIndex) {
+    var getValue = function (varName) {
+      return window.BertaHelpers.getClassStoredValue(aEl, varName);
+    };
+
+    this.load(aEl.getAttribute('href'), getValue('xType'), getValue('xW'), getValue('xH'), getValue('xVideoHref'), getValue('xAutoPlay'), li.querySelector('.xGalleryImageCaption').innerHTML, xImgIndex, aEl.getAttribute('data-srcset'));
+  }
+
+  attachFullscreen() {
+    this.container.querySelectorAll('.xGalleryItem').forEach((item, i) => {
+      if (item.classList.contains('xGalleryItemType-video')) {
         return;
       }
 
-      item.setStyle('cursor', 'pointer');
-      item.addEvent('click', function () {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', () => {
         BertaGalleryFullscreen(this.container, i);
-      }.bindWithEvent(this));
-    }, this);
-  },
+      });
+    });
+  }
 
-  getNext: function (bRotate) {
-    if (this.navContainer) {
-      var selectedLi = this.navContainer.getElement('li.selected');
-      if (selectedLi) {
-        var n = selectedLi.getNext();
-        if (!n && bRotate) {
-          n = this.navContainer.getElement('li');
-        }
-        return n;
-      }
-    }
-    return null;
-  },
+  getNext() {
+    var selectedLi = this.navContainer.querySelector('li.selected');
+    return selectedLi ? selectedLi.nextElementSibling : null;
+  }
 
-  layout_update: function () {
-    // implementable
-    // in a template you can implement this function
-
-    var rowGalleryPadding = this.imageContainer.get('xRowGalleryPadding');
+  layout_update() {
+    var rowGalleryPadding = this.imageContainer.getAttribute('xRowGalleryPadding');
 
     if (rowGalleryPadding) {
-      this.imageContainer.getChildren().each(function (el) {
-        el.setStyle('padding', rowGalleryPadding);
+      Array.from(this.imageContainer.children).forEach(function (el) {
+        el.style.padding = rowGalleryPadding;
       });
     }
 
-    this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
-      if (item.getClassStoredValue('xGalleryItemType') != 'video') {
-        item.setStyle('height', 'auto');
+    Array.from(this.imageContainer.children).forEach(function (item) {
+      if (item.matches('.xGalleryItem') && window.BertaHelpers.getClassStoredValue(item, 'xGalleryItemType') != 'video') {
+        item.style.height = 'auto';
       }
     });
 
-    this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
-  },
+    this.imageContainer.querySelectorAll('.xGalleryItem').forEach(function (item) {
+      item.style.position = 'relative';
+    });
+  }
 
-  layout_inject: function (currentItemIsLoaded) {
+  layout_inject(currentItemIsLoaded) {
     if (!currentItemIsLoaded) {
-      this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
-      picturefill(this.preload.getElement('img'));
+      this.newObjectInjectWhere.before(this.preload);
+      picturefill(this.preload.querySelector('img'));
     }
 
     this.layout_update();
-  },
+  }
 
-  nav_setEvents: function () {
-    // implementable in the future
-    this.navContainer.getElements('a').addEvent('click', this.nav_onItemClick.bindWithEvent(this));
-  },
+  nav_highlightItem(liElement) {
+    Array.from(liElement.parentElement.children).forEach(function (sibling) {
+      sibling.classList.remove('selected');
+    });
+    liElement.classList.add('selected');
+  }
 
-  nav_onItemClick: function (event) {
-    // implementable in the future
-    if (event.event) {
-      event.stop();
-    }
-
-    var linkElement = $(event.target);
-    if (linkElement.tagName != 'A') linkElement = linkElement.getParent('a');
-
-    var li = linkElement.getParent('li');
-    this.nav_highlightItem(li);
-  },
-
-  nav_highlightItem: function (liElement) {
-    liElement.getParent().getChildren().removeClass('selected');
-    liElement.addClass('selected');
-  },
-
-  load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
+  load(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
     this.currentItem += 1;
     this.currentSrc = null;
     var currentItemIsLoaded = this.currentItem <= this.loadedItems;
     this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset, currentItemIsLoaded);
-  },
+  }
 
-  load_Render: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset, currentItemIsLoaded) {
+  load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset, currentItemIsLoaded) {
     this.currentSrc = src;
     this.xImgIndex = xImgIndex;
     this.srcset = srcset ? srcset : null;
@@ -192,20 +152,22 @@ var BertaGalleryRow = new Class({
         if (!currentItemIsLoaded) {
           var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
 
-          this.preload = new Asset.image(src, {
+          var image = window.BertaHelpers.createElement('img', {
             'width': mWidth,
             'height': mHeight,
             'srcset': this.srcset,
-            'alt': altText
+            'alt': altText,
+            'src': src
           });
 
-          this.preload = new Element('div', {
+          this.preload = window.BertaHelpers.createElement('div', {
             'class': 'xGalleryItem xGalleryItemType-image xImgIndex-' + this.xImgIndex
-          }).adopt(this.preload);
+          });
+          this.preload.append(image);
 
-          new Element('div', {
+          this.preload.append(window.BertaHelpers.createElement('div', {
             'class': 'xGalleryImageCaption'
-          }).set('html', caption).inject(this.preload);
+          }, caption));
         }
 
         this.load_Finish(src, mType, currentItemIsLoaded);
@@ -214,10 +176,10 @@ var BertaGalleryRow = new Class({
       case 'video':
 
         if (currentItemIsLoaded) {
-          this.preload = this.imageContainer.getChildren()[this.currentItem - 1].getElement('video');
+          this.preload = this.imageContainer.children[this.currentItem - 1].querySelector('video');
 
         } else {
-          this.preload = new Element('video', {
+          this.preload = window.BertaHelpers.createElement('video', {
             'width': mWidth,
             'class': 'xGalleryItem xGalleryItemType-video',
             'controls': true,
@@ -227,19 +189,17 @@ var BertaGalleryRow = new Class({
 
           var videoType = videoPath.split('.').pop();
 
-          var source = new Element('source', {
+          this.preload.prepend(window.BertaHelpers.createElement('source', {
             'src': videoPath,
             'type': 'video/' + videoType
-          });
-
-          source.inject(this.preload, 'top');
+          }));
 
           this.layout_inject(currentItemIsLoaded);
-          this.preload.setStyle('position', 'absolute');
+          this.preload.style.position = 'absolute';
 
-          new Element('div', {
+          this.preload.append(window.BertaHelpers.createElement('div', {
             'class': 'xGalleryImageCaption'
-          }).set('html', caption).inject(this.preload);
+          }, caption));
         }
 
         if (autoPlay > 0) {
@@ -250,9 +210,9 @@ var BertaGalleryRow = new Class({
         this.load_Finish(src, mType, currentItemIsLoaded);
         break;
     }
-  },
+  }
 
-  load_Finish: function (src, mType, currentItemIsLoaded) {
+  load_Finish(src, mType, currentItemIsLoaded) {
     // test if the loaded image's src is the last invoked image's src
     if (src == this.currentSrc) {
       if (mType == 'image') {
@@ -263,4 +223,4 @@ var BertaGalleryRow = new Class({
       this.loadNext();
     }
   }
-});
+};

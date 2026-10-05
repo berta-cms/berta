@@ -56,6 +56,67 @@ window.BertaHelpers = (function () {
       } else {
         return uri + separator + key + '=' + value;
       }
+    },
+
+    /**
+     * Dispatch a native window resize event, it reaches both MooTools and native listeners.
+     * UIEvent is used because MooTools compat replaces the global Event constructor.
+     */
+    triggerResize: function () {
+      window.dispatchEvent(new UIEvent('resize'));
+    },
+
+    /**
+     * Read a value stored in a `varName-value` class name, e.g. `xEntryId-5`
+     */
+    getClassStoredValue: function (el, varName) {
+      for (var i = 0; i < el.classList.length; i++) {
+        var className = el.classList[i];
+        var dashPos = className.indexOf('-');
+        if (dashPos !== -1 && className.slice(0, dashPos) === varName) {
+          return className.slice(dashPos + 1);
+        }
+      }
+      return null;
+    },
+
+    setClassStoredValue: function (el, varName, varValue) {
+      var curValue = window.BertaHelpers.getClassStoredValue(el, varName);
+      if (curValue) {
+        el.classList.remove(varName + '-' + curValue);
+      }
+      el.classList.add(varName + '-' + varValue);
+    },
+
+    /**
+     * Create an element with attributes and optional inner HTML;
+     * null, undefined and false attribute values are skipped, true sets a boolean attribute
+     */
+    createElement: function (tagName, attributes, html) {
+      var el = document.createElement(tagName);
+      Object.keys(attributes || {}).forEach(function (name) {
+        var value = attributes[name];
+        if (value === null || value === undefined || value === false) {
+          return;
+        }
+        el.setAttribute(name, value === true ? '' : value);
+      });
+      if (html !== undefined) {
+        el.innerHTML = html;
+      }
+      return el;
+    },
+
+    /**
+     * Fade an element in from transparent (250ms, sine ease-in-out)
+     */
+    fadeIn: function (el) {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 250,
+        easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)'
+      });
     }
   };
 })();
