@@ -59,7 +59,7 @@ class BertaContent extends BertaBase
         return $site;
     }
 
-    public static function getSections($with_index = false)
+    public static function getSections()
     {
         $sArr = [];
 
@@ -70,23 +70,17 @@ class BertaContent extends BertaBase
                 $xmlFeed = Array_XML::xml2array($xmlStr, 'sections', true);
                 if (isset($xmlFeed['section']) && is_array($xmlFeed['section'])) {
                     Array_XML::makeListIfNotList($xmlFeed['section']);
-                    $indexes = [];
                     $idx = 0;
                     foreach ($xmlFeed['section'] as $s) {
                         if (! empty($s['name']['value']) && trim($s['name']['value']) != '') {
                             $name = trim($s['name']['value']);
                             $s['order'] = $idx;
                             $sArr[$name] = $s;
-                            $indexes[$name] = $idx;
                         }
                         $idx++;
                     }
                 }
             }
-        }
-
-        if ($with_index) {
-            return [$indexes, $sArr];
         }
 
         return $sArr;
@@ -112,22 +106,6 @@ class BertaContent extends BertaBase
         }
 
         return false;
-    }
-
-    public static function &getEntry($entryId, &$blog)
-    {
-        foreach ($blog['entry'] as $eId => $e) {
-            if ($eId === '@attributes') {
-                continue;
-            }
-            if ($e['id']['value'] == $entryId) {
-                return $blog['entry'][$eId];
-            }
-        }
-
-        $retVal = false;
-
-        return $retVal;
     }
 
     /* ---------------------------------------------------------------------------------------------------------------------- */

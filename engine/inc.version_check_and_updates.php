@@ -16,7 +16,6 @@ if (! empty($berta->content['entry'])) {
 
                     if ($galleryType == 'row') {
                         $berta->content['entry'][$eKey]['mediaCacheData']['@attributes']['type'] = 'pile';
-                        $berta->allContent[$berta->sectionName]['entry'][$eKey]['mediaCacheData']['@attributes']['type'] = 'pile';
                     }
                 }
                 break;
@@ -28,15 +27,12 @@ if (! empty($berta->content['entry'])) {
 
                     if ($galleryType == 'row') {
                         $berta->content['entry'][$eKey]['mediaCacheData']['@attributes']['type'] = 'column';
-                        $berta->allContent[$berta->sectionName]['entry'][$eKey]['mediaCacheData']['@attributes']['type'] = 'column';
                     }
                 }
                 break;
         }
 
         $berta->content['@attributes']['last_upd_ver'] = $options['version'];
-        $berta->allContent[$berta->sectionName]['@attributes']['last_upd_ver'] = $options['version'];
-        $berta->template->addContent($berta->requestURI, $berta->sectionName, $berta->sections, $berta->tagName, $berta->tags, $berta->content, $berta->allContent);
         BertaEditor::saveBlog($berta->sectionName, $berta->content);
     }
 }

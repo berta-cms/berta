@@ -21,13 +21,7 @@ class BertaSecurity
 
     const BERTASECURITY_ERROR_SESSION_IP_CONFLICT = 3;		// ip address has changed
 
-    const BERTASECURITY_ERROR_LOGIN_VARIABLE = 4;			// login variables corrupt or empty
-
-    const BERTASECURITY_ERROR_LOGIN_INCORRECT = 5;			// login user and password incorrect
-
     public $authExpiresSeconds;	// session idle time
-
-    public $authUseAuthentification = false;
 
     public $authentificated = false; // if
 
@@ -35,20 +29,11 @@ class BertaSecurity
 
     public $user;				// array of all user information available in the database (id, ident, nick, email, etc.)
 
-    public $accessIP;				// array containing ip address by bytes
-
-    public $accessIPStr = '';
-
-    public $errAuth = 0;	// the reason (id), why autentification failed;
-
-    public $errLogin = 0;	// the reason (id), why login failed;
-
     public function __construct($authEnvironment = 'site', $authExpiresSeconds = 86400)
     {
         $this->authExpiresSeconds = $authExpiresSeconds;
-        $this->authUseAuthentification = true;
 
-        $this->authentificated = $this->authUseAuthentification ? $this->authentificate() : true;
+        $this->authentificated = $this->authentificate();
 
         // todo - change relying on userLoggedIn to a new environment variable
         if ($authEnvironment == 'site') {
@@ -100,12 +85,11 @@ class BertaSecurity
 
     public function goToLoginPage($loginPageRelativeURL)
     {
-        $qS = $this->errAuth ? '?autherror=' . $this->errAuth : '';
         if (headers_sent()) {
-            echo '<script language="javascript" type="text/javascript">window.location="' . $loginPageRelativeURL . $qS . '";</script>';
-            echo '<p>Please wait... (or <a href="' . $loginPageRelativeURL . $qS . '">click here</a> if nothing happens)</p>';
+            echo '<script language="javascript" type="text/javascript">window.location="' . $loginPageRelativeURL . '";</script>';
+            echo '<p>Please wait... (or <a href="' . $loginPageRelativeURL . '">click here</a> if nothing happens)</p>';
         } else {
-            header('Location: ' . $loginPageRelativeURL . $qS);
+            header('Location: ' . $loginPageRelativeURL);
         }
 
         exit;
@@ -113,27 +97,19 @@ class BertaSecurity
 
     public function login($name, $pass, $realName, $realPass)
     {
-        if ($name && $pass) {
-            if ($name == $realName && $pass == $realPass) {
-                $uid = ! empty($_SESSION['uid']) ? $_SESSION['uid'] : null;
-                $this->destroy();
-                session_start();
-                $this->updateUserSettings(['name' => $realName, 'uid' => $uid]);
+        if ($name && $pass && $name == $realName && $pass == $realPass) {
+            $uid = ! empty($_SESSION['uid']) ? $_SESSION['uid'] : null;
+            $this->destroy();
+            session_start();
+            $this->updateUserSettings(['name' => $realName, 'uid' => $uid]);
 
-                // log login event
-                BertaUtils::logEvent('login');
+            // log login event
+            BertaUtils::logEvent('login');
 
-                return $this->userLoggedIn = true;
-            } else {
-                $this->errLogin = self::BERTASECURITY_ERROR_LOGIN_INCORRECT;	// wrong creditentials
-
-                return false;
-            }
-        } else {
-            $this->errLogin = self::BERTASECURITY_ERROR_LOGIN_VARIABLE;	// no identification supplied
-
-            return false;
+            return $this->userLoggedIn = true;
         }
+
+        return false;
     }
 
     public function destroy($authErrNo = false)

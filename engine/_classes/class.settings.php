@@ -112,15 +112,6 @@ class Settings
         return true;
     }
 
-    public function delete($collection, $prop)
-    {
-        if (isset($this->settings[$collection][$prop])) {
-            unset($this->settings[$collection][$prop]);
-        }
-
-        return true;
-    }
-
     public function getFont($collection)
     {
         if (isset($this->settings[$collection]['googleFont']) && ! empty($this->settings[$collection]['googleFont'])) {
@@ -165,63 +156,6 @@ class Settings
         }
     }
 
-    public function getAll($collection, $useEmptyIfEmpty = false)
-    {
-        $retArr = [];
-        if ($collection != 'siteTexts') {
-            if (! empty($this->settingsDefinition[$collection])) {
-                foreach ($this->settingsDefinition[$collection] as $prop => $propDefaults) {
-                    $retArr[$prop] = $this->get($collection, $prop, $useEmptyIfEmpty);
-                }
-            }
-        } elseif (! empty($this->settings[$collection])) {
-            foreach ($this->settings[$collection] as $prop => $value) {
-                $retArr[$prop] = $value;
-            }
-        }
-
-        return $retArr;
-    }
-
-    public function getApplied()
-    {
-        $defArray = [];
-        foreach ($this->settingsDefinition as $col => $arr) {
-            $defArray[$col] = [];
-            foreach ($arr as $s => $def) {
-                if (! empty($def['default'])) {
-                    $defArray[$col][$s] = $def['default'];
-                }
-            }
-        }
-        $workingArray = array_merge_replace_recursive($defArray, $this->settings);
-
-        if ($this->base) {
-            $baseArr = $this->base->getApplied();
-            $workingArray = array_merge_replace_recursive($baseArr, $workingArray);
-        }
-
-        return $workingArray;
-    }
-
-    public function getDefinition($collection, $prop)
-    {
-        if (isset($this->settingsDefinition[$collection][$prop])) {
-            return $this->settingsDefinition[$collection][$prop];
-        } else {
-            return null;
-        }
-    }
-
-    public function getDefinitionParam($collection, $prop, $param)
-    {
-        if (isset($this->settingsDefinition[$collection][$prop][$param])) {
-            return $this->settingsDefinition[$collection][$prop][$param];
-        } else {
-            return null;
-        }
-    }
-
     public function getEmpty($property = false)
     {
         return BertaContent::getXEmpty($property);
@@ -235,74 +169,4 @@ class Settings
 
         return false;
     }
-
-    public function definitionExists($collection, $prop)
-    {
-        if (isset($this->settingsDefinition[$collection][$prop])) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isRequired($collection, $prop)
-    {
-        if (! isset($this->settingsDefinition[$collection][$prop])) {
-            return false;
-        } elseif (! empty($this->settingsDefinition[$collection][$prop]['allow_blank'])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function oppositeAlign($align)
-    {
-        switch ($align) {
-            case 'left':
-                return 'right';
-            case 'right':
-                return 'left';
-            default:
-                return 'none';
-        }
-    }
-
-    public function oppositeFloat($float)
-    {
-        return $this->oppositeAlign($float);
-    }
-}
-
-function array_merge_replace_recursive()
-{
-    // Holds all the arrays passed
-    $params = func_get_args();
-
-    // First array is used as the base, everything else overwrites on it
-    $return = array_shift($params);
-
-    // Merge all arrays on the first array
-    foreach ($params as $array) {
-        foreach ($array as $key => $value) {
-            // Numeric keyed values are added (unless already there)
-            if (is_numeric($key) && (! in_array($value, $return))) {
-                if (is_array($value)) {
-                    $return[] = array_merge_replace_recursive($return[$key], $value);
-                } else {
-                    $return[] = $value;
-                }
-
-                // String keyed values are replaced/appended
-            } else {
-                if (isset($return[$key]) && is_array($value) && is_array($return[$key])) {
-                    $return[$key] = array_merge_replace_recursive($return[$key], $value);
-                } else {
-                    $return[$key] = $value;
-                }
-            }
-        }
-    }
-
-    return $return;
 }

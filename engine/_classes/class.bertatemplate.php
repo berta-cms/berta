@@ -24,39 +24,22 @@ class BertaTemplate extends BertaBase
 
     public $loggedIn = false;
 
-    public $sectionTypes;
-
-    public $settingsDefinition;
-
     public $settings;
-
-    public $apacheRewriteUsed;
-
-    private $requestURI;
 
     private $sectionName;
 
-    private $sections;
-
     private $tagName;
-
-    private $tags;
 
     private $environment;
 
-    private $content;
-
-    private $allContent;
-
     private $twigOutput;
 
-    public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed = false)
+    public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false)
     {
         $this->name = $templateName;
         $this->templateName = explode('-', $this->name)[0];
         $this->loggedIn = $loggedIn;
         $this->environment = ! empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
-        $this->apacheRewriteUsed = $apacheRewriteUsed;
 
         $this->load($this->name, $generalSettingsInstance);
     }
@@ -102,20 +85,9 @@ class BertaTemplate extends BertaBase
         }
 
         if (file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
-            [$this->sectionTypes, $this->settingsDefinition] = include $tPath . '/template.conf.php';
+            [, $settingsDefinition] = include $tPath . '/template.conf.php';
 
-            $this->settings = new Settings($this->settingsDefinition, $generalSettingsInstance, $this->name);
-
-            // instantiate settings for each section type definition (extend $this->settings)
-            reset($this->sectionTypes);
-            foreach ($this->sectionTypes as $tName => $t) {
-                $this->sectionTypes[$tName]['settings'] = new Settings(
-                    false,
-                    $this->settings,
-                    false,
-                    isset($t['settings']) ? $t['settings'] : false
-                );
-            }
+            $this->settings = new Settings($settingsDefinition, $generalSettingsInstance, $this->name);
 
             return true;
         }
@@ -123,20 +95,12 @@ class BertaTemplate extends BertaBase
         return false;
     }
 
-    public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent)
+    public function addContent($sectionName, $tagName)
     {
         global $shopEnabled;
 
-        // set variables for later processing in function addEngineVariables
-        $this->requestURI = $requestURI;
         $this->sectionName = $sectionName;
-        $this->sections = &$sections;
         $this->tagName = $tagName;
-        $this->tags = &$tags;
-
-        // add entries...
-        $this->content = &$content;
-        $this->allContent = &$allContent;
 
         $isShopAvailable = isset($shopEnabled) && $shopEnabled;
 
@@ -248,17 +212,5 @@ class BertaTemplate extends BertaBase
         $d->close();
 
         return $returnArr;
-    }
-
-    public static function sentryScripts()
-    {
-        $scripts = '';
-        $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
-        if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
-            $scripts = file_get_contents($file);
-            $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
-        }
-
-        return $scripts;
     }
 }

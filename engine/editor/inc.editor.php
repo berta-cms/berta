@@ -8,9 +8,6 @@ if (! in_array(__FILE__, get_included_files()) || $included_files[0] == __FILE__
     exit;
 }
 
-if ($berta->security->userLoggedIn) {
-    include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
-}
 // $t->point("page");
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +52,7 @@ if ($berta->apacheRewriteUsed) {
 //  INIT CONTENT   --------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------------
 
-$berta->initContent($urlStr, $sectionName, $tagName);
+$berta->initContent($sectionName, $tagName);
 if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionName != $querySectionName) {
     include dirname(__DIR__) . '/error/404.php';
     exit;

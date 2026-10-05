@@ -61,7 +61,6 @@ include_once 'inc.functions.php';
 // prefs and basic variables -------------------------------------------------------------------------------------------------------------------------
 
 include_once $ENGINE_ROOT_PATH . '_classes/class.berta.php';
-include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
 include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';            // since this include $options refer to BertaBase::$options
 include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
 if (empty($SITE_ROOT_URL)) {
