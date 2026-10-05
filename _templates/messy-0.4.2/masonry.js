@@ -15,7 +15,8 @@ var BertaMasonry = class {
 
     this.setup();
     this.arrange();
-    window.addEventListener('resize', this.resize.bind(this));
+    this.onResize = this.resize.bind(this);
+    window.addEventListener('resize', this.onResize);
   }
 
   // Inline style first, computed style as a fallback
@@ -34,10 +35,17 @@ var BertaMasonry = class {
   }
 
   resize() {
+    // The wall was removed from the page, it can't be measured anymore
+    if (!this.element.isConnected) {
+      window.removeEventListener('resize', this.onResize);
+      return;
+    }
+
     var lastColCount = this.colCount;
+    var lastColW = this.colW;
     this.setup();
 
-    if (this.colCount != lastColCount) {
+    if (this.colCount !== lastColCount || this.colW !== lastColW) {
       this.arrange();
     }
   }

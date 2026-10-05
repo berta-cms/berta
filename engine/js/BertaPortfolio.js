@@ -41,12 +41,16 @@ var BertaPortfolio = class {
   }
 
   portfolioThumbnails() {
-    var entries = document.querySelectorAll('.xEntry');
-
     document.querySelectorAll('.portfolioThumbnails a').forEach((link) => {
+      // runs again after every addEntry, links that weren't re-rendered already have a listener
+      if (link.dataset.portfolioListener) {
+        return;
+      }
+      link.dataset.portfolioListener = 'true';
+
       link.addEventListener('click', () => {
         var target = this.getEntryByHash(link.getAttribute('href'));
-        entries.forEach(function (entry) {
+        document.querySelectorAll('.xEntry').forEach(function (entry) {
           entry.classList.add('xHidden');
         });
         if (target) {
