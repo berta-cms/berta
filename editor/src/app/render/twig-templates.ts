@@ -495,7 +495,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
             <p class="text-right"><a href="#" id="checkoutSubmit">{{ checkoutButton.content }}</a></p>
 
-            <p class="text-right no-margin"><a href="javascript:;" onclick="milkbox.closeMilkbox();">{{ returnToStore.content }}</a></p>
+            <p class="text-right no-margin"><a href="javascript:;" onclick="closeShoppingCart();">{{ returnToStore.content }}</a></p>
           {% endif %}
 
           <form id="paypalCheckoutForm" method="post">
