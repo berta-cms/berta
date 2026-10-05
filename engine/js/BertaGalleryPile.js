@@ -14,7 +14,17 @@ var BertaGalleryPile = class {
     }
     this.attach(container);
     this.loadFirst();
-    window.addEventListener('resize', window.BertaHelpers.debounce(this.layout_update.bind(this), 200));
+    this.onResize = window.BertaHelpers.debounce(this.resize.bind(this), 200);
+    window.addEventListener('resize', this.onResize);
+  }
+
+  resize() {
+    // The gallery was removed from the page, e.g. the editor re-rendered the entries
+    if (!this.container.isConnected) {
+      window.removeEventListener('resize', this.onResize);
+      return;
+    }
+    this.layout_update();
   }
 
   attach(container) {

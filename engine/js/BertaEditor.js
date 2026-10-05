@@ -8,7 +8,6 @@ var BertaEditor = new Class({
 
   /* editing related variables */
   edittingMode: "entries",
-  galleries: new Array(),
 
   /* DOM elements */
   entriesList: null, // the OL element thad contains the entries
@@ -193,30 +192,27 @@ var BertaEditor = new Class({
   },
 
   initGallery: function (item) {
-    var gallery;
     var galleryType = window.BertaHelpers.getClassStoredValue(item, "xGalleryType");
 
     switch (galleryType) {
       case "row":
-        gallery = new BertaGalleryRow(item);
+        new BertaGalleryRow(item);
         break;
       case "column":
-        gallery = new BertaGalleryColumn(item);
+        new BertaGalleryColumn(item);
         break;
       case "pile":
-        gallery = new BertaGalleryPile(item);
+        new BertaGalleryPile(item);
         break;
       case "link":
         // link galleries are plain markup and need no JS
-        return;
+        break;
       case "grid":
-        gallery = new BertaGalleryGrid(item);
+        new BertaGalleryGrid(item);
         break;
       default:
-        gallery = new BertaGallerySlideshow(item);
+        new BertaGallerySlideshow(item);
     }
-
-    this.galleries.push(gallery);
   },
 
   onLoad: function () {},

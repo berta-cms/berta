@@ -87,7 +87,15 @@ var BertaGallerySlideshow = class {
             galleryWrapper.style.marginLeft = -galleryPosition.left + 'px';
           };
           setFullWidth();
-          window.addEventListener('resize', window.BertaHelpers.debounce(setFullWidth, 300));
+          var onResize = window.BertaHelpers.debounce(() => {
+            // The gallery was removed from the page, e.g. the editor re-rendered the entries
+            if (!this.container.isConnected) {
+              window.removeEventListener('resize', onResize);
+              return;
+            }
+            setFullWidth();
+          }, 300);
+          window.addEventListener('resize', onResize);
         }
 
         var swiperOptions = {
