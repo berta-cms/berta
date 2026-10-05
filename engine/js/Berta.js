@@ -32,7 +32,7 @@ var Berta = new Class({
   },
 
   initGallery: function (item) {
-    var galleryType = item.getClassStoredValue('xGalleryType');
+    var galleryType = window.BertaHelpers.getClassStoredValue(item, 'xGalleryType');
 
     switch (galleryType) {
       case 'row':
@@ -45,7 +45,7 @@ var Berta = new Class({
         new BertaGalleryPile(item);
         break;
       case 'link':
-        new BertaGalleryLink(item);
+        // link galleries are plain markup and need no JS
         break;
       case 'grid':
         new BertaGalleryGrid(item);
@@ -113,7 +113,7 @@ var Berta = new Class({
           }
         });
         var win_width = window.getSize().x;
-        window.fireEvent('resize');
+        window.BertaHelpers.triggerResize();
       }
     };
     responsiveMenu();

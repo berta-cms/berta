@@ -1,31 +1,32 @@
 var BertaEditorBase = new Class({
   getEntryInfoForElement: function (el) {
+    var getValue = window.BertaHelpers.getClassStoredValue;
     var retObj = {};
 
-    retObj.site = el.getClassStoredValue("xSite");
+    retObj.site = getValue(el, "xSite");
 
-    retObj.entryObj = el.getClassStoredValue("xEntryId")
+    retObj.entryObj = getValue(el, "xEntryId")
       ? el
       : el.getParent(".xEntry");
-    retObj.listObj = el.getClassStoredValue("xSection")
+    retObj.listObj = getValue(el, "xSection")
       ? el
       : el.getParent(".xEntriesList");
 
     // get entryId and entryNum from the entryObj
     retObj.entryId = retObj.entryObj
-      ? retObj.entryObj.getClassStoredValue("xEntryId")
+      ? getValue(retObj.entryObj, "xEntryId")
       : "";
     retObj.entryNum = retObj.entryObj
-      ? retObj.entryObj.getClassStoredValue("xEntryNum")
+      ? getValue(retObj.entryObj, "xEntryNum")
       : "";
 
     // try to get section from entryObj, and if not successful — then from listObj
     retObj.section = retObj.entryObj
-      ? retObj.entryObj.getClassStoredValue("xSection")
+      ? getValue(retObj.entryObj, "xSection")
       : "";
     if (!retObj.section)
       retObj.section = retObj.listObj
-        ? retObj.listObj.getClassStoredValue("xSection")
+        ? getValue(retObj.listObj, "xSection")
         : "";
 
     return retObj;

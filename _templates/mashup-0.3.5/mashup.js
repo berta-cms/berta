@@ -83,7 +83,8 @@ var MashupTemplate = new Class({
       } else {
         this.allContainer.removeClass('xNarrow');
       }
-    }).fireEvent('resize');
+    });
+    window.BertaHelpers.triggerResize();
   },
 
   mainColumnPaddingFix: function () {
@@ -106,14 +107,14 @@ var MashupTemplate = new Class({
     if (headerImage) {
       Asset.image(headerImage.get('src'), {
         onLoad: function () {
-          window.fireEvent('resize');
+          window.BertaHelpers.triggerResize();
         }
       });
     }
 
     setTimeout(
       function () {
-        window.fireEvent('resize');
+        window.BertaHelpers.triggerResize();
       },
       100
     );
@@ -129,7 +130,8 @@ var MashupTemplate = new Class({
       } else {
         this.sideColumnBottom.inject(this.allContainer).setStyle('position', 'static');
       }
-    }).fireEvent('resize');
+    });
+    window.BertaHelpers.triggerResize();
   },
 
   onFirstPagePicMouseEnter: function (event) {

@@ -217,7 +217,7 @@ export class SectionHeadRenderService {
         `/_templates/${siteSettings.template.template}/mess.js?${appState.version}`,
       );
       scriptFiles.push(
-        `/_templates/${siteSettings.template.template}/mooMasonry.js?${appState.version}`,
+        `/_templates/${siteSettings.template.template}/masonry.js?${appState.version}`,
       );
 
       if (isShopAvailable) {

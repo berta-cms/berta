@@ -448,7 +448,6 @@ return [
 
     'Submenu is allways open' => 'Le sous-menu est toujours ouvert',
     'Submenu is hidden' => 'Le sous-menu est masqué',
-    'mobile_device_detected' => 'Détection des interfaces mobiles',
     'javascript_include' => 'Code javascript qui sera inclus avant la balise &lt;/body&gt;. Pour en savoir plus <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">visitez notre page consacrée aux inclusions javascript.</a>',
     'description_custom_css' => 'Insérez votre code CSS personnalisé ici. Il surchargera toutes les autres règles précédemment définies. Pour en savoir plus, consultez notre <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Wiki</a>.',
     'Custom CSS' => 'CSS perso.',

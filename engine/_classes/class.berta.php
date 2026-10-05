@@ -19,8 +19,6 @@ class Berta extends BertaBase
 
     public $apacheRewriteUsed = false;
 
-    public $request_uri;
-
     public $sections;
 
     public $sectionName;
@@ -33,15 +31,8 @@ class Berta extends BertaBase
 
     public $content;
 
-    public $requestURI;
-
-    public $allContent;
-
-    public function __construct(array $options = [])
+    public function __construct()
     {
-        // Initialize I18n
-        new I18n;
-
         // Set variables
         $this->environment = ! empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
         $this->apacheRewriteUsed = ! empty($_REQUEST['__rewrite']) ? true : false;
@@ -60,14 +51,12 @@ class Berta extends BertaBase
 
         $templateName = $this->settings->get('template', 'template', true);
 
-        $this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn, $this->apacheRewriteUsed);
+        $this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn);
     }
 
     // finally: init content
-    public function initContent($full_url, $sectionName, $tagName)
+    public function initContent($sectionName, $tagName)
     {
-        $this->requestURI = $this->apacheRewriteUsed ? $full_url : false;
-
         // seciton ...
         $this->sections = BertaContent::getSections();
 
@@ -87,17 +76,6 @@ class Berta extends BertaBase
 
         // content ...
         $this->content = BertaContent::loadBlog($sectionName);
-        $this->allContent = [$this->sectionName => $this->content];
-        if (
-            ! empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
-            && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes'
-        ) {
-            foreach ($this->sections as $sName => $s) {
-                if ($this->sectionName != $sName) {
-                    $this->allContent[$sName] = BertaContent::loadBlog($sName);
-                }
-            }
-        }
 
         // subsections ...
         $this->tags = BertaContent::getTags();
@@ -121,7 +99,7 @@ class Berta extends BertaBase
         }
 
         // template ...
-        $this->template->addContent($this->requestURI, $this->sectionName, $this->sections, $this->tagName, $this->tags, $this->content, $this->allContent);
+        $this->template->addContent($this->sectionName, $this->tagName);
     }
 
     public function output()

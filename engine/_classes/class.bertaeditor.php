@@ -31,10 +31,4 @@ class BertaEditor extends BertaContent
             return true;
         }
     }
-
-    public static function getXEmpty($property)
-    {
-        return parent::getXEmpty($property);
-    }
-
 }

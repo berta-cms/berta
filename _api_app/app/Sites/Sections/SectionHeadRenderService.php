@@ -236,7 +236,7 @@ class SectionHeadRenderService
             // { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
             $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/mess.js?{$this->version}";
-            $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/mooMasonry.js?{$this->version}";
+            $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/masonry.js?{$this->version}";
 
             if ($isShopAvailable) {
                 $scriptFiles[] = "/_plugin_shop/js/shop.js?{$this->version}";

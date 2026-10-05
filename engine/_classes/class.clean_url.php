@@ -16,68 +16,16 @@
 ** This program is free for any purpose use.
 ********
 **
-** The scope of this class is to change the way writing URL Query String like this:
-** from
-**   news.php?id=120&page=2
-** to
-**   news/120/2
-**
-** edit your .htaccess and use directive RewriteRule
-** Example:
-**
-** RewriteEngine on
-** RewriteRule ^news(\/.*)*$  /news.php
-**
-**
-** To create clean URL:
-** $clean->makeClean('news.php?id=120&page=2');
-** results 'news/120/2';
-**
-** To read clean URL
-** $clean->parseURL();
-** $clean->setRelative('relativeslash'); //relativeslash is variable name
-** $clean->setParts('id','page');
-**
-** What is relative slash?
-** think this img tag on index.php file directory:
-** <img src="images/logo.jpeg">
-** if you access your image logo from deeper directory, should be like this:
-** <img src="../../images/logo.jpeg">
-** Clean URL class makes the URL deeper because of using slashes
-** the solution is placing variable that contains 'relative slashes'.
-** <img src="<?=$relativeslash?>images/logo.jpeg">
-**
-** Note on setParts()
-** $clean->setParts('id','page');
-** this method will produce pairs of query string variables and values,
-** using eval() function, webpage will read as:
-** $id = 120;
-** $page = 2;
-**
-**
-**  EXAMPLES:
-**  To create clean URL
-**  original: <a href="news.php?id=<?=$id?>&page=<?=$page?>">;
-**  convert:  <a href="<?php CleanURL::makeClean("news.php?id=$id&page=$page")?>">
-**  result on browser: <a href="news/120/2">;
-**
-**  To parse clean URL as above
+** Splits a clean (rewritten) URL like news/120/2 into its parts:
 **  $clean = new CleanURL;
-**  $clean->parseURL();
-**  $clean->setRelative('relativeslash');
-**  $clean->setParts('id','page');
+**  $clean->parseURL($urlStr);
+**  $clean->getParts(2); // ['120', '2']
 **
 ************/
 
 class CleanURL
 {
-    public $basename;
-
-    public $uri;
-
     public $parts;
-
-    public $slashes;
 
     public function parseURL($urlStr = '')
     {
@@ -110,23 +58,7 @@ class CleanURL
         $temp = explode('/', $uri);
         $key = array_search($basename, $temp);
         $parts = array_slice($temp, $key + 1);
-        $this->basename = $basename;
         $this->parts = $parts;
-        $this->uri = $uri;
-    }
-
-    public function setRelative($relativevar)
-    {
-        /* count the number of slash
-           to define relative path */
-        $numslash = count($this->parts);
-        $slashes = '';
-        for ($i = 0; $i < $numslash; $i++) {
-            $slashes .= '../';
-        }
-        $this->slashes = $slashes;
-        /* make relative path variable available for webpage */
-        eval("\$GLOBALS['$relativevar'] = '$slashes';");
     }
 
     /**
@@ -148,30 +80,5 @@ class CleanURL
         }
 
         return $urlParts;
-    }
-
-    public function setParts()
-    {
-        /* pair off query string variable and query string value */
-        $numargs = func_num_args();
-        $arg_list = func_get_args();
-        $urlparts = $this->getParts();
-        for ($i = 0; $i < $numargs; $i++) {
-            /* make them available for webpage */
-            eval('$GLOBALS["' . $arg_list[$i] . '"]= ' . (! empty($urlparts[$i]) ? "'$urlparts[$i]'" : 'false') . ';');
-        }
-    }
-
-    public function makeClean($stringurl)
-    {
-        /* convert normal URL query string to clean URL */
-        $url = parse_url($stringurl);
-        $strurl = ''; // basename($url['path'],".php");
-        $qstring = parse_str($url['query'], $vars);
-        foreach ($vars as $k => $v) {
-            $strurl .= '/' . $v;
-        }
-
-        return $strurl;
     }
 }

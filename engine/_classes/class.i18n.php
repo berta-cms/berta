@@ -4,19 +4,14 @@ class I18n extends BertaBase
 {
     public static $translations;
 
-    public $default_lang;
-
-    public function __construct()
-    {
-        $this->default_lang = self::$options['default_language'];
-    }
-
     public static function load_language($lang = null)
     {
+        $defaultLang = self::$options['default_language'];
+
         if ($lang && file_exists(self::$options['ENGINE_ROOT_PATH'] . 'lang/' . $lang . '.php')) {
             self::$translations = include self::$options['ENGINE_ROOT_PATH'] . 'lang/' . $lang . '.php';
-        } elseif (file_exists(self::$options['ENGINE_ROOT_PATH'] . 'lang/' . self::default_lang . '.php')) {
-            self::$translations = include self::$options['ENGINE_ROOT_PATH'] . 'lang/' . self::default_lang . '.php';
+        } elseif (file_exists(self::$options['ENGINE_ROOT_PATH'] . 'lang/' . $defaultLang . '.php')) {
+            self::$translations = include self::$options['ENGINE_ROOT_PATH'] . 'lang/' . $defaultLang . '.php';
         }
     }
 
