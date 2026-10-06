@@ -35,9 +35,6 @@ var MashupTemplate = class {
     }
 
     if (this.isResponsive) {
-      if (bertaGlobalOptions.environment == 'site') {
-        window.BertaHelpers.wrapResponsiveIframes(document.querySelectorAll('iframe'), false);
-      }
       this.mainColumnPaddingFix();
       this.sideColumnBottomSwitching();
     }

@@ -208,19 +208,6 @@ h1 {
   }
 }
 
-.iframeWrapper {
-  position: relative;
-  padding-bottom: 56.25%;
-
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100% !important;
-  }
-}
-
 // Background video from the section settings. Its embed code may carry inline styles, hence !important.
 #xBackgroundVideoEmbed {
   // the embed's width / height, set by mess.js from the iframe's size attributes

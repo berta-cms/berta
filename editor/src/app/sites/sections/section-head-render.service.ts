@@ -223,7 +223,8 @@ export class SectionHeadRenderService {
       if (isShopAvailable) {
         scriptFiles.push(`/_plugin_shop/js/shop.js?${appState.version}`);
       }
-    } else {
+    } else if (templateName !== 'default') {
+      // the default template has no script, its video embeds are styled by CSS
       scriptFiles.push(
         `/_templates/${siteSettings.template.template}/${templateName}.js?${appState.version}`,
       );

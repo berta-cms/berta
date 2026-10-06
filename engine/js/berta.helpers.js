@@ -212,49 +212,6 @@ window.BertaHelpers = (function () {
 
     removeCookie: function (name) {
       document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    },
-
-    /**
-     * Wrap whitelisted video iframes (YouTube, Vimeo) in a responsive `.iframeWrapper`
-     * that keeps their aspect ratio, or with `unwrap` remove that wrapper again.
-     */
-    wrapResponsiveIframes: function (iframes, unwrap) {
-      if (!window.berta) {
-        return;
-      }
-
-      var whiteList = window.berta.options.iframeWrapperWhiteList;
-
-      Array.prototype.forEach.call(iframes, function (iframe) {
-        var source = iframe.getAttribute('src');
-        var isWhiteListed = source && whiteList.some(function (item) {
-          return source.indexOf(item) > -1;
-        });
-        if (!isWhiteListed) {
-          return;
-        }
-
-        var wrapper = iframe.parentElement;
-        var hasWrapper = wrapper.classList.contains('iframeWrapper');
-
-        if (hasWrapper && unwrap) {
-          wrapper.after(iframe);
-          wrapper.remove();
-        }
-
-        if (!hasWrapper && !unwrap) {
-          var width = iframe.getAttribute('width');
-          var height = iframe.getAttribute('height');
-          wrapper = window.BertaHelpers.createElement('div', { 'class': 'iframeWrapper' });
-
-          if (width && height) {
-            wrapper.style.paddingBottom = height * 100 / width + '%';
-          }
-
-          iframe.before(wrapper);
-          wrapper.append(iframe);
-        }
-      });
     }
   };
 })();

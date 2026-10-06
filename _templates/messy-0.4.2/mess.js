@@ -197,21 +197,6 @@ var MessyMess = class {
     window.addEventListener("resize", this.gridBackgroundPosition.bind(this));
     window.addEventListener("scroll", this.gridBackgroundPosition.bind(this));
 
-    if (this.isResponsive) {
-      if (bertaGlobalOptions.environment == "site") {
-        this.iframeResponsiveFix(this.getEntryIframes(), false);
-      }
-    }
-
-    if (this.isAutoResponsive && bertaGlobalOptions.environment == "site") {
-      window.addEventListener(
-        "resize",
-        helpers.debounce(() => {
-          this.iframeResponsiveFix(this.getEntryIframes(), true);
-        }, 250),
-      );
-    }
-
     helpers.triggerResize();
   }
 
@@ -234,23 +219,6 @@ var MessyMess = class {
     if (isSize(width) && isSize(height)) {
       videoEmbed.style.setProperty("--video-ratio", width + " / " + height);
     }
-  }
-
-  // Iframes in the page content, the background video is never wrapped
-  getEntryIframes() {
-    return Array.from(document.querySelectorAll("iframe")).filter(
-      function (iframe) {
-        return !iframe.closest("#xBackgroundVideoEmbed");
-      },
-    );
-  }
-
-  // Auto-responsive layouts unwrap the iframes again above the mobile breakpoint
-  iframeResponsiveFix(iframes, removeWrapper) {
-    var unwrap =
-      removeWrapper &&
-      this.mobileBreakpoint <= window.BertaHelpers.getWindowSize().x;
-    window.BertaHelpers.wrapResponsiveIframes(iframes, unwrap);
   }
 
   gridBackgroundPosition() {

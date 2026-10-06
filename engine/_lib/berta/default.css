@@ -321,6 +321,25 @@ div.xGalleryItem .xGalleryImageVideoBack {
   display: block;
 }
 
+/* YouTube and Vimeo embeds in responsive layouts: full width at the video's aspect ratio,
+   from the iframe's width/height where attr() types are supported, 16:9 otherwise.
+   Same in the editor preview, and the embed markup itself is never changed. */
+
+body.bt-responsive iframe[src*="youtube"],
+body.bt-responsive iframe[src*="vimeo"] {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+@supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
+  body.bt-responsive iframe[src*="youtube"],
+  body.bt-responsive iframe[src*="vimeo"] {
+    aspect-ratio: attr(width type(<number>), 16) / attr(height type(<number>), 9);
+  }
+}
+
 /* helpers */
 
 .clearfix {
@@ -363,6 +382,22 @@ div.xGalleryItem .xGalleryImageVideoBack {
   body.bt-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery,
   body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery {
     min-width: 0 !important;
+  }
+
+  /* auto-responsive layouts get the responsive embeds below 768px only */
+  body.bt-auto-responsive iframe[src*="youtube"],
+  body.bt-auto-responsive iframe[src*="vimeo"] {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  @supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
+    body.bt-auto-responsive iframe[src*="youtube"],
+    body.bt-auto-responsive iframe[src*="vimeo"] {
+      aspect-ratio: attr(width type(<number>), 16) / attr(height type(<number>), 9);
+    }
   }
 
   .xSectionType-portfolio #pageEntries .xEntry .xGalleryContainer {
