@@ -321,6 +321,28 @@ div.xGalleryItem .xGalleryImageVideoBack {
   display: block;
 }
 
+/* YouTube and Vimeo embeds in responsive layouts: full width at the video's aspect ratio,
+   from the iframe's width/height when both are plain numbers, 16:9 otherwise.
+   Where attr() types aren't supported, BertaEmbedRatios.js adds the ratios instead.
+   Same in the editor preview, and the embed markup itself is never changed. */
+
+body.bt-responsive iframe[src*="youtube"],
+body.bt-responsive iframe[src*="vimeo"] {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+@supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
+  body.bt-responsive iframe[src*="youtube"],
+  body.bt-responsive iframe[src*="vimeo"] {
+    /* invalid as a whole when either attribute isn't a number, so it falls back to 16:9 for both */
+    --bt-embed-ratio: attr(width type(<number>)) / attr(height type(<number>));
+    aspect-ratio: var(--bt-embed-ratio, 16 / 9);
+  }
+}
+
 /* helpers */
 
 .clearfix {
@@ -363,6 +385,23 @@ div.xGalleryItem .xGalleryImageVideoBack {
   body.bt-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery,
   body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery {
     min-width: 0 !important;
+  }
+
+  /* auto-responsive layouts get the responsive embeds below 768px only */
+  body.bt-auto-responsive iframe[src*="youtube"],
+  body.bt-auto-responsive iframe[src*="vimeo"] {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  @supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
+    body.bt-auto-responsive iframe[src*="youtube"],
+    body.bt-auto-responsive iframe[src*="vimeo"] {
+      --bt-embed-ratio: attr(width type(<number>)) / attr(height type(<number>));
+      aspect-ratio: var(--bt-embed-ratio, 16 / 9);
+    }
   }
 
   .xSectionType-portfolio #pageEntries .xEntry .xGalleryContainer {

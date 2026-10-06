@@ -13,15 +13,3 @@ export function createEl(
 
   return el;
 }
-
-export function updateElCssById(
-  dom: Document,
-  id: string,
-  cssText: string,
-): HTMLElement {
-  const el = dom.getElementById(id);
-
-  el.style.cssText = cssText;
-
-  return el;
-}

@@ -241,7 +241,7 @@ class SectionHeadRenderService
             if ($isShopAvailable) {
                 $scriptFiles[] = "/_plugin_shop/js/shop.js?{$this->version}";
             }
-        } else {
+        } elseif ($templateName != 'default') {
             $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/{$templateName}.js?{$this->version}";
         }
 

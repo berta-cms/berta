@@ -1,403 +1,344 @@
-var MessyMess = new Class({
+var MessyMess = class {
+  constructor() {
+    this.fadeContent = null;
+    this.bgContainer = null;
+    this.bgImage = null;
+    this.bgCaption = null;
+    this.bgLoader = null;
 
-  shoppingCart: null,
-  reservation: null,
-  pageScroller: null,
+    this.bgGridViewTrigger = null;
+    this.bgNext = null;
+    this.bgPrevious = null;
+    this.bgRightCounter = null;
+    this.bgLeftCounter = null;
+    this.isResponsive = false;
+    this.isAutoResponsive = false;
+    this.mobileBreakpoint = 768;
 
-  fadeContent: null,
-  bgContainer: null,
-  bgImage: null,
-  bgCaption: null,
-  bgLoader: null,
+    window.BertaHelpers.onDomReady(this.onDOMReady.bind(this));
+    window.BertaHelpers.onWindowLoad(this.onLoad.bind(this));
+  }
 
-  xBackgroundVideoEmbed: null,
+  onDOMReady() {
+    var helpers = window.BertaHelpers;
 
-  bgGridViewTrigger: null,
-  bgNext: null,
-  bgPrevious: null,
-  bgRightCounter: null,
-  bgLeftCounter: null,
-  isResponsive: false,
-  isAutoResponsive: false,
-  mobileBrekapoint: 768,
+    this.isResponsive = document.querySelectorAll(".xResponsive").length > 0;
 
-
-  initialize: function () {
-    window.addEvent('domready', this.onDOMReady.bind(this));
-    window.addEvent('load', this.onLoad.bind(this));
-  },
-
-  onDOMReady: function () {
-
-    var that = this;
-
-    this.isResponsive = $$('.xResponsive').length > 0;
-
-    this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
+    this.isAutoResponsive =
+      document.querySelectorAll(".bt-auto-responsive").length > 0;
 
     // Berta Background
-    this.bgContainer = $('xBackground');
-    this.bgLoader = $('xBackgroundLoader');
-    this.xBackgroundVideoEmbed = $('xBackgroundVideoEmbed');
+    this.bgContainer = document.getElementById("xBackground");
+    this.bgLoader = document.getElementById("xBackgroundLoader");
 
-    if (this.xBackgroundVideoEmbed) {
-      this.xBackgroundVideoEmbed = this.xBackgroundVideoEmbed.getElement('iframe');
-    }
+    // The background video is sized by CSS, it only needs the embed's aspect ratio
+    this.setBackgroundVideoRatio();
 
     if (this.bgContainer) {
-      this.bgImage = this.bgContainer.getElement('.visual-image img');
-      this.bgCaption = this.bgContainer.getElement('.visual-caption');
+      this.bgImage = this.bgContainer.querySelector(".visual-image img");
+      this.bgCaption = this.bgContainer.querySelector(".visual-caption");
 
-      this.bgGridViewTrigger = $('xGridViewTrigger');
-      this.bgNext = $('xBackgroundNext');
-      this.bgPrevious = $('xBackgroundPrevious');
-      this.bgRightCounter = $('xBackgroundRightCounter');
-      this.bgLeftCounter = $('xBackgroundLeftCounter');
+      this.bgGridViewTrigger = document.getElementById("xGridViewTrigger");
+      this.bgNext = document.getElementById("xBackgroundNext");
+      this.bgPrevious = document.getElementById("xBackgroundPrevious");
+      this.bgRightCounter = document.getElementById("xBackgroundRightCounter");
+      this.bgLeftCounter = document.getElementById("xBackgroundLeftCounter");
 
       if (this.bgImage || this.bgCaption) {
         new BertaBackground();
-        this.fadeContent = window.BertaHelpers.getClassStoredValue(this.bgContainer, 'xBgDataFading');
+        this.fadeContent = helpers.getClassStoredValue(
+          this.bgContainer,
+          "xBgDataFading",
+        );
       }
 
       if (this.bgImage) {
-        this.bgImage.setStyle('display', 'none');
-        this.bgLoader.setStyle('display', 'block');
+        this.bgImage.style.display = "none";
+        this.bgLoader.style.display = "block";
       }
     }
 
     // Grid view
-    if ($('xGridView')) {
-      $$('.xGridItem').addEvent('click', function () {
-        var _berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/') + 2);
-        _berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_') + 1);
-        Cookie.write('_berta_grid_img_link', _berta_grid_img_link, { duration: 0 });
+    if (document.getElementById("xGridView")) {
+      document.querySelectorAll(".xGridItem").forEach(function (item) {
+        item.addEventListener("click", function () {
+          var _berta_grid_img_link = item.src.substr(
+            item.src.lastIndexOf("/") + 2,
+          );
+          _berta_grid_img_link = _berta_grid_img_link.substr(
+            _berta_grid_img_link.indexOf("_") + 1,
+          );
+          helpers.setCookie("_berta_grid_img_link", _berta_grid_img_link);
+        });
       });
     }
 
     if (this.bgGridViewTrigger) {
-      this.bgGridViewTrigger.addEvent('click', function () {
-        Cookie.write('_berta_grid_view', 'berta_grid_view', { duration: 0 });
-      });
+      var setGridViewCookie = function () {
+        helpers.setCookie("_berta_grid_view", "berta_grid_view");
+      };
+      this.bgGridViewTrigger.addEventListener("click", setGridViewCookie);
 
       // Key events
-      window.addEvent('keydown', function (event) {
-        if (event.key == 'up') {
-          this.bgGridViewTrigger.fireEvent('click');
-          window.location.href = this.bgGridViewTrigger.get('href');
+      window.addEventListener("keydown", (event) => {
+        if (event.key == "ArrowUp") {
+          setGridViewCookie();
+          window.location.href = this.bgGridViewTrigger.getAttribute("href");
         }
-      }.bind(this));
+      });
     }
 
-    if (Cookie.read('_berta_grid_img_link'))
-      Cookie.dispose('_berta_grid_img_link');
+    if (helpers.getCookie("_berta_grid_img_link"))
+      helpers.removeCookie("_berta_grid_img_link");
 
-    if (Cookie.read('_berta_grid_view'))
-      Cookie.dispose('_berta_grid_view');
+    if (helpers.getCookie("_berta_grid_view"))
+      helpers.removeCookie("_berta_grid_view");
 
-    setInterval(function () {
-      that.copyrightStickToBottom();
+    setInterval(() => {
+      this.copyrightStickToBottom();
     }, 1000);
 
-    if (bertaGlobalOptions.environment == 'engine') {
-      $$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
+    if (bertaGlobalOptions.environment == "engine") {
+      document.querySelectorAll(".xEntryToBack").forEach((link) => {
+        link.addEventListener("click", this.editor_saveOrder.bind(this));
+      });
     }
 
-
     // Centering
-    var container = $('contentContainer');
+    var container = document.getElementById("contentContainer");
 
     if (container) {
-      var centeredLayout = container.hasClass('xCentered') ? true : false;
+      var centeredLayout = container.classList.contains("xCentered")
+        ? true
+        : false;
     }
 
     if (centeredLayout) {
-      var bottom = $('bottom');
-      var bottomRight = parseInt(bottom.getStyle('right'));
-      var fixedItems = container.getParent().getElements('.xFixed');
-      var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
-      var containerW = container.getSize().x;
+      var bottom = document.getElementById("bottom");
+      var bottomRight = parseInt(helpers.getStyle(bottom, "right"));
+      var fixedItems = container.parentElement.querySelectorAll(".xFixed");
+      var fixedItemsInitLeft = new Map();
+      var guidesWidth =
+        (helpers.getWindowSize().x - container.offsetWidth) / 2 >= 0
+          ? (helpers.getWindowSize().x - container.offsetWidth) / 2
+          : 0;
+      var containerW = container.offsetWidth;
       var bottomW;
 
-      if (window.getSize().x < containerW) {
-        bottomW = window.getSize().x - parseInt(bottom.getStyle('right'));
+      if (helpers.getWindowSize().x < containerW) {
+        bottomW =
+          helpers.getWindowSize().x -
+          parseInt(helpers.getStyle(bottom, "right"));
       } else {
-        bottomW = containerW - parseInt(bottom.getStyle('right'));
+        bottomW = containerW - parseInt(helpers.getStyle(bottom, "right"));
       }
 
-      bottom.setStyle('width', bottomW - bottomRight + 'px');
-      bottom.setStyle('left', 'auto');
+      bottom.style.width = bottomW - bottomRight + "px";
+      bottom.style.left = "auto";
 
-      if (fixedItems.length > 0) {
-        fixedItems.each(function (item) {
-          var left = parseInt(item.getStyle('left'));
-          var w = guidesWidth + left;
+      fixedItems.forEach(function (item) {
+        var left = parseInt(helpers.getStyle(item, "left"));
+        var w = guidesWidth + left;
 
-          item.store('initLeft', left);
-          item.setStyle('left', w + 'px');
+        fixedItemsInitLeft.set(item, left);
+        item.style.left = w + "px";
+      });
+
+      bottom.style.right = guidesWidth + bottomRight + "px";
+
+      window.addEventListener("resize", function () {
+        var guidesWidth =
+          (helpers.getWindowSize().x - container.offsetWidth) / 2 >= 0
+            ? (helpers.getWindowSize().x - container.offsetWidth) / 2
+            : 0;
+
+        fixedItems.forEach(function (item) {
+          var w = guidesWidth + fixedItemsInitLeft.get(item);
+          item.style.left = w + "px";
         });
-      }
 
-      bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+        bottom.style.right = guidesWidth + bottomRight + "px";
 
-      window.addEvent('resize', function () {
-        var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
-
-        if (fixedItems.length > 0) {
-          fixedItems.each(function (item) {
-            var w = guidesWidth + item.retrieve('initLeft');
-            item.setStyle('left', w + 'px');
-          });
-        }
-
-        bottom.setStyle('right', guidesWidth + bottomRight + 'px');
-
-        if (window.getSize().x < containerW) {
-          bottomW = window.getSize().x - parseInt(bottom.getStyle('right'));
+        if (helpers.getWindowSize().x < containerW) {
+          bottomW =
+            helpers.getWindowSize().x -
+            parseInt(helpers.getStyle(bottom, "right"));
         } else {
           bottomW = containerW - bottomRight;
         }
 
-        bottom.setStyle('width', bottomW - bottomRight + 'px');
+        bottom.style.width = bottomW - bottomRight + "px";
       });
 
-      if (bertaGlobalOptions.environment == 'engine') {
-        document.body.setStyle('overflow-y', 'scroll');
+      if (bertaGlobalOptions.environment == "engine") {
+        document.body.style.overflowY = "scroll";
 
-        var el1 = new Element('div', {
-          'class': 'xCenteringGuide',
-          'styles': {
-            'left': 0,
-            'width': guidesWidth + 'px'
-          }
-        });
-        var el2 = new Element('div', {
-          'class': 'xCenteringGuide',
-          'styles': {
-            'right': 0,
-            'width': guidesWidth + 'px'
-          }
-        });
+        var el1 = helpers.createElement("div", { class: "xCenteringGuide" });
+        el1.style.left = "0px";
+        el1.style.width = guidesWidth + "px";
+        var el2 = helpers.createElement("div", { class: "xCenteringGuide" });
+        el2.style.right = "0px";
+        el2.style.width = guidesWidth + "px";
 
-        el1.inject(document.body, 'top');
-        el2.inject(document.body, 'top');
+        document.body.prepend(el1);
+        document.body.prepend(el2);
 
-        window.addEvent('resize', function () {
-          var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
-          el1.setStyle('width', guidesWidth + 'px');
-          el2.setStyle('width', guidesWidth + 'px');
+        window.addEventListener("resize", function () {
+          var guidesWidth =
+            (helpers.getWindowSize().x - container.offsetWidth) / 2;
+          el1.style.width = guidesWidth + "px";
+          el2.style.width = guidesWidth + "px";
         });
       }
     }
 
     setTimeout(this.gridBackgroundPosition.bind(this), 100);
 
-    window.addEvents({
-      'resize': this.gridBackgroundPosition.bind(this),
-      'scroll': this.gridBackgroundPosition.bind(this)
-    });
+    window.addEventListener("resize", this.gridBackgroundPosition.bind(this));
+    window.addEventListener("scroll", this.gridBackgroundPosition.bind(this));
 
-    if (this.isResponsive) {
-      if (bertaGlobalOptions.environment == 'site') {
-        this.iframeResponsiveFix($$('iframe'), false);
-      }
-    }
+    helpers.triggerResize();
+  }
 
-    if (this.isAutoResponsive && bertaGlobalOptions.environment == 'site') {
-      window.addEvent('resize', window.BertaHelpers.debounce(function () {
-        this.iframeResponsiveFix($$('iframe'), true);
-      }.bind(this), 250));
-    }
+  // "Fill window" and "Keep ratio" are CSS (_content.scss), they read the ratio from --video-ratio
+  setBackgroundVideoRatio() {
+    var videoEmbed = document.getElementById("xBackgroundVideoEmbed");
+    var video = videoEmbed && videoEmbed.querySelector("iframe");
 
-    if (this.xBackgroundVideoEmbed && !(this.isResponsive && bertaGlobalOptions.environment == 'site')) {
-      this.iframeResponsiveFix($$(this.xBackgroundVideoEmbed), false);
-    }
-
-    if (this.xBackgroundVideoEmbed && !$('xBackgroundVideoEmbed').hasClass('keepRatio')) {
-
-      window.addEvents({
-        'resize': this.xBackgroundVideoFill.bind(this)
-      });
-    }
-
-    window.BertaHelpers.triggerResize();
-  },
-
-  xBackgroundVideoFill: function () {
-
-    var iframeWrapper = this.xBackgroundVideoEmbed.getParent();
-    var windowWidth = window.getSize().x;
-    var windowHeight = window.getSize().y;
-    var windowRatio = windowHeight * 100 / windowWidth;
-    var videoRatio = parseFloat(iframeWrapper.getStyle('padding-bottom'));
-    var videoLeft = 0;
-    var videoTop = 0;
-    var videoWidth,
-        videoHeight;
-
-    if (videoRatio > windowRatio) {
-      videoWidth = windowWidth;
-      videoHeight = parseInt(videoWidth * (videoRatio / 100));
-      videoTop = -parseInt((videoHeight - windowHeight) / 2);
-    } else {
-      videoHeight = windowHeight;
-      videoWidth = parseInt(videoHeight / (videoRatio / 100));
-      videoLeft = -parseInt((videoWidth - windowWidth) / 2);
-    }
-
-    iframeWrapper.setStyles({
-      'width': windowWidth,
-      'height': windowHeight
-    });
-
-    $$(this.xBackgroundVideoEmbed)[0].setAttribute('style', 'top: ' + videoTop + 'px; left:' + videoLeft + 'px; width: ' + videoWidth + 'px; height:' + videoHeight + 'px !important;');
-  },
-
-  iframeResponsiveFix: function (el, removeWrapper) {
-    if (!window.berta) {
+    if (!video) {
       return;
     }
 
-    var doRemoveWrapper = removeWrapper && this.mobileBrekapoint <= window.getSize().x;
+    var ratio = window.BertaHelpers.getSizeRatio(video);
 
-    el.each(function (item) {
-      var hasWrapper = item.getParent().hasClass('iframeWrapper');
-      var source = item.get('src');
-      berta.options.iframeWrapperWhiteList.each(function (whiteList) {
+    // without plain pixel sizes the CSS default 16:9 stays
+    if (ratio) {
+      videoEmbed.style.setProperty("--video-ratio", ratio);
+    }
+  }
 
-        if (source && source.indexOf(whiteList) > -1) {
-          if (hasWrapper && doRemoveWrapper) {
-            item.inject(item.getParent(), 'after');
-            item.getPrevious().destroy();
-          }
-
-          if (!hasWrapper && !doRemoveWrapper) {
-            var width = item.get('width');
-            var height = item.get('height');
-            var wrapper = new Element('div', { 'class': 'iframeWrapper' });
-
-            if (width && height) {
-              wrapper.setStyle('padding-bottom', height * 100 / width + '%');
-            }
-
-            wrapper.wraps(item);
-          }
-        }
-      });
-    });
-  },
-
-  gridBackgroundPosition: function () {
-
-    var xGridBackground = $('xGridBackground');
+  gridBackgroundPosition() {
+    var xGridBackground = document.getElementById("xGridBackground");
 
     if (xGridBackground) {
-      var scroll = window.getScroll();
-      var xPos = -scroll.x;
-      var yPos = -scroll.y;
+      var xPos = -window.pageXOffset;
+      var yPos = -window.pageYOffset;
 
-      var xCenteringGuide = $$('.xCenteringGuide');
+      var xCenteringGuide = document.querySelectorAll(".xCenteringGuide");
 
       if (xCenteringGuide.length) {
-        xPos = xPos + xCenteringGuide[0].getSize().x;
+        xPos = xPos + xCenteringGuide[0].offsetWidth;
       }
 
-      xGridBackground.setStyles({
-        'background-position': xPos + 'px ' + yPos + 'px'
-      });
+      xGridBackground.style.backgroundPosition = xPos + "px " + yPos + "px";
     }
-  },
+  }
 
-  onLoad: function () {
+  onLoad() {
+    var helpers = window.BertaHelpers;
+
     if (this.bgContainer && this.bgImage) {
-      this.bgLoader.setStyle('display', 'none');
-      this.bgImage.setStyle('display', 'block');
+      this.bgLoader.style.display = "none";
+      this.bgImage.style.display = "block";
     }
 
     // Fade content
-    if (this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
+    if (
+      this.fadeContent == "enabled" &&
+      this.bgContainer.querySelector(".visual-image")
+    ) {
       var hideContent, lastX, lastY;
-      window.addEvent('mousemove', function (event) {
+      window.addEventListener("mousemove", (event) => {
         if (!lastX && !lastY) {
-          lastX = event.page.x;
-          lastY = event.page.y;
+          lastX = event.pageX;
+          lastY = event.pageY;
         }
 
-        if (event.page.x != lastX && event.page.y != lastY) {
+        if (event.pageX != lastX && event.pageY != lastY) {
           if (hideContent) {
             clearTimeout(hideContent);
             hideContent = 0;
           }
 
-          $('allContainer').setStyle('opacity', '1');
-          $('bottom').setStyle('opacity', '1');
+          helpers.setOpacity(document.getElementById("allContainer"), 1);
+          helpers.setOpacity(document.getElementById("bottom"), 1);
           if (this.bgLeftCounter && this.bgRightCounter) {
-            this.bgLeftCounter.setStyle('opacity', 1);
-            this.bgRightCounter.setStyle('opacity', 1);
+            helpers.setOpacity(this.bgLeftCounter, 1);
+            helpers.setOpacity(this.bgRightCounter, 1);
           } else if (this.bgNext && this.bgPrevious) {
-            this.bgNext.setStyle('opacity', '1');
-            this.bgPrevious.setStyle('opacity', '1');
+            helpers.setOpacity(this.bgNext, 1);
+            helpers.setOpacity(this.bgPrevious, 1);
           }
 
-          hideContent = setTimeout(function () {
-            $('allContainer').tween('opacity', '0');
-            $('bottom').tween('opacity', '0');
+          hideContent = setTimeout(() => {
+            helpers.fadeTo(document.getElementById("allContainer"), 0, 500);
+            helpers.fadeTo(document.getElementById("bottom"), 0, 500);
             if (this.bgLeftCounter && this.bgRightCounter) {
-              this.bgLeftCounter.tween('opacity', '0');
-              this.bgRightCounter.tween('opacity', '0');
+              helpers.fadeTo(this.bgLeftCounter, 0, 500);
+              helpers.fadeTo(this.bgRightCounter, 0, 500);
+            } else if (this.bgNext && this.bgPrevious) {
+              helpers.fadeTo(this.bgNext, 0, 500);
+              helpers.fadeTo(this.bgPrevious, 0, 500);
             }
-            else if (this.bgNext && this.bgPrevious) {
-              this.bgNext.tween('opacity', '0');
-              this.bgPrevious.tween('opacity', '0');
-            }
-          }.bind(this), 3000);
+          }, 3000);
 
-          lastX = event.page.x;
-          lastY = event.page.y;
+          lastX = event.pageX;
+          lastY = event.pageY;
         }
-      }.bind(this));
+      });
     }
 
     // Masonry grid
-    var gridView = document.getElementById('xGridView');
+    var gridView = document.getElementById("xGridView");
     if (gridView) {
       if (navigator.userAgent.match(/iPhone/i))
-        setTimeout(function () { gridView.style.visibility = 'visible'; }, 100);
-      else
-        gridView.style.visibility = 'visible';
+        setTimeout(function () {
+          gridView.style.visibility = "visible";
+        }, 100);
+      else gridView.style.visibility = "visible";
 
-      new BertaMasonry(gridView, '.box');
+      new BertaMasonry(gridView, ".box");
     }
-  },
+  }
 
-  copyrightStickToBottom: function () {
+  copyrightStickToBottom() {
+    var helpers = window.BertaHelpers;
     var y;
-    var bottom = $('bottom');
+    var bottom = document.getElementById("bottom");
 
     if (bottom) {
-      var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
-      var allDraggables = $$('.xNgEditableDragXY:not(.xFixed)');
-      var maxY = y = 0;
-      var windowH = window.getSize().y;
-      var windowW = window.getSize().x;
+      var bottomPaddingTop = parseInt(helpers.getStyle(bottom, "padding-top"));
+      var allDraggables = document.querySelectorAll(
+        ".xNgEditableDragXY:not(.xFixed)",
+      );
+      var maxY = (y = 0);
+      var windowH = helpers.getWindowSize().y;
+      var windowW = helpers.getWindowSize().x;
       var bottomH = 0;
 
-      bottom.getChildren().each(function (item) {
-        var bottomElH = item.getSize().y;
+      Array.prototype.forEach.call(bottom.children, function (item) {
+        var bottomElH = item.offsetHeight;
         if (bottomElH > bottomH) {
           bottomH = bottomElH;
         }
       });
 
-      if (this.isResponsive || (this.isAutoResponsive && bertaGlobalOptions.environment == 'site' && windowW < this.mobileBrekapoint)) {
-        maxY = $('allContainer').getSize().y;
+      if (
+        this.isResponsive ||
+        (this.isAutoResponsive &&
+          bertaGlobalOptions.environment == "site" &&
+          windowW < this.mobileBreakpoint)
+      ) {
+        maxY = document.getElementById("allContainer").offsetHeight;
         //add h1 margin-top to the height
-        var h1 = $$('h1');
-        if (h1) {
-          maxY = maxY + parseInt(h1.getStyle('margin-top'));
-        }
+        var h1 = document.querySelector("h1");
+        // Without an h1 the MooTools version added NaN, so `top` below is ignored and stays as it was
+        maxY = maxY + (h1 ? parseInt(helpers.getStyle(h1, "margin-top")) : NaN);
       } else {
-        allDraggables.each(function (item) {
-          y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
+        allDraggables.forEach(function (item) {
+          y =
+            parseInt(helpers.getStyle(item, "top")) +
+            parseInt(item.offsetHeight);
           if (maxY < y) {
             maxY = y;
           }
@@ -408,205 +349,208 @@ var MessyMess = new Class({
         maxY = windowH - bottomH - bottomPaddingTop;
       }
 
-      bottom.setStyle('top', maxY + 'px');
+      bottom.style.top = maxY + "px";
     }
-  },
-
-  editor_saveOrder: function (event) {
-    event.stop();
-
-    var target = $(event.target);
-    target = target.getParent('.xEntry');
-    var entriesList = target.getParent('.xEntriesList');
-    var nextEntry = entriesList.getFirst('.xEntry');
-    target.inject(entriesList, 'top');
-
-    var entryId = window.BertaHelpers.getClassStoredValue(target, 'xEntryId');
-    var value = window.BertaHelpers.getClassStoredValue(nextEntry, 'xEntryId');
-    var site = getCurrentSite();
-
-    redux_store.dispatch(Actions.initOrderSectionEntries(
-      site,
-      bertaEditor.currentSection,
-      entryId,
-      value
-    ));
   }
 
-});
+  editor_saveOrder(event) {
+    event.preventDefault();
+    event.stopPropagation();
 
+    var target = event.target.closest(".xEntry");
+    var entriesList = target.closest(".xEntriesList");
+    var nextEntry = entriesList.querySelector(":scope > .xEntry");
+    entriesList.prepend(target);
 
+    var entryId = window.BertaHelpers.getClassStoredValue(target, "xEntryId");
+    var value = window.BertaHelpers.getClassStoredValue(nextEntry, "xEntryId");
+    var site = getCurrentSite();
 
-var BertaBackground = new Class({
-  Implements: Options,
+    redux_store.dispatch(
+      Actions.initOrderSectionEntries(
+        site,
+        bertaEditor.currentSection,
+        entryId,
+        value,
+      ),
+    );
+  }
+};
 
-  options: {
-    type: 'image',
-    image_size: 'medium',
-    autoplay: 0,
-    image_scale: null
-  },
+var BertaBackground = class {
+  constructor() {
+    this.options = {
+      type: "image",
+      image_size: "medium",
+      autoplay: 0,
+      image_scale: null,
+    };
 
-  container: null,
-  nextButton: null,
-  previousButton: null,
-  nextClickArea: null,
-  previousClickArea: null,
-  loader: null,
+    this.container = null;
+    this.nextButton = null;
+    this.previousButton = null;
+    this.nextClickArea = null;
+    this.previousClickArea = null;
+    this.loader = null;
 
-  imageContainer: null,
-  captionContainer: null,
-  imagesList: null,
-  bgElements: null,
-  bgElementCount: null,
-  caption: null,
-  image: null,
+    this.imageContainer = null;
+    this.captionContainer = null;
+    this.imagesList = null;
+    this.bgElements = null;
+    this.bgElementCount = null;
+    this.caption = null;
+    this.image = null;
+    // the image being loaded for the newest slide, older loads finishing late are ignored
+    this.loadingImage = null;
 
-  selected: null,
-  selectedIndex: null,
-  rightCounter: null,
-  leftCounter: null,
-  rightCounterContent: null,
-  leftCounterContent: null,
+    this.selected = null;
+    this.selectedIndex = null;
+    this.rightCounter = null;
+    this.leftCounter = null;
+    this.rightCounterContent = null;
+    this.leftCounterContent = null;
 
-  autoplayInterval: null,
-  data: null,
+    this.autoplayInterval = null;
+    this.data = null;
 
-  fadeElements: null,
-  fadeOutFx: null,
-  fadeInFx: null,
-  bgAnimationEnabled: null,
-
-
-  initialize: function (options) {
-    this.setOptions(options);
+    this.fadeElements = null;
+    this.bgAnimationEnabled = null;
+    this.onResize = null;
 
     this._init();
 
     // If not mobile device
     if (this.nextClickArea && this.previousClickArea) {
+      this.nextClickArea.addEventListener("click", () => {
+        this._getNext();
+        this._getCounter();
+      });
+      this.nextClickArea.addEventListener("mouseenter", () => {
+        this._hide(this.leftCounter);
+        this._show(this.rightCounter);
+      });
+      this.nextClickArea.addEventListener("mouseleave", () => {
+        this._hide(this.leftCounter);
+        this._hide(this.rightCounter);
+      });
 
-      this.nextClickArea.addEvents({
-        'click': function () {
+      this.previousClickArea.addEventListener("click", () => {
+        this._getPrevious();
+        this._getCounter();
+      });
+      this.previousClickArea.addEventListener("mouseenter", () => {
+        this._hide(this.rightCounter);
+        this._show(this.leftCounter);
+      });
+      this.previousClickArea.addEventListener("mouseleave", () => {
+        this._hide(this.rightCounter);
+        this._hide(this.leftCounter);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key == "ArrowRight") {
           this._getNext();
           this._getCounter();
-        }.bind(this),
-        'mouseenter': function () {
-          this.leftCounter.hide();
-          this.rightCounter.show();
-        }.bind(this),
-        'mouseleave': function () {
-          this.leftCounter.hide();
-          this.rightCounter.hide();
-        }.bind(this)
-      });
-
-      this.previousClickArea.addEvents({
-        'click': function () {
+        } else if (event.key == "ArrowLeft") {
           this._getPrevious();
           this._getCounter();
-        }.bind(this),
-        'mouseenter': function () {
-          this.rightCounter.hide();
-          this.leftCounter.show();
-        }.bind(this),
-        'mouseleave': function () {
-          this.rightCounter.hide();
-          this.leftCounter.hide();
-        }.bind(this)
+        }
       });
-
-      window.addEvents({
-        'keydown': function (event) {
-          if (event.key == 'right') {
-            this._getNext();
-            this._getCounter();
-          } else if (event.key == 'left') {
-            this._getPrevious();
-            this._getCounter();
-          }
-        }.bind(this),
-        'mousemove': function (event) {
-          this._moveCounter(event);
-        }.bind(this)
+      window.addEventListener("mousemove", (event) => {
+        this._moveCounter(event);
       });
 
       //set default cursor if navigation is hidden
-      if (this.rightCounter.hasClass('xHidden')) {
-        $$(this.previousClickArea, this.nextClickArea).setStyle('cursor', 'default');
+      if (this.rightCounter.classList.contains("xHidden")) {
+        this.previousClickArea.style.cursor = "default";
+        this.nextClickArea.style.cursor = "default";
       }
-
     }
     // If mobile device
     else if (this.nextButton && this.previousButton) {
-
       // Image click event
-      this.imageContainer.addEvent('click:relay(img)', function () {
-        this._getNext();
-      }.bind(this));
+      this.imageContainer.addEventListener("click", (event) => {
+        if (event.target.closest("img")) {
+          this._getNext();
+        }
+      });
 
       // Caption click event
-      this.captionContainer.addEvent('click', function () {
+      this.captionContainer.addEventListener("click", () => {
         this._getNext();
-      }.bind(this));
+      });
 
       // Next image button click
-      this.nextButton.addEvent('click', function (event) {
-        event.stop();
+      this.nextButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         this._getNext();
-      }.bind(this));
+      });
 
       // Previous image button click
-      this.previousButton.addEvent('click', function (event) {
-        event.stop();
+      this.previousButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         this._getPrevious();
-      }.bind(this));
-
+      });
     }
-  },
+  }
 
-  _init: function () {
-    this.nextButton = $('xBackgroundNext');
-    this.previousButton = $('xBackgroundPrevious');
-    this.nextClickArea = $('xBackgroundRight');
-    this.previousClickArea = $('xBackgroundLeft');
-    this.rightCounter = $('xBackgroundRightCounter');
-    this.leftCounter = $('xBackgroundLeftCounter');
-    this.loader = $('xBackgroundLoader');
-    this.container = $('xBackground');
+  _init() {
+    var helpers = window.BertaHelpers;
 
-    this.imagesList = this.container.getElement('.visual-list');
-    this.bgElements = this.imagesList.getChildren();
+    this.nextButton = document.getElementById("xBackgroundNext");
+    this.previousButton = document.getElementById("xBackgroundPrevious");
+    this.nextClickArea = document.getElementById("xBackgroundRight");
+    this.previousClickArea = document.getElementById("xBackgroundLeft");
+    this.rightCounter = document.getElementById("xBackgroundRightCounter");
+    this.leftCounter = document.getElementById("xBackgroundLeftCounter");
+    this.loader = document.getElementById("xBackgroundLoader");
+    this.container = document.getElementById("xBackground");
+
+    this.imagesList = this.container.querySelector(".visual-list");
+    this.bgElements = Array.from(this.imagesList.children);
     this.bgElementCount = this.bgElements.length;
 
-    this.imageContainer = this.container.getElement('.visual-image');
-    this.captionContainer = this.container.getElement('.visual-caption');
-    this.image = this.imageContainer.getElement('img');
-    this.caption = this.captionContainer.getElement('.caption-content');
-    this.bgAnimationEnabled = window.BertaHelpers.getClassStoredValue(this.container, 'xBgDataAnimation') !== 'disabled';
+    this.imageContainer = this.container.querySelector(".visual-image");
+    this.captionContainer = this.container.querySelector(".visual-caption");
+    this.image = this.imageContainer.querySelector("img");
+    this.caption = this.captionContainer.querySelector(".caption-content");
+    this.bgAnimationEnabled =
+      helpers.getClassStoredValue(this.container, "xBgDataAnimation") !==
+      "disabled";
 
-    this.selected = this.imagesList.getElement('.sel');
+    this.selected = this.imagesList.querySelector(".sel");
     if (this.rightCounter && this.leftCounter) {
-      this.rightCounterContent = this.rightCounter.getElement('.counterContent');
-      this.leftCounterContent = this.leftCounter.getElement('.counterContent');
+      this.rightCounterContent =
+        this.rightCounter.querySelector(".counterContent");
+      this.leftCounterContent =
+        this.leftCounter.querySelector(".counterContent");
       this._getCounter();
-      this.rightCounter.hide();
-      this.leftCounter.hide();
+      this._hide(this.rightCounter);
+      this._hide(this.leftCounter);
     }
 
     this.data = { options: this.options };
-    this.data.options.image_size = window.BertaHelpers.getClassStoredValue(this.container, 'xBgDataImageSize');
-    this.data.options.autoplay = window.BertaHelpers.getClassStoredValue(this.container, 'xBgDataAutoplay');
-    if (this.data.options.image_size == 'large')
+    this.data.options.image_size = helpers.getClassStoredValue(
+      this.container,
+      "xBgDataImageSize",
+    );
+    this.data.options.autoplay = helpers.getClassStoredValue(
+      this.container,
+      "xBgDataAutoplay",
+    );
+    if (this.data.options.image_size == "large")
       this.data.options.image_scale = 1;
-    else if (!this.data.options.image_size || this.data.options.image_size == 'medium')
+    else if (
+      !this.data.options.image_size ||
+      this.data.options.image_size == "medium"
+    )
       this.data.options.image_scale = 0.85;
-    else if (this.data.options.image_size == 'small')
+    else if (this.data.options.image_size == "small")
       this.data.options.image_scale = 0.65;
 
-    this.fadeElements = $$('.visual-image, .visual-caption');
-    this.fadeOutFx = new Fx.Elements(this.fadeElements, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-    this.fadeInFx = new Fx.Elements(this.fadeElements, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+    this.fadeElements = [this.imageContainer, this.captionContainer];
 
     if (this.image) this._centerImage();
     else if (this.caption) this._centerCaption();
@@ -615,172 +559,205 @@ var BertaBackground = new Class({
     if (this.data.options.autoplay > 0) {
       this._autoplay();
     }
-  },
+  }
 
-  _autoplay: function () {
+  // Same as MooTools More show()/hide() on the counters
+  _show(el) {
+    if (window.getComputedStyle(el).display == "none") {
+      el.style.display = "block";
+    }
+  }
+
+  _hide(el) {
+    if (window.getComputedStyle(el).display != "none") {
+      el.style.display = "none";
+    }
+  }
+
+  _autoplay() {
     var time = this.data.options.autoplay * 1000;
-    var newBgContent;
-    this.autoplayInterval = setInterval(function () {
-      if (this.selected.getNext())
-        newBgContent = this.selected.getNext();
-      else
-        newBgContent = this.imagesList.getFirst();
+    this.autoplayInterval = setInterval(() => {
+      var newBgContent =
+        this.selected.nextElementSibling || this.imagesList.firstElementChild;
 
-      this.selected.removeClass('sel');
-      newBgContent.addClass('sel');
+      this.selected.classList.remove("sel");
+      newBgContent.classList.add("sel");
       this.selected = newBgContent;
 
       if (this.rightCounter && this.leftCounter) this._getCounter();
 
-      if (this.bgAnimationEnabled) {
-        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-          function () { this._getNewBgContent(newBgContent); }.bind(this)
-        );
-      } else {
-        this._getNewBgContent(newBgContent);
-      }
-    }.bind(this), time);
-  },
+      this._changeBgContent(newBgContent);
+    }, time);
+  }
 
-  _getCounter: function () {
+  _getCounter() {
     this.selectedIndex = this.bgElements.indexOf(this.selected) + 1;
-    this.rightCounterContent.set('text', (this.selectedIndex == this.bgElementCount ? 1 : (this.selectedIndex + 1)) + '/' + this.bgElementCount);
-    this.leftCounterContent.set('text', (this.selectedIndex == 1 ? this.bgElementCount : (this.selectedIndex - 1)) + '/' + this.bgElementCount);
-  },
+    this.rightCounterContent.textContent =
+      (this.selectedIndex == this.bgElementCount ? 1 : this.selectedIndex + 1) +
+      "/" +
+      this.bgElementCount;
+    this.leftCounterContent.textContent =
+      (this.selectedIndex == 1 ? this.bgElementCount : this.selectedIndex - 1) +
+      "/" +
+      this.bgElementCount;
+  }
 
-  _moveCounter: function (e) {
-    this.rightCounter.setStyles({ 'left': e.client.x + 'px', 'top': e.client.y + 'px' });
-    this.leftCounter.setStyles({ 'left': e.client.x + 'px', 'top': e.client.y + 'px' });
-  },
+  _moveCounter(e) {
+    this.rightCounter.style.left = e.clientX + "px";
+    this.rightCounter.style.top = e.clientY + "px";
+    this.leftCounter.style.left = e.clientX + "px";
+    this.leftCounter.style.top = e.clientY + "px";
+  }
 
-  _getNext: function () {
-    var newBgContent;
-
+  _getNext() {
     if (this.data.options.autoplay > 0) {
       clearInterval(this.autoplayInterval);
       this._autoplay();
     }
 
-    if (this.selected.getNext())
-      newBgContent = this.selected.getNext();
-    else
-      newBgContent = this.imagesList.getFirst();
+    var newBgContent =
+      this.selected.nextElementSibling || this.imagesList.firstElementChild;
 
-    this.selected.removeClass('sel');
-    newBgContent.addClass('sel');
+    this.selected.classList.remove("sel");
+    newBgContent.classList.add("sel");
     this.selected = newBgContent;
 
-    if (this.bgAnimationEnabled) {
-      this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-        function () { this._getNewBgContent(newBgContent); }.bind(this)
-      );
-    } else {
-      this._getNewBgContent(newBgContent);
-    }
-  },
+    this._changeBgContent(newBgContent);
+  }
 
-  _getPrevious: function () {
-    var newBgContent;
-
+  _getPrevious() {
     if (this.data.options.autoplay > 0) {
       clearInterval(this.autoplayInterval);
       this._autoplay();
     }
 
-    if (this.selected.getPrevious())
-      newBgContent = this.selected.getPrevious();
-    else
-      newBgContent = this.imagesList.getLast();
+    var newBgContent =
+      this.selected.previousElementSibling || this.imagesList.lastElementChild;
 
-    this.selected.removeClass('sel');
-    newBgContent.addClass('sel');
+    this.selected.classList.remove("sel");
+    newBgContent.classList.add("sel");
     this.selected = newBgContent;
 
+    this._changeBgContent(newBgContent);
+  }
+
+  // Fade out the current slide, then show the new one. A newer change cancels the fade of an older one.
+  _changeBgContent(newBgContent) {
+    // drop the image an older change is still loading
+    if (this.loadingImage) {
+      this.loadingImage = null;
+      this.loader.style.display = "none";
+    }
+
     if (this.bgAnimationEnabled) {
-      this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-        function () { this._getNewBgContent(newBgContent); }.bind(this)
-      );
+      Promise.all(
+        this.fadeElements.map(function (el) {
+          return window.BertaHelpers.fadeTo(el, 0, 250);
+        }),
+      ).then(() => {
+        this._getNewBgContent(newBgContent);
+      });
     } else {
       this._getNewBgContent(newBgContent);
     }
-  },
+  }
 
-  _getNewBgContent: function (newContent) {
-    var img,
-        newImage,
-        newCaption,
-        caption,
-        newWidth,
-        newHeight,
-        newSrc;
+  _getNewBgContent(newContent) {
+    var tagName = newContent.tagName.toLowerCase();
 
-    if (newContent.get('tag') == 'input') {
-      if (img = this.image) img.destroy();
-      if (caption = this.caption) caption.destroy();
+    if (tagName == "input") {
+      if (this.image) this.image.remove();
+      if (this.caption) this.caption.remove();
 
-      this.loader.setStyle('display', 'block');
-      newImage = newContent; newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-      this.image = new Asset.image(newSrc, { 'class': 'bg-element', 'width': newWidth, 'height': newHeight, 'onLoad': this._getNewBgImageFinish.bind(this) });
-    }
-    else if (newContent.get('tag') == 'textarea') {
-      if (img = this.image) img.destroy();
-      if (caption = this.caption) caption.destroy();
+      this.loader.style.display = "block";
+      var image = window.BertaHelpers.createElement("img", {
+        class: "bg-element",
+        width: newContent.getAttribute("width"),
+        height: newContent.getAttribute("height"),
+      });
+      image.onload = () => {
+        if (image !== this.loadingImage) {
+          return;
+        }
+        this.loadingImage = null;
+        // Like MooTools Asset.image: missing or invalid width/height fall back to the natural size
+        image.setAttribute("width", image.width);
+        image.setAttribute("height", image.height);
+        this._getNewBgImageFinish();
+      };
+      this.image = this.loadingImage = image;
+      image.src = newContent.getAttribute("src");
+    } else if (tagName == "textarea") {
+      if (this.image) this.image.remove();
+      if (this.caption) this.caption.remove();
 
-      newCaption = newContent.get('text');
-      this.caption = new Element('div', { 'class': 'caption-content', 'html': newCaption });
+      this.caption = window.BertaHelpers.createElement(
+        "div",
+        { class: "caption-content" },
+        newContent.textContent,
+      );
       this._getNewBgCaptionFinish();
     }
-  },
+  }
 
-  _getNewBgImageFinish: function () {
-    this.loader.setStyle('display', 'none');
-    this.imageContainer.adopt(this.image);
+  _getNewBgImageFinish() {
+    this.loader.style.display = "none";
+    this.imageContainer.append(this.image);
     this._centerImage();
+    this._fadeInBgContent();
+  }
 
-    if (this.bgAnimationEnabled) {
-      this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
-    } else {
-      this.fadeElements.setStyle('opacity', 1);
-    }
-  },
-
-  _getNewBgCaptionFinish: function () {
-    this.captionContainer.adopt(this.caption);
+  _getNewBgCaptionFinish() {
+    this.captionContainer.append(this.caption);
     this._centerCaption();
+    this._fadeInBgContent();
+  }
 
-    if (this.bgAnimationEnabled) {
-      this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
-    } else {
-      this.fadeElements.setStyle('opacity', 1);
+  _fadeInBgContent() {
+    this.fadeElements.forEach((el) => {
+      if (this.bgAnimationEnabled) {
+        window.BertaHelpers.setOpacity(el, 0);
+        window.BertaHelpers.fadeTo(el, 1, 500);
+      } else {
+        window.BertaHelpers.setOpacity(el, 1);
+      }
+    });
+  }
+
+  _centerCaption() {
+    this.captionContainer.style.marginTop =
+      "-" + this.captionContainer.offsetHeight / 2 + "px";
+  }
+
+  _centerImage() {
+    this.data.width = parseInt(this.image.getAttribute("width"));
+    this.data.height = parseInt(this.image.getAttribute("height"));
+
+    if (!this.onResize) {
+      this.onResize = this._onResize.bind(this);
+      window.addEventListener("resize", this.onResize);
     }
-  },
-
-  _centerCaption: function () {
-    this.captionContainer.setStyle('margin-top', '-' + (this.captionContainer.getSize().y / 2) + 'px');
-  },
-
-  _centerImage: function () {
-    this.data.width = parseInt(this.image.get('width'));
-    this.data.height = parseInt(this.image.get('height'));
-
-    window.removeEvent('resize');
-    window.addEvent('resize', function () { this._onResize() }.bind(this));
     this._onResize();
-  },
+  }
 
-  _onResize: function () {
-    var wnd = window,
-        w = wnd.getSize().x,
-        h = wnd.getSize().y;
+  _onResize() {
+    var w = window.BertaHelpers.getWindowSize().x,
+      h = window.BertaHelpers.getWindowSize().y;
 
     var posX, posY;
 
     // scale
-    var scaleX = w / this.data.width, scaleY = h / this.data.height;
+    var scaleX = w / this.data.width,
+      scaleY = h / this.data.height;
 
-    if (this.data.width >= this.data.height && this.data.options.image_scale == 1)
-      if (scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
-    else if (scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
+    if (
+      this.data.width >= this.data.height &&
+      this.data.options.image_scale == 1
+    )
+      if (scaleX > scaleY) scaleY = scaleX;
+      else scaleX = scaleY;
+    else if (scaleX > scaleY) scaleX = scaleY;
+    else scaleY = scaleX;
 
     // scale based on background image size
     scaleX = scaleX * this.data.options.image_scale;
@@ -790,15 +767,13 @@ var BertaBackground = new Class({
     posX = Math.round((w - this.data.width * scaleX) / 2);
 
     // position Y
-    posY = Math.round((h - (this.data.height * scaleY)) / 2);
+    posY = Math.round((h - this.data.height * scaleY) / 2);
 
-    this.image.setStyles({
-      'width': this.data.width * scaleX,
-      'height': this.data.height * scaleY,
-      'left': posX,
-      'top': posY
-    });
-  },
-});
+    this.image.style.width = Math.round(this.data.width * scaleX) + "px";
+    this.image.style.height = Math.round(this.data.height * scaleY) + "px";
+    this.image.style.left = posX + "px";
+    this.image.style.top = posY + "px";
+  }
+};
 
 new MessyMess();

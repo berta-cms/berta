@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createEl, updateElCssById } from '../utilities/element';
+import { createEl } from '../utilities/element';
 import { HandleSiteSettingsChildrenChangesAction } from '../../sites/settings/site-settings.actions';
 import { PageLayoutService as MainPageLayoutService } from '../common/page-layout.service';
 import { Store } from '@ngxs/store';
@@ -155,36 +155,40 @@ export class PageLayoutService extends MainPageLayoutService {
   ) {
     const dom = iframe.contentDocument;
 
-    // if someone changed 'Show gridlines' setting
-    if (action.payload.showGrid) {
-      if (action.payload.showGrid === 'yes') {
-        const body = dom.getElementById('body');
-
-        const createdGrid = createEl(
-          dom,
-          'div',
-          'xGridBackground',
-          viewData.gridlinesAttributes.style,
-        );
-
-        body.insertBefore(createdGrid, body.firstChild);
+    // if someone changed 'Show gridlines', 'Grid step' or 'Gridlines color' setting
+    if (
+      ['showGrid', 'gridStep', 'gridColor'].some((key) => key in action.payload)
+    ) {
+      // same as the server render: no gridlines when they are off or the grid step is below 2
+      if (viewData.gridlinesAttributes) {
+        this.showGridBackground(dom, viewData.gridlinesAttributes.style);
       } else {
-        const gridBackground = dom.getElementById('xGridBackground');
-        gridBackground.remove();
+        this.removeGridBackground(dom);
       }
-
-      // if someone changed 'Grid step' or 'Gridlines color' setting
-    } else if (action.payload.gridStep || action.payload.gridColor) {
-      // if grid is hidden ignore changes
-      if (!viewData.gridlinesAttributes) {
-        return;
-      }
-
-      updateElCssById(
-        dom,
-        'xGridBackground',
-        viewData.gridlinesAttributes.style,
-      );
     }
+  }
+
+  // Reuses the gridlines element the page already has (server rendered or added
+  // by an earlier change), so a repeated 'yes' never adds a second one
+  private showGridBackground(dom: Document, cssText: string) {
+    const [gridBackground, ...duplicates] = Array.from(
+      dom.querySelectorAll<HTMLElement>('#xGridBackground'),
+    );
+    duplicates.forEach((el) => el.remove());
+
+    if (gridBackground) {
+      gridBackground.style.cssText = cssText;
+      return;
+    }
+
+    const body = dom.getElementById('body');
+    body.insertBefore(
+      createEl(dom, 'div', 'xGridBackground', cssText),
+      body.firstChild,
+    );
+  }
+
+  private removeGridBackground(dom: Document) {
+    dom.querySelectorAll('#xGridBackground').forEach((el) => el.remove());
   }
 }

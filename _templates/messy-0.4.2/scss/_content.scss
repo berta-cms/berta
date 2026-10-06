@@ -208,33 +208,51 @@ h1 {
   }
 }
 
-.iframeWrapper {
-  position: relative;
-  padding-bottom: 56.25%;
-
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100% !important;
-  }
-}
-
+// Background video from the section settings. Its embed code may carry inline styles, hence !important.
 #xBackgroundVideoEmbed {
+  // the embed's width / height, set by mess.js from the iframe's size attributes
+  --video-ratio: 16 / 9;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
 
-  &.fillWindow {
-    .iframeWrapper {
-      padding-bottom: 0 !important;
+  iframe {
+    display: block;
+    box-sizing: border-box;
+    max-width: none !important;
+    aspect-ratio: var(--video-ratio) !important;
+  }
 
-      iframe {
-        max-width: none;
-      }
+  // "Keep ratio": full width, height from the video's ratio, centred vertically
+  // while the window is taller than the video, otherwise from the top
+  &.keepRatio {
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+    height: 100%;
+    // the empty space around the video stays clickable for the page below
+    pointer-events: none;
+
+    > * {
+      flex-shrink: 0;
     }
+
+    iframe {
+      width: 100% !important;
+      height: auto !important;
+      pointer-events: auto;
+    }
+  }
+
+  // "Fill window": cover the window like background-size: cover, centred
+  &.fillWindow iframe {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: max(100vw, 100vh * var(--video-ratio)) !important;
+    height: auto !important;
+    transform: translate(-50%, -50%);
   }
 }
 

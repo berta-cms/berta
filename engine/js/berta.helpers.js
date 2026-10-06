@@ -117,6 +117,115 @@ window.BertaHelpers = (function () {
         duration: 250,
         easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)'
       });
+    },
+
+    /**
+     * Set opacity, canceling a running fadeTo() of the element
+     */
+    setOpacity: function (el, opacity) {
+      if (el.bertaFade) {
+        el.bertaFade.cancel();
+        el.bertaFade = null;
+      }
+      el.style.opacity = opacity;
+    },
+
+    /**
+     * Animate opacity like a MooTools tween (sine ease-in-out).
+     * A new fade or setOpacity() of the same element cancels the running one.
+     * Resolves when the fade finishes, never when it was canceled.
+     */
+    fadeTo: function (el, opacity, duration) {
+      var from = window.getComputedStyle(el).opacity;
+      window.BertaHelpers.setOpacity(el, opacity);
+
+      var animation = el.animate([{ opacity: from }, { opacity: opacity }], {
+        duration: duration,
+        easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)'
+      });
+      el.bertaFade = animation;
+
+      return new Promise(function (resolve) {
+        // A timer, like MooTools: animation.finished only settles on a rendering update,
+        // which a background tab doesn't get, so a slideshow would stall there
+        setTimeout(function () {
+          if (el.bertaFade !== animation) {
+            return;
+          }
+          el.bertaFade = null;
+          resolve();
+        }, duration);
+      });
+    },
+
+    /**
+     * Run a callback once the DOM is ready, right away if it already is
+     */
+    onDomReady: function (callback) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback);
+      } else {
+        callback();
+      }
+    },
+
+    /**
+     * Run a callback once the page has loaded, right away if it already has
+     */
+    onWindowLoad: function (callback) {
+      if (document.readyState === 'complete') {
+        callback();
+      } else {
+        window.addEventListener('load', callback);
+      }
+    },
+
+    /**
+     * Read a style like MooTools getStyle: the inline value, otherwise the computed one.
+     * Takes a hyphenated property name, e.g. `padding-top`.
+     */
+    getStyle: function (el, property) {
+      return el.style.getPropertyValue(property) || window.getComputedStyle(el).getPropertyValue(property);
+    },
+
+    /**
+     * Viewport size without the scrollbar, same as MooTools window.getSize()
+     */
+    getWindowSize: function () {
+      return {
+        x: document.documentElement.clientWidth,
+        y: document.documentElement.clientHeight
+      };
+    },
+
+    /**
+     * Aspect ratio from the width and height attributes, e.g. `560 / 315`,
+     * null unless both are plain positive numbers (no `px`, no `%`)
+     */
+    getSizeRatio: function (el) {
+      var width = el.getAttribute('width');
+      var height = el.getAttribute('height');
+      var isSize = function (value) {
+        return /^\d+(\.\d+)?$/.test(value) && Number(value) > 0;
+      };
+
+      return isSize(width) && isSize(height) ? width + ' / ' + height : null;
+    },
+
+    getCookie: function (name) {
+      var match = document.cookie.match('(?:^|;)\\s*' + name.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)');
+      return match ? decodeURIComponent(match[1]) : null;
+    },
+
+    /**
+     * Set a session cookie for the whole site
+     */
+    setCookie: function (name, value) {
+      document.cookie = name + '=' + encodeURIComponent(value) + '; path=/';
+    },
+
+    removeCookie: function (name) {
+      document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
   };
 })();

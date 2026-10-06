@@ -2,9 +2,7 @@ var Berta = new Class({
 
   Implements: Options,
 
-  options: {
-    iframeWrapperWhiteList: ['youtube', 'vimeo']
-  },
+  options: {},
 
   initialize: function (options) {
     this.setOptions(options);
