@@ -1,40 +1,33 @@
-var MashupTemplate = new Class({
+var MashupTemplate = class {
+  constructor() {
+    this.isResponsive = false;
+    this.breakPointWidth = 767;
 
-  isResponsive: false,
-  breakPointWidth: 767,
+    this.entriesContainer = null;
+    this.sideColumnBottom = null;
+    this.sideColumn = null;
+    this.mainColumn = null;
+    this.allContainer = null;
+    this.contentContainer = null;
+    this.isCenteredLayout = false;
 
-  entriesContainer: null,
-  sideColumnBottom: null,
-  sideColumn: null,
-  mainColumn: null,
-  allContainer: null,
-  contentContainer: null,
-  isCenteredLayout: false,
+    window.BertaHelpers.onDomReady(this.onDOMReady.bind(this));
+  }
 
-  initialize: function () {
-    window.addEvent('domready', this.onDOMReady.bind(this));
-  },
-
-  onDOMReady: function () {
-    this.isResponsive = $$('.xResponsive').length;
-    this.entriesContainer = $('firstPageMarkedEntries');
-    this.sideColumnBottom = $('sideColumnBottom');
-    this.sideColumn = $('sideColumn');
-    this.mainColumn = $('mainColumn');
-    this.allContainer = $('allContainer');
-    this.contentContainer = $('contentContainer');
-    this.isCenteredLayout = this.sideColumn.hasClass('xCentered');
+  onDOMReady() {
+    this.isResponsive = document.querySelectorAll('.xResponsive').length > 0;
+    this.entriesContainer = document.getElementById('firstPageMarkedEntries');
+    this.sideColumnBottom = document.getElementById('sideColumnBottom');
+    this.sideColumn = document.getElementById('sideColumn');
+    this.mainColumn = document.getElementById('mainColumn');
+    this.allContainer = document.getElementById('allContainer');
+    this.contentContainer = document.getElementById('contentContainer');
+    this.isCenteredLayout = this.sideColumn.classList.contains('xCentered');
 
     if (!this.isResponsive && this.entriesContainer && bertaGlobalOptions.environment == 'site') {
-
-      this.entriesContainer.getElements('.firstPagePic').each(function (el) {
-        el.addEvent('mouseenter', this.onFirstPagePicMouseEnter.bindWithEvent(this));
-        el.addEvent('mouseleave', this.onFirstPagePicMouseLeave.bindWithEvent(this));
-        el.addEvent('mousemove', this.onFirstPagePicMouseMove.bindWithEvent(this));
-        el.store('prevMouseX', 0);
-        el.store('prevMouseY', 0);
-        el.store('mouseMoveOn', false);
-      }.bind(this));
+      this.entriesContainer.querySelectorAll('.firstPagePic').forEach((el) => {
+        this.firstPagePicWiggle(el);
+      });
     }
 
     if (this.isCenteredLayout) {
@@ -43,73 +36,49 @@ var MashupTemplate = new Class({
 
     if (this.isResponsive) {
       if (bertaGlobalOptions.environment == 'site') {
-        this.iframeResponsiveFix($$('iframe'));
+        window.BertaHelpers.wrapResponsiveIframes(document.querySelectorAll('iframe'), false);
       }
       this.mainColumnPaddingFix();
       this.sideColumnBottomSwitching();
     }
-  },
+  }
 
-  iframeResponsiveFix: function (el) {
-    el.each(function (item) {
-      var source = item.get('src');
+  sidebarPositionFix() {
+    var allContainerWidth = parseInt(window.BertaHelpers.getStyle(this.allContainer, 'max-width'));
 
-      berta.options.iframeWrapperWhiteList.each(function (whiteList) {
-        if (source && source.indexOf(whiteList) > -1) {
-          var width = item.get('width');
-          var height = item.get('height');
-          var wrapper = new Element('div', {
-            'class': 'iframeWrapper'
-          });
-
-          if (width && height) {
-            wrapper.setStyle('padding-bottom', height * 100 / width + '%');
-          }
-
-          if (!item.getParent().hasClass('iframeWrapper')) { //if no iframeWrapper already exists
-            wrapper.wraps(item);
-          }
-        }
-      });
-    });
-  },
-
-  sidebarPositionFix: function () {
-    var allContainerWidth = parseInt(this.allContainer.getStyle('max-width'));
-
-    window.addEvent('resize', function () {
-      if (window.getSize().x < allContainerWidth) {
-        this.allContainer.addClass('xNarrow');
+    window.addEventListener('resize', () => {
+      if (window.BertaHelpers.getWindowSize().x < allContainerWidth) {
+        this.allContainer.classList.add('xNarrow');
       } else {
-        this.allContainer.removeClass('xNarrow');
+        this.allContainer.classList.remove('xNarrow');
       }
     });
     window.BertaHelpers.triggerResize();
-  },
+  }
 
-  mainColumnPaddingFix: function () {
+  mainColumnPaddingFix() {
     var breakPointWidth = this.breakPointWidth;
-    var mainColumnPaddingTop = this.mainColumn.get('data-paddingtop');
+    var mainColumnPaddingTop = this.mainColumn.getAttribute('data-paddingtop');
 
-    window.addEvent('resize', function () {
-      var sideColumnHeight = this.sideColumn.getSize().y;
+    window.addEventListener('resize', () => {
+      var sideColumnHeight = this.sideColumn.offsetHeight;
 
-      if (breakPointWidth < this.getSize().x) {
-        this.mainColumn.setStyle('padding-top', mainColumnPaddingTop);
+      if (breakPointWidth < window.BertaHelpers.getWindowSize().x) {
+        this.mainColumn.style.paddingTop = mainColumnPaddingTop;
         // small tablet
       } else {
-        this.mainColumn.setStyle('padding-top', parseInt(mainColumnPaddingTop) + sideColumnHeight + 'px');
+        this.mainColumn.style.paddingTop = parseInt(mainColumnPaddingTop) + sideColumnHeight + 'px';
       }
     });
 
-    var headerImage = this.sideColumn.getElement('img');
+    var headerImage = this.sideColumn.querySelector('img');
 
     if (headerImage) {
-      Asset.image(headerImage.get('src'), {
-        onLoad: function () {
-          window.BertaHelpers.triggerResize();
-        }
-      });
+      var image = new Image();
+      image.onload = function () {
+        window.BertaHelpers.triggerResize();
+      };
+      image.src = headerImage.getAttribute('src');
     }
 
     setTimeout(
@@ -118,65 +87,59 @@ var MashupTemplate = new Class({
       },
       100
     );
-  },
+  }
 
-  sideColumnBottomSwitching: function () {
+  sideColumnBottomSwitching() {
     var breakPointWidth = this.breakPointWidth;
 
-    window.addEvent('resize', function () {
-      if (breakPointWidth < this.getSize().x) {
-        this.sideColumnBottom.inject(this.sideColumn);
+    window.addEventListener('resize', () => {
+      if (breakPointWidth < window.BertaHelpers.getWindowSize().x) {
+        this.sideColumn.append(this.sideColumnBottom);
         // small tablet
       } else {
-        this.sideColumnBottom.inject(this.allContainer).setStyle('position', 'static');
+        this.allContainer.append(this.sideColumnBottom);
+        this.sideColumnBottom.style.position = 'static';
       }
     });
     window.BertaHelpers.triggerResize();
-  },
-
-  onFirstPagePicMouseEnter: function (event) {
-    var target = $(event.target);
-    if (!target.hasClass('firstPagePic')) {
-      target = target.getParent('.firstPagePic');
-    }
-
-    target.store('mouseMoveOn', true);
-    target.store('prevMouseX', event.page.x);
-    target.store('prevMouseY', event.page.y);
-    target.store('initPosX', target.getStyle('left'));
-    target.store('initPosY', target.getStyle('top'));
-  },
-
-  onFirstPagePicMouseLeave: function (event) {
-    var target = $(event.target);
-    if (!target.hasClass('firstPagePic')) {
-      target = target.getParent('.firstPagePic');
-    }
-
-    target.setStyle('left', target.retrieve('initPosX'));
-    target.setStyle('top', target.retrieve('initPosY'));
-  },
-
-  onFirstPagePicMouseMove: function (event) {
-    var target = $(event.target);
-    if (!target.hasClass('firstPagePic')) {
-      target = target.getParent('.firstPagePic');
-    }
-
-    if (target.retrieve('mouseMoveOn')) {
-      var xDiff = event.page.x > target.retrieve('prevMouseX') ? 1 : (event.page.x == target.retrieve('prevMouseX') ? 0 : -1);
-      var yDiff = event.page.y > target.retrieve('prevMouseY') ? 1 : (event.page.y == target.retrieve('prevMouseY') ? 0 : -1);
-
-      target.store('prevMouseX', event.page.x);
-      target.store('prevMouseY', event.page.y);
-      target.store('mouseMoveOn', !xDiff && !yDiff);
-
-      if (target.hasClass('firstPageWiggle')) {
-        target.setStyle('left', parseInt(target.getStyle('left')) + xDiff * 5);
-        target.setStyle('top', parseInt(target.getStyle('top')) + yDiff * 5);
-      }
-    }
   }
-});
+
+  // The first mouse move over a picture nudges it 5px in that direction, leaving puts it back
+  firstPagePicWiggle(el) {
+    var prevMouseX = 0;
+    var prevMouseY = 0;
+    var mouseMoveOn = false;
+    var initPosX, initPosY;
+
+    el.addEventListener('mouseenter', function (event) {
+      mouseMoveOn = true;
+      prevMouseX = event.pageX;
+      prevMouseY = event.pageY;
+      initPosX = window.BertaHelpers.getStyle(el, 'left');
+      initPosY = window.BertaHelpers.getStyle(el, 'top');
+    });
+
+    el.addEventListener('mouseleave', function () {
+      el.style.left = initPosX;
+      el.style.top = initPosY;
+    });
+
+    el.addEventListener('mousemove', function (event) {
+      if (mouseMoveOn) {
+        var xDiff = event.pageX > prevMouseX ? 1 : (event.pageX == prevMouseX ? 0 : -1);
+        var yDiff = event.pageY > prevMouseY ? 1 : (event.pageY == prevMouseY ? 0 : -1);
+
+        prevMouseX = event.pageX;
+        prevMouseY = event.pageY;
+        mouseMoveOn = !xDiff && !yDiff;
+
+        if (el.classList.contains('firstPageWiggle')) {
+          el.style.left = parseInt(window.BertaHelpers.getStyle(el, 'left')) + xDiff * 5 + 'px';
+          el.style.top = parseInt(window.BertaHelpers.getStyle(el, 'top')) + yDiff * 5 + 'px';
+        }
+      }
+    });
+  }
+};
 
 new MashupTemplate();
