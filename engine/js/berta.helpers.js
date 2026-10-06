@@ -198,6 +198,20 @@ window.BertaHelpers = (function () {
       };
     },
 
+    /**
+     * Aspect ratio from the width and height attributes, e.g. `560 / 315`,
+     * null unless both are plain positive numbers (no `px`, no `%`)
+     */
+    getSizeRatio: function (el) {
+      var width = el.getAttribute('width');
+      var height = el.getAttribute('height');
+      var isSize = function (value) {
+        return /^\d+(\.\d+)?$/.test(value) && Number(value) > 0;
+      };
+
+      return isSize(width) && isSize(height) ? width + ' / ' + height : null;
+    },
+
     getCookie: function (name) {
       var match = document.cookie.match('(?:^|;)\\s*' + name.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)');
       return match ? decodeURIComponent(match[1]) : null;

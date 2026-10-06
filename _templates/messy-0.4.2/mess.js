@@ -209,15 +209,11 @@ var MessyMess = class {
       return;
     }
 
-    var width = video.getAttribute("width");
-    var height = video.getAttribute("height");
-    var isSize = function (value) {
-      return /^\d+(\.\d+)?$/.test(value) && Number(value) > 0;
-    };
+    var ratio = window.BertaHelpers.getSizeRatio(video);
 
     // without plain pixel sizes the CSS default 16:9 stays
-    if (isSize(width) && isSize(height)) {
-      videoEmbed.style.setProperty("--video-ratio", width + " / " + height);
+    if (ratio) {
+      videoEmbed.style.setProperty("--video-ratio", ratio);
     }
   }
 

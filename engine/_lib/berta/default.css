@@ -322,7 +322,8 @@ div.xGalleryItem .xGalleryImageVideoBack {
 }
 
 /* YouTube and Vimeo embeds in responsive layouts: full width at the video's aspect ratio,
-   from the iframe's width/height where attr() types are supported, 16:9 otherwise.
+   from the iframe's width/height when both are plain numbers, 16:9 otherwise.
+   Where attr() types aren't supported, BertaEmbedRatios.js adds the ratios instead.
    Same in the editor preview, and the embed markup itself is never changed. */
 
 body.bt-responsive iframe[src*="youtube"],
@@ -336,7 +337,9 @@ body.bt-responsive iframe[src*="vimeo"] {
 @supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
   body.bt-responsive iframe[src*="youtube"],
   body.bt-responsive iframe[src*="vimeo"] {
-    aspect-ratio: attr(width type(<number>), 16) / attr(height type(<number>), 9);
+    /* invalid as a whole when either attribute isn't a number, so it falls back to 16:9 for both */
+    --bt-embed-ratio: attr(width type(<number>)) / attr(height type(<number>));
+    aspect-ratio: var(--bt-embed-ratio, 16 / 9);
   }
 }
 
@@ -396,7 +399,8 @@ body.bt-responsive iframe[src*="vimeo"] {
   @supports (aspect-ratio: attr(width type(<number>)) / attr(height type(<number>))) {
     body.bt-auto-responsive iframe[src*="youtube"],
     body.bt-auto-responsive iframe[src*="vimeo"] {
-      aspect-ratio: attr(width type(<number>), 16) / attr(height type(<number>), 9);
+      --bt-embed-ratio: attr(width type(<number>)) / attr(height type(<number>));
+      aspect-ratio: var(--bt-embed-ratio, 16 / 9);
     }
   }
 
