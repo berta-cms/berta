@@ -5,10 +5,7 @@ import { UpdateNavigationSiteSettingsAction } from '../sites/settings/site-setti
 import { HandleSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { TemplateRerenderService } from './template-rerender.service';
 import { SiteSettingChildrenHandler } from './types/components';
-import {
-  replaceContent,
-  removeExtraAddBtnAndAddListeners,
-} from './utilities/content';
+import { reloadBackendJs, replaceContent } from './utilities/content';
 
 @Injectable({
   providedIn: 'root',
@@ -108,12 +105,12 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
           replaceContent(dom, 'siteBanners', viewData.siteBanners);
           replaceContent(dom, 'sectionFooter', viewData.sectionFooter);
 
-          removeExtraAddBtnAndAddListeners(iframe);
+          reloadBackendJs(iframe);
         } else if (action.settingGroup === 'pageHeading') {
           replaceContent(dom, 'siteHeader', viewData.siteHeader);
         } else if (action.settingGroup === 'entryLayout') {
           replaceContent(dom, 'pageEntries', viewData.entries);
-          removeExtraAddBtnAndAddListeners(iframe);
+          reloadBackendJs(iframe);
         } else if (action.settingGroup === 'css') {
           DefaultTemplateRerenderService.handleCssDesignSettingChange(
             dom,

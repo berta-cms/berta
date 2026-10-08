@@ -33,10 +33,7 @@ import {
   UpdateSiteSettingsAction,
 } from '../sites/settings/site-settings.actions';
 import { Component, SiteSettingChildrenHandler } from './types/components';
-import {
-  removeExtraAddBtnAndAddListeners,
-  replaceContent,
-} from './utilities/content';
+import { reloadBackendJs, replaceContent } from './utilities/content';
 import {
   HandleSiteTemplateSettingsAction,
   ResetToDefaultsSiteTemplateSettingsAction,
@@ -260,7 +257,7 @@ export class TemplateRerenderService {
           viewData.portfolioThumbnails,
         );
 
-        removeExtraAddBtnAndAddListeners(iframe);
+        reloadBackendJs(iframe);
       });
   }
 
@@ -272,7 +269,7 @@ export class TemplateRerenderService {
 
         replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries);
 
-        removeExtraAddBtnAndAddListeners(iframe);
+        reloadBackendJs(iframe);
       });
   }
 
@@ -319,7 +316,7 @@ export class TemplateRerenderService {
           viewData.portfolioThumbnails,
         );
 
-        removeExtraAddBtnAndAddListeners(iframe);
+        reloadBackendJs(iframe);
       });
   }
 
@@ -350,7 +347,7 @@ export class TemplateRerenderService {
       replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey]),
     );
 
-    removeExtraAddBtnAndAddListeners(iframe);
+    reloadBackendJs(iframe);
   }
 
   public unsubscribe(win: Window, subList: Subscription[]): void {
