@@ -1,8 +1,8 @@
 /*
  * Masonry layout for equal width items: each item is placed in the currently shortest column.
  *
- * Vanilla port of the singleMode layout of mooMasonry by Olivier Refalo,
- * a MooTools conversion of jQuery Masonry by David DeSandro. MIT license.
+ * Based on the singleMode layout of mooMasonry by Olivier Refalo,
+ * itself based on jQuery Masonry by David DeSandro. MIT license.
  */
 var BertaMasonry = class {
   constructor(element, itemSelector) {

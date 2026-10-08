@@ -27,7 +27,8 @@ const GHOST_MAX_HEIGHT = 240;
 const GHOST_STRIPPED_SELECTOR = 'iframe, video, audio, object, embed, script';
 const SLIDE_ID = 'xSortSlide';
 const ANIMATION_MS = 200;
-// Pointer travel before a press on a handle becomes a drag (MooTools `snap`).
+// Pointer travel before a press on a handle becomes a drag, so a click stays
+// a click.
 const DRAG_THRESHOLD = 4;
 
 interface SortableConfig {
@@ -114,8 +115,8 @@ interface SortSession extends Sortable {
 }
 
 /**
- * The value of a `<prefix>-<value>` class (e.g. `xEntryId-12`), like the
- * legacy MooTools `getClassStoredValue`.
+ * The value of a `<prefix>-<value>` class (e.g. `xEntryId-12`), the format
+ * `BertaHelpers.getClassStoredValue` reads in the preview.
  */
 function classValue(el: Element, prefix: string): string | null {
   const found = Array.from(el.classList).find((className) =>

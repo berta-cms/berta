@@ -23,11 +23,7 @@ var BertaPortfolio = class {
 
     setTimeout(function () {
       galleries.forEach(function (item) {
-        if (bertaGlobalOptions.environment == 'site') {
-          berta.initGallery(item);
-        } else {
-          bertaEditor.initGallery(item);
-        }
+        window.BertaHelpers.initGallery(item);
       });
     }, 500);
   }

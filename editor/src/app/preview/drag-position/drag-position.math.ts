@@ -21,9 +21,8 @@ export function normalizeGridStep(raw: unknown): number {
 }
 
 /**
- * Rounds down to the grid (toward zero), same as the MooTools `Drag` `grid`
- * option this replaces. Positions are clamped to >= 0 right after, so
- * negative values never reach the saved result.
+ * Rounds down to the grid (toward zero). Positions are clamped to >= 0 right
+ * after, so negative values never reach the saved result.
  */
 export function snapToGrid(value: number, step: number): number {
   return value - (value % step);
