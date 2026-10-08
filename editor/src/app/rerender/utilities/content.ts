@@ -11,18 +11,9 @@ export function replaceContent(
   element.appendChild(dom.createRange().createContextualFragment(sectionHtml));
 }
 
-export function removeExtraAddBtnAndAddListeners(
-  iframe: HTMLIFrameElement,
-): void {
-  // remove extra 'create entry' button due to backend js reload
-  const createEntriesList =
-    iframe.contentDocument.getElementsByClassName('xCreateNewEntry');
-  createEntriesList[createEntriesList.length - 1].remove();
-
-  reloadBackendJs(iframe);
-}
-
-export function reloadBackendJs(iframe: HTMLIFrameElement) {
-  // reload backend js
-  iframe.contentWindow.dispatchEvent(new Event('addEntry'));
+export function notifyEntriesRerendered(iframe: HTMLIFrameElement) {
+  // The preview scripts re-init the replaced entries: BertaEditor re-binds the
+  // entry listeners and replaces the "create new entry" link after the list,
+  // BertaPortfolio re-binds the thumbnail links
+  iframe.contentWindow.dispatchEvent(new Event('entriesRerendered'));
 }

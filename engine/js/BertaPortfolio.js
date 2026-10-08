@@ -5,11 +5,14 @@ var BertaPortfolio = class {
     } else {
       this.onDOMReady();
     }
-    window.addEventListener('addEntry', this.onAddPortfolio.bind(this));
+    window.addEventListener(
+      'entriesRerendered',
+      this.onEntriesRerendered.bind(this),
+    );
   }
 
-  onAddPortfolio() {
-    // after adding portfolio entry
+  onEntriesRerendered() {
+    // the thumbnails may have been replaced too
     this.portfolioThumbnails();
   }
 
@@ -38,7 +41,7 @@ var BertaPortfolio = class {
 
   portfolioThumbnails() {
     document.querySelectorAll('.portfolioThumbnails a').forEach((link) => {
-      // runs again after every addEntry, links that weren't re-rendered already have a listener
+      // runs again after every entries rerender, links that weren't re-rendered already have a listener
       if (link.dataset.portfolioListener) {
         return;
       }

@@ -13,7 +13,7 @@ var BertaEditor = class {
     // Bound once: onDOMReadyDo runs again after every re-render and adds these
     // listeners again, adding the same function twice is a no-op
     this.onDOMReadyDo = this.onDOMReadyDo.bind(this);
-    this.onAddEntry = this.onAddEntry.bind(this);
+    this.onEntriesRerendered = this.onEntriesRerendered.bind(this);
     this.onBgEditClick = this.onBgEditClick.bind(this);
     this.onGalleryEditClick = this.onGalleryEditClick.bind(this);
     this.entryCreate = this.entryCreate.bind(this);
@@ -24,13 +24,13 @@ var BertaEditor = class {
       window.addEventListener(e, this.onDOMReadyDo);
     });
 
-    window.addEventListener("addEntry", this.onAddEntry);
+    window.addEventListener("entriesRerendered", this.onEntriesRerendered);
 
     window.BertaHelpers.onDomReady(this.onDOMReady.bind(this));
   }
 
-  onAddEntry() {
-    // after adding entry sync state
+  onEntriesRerendered() {
+    // the entries were replaced after a state change, sync the state
     window.redux_store.dispatch(Actions.getState(window.getCurrentSite()));
     this.onDOMReadyDo();
   }

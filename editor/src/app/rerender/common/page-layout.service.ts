@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  removeExtraAddBtnAndAddListeners,
-  replaceContent,
-} from '../utilities/content';
+import { notifyEntriesRerendered, replaceContent } from '../utilities/content';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +33,7 @@ export class PageLayoutService {
 
     replaceContent(dom, 'pageEntries', viewData.entries);
     replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails);
-    removeExtraAddBtnAndAddListeners(iframe);
+    notifyEntriesRerendered(iframe);
   }
 
   protected static handleIsResponsiveSetting(
