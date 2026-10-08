@@ -498,15 +498,6 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             <p class="text-right no-margin"><a href="javascript:;" onclick="closeShoppingCart();">{{ returnToStore.content }}</a></p>
           {% endif %}
 
-          <form id="paypalCheckoutForm" method="post">
-            <input type="hidden" name="charset" value="utf-8" />
-            <input type="hidden" name="cmd" value="_cart" />
-            <input type="hidden" name="upload" value="1" />
-            <input type="hidden" name="business" value="" />
-            <input type="hidden" name="currency_code" value="" />
-            <input type="hidden" name="no_shipping" value="2" />
-            <input type="hidden" name="return" value="{{ returnUrl }}" />
-          </form>
           <div id="shoppingCart" class="hidden"></div>
         </div>
       </div>
