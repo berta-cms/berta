@@ -198,10 +198,13 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         $isAutoResponsive,
         $isEditMode
     ) {
-        $classes = [
-            'xContent-' . $currentSection['name'],
-            'xSectionType-' . $currentSectionType,
-        ];
+        $classes = [];
+
+        if ($currentSection) {
+            $classes[] = 'xContent-' . $currentSection['name'];
+        }
+
+        $classes[] = 'xSectionType-' . $currentSectionType;
 
         if (! empty($tagSlug)) {
             $classes[] = 'xSubmenu-' . $tagSlug;
@@ -279,8 +282,11 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         $classes = [
             'xEntriesList',
             'clearfix',
-            'xSection-' . $currentSection['name'],
         ];
+
+        if ($currentSection) {
+            $classes[] = 'xSection-' . $currentSection['name'];
+        }
 
         if (! empty($tagSlug)) {
             $classes[] = 'xTag-' . $tagSlug;
