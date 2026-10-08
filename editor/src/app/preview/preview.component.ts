@@ -410,7 +410,19 @@ export class PreviewComponent implements OnInit {
           observer.complete();
         });
 
+      // The document this `load` event is for. A later navigation replaces it
+      // with a new document that fires its own `load` (and wait), so this one
+      // must not resolve against it — the new document may not even have an
+      // <html> element parsed yet.
+      const loadedDocument = iframe.contentDocument;
+
       checkInterval = setInterval(() => {
+        if (iframe.contentDocument !== loadedDocument) {
+          clearInterval(checkInterval);
+          observer.complete();
+          return;
+        }
+
         const lastUrlPart = iframe.contentDocument?.location.href
           .replace(/\/$/, '')
           .split('/')
@@ -438,12 +450,12 @@ export class PreviewComponent implements OnInit {
           return;
         }
 
+        // No body yet means the page is still being parsed.
+        const body = iframe.contentDocument.body;
+
         if (
-          iframe.contentDocument.body &&
-          (iframe.contentDocument.body.classList.length === 0 ||
-            !/(xLoginPageBody|xContent-|xSectionType-)/.test(
-              iframe.contentDocument.body.className,
-            ))
+          !body ||
+          !/(xLoginPageBody|xContent-|xSectionType-)/.test(body.className)
         ) {
           lastError =
             'Berta classes `xLoginPageBody` or `xContent-[]` or `xSectionType-` are missing from body element';
