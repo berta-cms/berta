@@ -1,4 +1,9 @@
 window.BertaHelpers = (function () {
+  var SINE_EASE_IN_OUT = 'cubic-bezier(0.445, 0.05, 0.55, 0.95)';
+
+  // display values replaced by hide(), restored by show()
+  var originalDisplay = new WeakMap();
+
   return {
 
     /**
@@ -59,11 +64,10 @@ window.BertaHelpers = (function () {
     },
 
     /**
-     * Dispatch a native window resize event, it reaches both MooTools and native listeners.
-     * UIEvent is used because MooTools compat replaces the global Event constructor.
+     * Dispatch a window resize event to run the resize listeners
      */
     triggerResize: function () {
-      window.dispatchEvent(new UIEvent('resize'));
+      window.dispatchEvent(new Event('resize'));
     },
 
     /**
@@ -115,7 +119,7 @@ window.BertaHelpers = (function () {
       el.style.visibility = 'visible';
       el.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 250,
-        easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)'
+        easing: SINE_EASE_IN_OUT
       });
     },
 
@@ -131,7 +135,7 @@ window.BertaHelpers = (function () {
     },
 
     /**
-     * Animate opacity like a MooTools tween (sine ease-in-out).
+     * Animate opacity with sine ease-in-out.
      * A new fade or setOpacity() of the same element cancels the running one.
      * Resolves when the fade finishes, never when it was canceled.
      */
@@ -141,21 +145,109 @@ window.BertaHelpers = (function () {
 
       var animation = el.animate([{ opacity: from }, { opacity: opacity }], {
         duration: duration,
-        easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)'
+        easing: SINE_EASE_IN_OUT
       });
       el.bertaFade = animation;
 
       return new Promise(function (resolve) {
-        // A timer, like MooTools: animation.finished only settles on a rendering update,
-        // which a background tab doesn't get, so a slideshow would stall there
-        setTimeout(function () {
-          if (el.bertaFade !== animation) {
-            return;
+        window.BertaHelpers.wait(duration).then(function () {
+          if (el.bertaFade === animation) {
+            el.bertaFade = null;
+            resolve();
           }
-          el.bertaFade = null;
-          resolve();
-        }, duration);
+        });
       });
+    },
+
+    /**
+     * Animate styles from their computed values with sine ease-in-out and keep the end values inline.
+     * Takes camelCase properties, e.g. `{ backgroundColor: '#fff' }`. Resolves when the animation ends.
+     */
+    tween: function (el, styles, duration) {
+      var computedStyle = window.getComputedStyle(el);
+      var from = {};
+      Object.keys(styles).forEach(function (property) {
+        from[property] = computedStyle[property];
+      });
+
+      Object.assign(el.style, styles);
+      el.animate([from, styles], {
+        duration: duration,
+        easing: SINE_EASE_IN_OUT
+      });
+
+      return window.BertaHelpers.wait(duration);
+    },
+
+    /**
+     * Resolve after a delay. Animations resolve with it instead of animation.finished:
+     * that only settles on a rendering update, which a background tab doesn't get,
+     * so a slideshow would stall there.
+     */
+    wait: function (duration) {
+      return new Promise(function (resolve) {
+        setTimeout(resolve, duration);
+      });
+    },
+
+    isDisplayed: function (el) {
+      return window.BertaHelpers.getStyle(el, 'display') != 'none';
+    },
+
+    /**
+     * Show a hidden element with the display hide() replaced, or as a block
+     */
+    show: function (el) {
+      if (window.BertaHelpers.isDisplayed(el)) {
+        return;
+      }
+      el.style.display = originalDisplay.get(el) || 'block';
+    },
+
+    /**
+     * Hide an element, remembering its display for show()
+     */
+    hide: function (el) {
+      if (!window.BertaHelpers.isDisplayed(el)) {
+        return;
+      }
+      originalDisplay.set(el, window.BertaHelpers.getStyle(el, 'display'));
+      el.style.display = 'none';
+    },
+
+    toggle: function (el) {
+      if (window.BertaHelpers.isDisplayed(el)) {
+        window.BertaHelpers.hide(el);
+      } else {
+        window.BertaHelpers.show(el);
+      }
+    },
+
+    /**
+     * Start the gallery script matching the container's `xGalleryType-` class
+     */
+    initGallery: function (item) {
+      var galleryType = window.BertaHelpers.getClassStoredValue(item, 'xGalleryType');
+
+      switch (galleryType) {
+        case 'row':
+          new BertaGalleryRow(item);
+          break;
+        case 'column':
+          new BertaGalleryColumn(item);
+          break;
+        case 'pile':
+          new BertaGalleryPile(item);
+          break;
+        case 'link':
+          // link galleries are plain markup and need no JS
+          break;
+        case 'grid':
+          new BertaGalleryGrid(item);
+          break;
+        default:
+          new BertaGallerySlideshow(item);
+      }
     },
 
     /**
@@ -181,7 +273,7 @@ window.BertaHelpers = (function () {
     },
 
     /**
-     * Read a style like MooTools getStyle: the inline value, otherwise the computed one.
+     * Read a style: the inline value, otherwise the computed one.
      * Takes a hyphenated property name, e.g. `padding-top`.
      */
     getStyle: function (el, property) {
@@ -189,7 +281,7 @@ window.BertaHelpers = (function () {
     },
 
     /**
-     * Viewport size without the scrollbar, same as MooTools window.getSize()
+     * Viewport size without the scrollbar
      */
     getWindowSize: function () {
       return {
@@ -218,14 +310,14 @@ window.BertaHelpers = (function () {
     },
 
     /**
-     * Set a session cookie for the whole site
+     * Set a session cookie, for the whole site unless a path is given
      */
-    setCookie: function (name, value) {
-      document.cookie = name + '=' + encodeURIComponent(value) + '; path=/';
+    setCookie: function (name, value, path) {
+      document.cookie = name + '=' + encodeURIComponent(value) + '; path=' + (path || '/');
     },
 
-    removeCookie: function (name) {
-      document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    removeCookie: function (name, path) {
+      document.cookie = name + '=; path=' + (path || '/') + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
   };
 })();

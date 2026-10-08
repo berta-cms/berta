@@ -332,7 +332,7 @@ var MessyMess = class {
         maxY = document.getElementById("allContainer").offsetHeight;
         //add h1 margin-top to the height
         var h1 = document.querySelector("h1");
-        // Without an h1 the MooTools version added NaN, so `top` below is ignored and stays as it was
+        // Without an h1 maxY is NaN, so the `top` set below is invalid and the bottom keeps its position
         maxY = maxY + (h1 ? parseInt(helpers.getStyle(h1, "margin-top")) : NaN);
       } else {
         allDraggables.forEach(function (item) {
@@ -426,12 +426,12 @@ var BertaBackground = class {
         this._getCounter();
       });
       this.nextClickArea.addEventListener("mouseenter", () => {
-        this._hide(this.leftCounter);
-        this._show(this.rightCounter);
+        window.BertaHelpers.hide(this.leftCounter);
+        window.BertaHelpers.show(this.rightCounter);
       });
       this.nextClickArea.addEventListener("mouseleave", () => {
-        this._hide(this.leftCounter);
-        this._hide(this.rightCounter);
+        window.BertaHelpers.hide(this.leftCounter);
+        window.BertaHelpers.hide(this.rightCounter);
       });
 
       this.previousClickArea.addEventListener("click", () => {
@@ -439,12 +439,12 @@ var BertaBackground = class {
         this._getCounter();
       });
       this.previousClickArea.addEventListener("mouseenter", () => {
-        this._hide(this.rightCounter);
-        this._show(this.leftCounter);
+        window.BertaHelpers.hide(this.rightCounter);
+        window.BertaHelpers.show(this.leftCounter);
       });
       this.previousClickArea.addEventListener("mouseleave", () => {
-        this._hide(this.rightCounter);
-        this._hide(this.leftCounter);
+        window.BertaHelpers.hide(this.rightCounter);
+        window.BertaHelpers.hide(this.leftCounter);
       });
 
       window.addEventListener("keydown", (event) => {
@@ -527,8 +527,8 @@ var BertaBackground = class {
       this.leftCounterContent =
         this.leftCounter.querySelector(".counterContent");
       this._getCounter();
-      this._hide(this.rightCounter);
-      this._hide(this.leftCounter);
+      helpers.hide(this.rightCounter);
+      helpers.hide(this.leftCounter);
     }
 
     this.data = { options: this.options };
@@ -558,19 +558,6 @@ var BertaBackground = class {
     // Autoplay
     if (this.data.options.autoplay > 0) {
       this._autoplay();
-    }
-  }
-
-  // Same as MooTools More show()/hide() on the counters
-  _show(el) {
-    if (window.getComputedStyle(el).display == "none") {
-      el.style.display = "block";
-    }
-  }
-
-  _hide(el) {
-    if (window.getComputedStyle(el).display != "none") {
-      el.style.display = "none";
     }
   }
 
@@ -680,7 +667,7 @@ var BertaBackground = class {
           return;
         }
         this.loadingImage = null;
-        // Like MooTools Asset.image: missing or invalid width/height fall back to the natural size
+        // Missing or invalid width/height fall back to the natural size
         image.setAttribute("width", image.width);
         image.setAttribute("height", image.height);
         this._getNewBgImageFinish();

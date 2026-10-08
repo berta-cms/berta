@@ -1,235 +1,188 @@
-var BertaEditor = new Class({
-  Extends: BertaEditorBase,
-  Implements: [Options, Events],
+var BertaEditor = class {
+  constructor(options) {
+    this.options = Object.assign({ paths: null }, options);
 
-  options: {
-    paths: null,
-  },
+    /* DOM elements */
+    this.container = null;
+    this.entriesList = null; // the OL element thad contains the entries
 
-  /* editing related variables */
-  edittingMode: "entries",
+    /* variables containing information */
+    this.currentSection = null; // the name of the section opened
+    this.currentTag = null; // the name of the tag selected
 
-  /* DOM elements */
-  entriesList: null, // the OL element thad contains the entries
+    // Bound once: onDOMReadyDo runs again after every re-render and adds these
+    // listeners again, adding the same function twice is a no-op
+    this.onDOMReadyDo = this.onDOMReadyDo.bind(this);
+    this.onAddEntry = this.onAddEntry.bind(this);
+    this.onBgEditClick = this.onBgEditClick.bind(this);
+    this.onGalleryEditClick = this.onGalleryEditClick.bind(this);
+    this.entryCreate = this.entryCreate.bind(this);
+    this.entryMoveToSection = this.entryMoveToSection.bind(this);
+    this.entryDelete = this.entryDelete.bind(this);
 
-  /* variables containing information */
-  currentSection: null, // the name of the section opened
-  currentTag: null, // the name of the tag selected
+    ["sitesMenuRerendered", "sectionsMenuRerendered"].forEach((e) => {
+      window.addEventListener(e, this.onDOMReadyDo);
+    });
 
-  /* old */
-  tagsMenu: null,
-  /* old */
+    window.addEventListener("addEntry", this.onAddEntry);
 
-  initialize: function (options) {
-    this.setOptions(options);
+    window.BertaHelpers.onDomReady(this.onDOMReady.bind(this));
+  }
 
-    ["sitesMenuRerendered", "sectionsMenuRerendered"].forEach(
-      function (e) {
-        window.addEventListener(e, this.onDOMReadyDo.bindWithEvent(this));
-      }.bindWithEvent(this)
-    );
-
-    window.addEventListener("addEntry", this.onAddEntry.bindWithEvent(this));
-
-    window.addEvent("domready", this.onDOMReady.bindWithEvent(this));
-    window.addEvent("load", this.onLoad.bindWithEvent(this));
-  },
-
-  onAddEntry: function () {
+  onAddEntry() {
     // after adding entry sync state
     window.redux_store.dispatch(Actions.getState(window.getCurrentSite()));
     this.onDOMReadyDo();
-  },
+  }
 
-  onDOMReady: function () {
+  onDOMReady() {
     // delay onDOMReady processing to allow all elements on page properly initialize
-    this.onDOMReadyDo.delay(1000, this);
-  },
+    setTimeout(this.onDOMReadyDo, 1000);
+  }
 
-  onDOMReadyDo: function () {
-    this.edittingMode = $$("body")[0].get("x_mode");
-    if (!this.edittingMode) this.edittingMode = "entries";
+  onDOMReadyDo() {
+    var getValue = window.BertaHelpers.getClassStoredValue;
 
-    switch (this.edittingMode) {
-      case "multipage":
-        break;
+    this.container = document.getElementById("contentContainer");
+    this.entriesList = document.querySelector(".xEntriesList");
 
-      case "entries":
-      default:
-        this.container = document.getElementById("contentContainer");
-        this.entriesList = $$(".xEntriesList")[0];
-
-        // section background editing
-        if ($("xBgEditorPanelTrig"))
-          $("xBgEditorPanelTrig").addEvent(
-            "click",
-            this.onBgEditClick.bindWithEvent(this)
-          );
-
-        if (this.entriesList) {
-          this.currentSection =
-            window.BertaHelpers.getClassStoredValue(this.entriesList, "xSection");
-          this.currentTag = window.BertaHelpers.getClassStoredValue(this.entriesList, "xTag");
-
-          if (this.currentSection) {
-            this.entriesList
-              .getElements(".xEntry .xEntryEditWrap")
-              .addEvent("mouseenter", this.entryOnHover.bindWithEvent(this));
-            this.entriesList
-              .getElements(".xEntry .xEntryEditWrap")
-              .addEvent("mouseleave", this.entryOnUnHover.bindWithEvent(this));
-
-            this.entriesList
-              .getElements(".xEntry .xEntryDropdown")
-              .addEvent(
-                "mouseenter",
-                this.entryDropdownToggle.bindWithEvent(this)
-              );
-            this.entriesList
-              .getElements(".xEntry .xEntryDropdown")
-              .addEvent("click", this.entryDropdownToggle.bindWithEvent(this));
-
-            this.entriesList
-              .getElements(".xEntry .xEntryDropdownBox")
-              .addEvents({
-                mouseleave: function (event) {
-                  this.removeClass("xVisible");
-                  dropdown = this.getParent().getElement(".xEntryDropdown");
-                  dropdown.removeClass("xEntryDropdowHover");
-                },
-              });
-
-            // entry deleting and creating
-            if (
-              this.options.templateName.substr(0, 5) != "messy" &&
-              this.options.sectionType != "portfolio"
-            )
-              createNewEntryText = this.options.i18n["create new entry here"];
-            else createNewEntryText = this.options.i18n["create new entry"];
-            var existingCreateNewEntry =
-              this.entriesList.getNext(".xCreateNewEntry");
-            if (existingCreateNewEntry) existingCreateNewEntry.destroy();
-            new Element("A", {
-              class: "xCreateNewEntry xPanel xAction-entryCreateNew",
-              href: "#",
-            })
-              .adopt(
-                new Element("span", {
-                  html: createNewEntryText,
-                })
-              )
-              .inject(this.entriesList, "after");
-            $$(".xEntryDelete").addEvent(
-              "click",
-              this.entryDelete.bindWithEvent(this)
-            );
-            $$(".xCreateNewEntry").addEvent(
-              "click",
-              this.entryCreate.bindWithEvent(this)
-            );
-
-            if (this.options.templateName.substr(0, 5) == "messy") {
-              $$(".xCreateNewEntry").addClass("mess");
-              $$(".xCreateNewEntry").adopt(
-                new Element("div", {
-                  class: "xHandle",
-                  events: {
-                    click: function () {
-                      return false;
-                    },
-                  },
-                })
-              );
-            }
-
-            // galleries
-            this.entriesList.getElements(".xGalleryContainer").each(
-              function (item) {
-                if (!item.getParent(".xEntry").hasClass("xHidden")) {
-                  this.initGallery(item);
-                }
-              }.bind(this)
-            );
-            this.entriesList
-              .getElements(".xGalleryEditButton")
-              .addEvent("click", this.onGalleryEditClick.bindWithEvent(this));
-
-            // Entry moving to other section
-            document
-              .querySelectorAll(".js-bt-open-move-entry-to-section")
-              .forEach(function (el) {
-                el.addEventListener("click", function (e) {
-                  e.preventDefault();
-                  var xEntryEditWrap = this.closest(".xEntryEditWrap");
-                  var xEntryDropdownBox =
-                    xEntryEditWrap.querySelector(".xEntryDropdownBox");
-                  var moveEntryToSectionContainer =
-                    xEntryEditWrap.querySelector(".bt-move-entry-to-section");
-                  xEntryDropdownBox.classList.remove("xVisible");
-                  moveEntryToSectionContainer.style.display = "block";
-                });
-              });
-
-            document.querySelectorAll(".js-move-entry-to-section").forEach(
-              function (el) {
-                el.addEventListener(
-                  "change",
-                  this.entryMoveToSection.bind(this)
-                );
-              }.bind(this)
-            );
-
-            this.highlightNewEntry.delay(100, this);
-          } else if (!this.currentSection) {
-            var h1 = this.container.getElement("h1");
-            if (h1) {
-              h1.hide();
-            }
-          }
-        }
-        break;
+    // section background editing
+    var bgEditorPanelTrig = document.getElementById("xBgEditorPanelTrig");
+    if (bgEditorPanelTrig) {
+      bgEditorPanelTrig.addEventListener("click", this.onBgEditClick);
     }
-  },
 
-  initGallery: function (item) {
-    var galleryType = window.BertaHelpers.getClassStoredValue(item, "xGalleryType");
-
-    switch (galleryType) {
-      case "row":
-        new BertaGalleryRow(item);
-        break;
-      case "column":
-        new BertaGalleryColumn(item);
-        break;
-      case "pile":
-        new BertaGalleryPile(item);
-        break;
-      case "link":
-        // link galleries are plain markup and need no JS
-        break;
-      case "grid":
-        new BertaGalleryGrid(item);
-        break;
-      default:
-        new BertaGallerySlideshow(item);
+    if (!this.entriesList) {
+      return;
     }
-  },
 
-  onLoad: function () {},
+    this.currentSection = getValue(this.entriesList, "xSection");
+    this.currentTag = getValue(this.entriesList, "xTag");
+
+    if (!this.currentSection) {
+      var h1 = this.container.querySelector("h1");
+      if (h1) {
+        h1.style.display = "none";
+      }
+      return;
+    }
+
+    // Bound on the elements themselves, not delegated: the Angular InlineEditService
+    // stops these mouseleave handlers with a capture listener on the same element
+    this.entriesList
+      .querySelectorAll(".xEntry .xEntryEditWrap")
+      .forEach((el) => {
+        el.addEventListener("mouseenter", BertaEditor.entryOnHover);
+        el.addEventListener("mouseleave", BertaEditor.entryOnUnHover);
+      });
+
+    this.entriesList
+      .querySelectorAll(".xEntry .xEntryDropdown")
+      .forEach((el) => {
+        el.addEventListener("mouseenter", BertaEditor.entryDropdownToggle);
+        el.addEventListener("click", BertaEditor.entryDropdownToggle);
+      });
+
+    this.entriesList
+      .querySelectorAll(".xEntry .xEntryDropdownBox")
+      .forEach((el) => {
+        el.addEventListener("mouseleave", BertaEditor.entryDropdownBoxOnLeave);
+      });
+
+    // entry deleting and creating
+    var createNewEntryText;
+    if (
+      this.options.templateName.substr(0, 5) != "messy" &&
+      this.options.sectionType != "portfolio"
+    )
+      createNewEntryText = this.options.i18n["create new entry here"];
+    else createNewEntryText = this.options.i18n["create new entry"];
+
+    var existingCreateNewEntry = this.entriesList.nextElementSibling;
+    while (
+      existingCreateNewEntry &&
+      !existingCreateNewEntry.matches(".xCreateNewEntry")
+    ) {
+      existingCreateNewEntry = existingCreateNewEntry.nextElementSibling;
+    }
+    if (existingCreateNewEntry) existingCreateNewEntry.remove();
+
+    var createNewEntry = window.BertaHelpers.createElement("a", {
+      class: "xCreateNewEntry xPanel xAction-entryCreateNew",
+      href: "#",
+    });
+    createNewEntry.appendChild(
+      window.BertaHelpers.createElement("span", {}, createNewEntryText)
+    );
+    this.entriesList.after(createNewEntry);
+
+    document.querySelectorAll(".xEntryDelete").forEach((el) => {
+      el.addEventListener("click", this.entryDelete);
+    });
+    document.querySelectorAll(".xCreateNewEntry").forEach((el) => {
+      el.addEventListener("click", this.entryCreate);
+    });
+
+    if (this.options.templateName.substr(0, 5) == "messy") {
+      document.querySelectorAll(".xCreateNewEntry").forEach((el) => {
+        el.classList.add("mess");
+      });
+
+      var handle = window.BertaHelpers.createElement("div", {
+        class: "xHandle",
+      });
+      handle.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      });
+      // only the link after the list gets a drag handle, messy hides the links inside entries
+      createNewEntry.appendChild(handle);
+    }
+
+    // galleries
+    this.entriesList.querySelectorAll(".xGalleryContainer").forEach((item) => {
+      if (!item.closest(".xEntry").classList.contains("xHidden")) {
+        window.BertaHelpers.initGallery(item);
+      }
+    });
+    this.entriesList.querySelectorAll(".xGalleryEditButton").forEach((el) => {
+      el.addEventListener("click", this.onGalleryEditClick);
+    });
+
+    // Entry moving to other section
+    document
+      .querySelectorAll(".js-bt-open-move-entry-to-section")
+      .forEach(function (el) {
+        el.addEventListener("click", BertaEditor.openMoveEntryToSection);
+      });
+
+    document.querySelectorAll(".js-move-entry-to-section").forEach((el) => {
+      el.addEventListener("change", this.entryMoveToSection);
+    });
+
+    setTimeout(() => this.highlightNewEntry(), 100);
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  INIT  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  highlightNewEntry: function () {
-    var idToHighlight = Cookie.read("_berta__entry_highlight");
-    Cookie.dispose("_berta__entry_highlight", {
-      path: this.options.paths.engineABSRoot,
-    });
+  highlightNewEntry() {
+    var idToHighlight = window.BertaHelpers.getCookie("_berta__entry_highlight");
+    window.BertaHelpers.removeCookie(
+      "_berta__entry_highlight",
+      this.options.paths.engineABSRoot
+    );
     if (idToHighlight) {
-      var entry = this.entriesList.getElement(".xEntryId-" + idToHighlight);
+      var entry = this.entriesList.querySelector(".xEntryId-" + idToHighlight);
       if (entry) {
-        var pos = entry.getPosition();
+        // position in the document, a fixed entry is placed in the viewport so the scroll isn't added
+        var rect = entry.getBoundingClientRect();
+        var isFixed = window.getComputedStyle(entry).position == "fixed";
+        var pos = {
+          x: Math.trunc(rect.left) + (isFixed ? 0 : window.scrollX),
+          y: Math.trunc(rect.top) + (isFixed ? 0 : window.scrollY),
+        };
         if (this.options.templateName.substr(0, 5) == "messy") {
           window.scrollTo(pos.x, pos.y);
         } else {
@@ -237,14 +190,15 @@ var BertaEditor = new Class({
         }
       }
     }
-  },
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  Gallery  |//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  onBgEditClick: function (event) {
-    event.stop();
+  onBgEditClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
     var site = getCurrentSite();
 
     window.parent.postMessage(
@@ -255,12 +209,13 @@ var BertaEditor = new Class({
       },
       "*"
     );
-  },
+  }
 
-  onGalleryEditClick: function (event) {
-    event.stop();
+  onGalleryEditClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
     var site = getCurrentSite();
-    var entryObj = $(event.target).getParent(".xEntry");
+    var entryObj = event.target.closest(".xEntry");
     var entryId = window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId");
 
     window.parent.postMessage(
@@ -272,37 +227,42 @@ var BertaEditor = new Class({
       },
       "*"
     );
-  },
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  Entry Management  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  entryCreate: function (event) {
-    event = new Event(event).stop();
-    var target = $(event.target);
-    if (target.tagName != "A") target = target.getParent("a");
+  entryCreate(event) {
+    event.preventDefault();
+    event.stopPropagation();
     var site = getCurrentSite();
-    var entryInfo = this.getEntryInfoForElement(target);
+    // the new entry goes before the entry this link belongs to, or last without one
+    var entryObj = event.target.closest(".xEntry");
+    var entryId = entryObj
+      ? window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId")
+      : "";
 
     redux_store.dispatch(
       Actions.initCreateSectionEntry(
         site,
         this.currentSection,
         this.currentTag,
-        entryInfo.entryId,
-        function (resp) {
-          Cookie.write("_berta__entry_highlight", resp.entryid, {
-            path: this.options.paths.engineABSRoot,
-          });
+        entryId,
+        (resp) => {
+          window.BertaHelpers.setCookie(
+            "_berta__entry_highlight",
+            resp.entryid,
+            this.options.paths.engineABSRoot
+          );
           window.location.hash = "entry-" + resp.entryid;
           // window.location.reload();
-        }.bindWithEvent(this)
+        }
       )
     );
-  },
+  }
 
-  entryMoveToSection: function (event) {
+  entryMoveToSection(event) {
     var site = getCurrentSite();
     var toSection = event.target.value;
     var entryObj = event.target.closest(".xEntry");
@@ -324,13 +284,16 @@ var BertaEditor = new Class({
         }
       )
     );
-  },
+  }
 
-  entryDelete: function (event) {
-    event = new Event(event).stop();
-    var entryObj = $(event.target).getParent(".xEntry");
+  entryDelete(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var entryObj = event.target.closest(".xEntry");
     var entryId = window.BertaHelpers.getClassStoredValue(entryObj, "xEntryId");
-    var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
+    var entryThumbnails = document.querySelectorAll(
+      '.portfolioThumbnail[data-id="' + entryId + '"]'
+    );
     var site = getCurrentSite();
 
     redux_store.dispatch(
@@ -339,46 +302,54 @@ var BertaEditor = new Class({
         this.currentSection,
         entryId,
         function () {
-          entryObj.destroy();
-          entryThumbnail.destroy();
-        }.bindWithEvent(this)
+          entryObj.remove();
+          entryThumbnails.forEach(function (thumbnail) {
+            thumbnail.remove();
+          });
+        }
       )
     );
-  },
+  }
 
-  entryOnHover: function (event) {
-    event = new Event(event);
-    var target = $(event.target);
-    if (!target.hasClass("xEntry")) target = target.getParent(".xEntry");
-    target.addClass("xEntryHover");
-    target.setAttribute("data-hover", "on");
-  },
+  static entryOnHover(event) {
+    var entry = event.currentTarget.closest(".xEntry");
+    entry.classList.add("xEntryHover");
+    entry.setAttribute("data-hover", "on");
+  }
 
-  entryOnUnHover: function (event) {
-    event = new Event(event);
-    var target = $(event.target);
+  static entryOnUnHover(event) {
+    var entry = event.currentTarget.closest(".xEntry");
+    entry.classList.remove("xEntryHover");
+    entry.setAttribute("data-hover", "off");
+  }
 
-    if (!target.hasClass("xEntry")) {
-      target = target.getParent(".xEntry");
-    }
+  static entryDropdownToggle(event) {
+    var dropdown = event.currentTarget;
+    var entry = dropdown.parentElement.parentElement;
+    var dropdownBox = entry.querySelector(".xEntryDropdownBox");
 
-    target.removeClass("xEntryHover");
-    target.setAttribute("data-hover", "off");
-  },
+    dropdownBox.classList.add("xVisible");
+    dropdown.classList.add("xEntryDropdowHover");
+  }
 
-  entryDropdownToggle: function (event) {
-    var dropdown = $(event.target);
-    var entry = dropdown.getParent().getParent();
-    dropdownBox = entry.getElement(".xEntryDropdownBox");
+  static entryDropdownBoxOnLeave(event) {
+    var dropdownBox = event.currentTarget;
+    dropdownBox.classList.remove("xVisible");
+    dropdownBox.parentElement
+      .querySelector(".xEntryDropdown")
+      .classList.remove("xEntryDropdowHover");
+  }
 
-    dropdownBox.toggleClass("xVisible", true);
-
-    if (dropdownBox.hasClass("xVisible")) {
-      dropdown.addClass("xEntryDropdowHover");
-    } else {
-      dropdown.removeClass("xEntryDropdowHover");
-    }
-  },
-});
+  static openMoveEntryToSection(event) {
+    event.preventDefault();
+    var xEntryEditWrap = event.currentTarget.closest(".xEntryEditWrap");
+    var xEntryDropdownBox = xEntryEditWrap.querySelector(".xEntryDropdownBox");
+    var moveEntryToSectionContainer = xEntryEditWrap.querySelector(
+      ".bt-move-entry-to-section"
+    );
+    xEntryDropdownBox.classList.remove("xVisible");
+    moveEntryToSectionContainer.style.display = "block";
+  }
+};
 
 window.bertaEditor = new BertaEditor(window.bertaGlobalOptions);

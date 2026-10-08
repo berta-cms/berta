@@ -53,8 +53,6 @@ const frontendCssFiles = [
 ];
 
 const backendJsFiles = [
-  "engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js",
-  "engine/_lib/mootools/mootools-1.2.5.1-more.js",
   "engine/_lib/picturefill/picturefill.min.js",
   "engine/js/berta.helpers.js",
   "engine/js/BertaEmbedRatios.js",
@@ -65,7 +63,6 @@ const backendJsFiles = [
   "engine/js/BertaGalleryPile.js",
   "engine/js/BertaGalleryGrid.js",
   "engine/js/BertaPortfolio.js",
-  "engine/js/BertaEditorBase.js",
   "engine/js/BertaEditor.js",
   "node_modules/immutable/dist/immutable.min.js",
   "node_modules/redux/dist/redux.min.js",
@@ -94,8 +91,6 @@ var backendNgJsFiles = [
 ];
 
 const frontendJsFiles = [
-  "engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js",
-  "engine/_lib/mootools/mootools-1.2.5.1-more.js",
   "engine/_lib/picturefill/picturefill.min.js",
   "engine/js/berta.helpers.js",
   "engine/js/BertaEmbedRatios.js",

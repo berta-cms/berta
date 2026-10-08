@@ -107,7 +107,7 @@ class BertaTemplate extends BertaBase
         if ($isShopAvailable) {
             global $db;
             // We need to initialize BertaShop here for correct migration order
-            new BertaShop($db, $this->loggedIn);
+            new BertaShop($db);
         }
 
         $isEditMode = $this->environment == 'engine';

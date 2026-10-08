@@ -1,122 +1,97 @@
-var Berta = new Class({
+var Berta = class {
+  constructor(options) {
+    this.options = Object.assign({}, options);
 
-  Implements: Options,
+    window.BertaHelpers.onDomReady(this.onDOMReady.bind(this));
+    window.BertaHelpers.onWindowLoad(this.onLoad.bind(this));
+  }
 
-  options: {},
-
-  initialize: function (options) {
-    this.setOptions(options);
-    window.addEvent('domready', this.onDOMReady.bind(this));
-    window.addEvent('load', this.onLoad.bind(this));
-  },
-
-  onDOMReady: function () {
+  onDOMReady() {
     this.windowResizeEvents();
-  },
+  }
 
-  onLoad: function () {
+  onLoad() {
     // init entry galleries only in "load" event because otherwise in some browsers
     // (eg. safari), the CSS sometimes is not loaded in time to get the styles from
     // the elements with javascript
     this.initEntriesList();
-  },
+  }
 
-  initEntriesList: function () {
-    $$('.xEntriesList .xGalleryContainer').each(function (item) {
-      if (!item.getParent('.xEntry').hasClass('xHidden')) {
-        this.initGallery(item);
+  initEntriesList() {
+    document.querySelectorAll('.xEntriesList .xGalleryContainer').forEach((item) => {
+      if (!item.closest('.xEntry').classList.contains('xHidden')) {
+        window.BertaHelpers.initGallery(item);
       }
-    }.bind(this));
-  },
+    });
+  }
 
-  initGallery: function (item) {
-    var galleryType = window.BertaHelpers.getClassStoredValue(item, 'xGalleryType');
-
-    switch (galleryType) {
-      case 'row':
-        new BertaGalleryRow(item);
-        break;
-      case 'column':
-        new BertaGalleryColumn(item);
-        break;
-      case 'pile':
-        new BertaGalleryPile(item);
-        break;
-      case 'link':
-        // link galleries are plain markup and need no JS
-        break;
-      case 'grid':
-        new BertaGalleryGrid(item);
-        break;
-      default:
-        new BertaGallerySlideshow(item);
-    }
-  },
-
-  windowResizeEvents: function () {
+  windowResizeEvents() {
     var templateName = this.options.templateName.split('-');
     templateName = templateName[0];
 
     if (templateName == 'mashup' || templateName == 'white') {
-      var isResponsive = $$('.xResponsive').length;
+      var isResponsive = document.querySelectorAll('.xResponsive').length;
       var breakPointWidth = 767;
 
       var footerOverlayFix = function () {
-        var windowWidth = window.getSize().x;
-        var windowHeight = window.getSize().y;
-        var sideColumn = $('sideColumn');
-        var sideColumnTop = $('sideColumnTop');
-        var sideColumnBottom = $('sideColumnBottom');
+        var windowSize = window.BertaHelpers.getWindowSize();
+        var sideColumn = document.getElementById('sideColumn');
+        var sideColumnTop = document.getElementById('sideColumnTop');
+        var sideColumnBottom = document.getElementById('sideColumnBottom');
 
         if (sideColumnTop && sideColumnBottom) {
-          var sideColumnTopHeight = sideColumnTop.getSize().y;
-          var sideColumnBottomHeight = sideColumnBottom.getSize().y;
-          if ((isResponsive && breakPointWidth > windowWidth) || (windowHeight < sideColumnTopHeight + sideColumnBottomHeight)) {
-            sideColumn.setStyle('position', 'absolute');
-            sideColumnBottom.setStyle('position', 'static');
+          var sideColumnTopHeight = sideColumnTop.offsetHeight;
+          var sideColumnBottomHeight = sideColumnBottom.offsetHeight;
+          if ((isResponsive && breakPointWidth > windowSize.x) || (windowSize.y < sideColumnTopHeight + sideColumnBottomHeight)) {
+            sideColumn.style.position = 'absolute';
+            sideColumnBottom.style.position = 'static';
           } else {
-            sideColumn.setStyle('position', 'fixed');
-            sideColumnBottom.setStyle('position', 'absolute');
+            sideColumn.style.position = 'fixed';
+            sideColumnBottom.style.position = 'absolute';
           }
         }
       };
 
-      footerOverlayFix.delay(1000);
-      $(window).addEvent('resize', footerOverlayFix);
+      setTimeout(footerOverlayFix, 1000);
+      window.addEventListener('resize', footerOverlayFix);
     }
 
-    var responsiveMenu = function () {
-      var menuToggle = $('menuToggle');
-
-      if (menuToggle) {
-        var objSlide = menuToggle.getNext();
-        var breakPointWidth = 767;
-
-        menuToggle.addEvent('click', function (e) {
-          e.preventDefault();
-          objSlide.toggle();
-          this.toggleClass('active');
-        });
-
-        window.addEvent('resize', function () {
-          if (win_width != window.getSize().x) {
-            win_width = window.getSize().x;
-            if (breakPointWidth < this.getSize().x) {
-              objSlide.show();
-              // small tablet
-            } else {
-              menuToggle.removeClass('active');
-              objSlide.hide();
-            }
-          }
-        });
-        var win_width = window.getSize().x;
-        window.BertaHelpers.triggerResize();
-      }
-    };
-    responsiveMenu();
+    this.responsiveMenu();
   }
 
-});
+  responsiveMenu() {
+    var menuToggle = document.getElementById('menuToggle');
+
+    if (!menuToggle) {
+      return;
+    }
+
+    var objSlide = menuToggle.nextElementSibling;
+    var breakPointWidth = 767;
+    var winWidth = window.BertaHelpers.getWindowSize().x;
+
+    menuToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.BertaHelpers.toggle(objSlide);
+      menuToggle.classList.toggle('active');
+    });
+
+    window.addEventListener('resize', () => {
+      var width = window.BertaHelpers.getWindowSize().x;
+
+      if (winWidth != width) {
+        winWidth = width;
+        if (breakPointWidth < width) {
+          window.BertaHelpers.show(objSlide);
+          // small tablet
+        } else {
+          menuToggle.classList.remove('active');
+          window.BertaHelpers.hide(objSlide);
+        }
+      }
+    });
+    window.BertaHelpers.triggerResize();
+  }
+};
 
 window.berta = new Berta(window.bertaGlobalOptions);

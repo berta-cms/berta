@@ -739,7 +739,6 @@ export class ShopCartRenderService {
       ),
       checkoutButton: this.getCheckoutButtonData(siteSlug, siteSettings),
       returnToStore: this.getReturnToStoreData(siteSlug, siteSettings),
-      returnUrl: location.origin,
     };
 
     try {
