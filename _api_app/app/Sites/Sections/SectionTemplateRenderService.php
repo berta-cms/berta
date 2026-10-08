@@ -217,10 +217,13 @@ abstract class SectionTemplateRenderService
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
         $currentSectionType = $this->getCurrentSectionType($currentSection);
 
-        $classes = [
-            'xContent-' . $currentSection['name'],
-            'xSectionType-' . $currentSectionType,
-        ];
+        $classes = [];
+
+        if ($currentSection) {
+            $classes[] = 'xContent-' . $currentSection['name'];
+        }
+
+        $classes[] = 'xSectionType-' . $currentSectionType;
 
         if (! empty($tagSlug)) {
             $classes[] = 'xSubmenu-' . $tagSlug;
@@ -257,10 +260,11 @@ abstract class SectionTemplateRenderService
     {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
         $attributes = [];
-        $classes = [
-            'xEntriesList',
-            'xSection-' . $currentSection['name'],
-        ];
+        $classes = ['xEntriesList'];
+
+        if ($currentSection) {
+            $classes[] = 'xSection-' . $currentSection['name'];
+        }
 
         if (! empty($tagSlug)) {
             $classes[] = 'xTag-' . $tagSlug;
