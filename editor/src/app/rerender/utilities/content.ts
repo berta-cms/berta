@@ -11,8 +11,9 @@ export function replaceContent(
   element.appendChild(dom.createRange().createContextualFragment(sectionHtml));
 }
 
-export function reloadBackendJs(iframe: HTMLIFrameElement) {
-  // BertaEditor re-binds the entry listeners and replaces the "create new entry"
-  // link after the entries list
-  iframe.contentWindow.dispatchEvent(new Event('addEntry'));
+export function notifyEntriesRerendered(iframe: HTMLIFrameElement) {
+  // The preview scripts re-init the replaced entries: BertaEditor re-binds the
+  // entry listeners and replaces the "create new entry" link after the list,
+  // BertaPortfolio re-binds the thumbnail links
+  iframe.contentWindow.dispatchEvent(new Event('entriesRerendered'));
 }

@@ -59,7 +59,7 @@ describe('TemplateRerenderService', () => {
       succeed(created);
 
       expect(doc.querySelectorAll('#pageEntries .xEntry').length).toBe(2);
-      expect(dispatchedEvents()).toEqual(['addEntry']);
+      expect(dispatchedEvents()).toEqual(['entriesRerendered']);
     });
 
     it('keeps the "create new entry" link of every entry', () => {
@@ -73,7 +73,7 @@ describe('TemplateRerenderService', () => {
     it('rerenders a page without an entries list', () => {
       succeed(created);
 
-      expect(dispatchedEvents()).toEqual(['addEntry']);
+      expect(dispatchedEvents()).toEqual(['entriesRerendered']);
     });
   });
 
@@ -87,6 +87,6 @@ describe('TemplateRerenderService', () => {
     succeed(new HandleSiteSettingsChildrenChangesAction('banners'));
 
     expect(doc.querySelector('#siteBanners .banner')).not.toBeNull();
-    expect(dispatchedEvents()).toEqual(['addEntry']);
+    expect(dispatchedEvents()).toEqual(['entriesRerendered']);
   });
 });

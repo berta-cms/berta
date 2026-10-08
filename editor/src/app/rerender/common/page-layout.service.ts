@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { reloadBackendJs, replaceContent } from '../utilities/content';
+import { notifyEntriesRerendered, replaceContent } from '../utilities/content';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class PageLayoutService {
 
     replaceContent(dom, 'pageEntries', viewData.entries);
     replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails);
-    reloadBackendJs(iframe);
+    notifyEntriesRerendered(iframe);
   }
 
   protected static handleIsResponsiveSetting(

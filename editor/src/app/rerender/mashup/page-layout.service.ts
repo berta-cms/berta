@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { reloadBackendJs, replaceContent } from '../utilities/content';
+import { notifyEntriesRerendered, replaceContent } from '../utilities/content';
 import { createEl } from '../utilities/element';
 import { PageLayoutService as MainPageLayoutService } from '../common/page-layout.service';
 
@@ -50,7 +50,7 @@ export class PageLayoutService extends MainPageLayoutService {
     PageLayoutService.replaceCommonContent(dom, viewData);
 
     replaceContent(dom, 'mashupEntries', viewData.mashupEntries);
-    reloadBackendJs(iframe);
+    notifyEntriesRerendered(iframe);
   }
 
   private static handleMainColumn(
