@@ -167,7 +167,12 @@ class SectionHeadRenderService
             }
 
             if ($isShopAvailable) {
-                $cssFiles[] = "/_plugin_shop/css/shop.css.php?{$cacheBoost}&{$this->version}" . ($siteSlug ? "&site={$siteSlug}" : '');
+                $cssFiles[] = "/_plugin_shop/css/shop.css?{$this->version}";
+                $inlineCSS .= $this->getShopCSS(
+                    $this->withDefaults($siteTemplateSettings['group_price_item'] ?? [], array_map(fn($setting) => $setting['default'] ?? null, $shopSettingsDS->getRawConfig())),
+                    $this->withDefaults($siteTemplateSettings['entryHeading'] ?? [], $siteTemplatesConfig[$siteSettings['template']['template']]['templateConf']['entryHeading'] ?? []),
+                    $siteTemplateSettings['pageLayout'] ?? [],
+                );
             }
         }
 
@@ -177,6 +182,97 @@ class SectionHeadRenderService
             'inlineCSS' => $inlineCSS,
             'customCSS' => $siteTemplateSettings['css']['customCSS'],
         ];
+    }
+
+    /**
+     * The shop's styles that depend on the site's settings, following the static `shop.css`
+     *
+     * @param  array<string, string>  $priceItem  The shop's price settings
+     * @param  array<string, string>  $entryHeading  The template's entry heading settings
+     * @param  array<string, string>  $pageLayout  The template's page layout settings
+     */
+    private function getShopCSS(array $priceItem, array $entryHeading, array $pageLayout): string
+    {
+        $isResponsive = ($pageLayout['responsive'] ?? '') == 'yes';
+        $isCentered = ($pageLayout['centeredContents'] ?? '') == 'yes';
+
+        $css = $this->getCSSRule('#pageEntries .cartPrice', [
+            'color' => $priceItem['priceItemFontcolor'] ?? '',
+            'font-family' => $this->getFontFamily($priceItem['priceItemgoogleFont'] ?? '', $priceItem['priceItemfontFamily'] ?? ''),
+            'font-size' => $priceItem['priceItemfontSize'] ?? '',
+            'font-weight' => $priceItem['priceItemfontWeight'] ?? '',
+            'font-style' => $priceItem['priceItemfontStyle'] ?? '',
+            'font-variant' => $priceItem['priceItemfontVariant'] ?? '',
+            'line-height' => $priceItem['priceItemlineHeight'] ?? '',
+        ]);
+        $css .= $this->getCSSRule('#shoppingCartTitle, #shoppingCartEmpty', [
+            'font-family' => $this->getFontFamily($entryHeading['googleFont'] ?? '', $entryHeading['fontFamily'] ?? ''),
+            'font-weight' => $entryHeading['fontWeight'] ?? '',
+            'font-style' => $entryHeading['fontStyle'] ?? '',
+            'font-variant' => $entryHeading['fontVariant'] ?? '',
+        ]);
+
+        if ($isResponsive) {
+            $css .= '#shoppingCart { position: relative; float: right; right: inherit; margin: 0 10px 10px 10px; }';
+
+            if ($isCentered) {
+                $css .= '#shoppingCart { margin-top: 20px; }';
+                $css .= '#pageEntries .addToCart div, #pageEntries .addToCart div.cartPrice, #pageEntries .addToCart button.addToCartButton { float: none; }';
+            }
+        }
+
+        if ($isCentered) {
+            $css .= '@media (max-width: 767px) {';
+            $css .= '.bt-auto-responsive #shoppingCart { margin-top: 20px; }';
+            $css .= '.bt-auto-responsive #pageEntries .addToCart div, .bt-auto-responsive #pageEntries .addToCart div.cartPrice, .bt-auto-responsive #pageEntries .addToCart button.addToCartButton { float: none; }';
+            $css .= '}';
+        }
+
+        return $css;
+    }
+
+    /**
+     * Settings with each empty value replaced by its default, the way the site's settings files are read
+     *
+     * @param  array<string, string>  $values
+     * @param  array<string, mixed>  $defaults
+     * @return array<string, string>
+     */
+    private function withDefaults(array $values, array $defaults): array
+    {
+        foreach ($values as $key => $value) {
+            if (trim((string) $value) === '' && is_string($defaults[$key] ?? null)) {
+                $values[$key] = $defaults[$key];
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * A Google font's family name, or else the chosen font family
+     */
+    private function getFontFamily(string $googleFont, string $fontFamily): string
+    {
+        return trim($googleFont) !== '' ? explode(':', $googleFont)[0] : $fontFamily;
+    }
+
+    /**
+     * @param  array<string, string>  $declarations  Empty values are left out
+     */
+    private function getCSSRule(string $selector, array $declarations): string
+    {
+        $declarations = array_filter(array_map('trim', $declarations), fn($value) => $value !== '');
+
+        if (empty($declarations)) {
+            return '';
+        }
+
+        return $selector . ' { ' . implode(' ', array_map(
+            fn($property, $value) => "{$property}: {$value};",
+            array_keys($declarations),
+            $declarations,
+        )) . ' }';
     }
 
     public function getSentryScript($user)
@@ -215,6 +311,7 @@ class SectionHeadRenderService
                 'engineABSRoot' => '/engine/',
                 'siteABSMainRoot' => '/',
                 'siteABSRoot' => '/' . (! empty($siteSlug) ? $siteSlug . '/' : ''),
+                'apiRoot' => '/' . config('app.api_prefix') . '/',
                 'template' => '/_templates/' . $siteSettings['template']['template'] . '/',
                 'site' => $siteSlug,
             ],
@@ -232,9 +329,6 @@ class SectionHeadRenderService
         }
 
         if ($templateName == 'messy') {
-            // @todo check this case
-            // { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
-
             $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/mess.js?{$this->version}";
             $scriptFiles[] = '/_templates/' . $siteSettings['template']['template'] . "/masonry.js?{$this->version}";
 

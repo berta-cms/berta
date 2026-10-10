@@ -21,6 +21,8 @@ export class SectionHeadRenderService {
     isResponsive,
     isAutoResponsive,
     user,
+    siteTemplateConfig,
+    shopSettingsConfig,
   ) {
     // skip some template variables, no need for them in editor
     // title
@@ -55,6 +57,8 @@ export class SectionHeadRenderService {
         shopSettings,
         isResponsive,
         isAutoResponsive,
+        siteTemplateConfig,
+        shopSettingsConfig,
       ),
       scripts: this.getScripts(
         appState,
@@ -80,6 +84,8 @@ export class SectionHeadRenderService {
     shopSettings,
     isResponsive,
     isAutoResponsive,
+    siteTemplateConfig,
+    shopSettingsConfig,
   ) {
     let googleWebFonts = [];
     let templateSettings = siteTemplateSettings;
@@ -126,11 +132,7 @@ export class SectionHeadRenderService {
 
     if (templateName === 'messy') {
       if (isShopAvailable) {
-        cssFiles.push(
-          `/_plugin_shop/css/shop.css.php?${cacheBoost}${
-            siteSlug ? `&site=${siteSlug}` : ''
-          }`,
-        );
+        cssFiles.push(`/_plugin_shop/css/shop.css?${appState.version}`);
       }
 
       if (isResponsive || isAutoResponsive) {
@@ -158,6 +160,20 @@ export class SectionHeadRenderService {
           inlineCSS += '}';
         }
       }
+
+      if (isShopAvailable) {
+        inlineCSS += this.getShopCSS(
+          this.withDefaults(
+            templateSettings.group_price_item,
+            shopSettingsConfig.group_price_item,
+          ),
+          this.withDefaults(
+            siteTemplateSettings.entryHeading,
+            siteTemplateConfig?.entryHeading,
+          ),
+          siteTemplateSettings.pageLayout,
+        );
+      }
     }
 
     return {
@@ -166,6 +182,90 @@ export class SectionHeadRenderService {
       inlineCSS: inlineCSS,
       customCSS: siteTemplateSettings.css.customCSS,
     };
+  }
+
+  /**
+   * The shop's styles that depend on the site's settings, following the static `shop.css`
+   */
+  getShopCSS(priceItem = {}, entryHeading = {}, pageLayout = {}) {
+    const isResponsive = pageLayout['responsive'] === 'yes';
+    const isCentered = pageLayout['centeredContents'] === 'yes';
+
+    let css = this.getCSSRule('#pageEntries .cartPrice', {
+      color: priceItem['priceItemFontcolor'],
+      'font-family': this.getFontFamily(
+        priceItem['priceItemgoogleFont'],
+        priceItem['priceItemfontFamily'],
+      ),
+      'font-size': priceItem['priceItemfontSize'],
+      'font-weight': priceItem['priceItemfontWeight'],
+      'font-style': priceItem['priceItemfontStyle'],
+      'font-variant': priceItem['priceItemfontVariant'],
+      'line-height': priceItem['priceItemlineHeight'],
+    });
+    css += this.getCSSRule('#shoppingCartTitle, #shoppingCartEmpty', {
+      'font-family': this.getFontFamily(
+        entryHeading['googleFont'],
+        entryHeading['fontFamily'],
+      ),
+      'font-weight': entryHeading['fontWeight'],
+      'font-style': entryHeading['fontStyle'],
+      'font-variant': entryHeading['fontVariant'],
+    });
+
+    if (isResponsive) {
+      css +=
+        '#shoppingCart { position: relative; float: right; right: inherit; margin: 0 10px 10px 10px; }';
+
+      if (isCentered) {
+        css += '#shoppingCart { margin-top: 20px; }';
+        css +=
+          '#pageEntries .addToCart div, #pageEntries .addToCart div.cartPrice, #pageEntries .addToCart button.addToCartButton { float: none; }';
+      }
+    }
+
+    if (isCentered) {
+      css += '@media (max-width: 767px) {';
+      css += '.bt-auto-responsive #shoppingCart { margin-top: 20px; }';
+      css +=
+        '.bt-auto-responsive #pageEntries .addToCart div, .bt-auto-responsive #pageEntries .addToCart div.cartPrice, .bt-auto-responsive #pageEntries .addToCart button.addToCartButton { float: none; }';
+      css += '}';
+    }
+
+    return css;
+  }
+
+  /**
+   * Settings with each empty value replaced by its default, the way the site's settings files are read
+   */
+  withDefaults(values = {}, settingsConfig = {}) {
+    return Object.fromEntries(
+      Object.entries(values).map(([slug, value]) => [
+        slug,
+        String(value ?? '').trim() === '' && settingsConfig[slug]
+          ? settingsConfig[slug].default
+          : value,
+      ]),
+    );
+  }
+
+  /**
+   * A Google font's family name, or else the chosen font family
+   */
+  getFontFamily(googleFont = '', fontFamily = '') {
+    return googleFont.trim() !== '' ? googleFont.split(':')[0] : fontFamily;
+  }
+
+  /**
+   * A CSS rule, leaving out the empty values
+   */
+  getCSSRule(selector: string, declarations: { [property: string]: string }) {
+    const css = Object.entries(declarations)
+      .map(([property, value]) => [property, String(value ?? '').trim()])
+      .filter(([, value]) => value !== '')
+      .map(([property, value]) => `${property}: ${value};`);
+
+    return css.length ? `${selector} { ${css.join(' ')} }` : '';
   }
 
   getScripts(
@@ -252,6 +352,8 @@ export class SectionHeadRenderService {
     isResponsive,
     isAutoResponsive,
     user,
+    siteTemplateConfig,
+    shopSettingsConfig,
   ) {
     const viewData = this.getViewData(
       appState,
@@ -267,6 +369,8 @@ export class SectionHeadRenderService {
       isResponsive,
       isAutoResponsive,
       user,
+      siteTemplateConfig,
+      shopSettingsConfig,
     );
 
     try {

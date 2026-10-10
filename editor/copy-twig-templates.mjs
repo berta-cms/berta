@@ -12,7 +12,8 @@ import { rmSync, existsSync } from 'fs';
       rmSync('src/templates', { recursive: true, force: true });
     }
     
-    await cpy('../_api_app/app/**/*.twig', 'src/templates', {
+    // Plugin templates, such as the shop's order email, aren't rendered in the editor
+    await cpy(['../_api_app/app/**/*.twig', '!../_api_app/app/Plugins/**'], 'src/templates', {
       parents: true
     });
     console.log('✓ Twig files copied from backend to Angular app.');

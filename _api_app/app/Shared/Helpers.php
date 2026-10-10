@@ -593,6 +593,14 @@ class Helpers
         return $html;
     }
 
+    /**
+     * Whether the shop plugin is licensed for the requested domain
+     */
+    public static function isShopEnabled(?string $host): bool
+    {
+        return self::isValidDomain($host, config('plugin-Shop.key'));
+    }
+
     public static function isValidDomain($requestDomain, $domains)
     {
         if (empty($requestDomain) || empty($domains)) {

@@ -183,7 +183,7 @@ class SitesDataService extends Storage
         $site['mediaUrl'] = $sitesDS->MEDIA_URL;
         $site['order'] = count($sites) - 1;
 
-        if (Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))) {
+        if (Helpers::isShopEnabled($request->getHost())) {
             $clientsDataService = new ShopClientsDataService($name);
             $clientsDataService->TruncateClients();
             $ordersDataService = new ShopOrdersDataService($name);

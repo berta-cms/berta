@@ -312,7 +312,7 @@ class SectionEntryRenderService
         $storageService,
         $isEditMode,
         $isShopAvailable
-    ) {
+    ): string {
         $data = $this->getViewData(
             $site,
             $sections,
@@ -325,6 +325,6 @@ class SectionEntryRenderService
             $isShopAvailable
         );
 
-        return view('Sites/Sections/Entries/entry', $data);
+        return view('Sites/Sections/Entries/entry', $data)->render();
     }
 }

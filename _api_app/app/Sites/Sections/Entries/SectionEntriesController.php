@@ -185,7 +185,7 @@ class SectionEntriesController extends Controller
                 $siteTemplateSettingsDS->getState(),
                 (new Storage($site)),
                 false,
-                Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))
+                Helpers::isShopEnabled($request->getHost())
             );
         }
 
