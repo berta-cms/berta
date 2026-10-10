@@ -17,6 +17,12 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
       <div class="subgroup">
         <div class="setting">
           <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
+          @if (settingGroup.config.description) {
+            <p
+              class="setting-description"
+              [innerHTML]="settingGroup.config.description"
+            ></p>
+          }
         </div>
         @for (setting of settingGroup.settings; track setting) {
           <berta-setting

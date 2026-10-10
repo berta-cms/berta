@@ -1,0 +1,274 @@
+<div id="shoppingCartOuter">
+  <div id="shoppingCartEmpty" class="hidden">
+    <div>
+        Custom cartTextEmpty
+    </div>
+  </div>
+
+  <div id="shoppingCartTitle">Cart</div>
+
+  <div id="shoppingCartExpired" class="hidden">
+    <div>
+        Custom cartTextExpired
+    </div>
+  </div>
+
+  <div id="shoppingCartOrderPlaced" class="hidden">
+    <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNumber"></p>
+    <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">Custom cartTextReturnStore</a></p>
+  </div>
+
+  <div id="shoppingCartContents">
+    <div class="row thead">
+      <div class="column column-half padded title">
+                    Custom cartTextTitle
+              </div>
+
+      <div class="column column-half properties">
+        <div class="row">
+          <div class="column column-half padded qty">
+                            Custom cartTextQuantity
+                      </div>
+          <div class="column column-fourth padded price">
+                            Custom cartTextPrice
+                      </div>
+          <div class="column column-fourth padded sum">
+                            Custom cartTextSum
+                        (EUR)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbody prodList">
+      <div class="row prodline">
+        <div class="column column-half padded title"><span></span> <div class="image hidden"></div></div>
+        <div class="column column-half">
+          <div class="row">
+            <div class="column column-half padded qty"><span></span> <span class="adremovecart"><a href="#" class="add">+</a> <a href="#" class="remove">-</a></span></div>
+            <div class="column column-fourth padded price"></div>
+            <div class="column column-fourth padded sum"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody shipping">
+      <div class="column column-half padded promo">
+                  <div id="promoCodeEntry">
+                            Custom cartTextPromoCode
+                        <span class="pull-right">
+              <input type="text" name="promo_code" id="promo_code" />
+                                <input type="button" value="Custom cartTextPromoBtn" />
+                          </span>
+          </div>
+              </div>
+
+      <div class="column column-half padded">
+        <div class="padded-left">
+          <div class="cCartShippingTo">
+            Custom cartTextShippingTo
+          </div>
+
+          <select id="shipping_select" class="pull-right">
+                          <option value="1">Europe</option>
+                      </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody">
+      <div class="column padded-left column-half pull-right">
+        <div class="padded shippingTotal">
+          <span>
+            Custom shippingTotalText
+          </span>
+          <div class="total pull-right">EUR <span id="shippingTotalSum"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody discount hidden">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartDiscount">
+                        Custom cartTextDiscount
+                    <span class="pull-right sumDiscount"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody total">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartTotal">
+                        Custom cartTextTotal
+          
+                    <div class="pull-right total">EUR <span class="sumTotal"></span></div>
+          <div class="vatprice hidden">Custom cartTextInclVat (<span class="vatRate"></span>%)<span class="pull-right">EUR <span class="vatAmount"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="cartBottomPart">
+    <div class="column column-half" id="cartFromleftPart">
+      <div class="padded-right">
+        <input type="hidden" name="cartemail" value="seller@berta.test" id="cartemail">
+        <div class="cc-fields" id="billing_address_form">
+          <h2>
+            Custom cartTextBillAddr
+          </h2>
+
+          <div class="padded">
+            <p class="checkbox">
+                              <input type="checkbox" id="cartTextLegalPerson" value="1" /> <label for="cartTextLegalPerson" class="auto-width"> Custom cartTextLegalPerson</label>
+                          </p>
+
+            <p class="xLegalPerson hidden">
+              <label for="company">
+                                    Custom cartTextCompany
+                              </label>
+                              <input class="iText" type="text" name="company" id="company">
+                          </p>
+
+            <p class="xLegalPerson hidden">
+              <label for="company_reg_no">
+                                    Custom cartTextCompanyRegNo
+                              </label>
+                              <input class="iText" type="text" name="company_reg_no" id="company_reg_no">
+                          </p>
+
+            <p class="xLegalPerson hidden">
+              <label for="legal_address">
+                                    Custom cartTextLegalAddress
+                              </label>
+                              <input class="iText" type="text" name="legal_address" id="legal_address">
+                          </p>
+
+            <p>
+              <label for="name">
+                                    Custom cartTextNameSurname
+                              </label>
+                              <input class="iText" type="text" name="name" id="name">
+                          </p>
+
+            <p>
+              <label for="address">
+                                    Custom cartTextAddress
+                              </label>
+                              <input class="iText" type="text" name="address" id="address">
+                          </p>
+
+            <p>
+              <label for="phone">
+                                    Custom cartTextPhoneNumber
+                              </label>
+                              <input class="iText" type="text" name="phone" id="phone">
+                          </p>
+
+            <p>
+              <label for="email">
+                                    Custom cartTextEmail
+                              </label>
+                              <input class="iText" type="text" name="email" id="email">
+                          </p>
+
+            <p>
+              <label for="notes">
+                                    Custom cartTextComments
+                              </label>
+                              <textarea rows="3" cols="5" name="notes" id="notes"></textarea>
+                          </p>
+
+                          <p class="no-margin-bottom">
+                <input type="checkbox" id="deliver_billing_addr" checked="checked" /> <label for="deliver_billing_addr" class="auto-width">Custom cartTextDeliverBilling</label>
+              </p>
+                      </div>
+        </div>
+
+        <div class="cc-fields hidden" id="shipping_address_form">
+          <h2>
+            Custom cartTextShipAddr          </h2>
+
+          <div class="padded">
+            <p>
+              <label for="ship_name">
+                                    Custom cartTextNameSurname
+                              </label>
+                              <input class="iText" type="text" name="ship_name" id="ship_name">
+                          </p>
+
+            <p>
+              <label for="ship_address">
+                                    Custom cartTextAddress
+                              </label>
+                              <input class="iText" type="text" name="ship_address" id="ship_address">
+                          </p>
+
+            <p>
+              <label for="ship_phone">
+                                    Custom cartTextPhoneNumber
+                              </label>
+                              <input class="iText" type="text" name="ship_phone" id="ship_phone">
+                          </p>
+
+            <p>
+              <label for="ship_email">
+                                    Custom cartTextEmail
+                              </label>
+                              <input class="iText" type="text" name="ship_email" id="ship_email">
+                          </p>
+
+            <p>
+              <label for="ship_notes">
+                                    Custom cartTextComments
+                              </label>
+                              <textarea rows="3" cols="5" name="ship_notes" id="ship_notes"></textarea>
+                          </p>
+          </div>
+        </div>
+
+                  <div class="padded padded-top-bottom-off">
+            <input type="checkbox" id="receive_news_updates" />&nbsp;<label for="receive_news_updates">Custom cartTextReceiveNews</label>
+          </div>
+              </div>
+    </div>
+
+    <div class="column column-half">
+      <div id="cartFromrightPart" class="padded-left">
+        <h2 id="cartFromRightTitle">
+          Custom cartTextCPM
+        </h2>
+
+        <div class="padded choosePaymentMethod">
+
+                      <p>
+              Custom cartTextPaymentDescription            </p>
+          
+          
+                      <div class="choosePaymentRadio">
+              <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer" checked="checked">
+                                    Custom cartManualTransfer
+                              </label>
+            </div>
+                  </div>
+
+        <div class="padded checkOut">
+                      <p>
+              Custom cartTextCheckoutDescription            </p>
+          
+          <p class="text-right checkoutSumTotal">Custom cartTextTotal EUR <span class="sumTotal"></span></p>
+
+                      
+            <p class="text-right no-margin" id="required-fields-error">Custom cartTextFillRequiredFields</p>
+
+            <p class="text-right"><a href="#" id="checkoutSubmit">Custom cartTextCheckoutButton</a></p>
+
+            <p class="text-right no-margin"><a href="javascript:;" onclick="closeShoppingCart();">Custom cartTextReturnStore</a></p>
+          
+          <div id="shoppingCart" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

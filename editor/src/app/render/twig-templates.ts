@@ -16,6 +16,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     </div>
   </div>
 
+  <div id="shoppingCartOrderPlaced" class="hidden">
+    <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNumber"></p>
+    <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">{{ returnToStore.content }}</a></p>
+  </div>
+
   <div id="shoppingCartContents">
     <div class="row thead">
       <div class="column column-half padded title">
@@ -118,7 +124,6 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     <div class="row tbody">
       <div class="column padded-left column-half pull-right">
         <div class="padded shippingTotal">
-          <input type="hidden" name="total_weight" id="total_weight" value="" />
           <span{{ shippingTotal.attributes|raw }}>
             {{ shippingTotal.content }}
           </span>
@@ -130,8 +135,6 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     <div class="row tbody discount{% if not isEditMode %} hidden{% endif %}">
       <div class="column column-half padded-left pull-right">
         <div class="padded shoppingCartDiscount">
-          <input type="hidden" id="discount_precents" value="" />
-          <input type="hidden" id="discount_applied" value="0" />
           {% if isEditMode %}
             <div{{ discount.attributes|raw }}>
               {% if discount.content %}{{ discount.content }}{% else %}<span class="xEmpty">&nbsp;discount&nbsp;</span>{% endif %}
@@ -160,8 +163,8 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               {% if includedVat.content %}{{ includedVat.content }}{% else %}<span class="xEmpty">&nbsp;incl vat&nbsp;</span>{% endif %}
             </div>
           {% endif %}
-          <div class="vatprice hidden">{{ includedVat.content }} (<span></span>%)</div>
           <div class="pull-right total">{{ currency }} <span class="sumTotal"></span></div>
+          <div class="vatprice hidden">{{ includedVat.content }} (<span class="vatRate"></span>%)<span class="pull-right">{{ currency }} <span class="vatAmount"></span></span></div>
         </div>
       </div>
     </div>
@@ -188,7 +191,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             </p>
 
             <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
-              <label for="cartTextCompany">
+              <label for="company">
                 {% if isEditMode %}
                   <div{{ company.attributes|raw }}>
                     {% if company.content %}{{ company.content }}{% else %}<span class="xEmpty">&nbsp;Company&nbsp;</span>{% endif %}
@@ -198,12 +201,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="cartTextCompany" id="cartTextCompany">
+                <input class="iText" type="text" name="company" id="company">
               {% endif %}
             </p>
 
             <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
-              <label for="cartTextCompanyRegNo">
+              <label for="company_reg_no">
                 {% if isEditMode %}
                   <div{{ companyRegistrationNumber.attributes|raw }}>
                     {% if companyRegistrationNumber.content %}{{ companyRegistrationNumber.content }}{% else %}<span class="xEmpty">&nbsp;Company reg. no.&nbsp;</span>{% endif %}
@@ -213,12 +216,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="cartTextCompanyRegNo" id="cartTextCompanyRegNo">
+                <input class="iText" type="text" name="company_reg_no" id="company_reg_no">
               {% endif %}
             </p>
 
             <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
-              <label for="cartTextLegalAddress">
+              <label for="legal_address">
                 {% if isEditMode %}
                   <div{{ legalAddress.attributes|raw }}>
                     {% if legalAddress.content %}{{ legalAddress.content }}{% else %}<span class="xEmpty">&nbsp;Legal address&nbsp;</span>{% endif %}
@@ -228,12 +231,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="cartTextLegalAddress" id="cartTextLegalAddress">
+                <input class="iText" type="text" name="legal_address" id="legal_address">
               {% endif %}
             </p>
 
             <p>
-              <label for="nname">
+              <label for="name">
                 {% if isEditMode %}
                   <div{{ nameSurname.attributes|raw }}>
                     {% if nameSurname.content %}{{ nameSurname.content }}{% else %}<span class="xEmpty">&nbsp;name surname&nbsp;</span>{% endif %}
@@ -243,7 +246,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="nname" id="nname">
+                <input class="iText" type="text" name="name" id="name">
               {% endif %}
             </p>
 
@@ -278,7 +281,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             </p>
 
             <p>
-              <label for="email-reg">
+              <label for="email">
                 {% if isEditMode %}
                   <div{{ email.attributes|raw }}>
                     {% if email.content %}{{ email.content }}{% else %}<span class="xEmpty">&nbsp;email&nbsp;</span>{% endif %}
@@ -288,7 +291,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="email" id="email-reg">
+                <input class="iText" type="text" name="email" id="email">
               {% endif %}
             </p>
 
@@ -326,7 +329,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
           <div class="padded">
             <p>
-              <label for="ship_nname">
+              <label for="ship_name">
                 {% if isEditMode %}
                   <div{{ nameSurname.attributes|raw }}>
                     {% if nameSurname.content %}{{ nameSurname.content }}{% else %}<span class="xEmpty">&nbsp;name surname&nbsp;</span>{% endif %}
@@ -336,7 +339,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="ship_nname" id="ship_nname">
+                <input class="iText" type="text" name="ship_name" id="ship_name">
               {% endif %}
             </p>
 
@@ -371,7 +374,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             </p>
 
             <p>
-              <label for="ship_email-reg">
+              <label for="ship_email">
                 {% if isEditMode %}
                   <div{{ email.attributes|raw }}>
                     {% if email.content %}{{ email.content }}{% else %}<span class="xEmpty">&nbsp;email&nbsp;</span>{% endif %}
@@ -381,7 +384,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
                 {% endif %}
               </label>
               {% if not isEditMode %}
-                <input class="iText" type="text" name="ship_email" id="ship_email-reg">
+                <input class="iText" type="text" name="ship_email" id="ship_email">
               {% endif %}
             </p>
 
@@ -430,22 +433,20 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             </p>
           {% endif %}
 
-          <input type="hidden" name="payment_method" id="payment_method" value="{{ config.paymentMethod }}" />
-
           {% if isPaypalAvailable %}
             <div class="choosePaymentRadio">
-              <label for="pm_creditcard"><input type="radio" name="pm" id="pm_creditcard" checked="checked" />
+              <label for="pm_creditcard"><input type="radio" name="payment_method" value="creditcard" id="pm_creditcard" checked="checked" />
               <img src="/_plugin_shop/images/creditcard.png" alt="Credit card" /></label>
             </div>
             <div class="choosePaymentRadio">
-              <label for="pm_paypal"><input type="radio" name="pm" id="pm_paypal" />
+              <label for="pm_paypal"><input type="radio" name="payment_method" value="paypal" id="pm_paypal" />
               <img src="/_plugin_shop/images/paypal.png" alt="Paypal" /></label>
             </div>
           {% endif %}
 
           {% if isManualTransferAvailable %}
             <div class="choosePaymentRadio">
-              <label for="pm_bank_transfer"><input type="radio" name="pm" id="pm_bank_transfer"{% if config.paymentMethod == 'bank' %} checked="checked"{% endif %}>
+              <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer"{% if config.paymentMethod == 'bank' or not isPaypalAvailable %} checked="checked"{% endif %}>
                 {% if isEditMode %}
                   <div{{ manualTransfer.attributes|raw }}>
                     {% if manualTransfer.content %}{{ manualTransfer.content }}{% else %}<span class="xEmpty">&nbsp;Manual transfer&nbsp;</span>{% endif %}
@@ -968,8 +969,8 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       </select>
     {% endif %}
   </div>
-  <span class="aele{% if not content.cartPrice or not isEditMode %} hidden{% endif %}"><span>{{ addToBasketLabel }}</span></span>
-  <span class="addedToCart hidden"><span></span> {{ addedToBasketText }}</span>
+  <button type="button" class="addToCartButton{% if not content.cartPrice or not isEditMode %} hidden{% endif %}">{{ addToBasketLabel }}</button>
+  <span class="addedToCart hidden" data-text="{{ addedToBasketText }}"></span>
   <span class="outOfStock hidden">{{ outOfStockText }}</span>
 </div>
 `,
@@ -1214,9 +1215,6 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     <div id="sectionFooter">
       {{ sectionFooter|raw }}
     </div>
-    {% endif %}
-    {% if alertMessage %}
-      <script type="text/javascript">alert('{{ alertMessage }}');</script>
     {% endif %}
   </body>
 </html>

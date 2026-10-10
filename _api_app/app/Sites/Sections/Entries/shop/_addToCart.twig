@@ -16,7 +16,7 @@
       </select>
     {% endif %}
   </div>
-  <span class="aele{% if not content.cartPrice or not isEditMode %} hidden{% endif %}"><span>{{ addToBasketLabel }}</span></span>
-  <span class="addedToCart hidden"><span></span> {{ addedToBasketText }}</span>
+  <button type="button" class="addToCartButton{% if not content.cartPrice or not isEditMode %} hidden{% endif %}">{{ addToBasketLabel }}</button>
+  <span class="addedToCart hidden" data-text="{{ addedToBasketText }}"></span>
   <span class="outOfStock hidden">{{ outOfStockText }}</span>
 </div>

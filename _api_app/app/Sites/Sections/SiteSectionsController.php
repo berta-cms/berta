@@ -252,7 +252,7 @@ class SiteSectionsController extends Controller
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
         $user = new UserModel;
 
-        $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
+        $isShopAvailable = Helpers::isShopEnabled($request->getHost());
         $isEditMode = true;
         $isPreviewMode = false;
         $storageService = new Storage($site, $isPreviewMode);
@@ -374,7 +374,7 @@ class SiteSectionsController extends Controller
 
         $user = new UserModel;
 
-        $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
+        $isShopAvailable = Helpers::isShopEnabled($request->getHost());
         $isEditMode = false;
         $isPreviewMode = false;
         $storageService = new Storage($siteSlug, $isPreviewMode);

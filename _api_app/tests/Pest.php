@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
 /*
@@ -44,4 +47,89 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * Whether this Berta has the shop plugin. Its Laravel part (`app/Plugins/Shop`) and the site
+ * engine's part (`_plugin_shop`) are separate repositories, installed together. Checks the
+ * files rather than the classes: Composer's class map may still list a removed plugin's classes.
+ */
+function isShopPluginInstalled(): bool
+{
+    return is_file(__DIR__ . '/../app/Plugins/Shop/ShopController.php')
+        && is_file(__DIR__ . '/../../_plugin_shop/inc.setting-definition.php');
+}
+
+/**
+ * Skips the test without the shop plugin. A shop test file calls it first in its `beforeEach`,
+ * before any setup that needs the plugin: Pest's `->skip()` only applies after the hooks ran.
+ */
+function skipWithoutShopPlugin(): void
+{
+    if (! isShopPluginInstalled()) {
+        Assert::markTestSkipped('Shop plugin not installed');
+    }
+}
+
+/**
+ * A temporary Berta root for the shop plugin's tests, with its shop database and file cache
+ *
+ * @return string The root's path, for the test to delete afterwards
+ */
+function setUpShopTestRoot(): string
+{
+    $realRoot = config('app.old_berta_root');
+    $bertaRoot = sys_get_temp_dir() . '/berta_shop_' . uniqid();
+    File::ensureDirectoryExists($bertaRoot . '/storage');
+    File::ensureDirectoryExists($bertaRoot . '/engine');
+    File::ensureDirectoryExists($bertaRoot . '/_plugin_shop');
+    // Site settings read the legacy engine's definitions, and an anonymous request's auth
+    // check logs out through the legacy engine
+    foreach (['engine/_classes', 'engine/lang', 'engine/inc.settings.php', 'engine/inc.version.php', '_templates'] as $path) {
+        symlink("{$realRoot}/{$path}", "{$bertaRoot}/{$path}");
+    }
+    File::copy($realRoot . '/_plugin_shop/inc.setting-definition.php', $bertaRoot . '/_plugin_shop/inc.setting-definition.php');
+    File::put($bertaRoot . '/engine/hosting', json_encode(['emailFromAddress' => 'shop@berta.test']));
+
+    config([
+        'app.old_berta_root' => $bertaRoot,
+        'plugin-Shop.key' => 'shop.test',
+        'plugin-Shop.database-connections.sqlite.database' => $bertaRoot . '/storage/shop-db.sqlite',
+        'plugin-Shop.database-connections.site-sqlite-template.database' => $bertaRoot . '/storage/-sites/{site}/shop-db.sqlite',
+        'cache.stores.file.path' => $bertaRoot . '/cache',
+    ]);
+    Cache::forgetDriver('file');
+
+    writeShopSettings($bertaRoot);
+
+    return $bertaRoot;
+}
+
+/**
+ * @param  array<string, string>  $shop
+ * @param  array<string, string>  $texts  The site's texts, besides its owner's name
+ */
+function writeShopSettings(string $bertaRoot, array $shop = [], string $site = '', array $texts = []): void
+{
+    $shop = array_merge([
+        'paymentMethod' => 'both',
+        'email' => 'seller@berta.test',
+        'currency' => 'EUR',
+        'orderEmailSubject' => 'Your order',
+        'promoCode' => 'SAVE10',
+        'promoCodeDiscount' => '10',
+    ], $shop);
+
+    $xmlValues = fn (array $values) => implode('', array_map(
+        fn ($name, $value) => "<{$name}><![CDATA[{$value}]]></{$name}>",
+        array_keys($values),
+        $values,
+    ));
+
+    $siteRoot = $bertaRoot . '/storage' . ($site !== '' ? "/-sites/{$site}" : '');
+    File::ensureDirectoryExists($siteRoot);
+    File::put($siteRoot . '/settings.xml', '<?xml version="1.0" encoding="utf-8"?><settings>'
+        . '<shop>' . $xmlValues($shop) . '</shop>'
+        . '<texts>' . $xmlValues(array_merge(['ownerName' => 'Shop Owner'], $texts)) . '</texts>'
+        . '</settings>');
 }

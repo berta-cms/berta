@@ -1,0 +1,298 @@
+<div id="shoppingCartOuter">
+  <div id="shoppingCartEmpty">
+    <div class="xNgEditable xProperty-cartTextEmpty xCaption-shopping+cart+empty" data-path="blog/settings/siteTexts/cartTextEmpty" data-empty-caption="shopping cart empty">
+        Custom cartTextEmpty
+    </div>
+  </div>
+
+  <div id="shoppingCartTitle">Cart</div>
+
+  <div id="shoppingCartExpired">
+    <div class="xNgEditable xProperty-cartTextExpired xCaption-shopping+cart+is+expired" data-path="blog/settings/siteTexts/cartTextExpired" data-empty-caption="shopping cart is expired">
+        Custom cartTextExpired
+    </div>
+  </div>
+
+  <div id="shoppingCartOrderPlaced" class="hidden">
+    <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNumber"></p>
+    <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">Custom cartTextReturnStore</a></p>
+  </div>
+
+  <div id="shoppingCartContents">
+    <div class="row thead">
+      <div class="column column-half padded title">
+                  <div class="xNgEditable xProperty-cartTextTitle xCaption-title" style="width: 100px;" data-path="blog/settings/siteTexts/cartTextTitle" data-empty-caption="title">
+            Custom cartTextTitle          </div>
+              </div>
+
+      <div class="column column-half properties">
+        <div class="row">
+          <div class="column column-half padded qty">
+                          <div class="xNgEditable xProperty-cartTextQuantity xCaption-quantity" data-path="blog/settings/siteTexts/cartTextQuantity" data-empty-caption="quantity">
+                Custom cartTextQuantity              </div>
+                      </div>
+          <div class="column column-fourth padded price">
+                          <div class="xNgEditable xProperty-cartTextPrice xCaption-price" data-path="blog/settings/siteTexts/cartTextPrice" data-empty-caption="price">
+                Custom cartTextPrice              </div>
+                      </div>
+          <div class="column column-fourth padded sum">
+                          <div class="xNgEditable xProperty-cartTextSum xCaption-sum" data-path="blog/settings/siteTexts/cartTextSum" data-empty-caption="sum">
+                Custom cartTextSum              </div>
+                        (EUR)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbody prodList">
+      <div class="row prodline">
+        <div class="column column-half padded title"><span></span> <div class="image hidden"></div></div>
+        <div class="column column-half">
+          <div class="row">
+            <div class="column column-half padded qty"><span></span> <span class="adremovecart"><a href="#" class="add">+</a> <a href="#" class="remove">-</a></span></div>
+            <div class="column column-fourth padded price"></div>
+            <div class="column column-fourth padded sum"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody shipping">
+      <div class="column column-half padded promo">
+                  <div id="promoCodeEntry">
+                          <div class="xNgEditable xProperty-cartTextPromoCode xCaption-Promo+code" data-path="blog/settings/siteTexts/cartTextPromoCode" data-empty-caption="Promo code">
+                Custom cartTextPromoCode              </div>
+                        <span class="pull-right">
+              <input type="text" name="promo_code" id="promo_code" />
+                              <div class="xNgEditable xProperty-cartTextPromoBtn xCaption-OK" data-path="blog/settings/siteTexts/cartTextPromoBtn" data-empty-caption="OK">
+                  Custom cartTextPromoBtn                </div>
+                          </span>
+          </div>
+              </div>
+
+      <div class="column column-half padded">
+        <div class="padded-left">
+          <div class="cCartShippingTo xNgEditable xProperty-cartTextShippingTo xCaption-shipping+to" data-path="blog/settings/siteTexts/cartTextShippingTo" data-empty-caption="shipping to">
+            Custom cartTextShippingTo
+          </div>
+
+          <select id="shipping_select" class="pull-right">
+                          <option value="1">Europe</option>
+                      </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody">
+      <div class="column padded-left column-half pull-right">
+        <div class="padded shippingTotal">
+          <span class="xNgEditable xProperty-shippingTotalText xCaption-Shipping" data-path="blog/settings/siteTexts/shippingTotalText" data-empty-caption="Shipping">
+            Custom shippingTotalText
+          </span>
+          <div class="total pull-right">EUR <span id="shippingTotalSum"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody discount">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartDiscount">
+                      <div class="xNgEditable xProperty-cartTextDiscount xCaption-discount" data-path="blog/settings/siteTexts/cartTextDiscount" data-empty-caption="discount">
+              Custom cartTextDiscount            </div>
+                    <span class="pull-right sumDiscount"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody total">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartTotal">
+                      <div class="xNgEditable xProperty-cartTextTotal xCaption-total" data-path="blog/settings/siteTexts/cartTextTotal" data-empty-caption="total">
+              Custom cartTextTotal            </div>
+          
+                      <div class="xNgEditable xProperty-cartTextInclVat xCaption-incl+vat" data-path="blog/settings/siteTexts/cartTextInclVat" data-empty-caption="incl vat">
+              Custom cartTextInclVat            </div>
+                    <div class="pull-right total">EUR <span class="sumTotal"></span></div>
+          <div class="vatprice hidden">Custom cartTextInclVat (<span class="vatRate"></span>%)<span class="pull-right">EUR <span class="vatAmount"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="cartBottomPart">
+    <div class="column column-half" id="cartFromleftPart">
+      <div class="padded-right">
+        <input type="hidden" name="cartemail" value="seller@berta.test" id="cartemail">
+        <div class="cc-fields" id="billing_address_form">
+          <h2 class="xNgEditable xProperty-cartTextBillAddr xCaption-billing+address" data-path="blog/settings/siteTexts/cartTextBillAddr" data-empty-caption="billing address">
+            Custom cartTextBillAddr
+          </h2>
+
+          <div class="padded">
+            <p class="checkbox">
+                              <div class="xNgEditable xProperty-cartTextLegalPerson xCaption-legal+person" data-path="blog/settings/siteTexts/cartTextLegalPerson" data-empty-caption="legal person">
+                  Custom cartTextLegalPerson                </div>
+                          </p>
+
+            <p class="xLegalPerson">
+              <label for="company">
+                                  <div class="xNgEditable xProperty-cartTextCompany xCaption-Company" data-path="blog/settings/siteTexts/cartTextCompany" data-empty-caption="Company">
+                    Custom cartTextCompany                  </div>
+                              </label>
+                          </p>
+
+            <p class="xLegalPerson">
+              <label for="company_reg_no">
+                                  <div class="xNgEditable xProperty-cartTextCompanyRegNo xCaption-Company+reg.+no." data-path="blog/settings/siteTexts/cartTextCompanyRegNo" data-empty-caption="Company reg. no.">
+                    Custom cartTextCompanyRegNo                  </div>
+                              </label>
+                          </p>
+
+            <p class="xLegalPerson">
+              <label for="legal_address">
+                                  <div class="xNgEditable xProperty-cartTextLegalAddress xCaption-Legal+address" data-path="blog/settings/siteTexts/cartTextLegalAddress" data-empty-caption="Legal address">
+                    Custom cartTextLegalAddress                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="name">
+                                  <div class="xNgEditable xProperty-cartTextNameSurname xCaption-name+surname" data-path="blog/settings/siteTexts/cartTextNameSurname" data-empty-caption="name surname">
+                    Custom cartTextNameSurname                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="address">
+                                  <div class="xNgEditable xProperty-cartTextAddress xCaption-address" data-path="blog/settings/siteTexts/cartTextAddress" data-empty-caption="address">
+                    Custom cartTextAddress                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="phone">
+                                  <div class="xNgEditable xProperty-cartTextPhoneNumber xCaption-phone+number" data-path="blog/settings/siteTexts/cartTextPhoneNumber" data-empty-caption="phone number">
+                    Custom cartTextPhoneNumber                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="email">
+                                  <div class="xNgEditable xProperty-cartTextEmail xCaption-email" data-path="blog/settings/siteTexts/cartTextEmail" data-empty-caption="email">
+                    Custom cartTextEmail                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="notes">
+                                  <div class="xNgEditable xProperty-cartTextComments xCaption-comments" data-path="blog/settings/siteTexts/cartTextComments" data-empty-caption="comments">
+                    Custom cartTextComments                  </div>
+                              </label>
+                          </p>
+
+                          <div class="xNgEditable xProperty-cartTextDeliverBilling xCaption-deliver+to+billing_address" data-path="blog/settings/siteTexts/cartTextDeliverBilling" data-empty-caption="deliver to billing_address">
+                Custom cartTextDeliverBilling              </div>
+                      </div>
+        </div>
+
+        <div class="cc-fields" id="shipping_address_form">
+          <h2 class="xNgEditable xProperty-cartTextShipAddr xCaption-shipping+address" data-path="blog/settings/siteTexts/cartTextShipAddr" data-empty-caption="shipping address">
+            Custom cartTextShipAddr          </h2>
+
+          <div class="padded">
+            <p>
+              <label for="ship_name">
+                                  <div class="xNgEditable xProperty-cartTextNameSurname xCaption-name+surname" data-path="blog/settings/siteTexts/cartTextNameSurname" data-empty-caption="name surname">
+                    Custom cartTextNameSurname                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="ship_address">
+                                  <div class="xNgEditable xProperty-cartTextAddress xCaption-address" data-path="blog/settings/siteTexts/cartTextAddress" data-empty-caption="address">
+                    Custom cartTextAddress                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="ship_phone">
+                                  <div class="xNgEditable xProperty-cartTextPhoneNumber xCaption-phone+number" data-path="blog/settings/siteTexts/cartTextPhoneNumber" data-empty-caption="phone number">
+                    Custom cartTextPhoneNumber                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="ship_email">
+                                  <div class="xNgEditable xProperty-cartTextEmail xCaption-email" data-path="blog/settings/siteTexts/cartTextEmail" data-empty-caption="email">
+                    Custom cartTextEmail                  </div>
+                              </label>
+                          </p>
+
+            <p>
+              <label for="ship_notes">
+                                  <div class="xNgEditable xProperty-cartTextComments xCaption-comments" data-path="blog/settings/siteTexts/cartTextComments" data-empty-caption="comments">
+                    Custom cartTextComments                  </div>
+                              </label>
+                          </p>
+          </div>
+        </div>
+
+                  <div class="padded">
+            <div class="xNgEditable xProperty-cartTextReceiveNews xCaption-receive+news+and+updates" data-path="blog/settings/siteTexts/cartTextReceiveNews" data-empty-caption="receive news and updates">
+              Custom cartTextReceiveNews            </div>
+          </div>
+              </div>
+    </div>
+
+    <div class="column column-half">
+      <div id="cartFromrightPart" class="padded-left">
+        <h2 id="cartFromRightTitle" class="xNgEditable xProperty-cartTextCPM xCaption-choose+payment+method" data-path="blog/settings/siteTexts/cartTextCPM" data-empty-caption="choose payment method">
+          Custom cartTextCPM
+        </h2>
+
+        <div class="padded choosePaymentMethod">
+
+                      <p class="xNgEditable xProperty-cartTextPaymentDescription xCaption-payment+description" data-path="blog/settings/siteTexts/cartTextPaymentDescription" data-empty-caption="payment description">
+              Custom cartTextPaymentDescription            </p>
+          
+                      <div class="choosePaymentRadio">
+              <label for="pm_creditcard"><input type="radio" name="payment_method" value="creditcard" id="pm_creditcard" checked="checked" />
+              <img src="/_plugin_shop/images/creditcard.png" alt="Credit card" /></label>
+            </div>
+            <div class="choosePaymentRadio">
+              <label for="pm_paypal"><input type="radio" name="payment_method" value="paypal" id="pm_paypal" />
+              <img src="/_plugin_shop/images/paypal.png" alt="Paypal" /></label>
+            </div>
+          
+                      <div class="choosePaymentRadio">
+              <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer">
+                                  <div class="xNgEditable xProperty-cartManualTransfer xCaption-Manual+transfer" data-path="blog/settings/siteTexts/cartManualTransfer" data-empty-caption="Manual transfer">
+                    Custom cartManualTransfer                  </div>
+                              </label>
+            </div>
+                  </div>
+
+        <div class="padded checkOut">
+                      <p class="xNgEditable xProperty-cartTextCheckoutDescription xCaption-checkout+description" data-path="blog/settings/siteTexts/cartTextCheckoutDescription" data-empty-caption="checkout description">
+              Custom cartTextCheckoutDescription            </p>
+          
+          <p class="text-right checkoutSumTotal">Custom cartTextTotal EUR <span class="sumTotal"></span></p>
+
+                      
+            <div class="xNgEditable xProperty-cartTextFillRequiredFields xCaption-Please+fill+in+all+required+fields" data-path="blog/settings/siteTexts/cartTextFillRequiredFields" data-empty-caption="Please fill in all required fields">
+              Custom cartTextFillRequiredFields            </div>
+
+            <div class="xNgEditable xProperty-cartTextCheckoutButton xCaption-checkout+and+pay" data-path="blog/settings/siteTexts/cartTextCheckoutButton" data-empty-caption="checkout and pay">
+              Custom cartTextCheckoutButton            </div>
+
+            <div class="xNgEditable xProperty-cartTextReturnStore xCaption-return+to+store" data-path="blog/settings/siteTexts/cartTextReturnStore" data-empty-caption="return to store">
+              Custom cartTextReturnStore            </div>
+
+          
+          <div id="shoppingCart" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

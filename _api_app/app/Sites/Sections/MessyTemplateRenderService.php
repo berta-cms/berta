@@ -95,7 +95,6 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
             $isEditMode
         );
         $data['additionalFooterText'] = $this->getAdditionalFooterText($siteSlug, $siteSettings, $user, $isEditMode);
-        $data['alertMessage'] = $this->getAlertMessage();
 
         if ($isShopAvailable) {
             $shopSettingsDS = new ShopSettingsDataService($siteSlug);
@@ -349,16 +348,5 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
             'attributes' => Helpers::arrayToHtmlAttributes($attributes),
             'link' => $link,
         ];
-    }
-
-    private function getAlertMessage()
-    {
-        if (! isset($_SESSION['_berta_msg'])) {
-            return null;
-        }
-        $message = $_SESSION['_berta_msg'];
-        unset($_SESSION['_berta_msg']);
-
-        return $message;
     }
 }

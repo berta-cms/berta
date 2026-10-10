@@ -104,12 +104,6 @@ class BertaTemplate extends BertaBase
 
         $isShopAvailable = isset($shopEnabled) && $shopEnabled;
 
-        if ($isShopAvailable) {
-            global $db;
-            // We need to initialize BertaShop here for correct migration order
-            new BertaShop($db);
-        }
-
         $isEditMode = $this->environment == 'engine';
         $isPreviewMode = ! empty(self::$options['PREVIEW_FOLDER']);
         $request = Request::capture();
