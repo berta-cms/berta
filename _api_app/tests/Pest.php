@@ -107,8 +107,9 @@ function setUpShopTestRoot(): string
 
 /**
  * @param  array<string, string>  $shop
+ * @param  array<string, string>  $texts  The site's texts, besides its owner's name
  */
-function writeShopSettings(string $bertaRoot, array $shop = [], string $site = ''): void
+function writeShopSettings(string $bertaRoot, array $shop = [], string $site = '', array $texts = []): void
 {
     $shop = array_merge([
         'paymentMethod' => 'both',
@@ -119,16 +120,16 @@ function writeShopSettings(string $bertaRoot, array $shop = [], string $site = '
         'promoCodeDiscount' => '10',
     ], $shop);
 
-    $values = implode('', array_map(
+    $xmlValues = fn (array $values) => implode('', array_map(
         fn ($name, $value) => "<{$name}><![CDATA[{$value}]]></{$name}>",
-        array_keys($shop),
-        $shop,
+        array_keys($values),
+        $values,
     ));
 
     $siteRoot = $bertaRoot . '/storage' . ($site !== '' ? "/-sites/{$site}" : '');
     File::ensureDirectoryExists($siteRoot);
     File::put($siteRoot . '/settings.xml', '<?xml version="1.0" encoding="utf-8"?><settings>'
-        . "<shop>{$values}</shop>"
-        . '<texts><ownerName><![CDATA[Shop Owner]]></ownerName></texts>'
+        . '<shop>' . $xmlValues($shop) . '</shop>'
+        . '<texts>' . $xmlValues(array_merge(['ownerName' => 'Shop Owner'], $texts)) . '</texts>'
         . '</settings>');
 }

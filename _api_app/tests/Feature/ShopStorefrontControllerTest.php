@@ -480,6 +480,20 @@ describe('bank transfer checkout', function () {
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller && $mail->hasTo('ann@buyer.test'));
     });
 
+    it('thanks the customer for shopping with the site the page title names', function (array $texts, string $thanks) {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, [], '', $texts);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
+            && str_contains($mail->render(), "<strong>{$thanks}</strong>"));
+    })->with([
+        'with a page title' => [['pageTitle' => 'Riga Prints'], 'Thanks for shopping with Riga Prints!'],
+        'without one' => [[], 'Thanks for shopping with us!'],
+    ]);
+
     it('takes off at most the price of the products for a promo discount over 100%', function () {
         writeShopSettings($this->bertaRoot, ['promoCodeDiscount' => '150']);
         $token = fillShopBasket([[SHOP_CHAIR]]);
