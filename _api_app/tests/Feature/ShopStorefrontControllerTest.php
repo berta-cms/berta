@@ -12,10 +12,12 @@ use App\Sites\Settings\SiteSettingsDataService;
 use Illuminate\Database\Connection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Client\Request as HttpRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Tests\TestCase;
@@ -25,6 +27,7 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\travel;
+use function Pest\Laravel\travelTo;
 use function Pest\Laravel\withCredentials;
 use function Pest\Laravel\withoutMiddleware;
 
@@ -61,6 +64,7 @@ beforeEach(function () {
     // SetupMiddleware reconciles the real .env file on every request.
     withoutMiddleware(SetupMiddleware::class);
     Http::preventStrayRequests();
+    Storage::fake('local');
 });
 
 afterEach(function () {
@@ -480,6 +484,21 @@ describe('bank transfer checkout', function () {
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller && $mail->hasTo('ann@buyer.test'));
     });
 
+    it('numbers each order by its date and basket, also for orders placed in the same second', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        $firstToken = fillShopBasket([[SHOP_CHAIR]]);
+        $secondToken = fillShopBasket([[SHOP_TSHIRT, 'S']]);
+
+        $numbers = [
+            shopCheckout($firstToken)->assertOk()->json('data.order_id'),
+            shopCheckout($secondToken)->assertOk()->json('data.order_id'),
+        ];
+
+        expect($numbers)->toBe(['20261012-1', '20261012-2'])
+            ->and(shopDb()->table('client')->orderBy('id')->pluck('order_id')->all())->toBe($numbers);
+    });
+
     it('thanks the customer for shopping with the site the page title names', function (array $texts, string $thanks) {
         Mail::fake();
         writeShopSettings($this->bertaRoot, [], '', $texts);
@@ -560,6 +579,27 @@ describe('bank transfer checkout', function () {
     it('returns 410 without a basket', function () {
         shopCheckout('unknown-token')->assertGone();
     });
+
+    it('starts a new basket for a cookie holding the placed order marker, leaving the orders as they were', function (int $minutes) {
+        Mail::fake();
+        shopCheckout(fillShopBasket([[SHOP_CHAIR]]))->assertOk();
+        $order = shopDb()->table('client')->where('session_id', 'checkout')->first();
+        travel($minutes)->minutes();
+
+        $token = addToShopBasket(SHOP_TSHIRT, 'S', 'checkout')
+            ->assertOk()
+            ->getCookie(ShopBasketService::clientCookie(''), false)
+            ->getValue();
+
+        expect($token)->not->toBe('checkout')->toHaveLength(32);
+        expect(shopDb()->table('client')->find($order->id))
+            ->session_id->toBe('checkout')
+            ->name->toBe('Ann Buyer');
+        expect(shopDb()->table('orders')->where('id_client', $order->id)->count())->toBe(1);
+    })->with([
+        'within the basket lifetime' => 0,
+        'after it' => 31,
+    ]);
 
     it('rejects a payment method the shop does not accept', function () {
         writeShopSettings($this->bertaRoot, ['paymentMethod' => 'paypal', ...nvpSettings()]);
@@ -728,9 +768,11 @@ describe('PayPal return', function () {
 
         $response = returnFromPaypal($paypalToken)->assertRedirect('http://shop.test/?shop_payment=paid');
 
-        expect(shopDb()->table('client')->where('session_id', 'checkout')->first())->paypal->toEqual(1)->price_total->toEqual(105);
+        $order = shopDb()->table('client')->where('session_id', 'checkout')->first();
+        expect($order)->paypal->toEqual(1)->price_total->toEqual(105);
+        Storage::disk('local')->assertExists("shop/paypal/{$paypalToken}.json");
+        expect(Storage::disk('local')->json("shop/paypal/{$paypalToken}.json"))->order_id->toBe($order->order_id);
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
-            ->and(File::exists("{$this->bertaRoot}/_plugin_shop/data/{$paypalToken}"))->toBeTrue()
             ->and($response->getCookie(ShopBasketService::clientCookie(''), false)->isCleared())->toBeTrue()
             ->and($response->getCookie('shopping_cart', false)->isCleared())->toBeTrue();
         Mail::assertSent(ShopOrderMail::class, 2);
@@ -748,8 +790,8 @@ describe('PayPal return', function () {
         returnFromPaypal($api === 'nvp' ? SHOP_NVP_TOKEN : SHOP_REST_TOKEN)
             ->assertRedirect('http://shop.test/?shop_payment=failed');
 
-        expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue()
-            ->and(File::exists("{$this->bertaRoot}/_plugin_shop/data"))->toBeFalse();
+        expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue();
+        Storage::disk('local')->assertMissing('shop/paypal/' . ($api === 'nvp' ? SHOP_NVP_TOKEN : SHOP_REST_TOKEN) . '.json');
         Mail::assertNothingSent();
     })->with(['nvp', 'rest']);
 
