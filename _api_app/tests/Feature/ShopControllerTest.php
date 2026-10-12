@@ -4,6 +4,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\SetupMiddleware;
 use App\Models\User;
 use App\Plugins\Shop\ShopSettingsDataService;
+use App\Plugins\Shop\ShopShippingCostsDataService;
 use App\Plugins\Shop\ShopShippingRegionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use Illuminate\Support\Facades\File;
@@ -143,6 +144,30 @@ describe('regions', function () {
             ->assertJsonPath('data.value', 'Rock & "Roll"');
 
         expect((new ShopShippingRegionsDataService(''))->query()->value('name'))->toBe('Rock & "Roll"');
+    });
+
+    it('updates the weight and price of the shipping cost the path names', function () {
+        $regions = new ShopShippingRegionsDataService('');
+        $costs = new ShopShippingCostsDataService('');
+        $regions->addRegion('Latvia', 21);
+        $regions->addRegion('Europe', 21);
+        $costs->addRegionCost(1, 500, 5);
+        $costs->addRegionCost(1, 1000, 8);
+        $costs->addRegionCost(2, 500, 10);
+        $costs->addRegionCost(2, 1000, 15);
+
+        patchJson('http://shop.test' . route('regional-costs', [], false), ['path' => '/3/price', 'value' => '7.5'])
+            ->assertOk()
+            ->assertJsonPath('data.value', '7.5');
+        patchJson('http://shop.test' . route('regional-costs', [], false), ['path' => '/4/weight', 'value' => '1500'])
+            ->assertOk();
+
+        expect($costs->query()->orderBy('id')->get(['id', 'id_region', 'weight', 'price'])->map(fn ($cost) => (array) $cost)->all())->toEqual([
+            ['id' => 1, 'id_region' => 1, 'weight' => 500, 'price' => 5],
+            ['id' => 2, 'id_region' => 1, 'weight' => 1000, 'price' => 8],
+            ['id' => 3, 'id_region' => 2, 'weight' => 500, 'price' => 7.5],
+            ['id' => 4, 'id_region' => 2, 'weight' => 1500, 'price' => 15],
+        ]);
     });
 
     it('numbers new regions and their costs after the existing ones', function () {
