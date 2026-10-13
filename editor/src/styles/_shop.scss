@@ -274,37 +274,39 @@ berta-shop-orders {
         }
       }
     }
+  }
 
-    .bt-sh-orders-actions button {
-      align-items: center;
-      background: none;
-      color: variables.$black;
-      cursor: pointer;
-      display: flex;
-      font-family: inherit;
-      font-size: variables.$input-font-size;
-      gap: 0.4em;
-      padding: 0;
-      transition: color 0.2s;
+  // A text button with an icon: Refresh, and an order's "Add private notes"
+  .bt-sh-orders-actions button,
+  .bt-sh-order-add-notes {
+    align-items: center;
+    background: none;
+    color: variables.$black;
+    cursor: pointer;
+    display: flex;
+    font-family: inherit;
+    font-size: variables.$input-font-size;
+    gap: 0.4em;
+    padding: 0;
+    transition: color 0.2s;
 
-      svg {
-        display: block;
-        height: 1.15em;
-        width: 1.15em;
+    svg {
+      display: block;
+      height: 1.15em;
+      width: 1.15em;
 
-        path {
-          fill: currentColor;
-        }
+      path {
+        fill: currentColor;
       }
+    }
 
-      &:hover {
-        color: variables.$berta-accent;
-      }
+    &:hover {
+      color: variables.$berta-accent;
+    }
 
-      &[disabled] {
-        color: variables.$grey-40;
-        cursor: default;
-      }
+    &[disabled] {
+      color: variables.$grey-40;
+      cursor: default;
     }
   }
 
@@ -404,6 +406,11 @@ berta-shop-orders {
       background-color: variables.$white;
       border-style: dashed;
     }
+  }
+
+  // Keeps the line breaks of notes typed over several lines
+  .bt-sh-order-notes {
+    white-space: pre-line;
   }
 
   .bt-sh-orders-empty {

@@ -29,6 +29,7 @@ import {
   InitShopOrdersAction,
   LoadShopOrdersPageAction,
   UpdateShopOrderStatusAction,
+  UpdateShopOrderNotesAction,
 } from './shop-orders.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
@@ -154,28 +155,42 @@ export class ShopOrdersState implements NgxsOnInit {
    */
   @Action(UpdateShopOrderStatusAction)
   updateOrderStatus(
-    { getState, patchState }: StateContext<ShopOrdersModel>,
+    context: StateContext<ShopOrdersModel>,
     action: UpdateShopOrderStatusAction,
+  ) {
+    return this.saveOrderField(context, action.id, 'status', action.status);
+  }
+
+  @Action(UpdateShopOrderNotesAction)
+  updateOrderNotes(
+    context: StateContext<ShopOrdersModel>,
+    action: UpdateShopOrderNotesAction,
+  ) {
+    return this.saveOrderField(context, action.id, 'admin_notes', action.notes);
+  }
+
+  /** Saves one field of an order and shows the saved value on that order */
+  private saveOrderField(
+    { getState, patchState }: StateContext<ShopOrdersModel>,
+    id: number,
+    field: 'status' | 'admin_notes',
+    value: string,
   ) {
     const site = this.store$.selectSnapshot(AppState.getSite);
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService
-      .sync(
-        syncURLs.orders,
-        { path: `${site}/${action.id}/status`, value: action.status },
-        'PATCH',
-      )
+      .sync(syncURLs.orders, { path: `${site}/${id}/${field}`, value }, 'PATCH')
       .pipe(
-        tap((response: { message: string; data: { value: string } }) => {
+        tap((response: { message: string; data: { value: string | null } }) => {
           const ordersPage = getState()[site];
 
           patchState({
             [site]: {
               ...ordersPage,
               orders: ordersPage.orders.map((order) =>
-                order.id === action.id
-                  ? { ...order, status: response.data.value }
+                order.id === id
+                  ? { ...order, [field]: response.data.value }
                   : order,
               ),
             },

@@ -9,6 +9,7 @@ import {
 } from './shop-orders.state';
 import {
   LoadShopOrdersPageAction,
+  UpdateShopOrderNotesAction,
   UpdateShopOrderStatusAction,
 } from './shop-orders.actions';
 import { AppState } from '../../app-state/app.state';
@@ -102,6 +103,42 @@ describe('ShopOrdersState', () => {
         orders: [
           { id: 6, order_id: 'ORD-6', status: 'paid' },
           { id: 5, order_id: 'ORD-5', status: 'shipped' },
+        ],
+      },
+    });
+  });
+
+  it('saves the private notes of an order and shows them on that order only', () => {
+    sync.and.returnValue(
+      of({ message: '', data: { value: 'Ships on Friday.' } }),
+    );
+    const orders = [
+      { id: 6, order_id: 'ORD-6', admin_notes: null },
+      { id: 5, order_id: 'ORD-5', admin_notes: null },
+    ];
+    const context = {
+      getState: () => ({ blog: { ...SECOND_PAGE, orders } }),
+      patchState,
+    } as unknown as StateContext<ShopOrdersModel>;
+
+    state
+      .updateOrderNotes(
+        context,
+        new UpdateShopOrderNotesAction(5, 'Ships on Friday.'),
+      )
+      .subscribe();
+
+    expect(sync).toHaveBeenCalledWith(
+      '/orders',
+      { path: 'blog/5/admin_notes', value: 'Ships on Friday.' },
+      'PATCH',
+    );
+    expect(patchState).toHaveBeenCalledWith({
+      blog: {
+        ...SECOND_PAGE,
+        orders: [
+          { id: 6, order_id: 'ORD-6', admin_notes: null },
+          { id: 5, order_id: 'ORD-5', admin_notes: 'Ships on Friday.' },
         ],
       },
     });

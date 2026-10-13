@@ -201,7 +201,7 @@ describe('regions', function () {
         $regions = new ShopShippingRegionsDataService('');
 
         expect($regions->query()->orderBy('id')->pluck('name')->all())->toBe(['Rock & "Roll"', 'Plain'])
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
     });
 });
 
@@ -252,6 +252,14 @@ function updateShopOrders(array $columnsById): void
 function shopOrderStatuses(): array
 {
     return (new ShopClientsDataService(''))->query()->orderBy('id')->pluck('status', 'id')->all();
+}
+
+/**
+ * @return array<int, string|null>
+ */
+function shopOrderNotes(): array
+{
+    return (new ShopClientsDataService(''))->query()->orderBy('id')->pluck('admin_notes', 'id')->all();
 }
 
 describe('orders', function () {
@@ -367,6 +375,7 @@ describe('orders', function () {
         'a basket' => ['/2/status', 'Order not found!'],
         'a missing order' => ['/9/status', 'Order not found!'],
         'an unknown site' => ['nosite/1/status', 'Site not found!'],
+        'the notes of a basket' => ['/2/admin_notes', 'Order not found!'],
     ]);
 
     it('returns 422 for a status change of another field or to an unknown status', function () {
@@ -379,7 +388,40 @@ describe('orders', function () {
         expect(shopOrderStatuses())->toBe([1 => null, 2 => null]);
     });
 
-    it('adds an empty status to the orders of an older shop version', function () {
+    it('saves the private notes of an order', function () {
+        placeShopOrders(2);
+        $notes = "Called the customer.\nShips on Friday.";
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/2/admin_notes', 'value' => $notes])
+            ->assertOk()
+            ->assertJsonPath('data', ['site' => '', 'path' => '2/admin_notes', 'value' => $notes]);
+
+        expect(shopOrderNotes())->toBe([1 => null, 2 => $notes, 3 => null])
+            ->and(getShopOrdersPage(1)['orders'][0])->toMatchArray(['order_id' => 'ORD-2', 'admin_notes' => $notes]);
+    });
+
+    it('clears the private notes of an order', function () {
+        placeShopOrders(1);
+        updateShopOrders([1 => ['admin_notes' => 'Ships on Friday.']]);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/1/admin_notes', 'value' => ''])
+            ->assertOk()
+            ->assertJsonPath('data.value', null);
+
+        expect(shopOrderNotes())->toBe([1 => null, 2 => null]);
+    });
+
+    it('returns 422 for private notes over 5000 characters', function () {
+        placeShopOrders(1);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/1/admin_notes', 'value' => str_repeat('a', 5001)])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['value']);
+
+        expect(shopOrderNotes())->toBe([1 => null, 2 => null]);
+    });
+
+    it('adds an empty status and private notes to the orders of an older shop version', function () {
         writeShopSettings($this->bertaRoot, ['version' => '5']);
         $database = new SQLite3($this->bertaRoot . '/storage/shop-db.sqlite');
         $database->exec('CREATE TABLE "client" ("id" integer not null, "created_at" datetime not null, "session_id" varchar not null, "order_id" varchar, primary key ("id"))');
@@ -390,6 +432,7 @@ describe('orders', function () {
 
         expect($page['orders'])->toHaveCount(1)
             ->and($page['orders'][0])->toHaveKey('status', null)
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
+            ->and($page['orders'][0])->toHaveKey('admin_notes', null)
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
     });
 });

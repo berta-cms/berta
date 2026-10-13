@@ -33,6 +33,14 @@ export class UpdateShopOrderStatusAction {
   ) {}
 }
 
+export class UpdateShopOrderNotesAction {
+  static readonly type = 'SHOP_ORDERS:UPDATE_NOTES';
+  constructor(
+    public id: number,
+    public notes: string,
+  ) {}
+}
+
 /* Reset: */
 export class ResetShopOrdersAction {
   public static type = 'SHOP_ORDERS:RESET';

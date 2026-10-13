@@ -29,6 +29,7 @@ import { IconMoveComponent } from './icon-move.component';
 import { IconCropComponent } from './icon-crop.component';
 import { IconSwapComponent } from './icon-switch.component';
 import { IconRefreshComponent } from './icon-refresh.component';
+import { IconEditComponent } from './icon-edit.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { IconRefreshComponent } from './icon-refresh.component';
     IconMoveComponent,
     IconSwapComponent,
     IconRefreshComponent,
+    IconEditComponent,
     HelpTooltipComponent,
   ],
   exports: [
@@ -91,6 +93,7 @@ import { IconRefreshComponent } from './icon-refresh.component';
     IconMoveComponent,
     IconSwapComponent,
     IconRefreshComponent,
+    IconEditComponent,
     HelpTooltipComponent,
   ],
 })

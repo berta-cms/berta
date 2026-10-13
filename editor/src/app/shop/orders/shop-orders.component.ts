@@ -7,6 +7,7 @@ import { stringToCurrency } from '../../shared/helpers';
 import { ShopSettingsState } from '../settings/shop-settings.state';
 import {
   LoadShopOrdersPageAction,
+  UpdateShopOrderNotesAction,
   UpdateShopOrderStatusAction,
 } from './shop-orders.actions';
 import { ShopOrdersPage, ShopOrdersState } from './shop-orders.state';
@@ -112,6 +113,12 @@ const ORDER_STATUSES = [
           <p>
             Email <span>{{ order.email }}</span>
           </p>
+          @if (order.notes) {
+            <p>
+              Customer notes
+              <span class="bt-sh-order-notes">{{ order.notes }}</span>
+            </p>
+          }
           @if (
             order.ship_name ||
             order.ship_phone ||
@@ -135,7 +142,7 @@ const ORDER_STATUSES = [
                   <span> {{ order.ship_email }}<br /> </span>
                 }
                 @if (order.ship_notes) {
-                  <span> {{ order.ship_notes }}<br /> </span>
+                  <span class="bt-sh-order-notes">{{ order.ship_notes }}</span>
                 }
               </span>
             </p>
@@ -189,6 +196,25 @@ const ORDER_STATUSES = [
               </table>
             }
           </div>
+          @if (order.admin_notes || notesOpenedFor.has(order.id)) {
+            <berta-long-text-input
+              label="Private notes"
+              [value]="order.admin_notes ?? ''"
+              [autofocus]="!order.admin_notes"
+              [enabledOnUpdate]="true"
+              (update)="updateNotes(order.id, $event)"
+              (focusout)="closeEmptyNotes(order.id, $event)"
+            ></berta-long-text-input>
+          } @else {
+            <button
+              type="button"
+              class="bt-sh-order-add-notes"
+              (click)="notesOpenedFor.add(order.id)"
+            >
+              <bt-icon-edit></bt-icon-edit>
+              Add private notes
+            </button>
+          }
         </div>
       }
       @if (ordersPage.lastPage > 1) {
@@ -220,6 +246,8 @@ export class ShopOrdersComponent {
   ordersPage$: Observable<ShopOrdersPage>;
   currency$: Observable<string>;
   isLoading = false;
+  /** The orders without notes whose notes field the shop owner has opened */
+  notesOpenedFor = new Set<number>();
 
   // 'All' clears the filter; 'none' finds the orders placed before statuses existed
   readonly filterChips: { value: string | null; title: string }[] = [
@@ -255,6 +283,20 @@ export class ShopOrdersComponent {
 
   updateStatus(orderId: number, status: string) {
     this.store.dispatch(new UpdateShopOrderStatusAction(orderId, status));
+  }
+
+  updateNotes(orderId: number, notes: string) {
+    this.store.dispatch(new UpdateShopOrderNotesAction(orderId, notes));
+  }
+
+  /**
+   * Collapses an empty notes field back to its button. Runs after the textarea's blur has saved,
+   * and reads the textarea rather than the store, so typed notes stay open while they're saved.
+   */
+  closeEmptyNotes(orderId: number, event: FocusEvent) {
+    if (!(event.target as HTMLTextAreaElement).value.trim()) {
+      this.notesOpenedFor.delete(orderId);
+    }
   }
 
   stringToCurrency(price) {

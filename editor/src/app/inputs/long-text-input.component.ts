@@ -1,5 +1,14 @@
 import { tap } from 'rxjs/operators';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { TextInputService } from './text-input.service';
 
 @Component({
@@ -12,12 +21,12 @@ import { TextInputService } from './text-input.service';
     <label>
       {{ label }} <span [innerHTML]="disabledReason"></span>
       <textarea
+        #textarea
         (focus)="onFocus()"
         (keydown)="onKeyDown($event)"
         (blur)="onBlur($event)"
         rows="3"
-        >{{ value }}</textarea
-      >
+        >{{ value }}</textarea>
     </label>
   </div>`,
   styles: [
@@ -40,11 +49,20 @@ export class LongTextInputComponent implements OnInit {
   @Input() disabled?: boolean;
   @Input() disabledReason?: string;
   @Input() enabledOnUpdate?: boolean;
+  /** Focuses the textarea once it's shown */
+  @Input() autofocus?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter<string>();
   @Output() inputFocus = new EventEmitter<boolean>();
+  @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement>;
 
-  constructor(public textInputService: TextInputService) {}
+  constructor(public textInputService: TextInputService) {
+    afterNextRender(() => {
+      if (this.autofocus) {
+        this.textarea.nativeElement.focus();
+      }
+    });
+  }
 
   ngOnInit() {
     this.textInputService.initValue(this.value, { isLongInput: true });

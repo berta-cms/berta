@@ -1121,7 +1121,7 @@ it('adds the columns of newer shop versions to an older shop database', function
 
     $schema = (new ShopClientsDataService(''))->getConnection()->getSchemaBuilder();
 
-    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address']))->toBeTrue()
+    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address', 'status', 'admin_notes']))->toBeTrue()
         ->and($schema->hasColumn('orders', 'weight'))->toBeTrue()
-        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
+        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
 });
