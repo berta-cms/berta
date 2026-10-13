@@ -28,6 +28,7 @@ import {
   ResetShopOrdersAction,
   InitShopOrdersAction,
   LoadShopOrdersPageAction,
+  UpdateShopOrderStatusAction,
 } from './shop-orders.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
@@ -40,6 +41,8 @@ export interface ShopOrdersPage {
   page: number;
   lastPage: number;
   total: number;
+  /** The status the orders are filtered by, null for all orders */
+  statusFilter: string | null;
 }
 
 export interface ShopOrdersModel {
@@ -121,10 +124,62 @@ export class ShopOrdersState implements NgxsOnInit {
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService
-      .sync(syncURLs.orders, { site, page: action.page }, 'GET')
+      .sync(
+        syncURLs.orders,
+        {
+          site,
+          page: action.page,
+          ...(action.statusFilter ? { status: action.statusFilter } : {}),
+        },
+        'GET',
+      )
       .pipe(
         tap((response: { message: string; data: ShopOrdersModel }) => {
           patchState({ [site]: response.data[site] });
+        }),
+        catchError((error: HttpErrorResponse | Error) => {
+          if (error instanceof HttpErrorResponse) {
+            console.error(error.error.message);
+          } else {
+            console.error(error.message);
+          }
+          throw error;
+        }),
+      );
+  }
+
+  /**
+   * An order whose new status doesn't match the filter stays listed until the next load,
+   * so the list doesn't jump while the shop owner works through it
+   */
+  @Action(UpdateShopOrderStatusAction)
+  updateOrderStatus(
+    { getState, patchState }: StateContext<ShopOrdersModel>,
+    action: UpdateShopOrderStatusAction,
+  ) {
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService
+      .sync(
+        syncURLs.orders,
+        { path: `${site}/${action.id}/status`, value: action.status },
+        'PATCH',
+      )
+      .pipe(
+        tap((response: { message: string; data: { value: string } }) => {
+          const ordersPage = getState()[site];
+
+          patchState({
+            [site]: {
+              ...ordersPage,
+              orders: ordersPage.orders.map((order) =>
+                order.id === action.id
+                  ? { ...order, status: response.data.value }
+                  : order,
+              ),
+            },
+          });
         }),
         catchError((error: HttpErrorResponse | Error) => {
           if (error instanceof HttpErrorResponse) {

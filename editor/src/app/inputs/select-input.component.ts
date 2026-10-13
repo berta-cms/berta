@@ -3,7 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnInit,
+  OnChanges,
+  SimpleChanges,
   ViewChild,
   ElementRef,
 } from '@angular/core';
@@ -64,11 +65,13 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
   </div>`,
   standalone: false,
 })
-export class SelectInputComponent implements OnInit {
+export class SelectInputComponent implements OnChanges {
   @Input() label: string;
   @Input() tip?: string;
   @Input() value: SettingModel['value'];
   @Input() values: SettingConfigModel['values'];
+  /** Shown when the value matches none of the values */
+  @Input() placeholder = '-';
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
   @Input() enabledOnUpdate?: boolean;
@@ -80,9 +83,12 @@ export class SelectInputComponent implements OnInit {
 
   private lastValue: SettingModel['value'];
 
-  ngOnInit() {
-    // Cache the value, so we don't update if nothing changes
-    this.lastValue = this.value;
+  ngOnChanges(changes: SimpleChanges) {
+    // Cache the value, so we don't update if nothing changes. A value set from outside, e.g. a
+    // filter cleared by a button, replaces it, so picking the earlier option again still updates.
+    if (changes['value']) {
+      this.lastValue = this.value;
+    }
   }
 
   toggleDropDown() {
@@ -124,7 +130,7 @@ export class SelectInputComponent implements OnInit {
     });
 
     if (!currentValue) {
-      return '-';
+      return this.placeholder;
     }
 
     return currentValue.title;

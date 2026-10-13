@@ -7,17 +7,21 @@ import {
   ShopOrdersPage,
   ShopOrdersState,
 } from './shop-orders.state';
-import { LoadShopOrdersPageAction } from './shop-orders.actions';
+import {
+  LoadShopOrdersPageAction,
+  UpdateShopOrderStatusAction,
+} from './shop-orders.actions';
 import { AppState } from '../../app-state/app.state';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopStateService } from '../shop-state.service';
 
 describe('ShopOrdersState', () => {
   const SECOND_PAGE: ShopOrdersPage = {
-    orders: [{ id: 5, order_id: 'ORD-5', orders: [] }],
+    orders: [{ id: 5, order_id: 'ORD-5', status: null, orders: [] }],
     page: 2,
     lastPage: 2,
     total: 21,
+    statusFilter: null,
   };
 
   let sync: jasmine.Spy;
@@ -56,5 +60,50 @@ describe('ShopOrdersState', () => {
       'GET',
     );
     expect(patchState).toHaveBeenCalledWith({ blog: SECOND_PAGE });
+  });
+
+  it('requests the orders of the filtered status', () => {
+    const context = { patchState } as unknown as StateContext<ShopOrdersModel>;
+
+    state
+      .loadOrdersPage(context, new LoadShopOrdersPageAction(1, 'paid'))
+      .subscribe();
+
+    expect(sync).toHaveBeenCalledWith(
+      '/orders',
+      { site: 'blog', page: 1, status: 'paid' },
+      'GET',
+    );
+  });
+
+  it('saves the status of an order and shows it on that order only', () => {
+    sync.and.returnValue(of({ message: '', data: { value: 'shipped' } }));
+    const orders = [
+      { id: 6, order_id: 'ORD-6', status: 'paid' },
+      { id: 5, order_id: 'ORD-5', status: 'paid' },
+    ];
+    const context = {
+      getState: () => ({ blog: { ...SECOND_PAGE, orders } }),
+      patchState,
+    } as unknown as StateContext<ShopOrdersModel>;
+
+    state
+      .updateOrderStatus(context, new UpdateShopOrderStatusAction(5, 'shipped'))
+      .subscribe();
+
+    expect(sync).toHaveBeenCalledWith(
+      '/orders',
+      { path: 'blog/5/status', value: 'shipped' },
+      'PATCH',
+    );
+    expect(patchState).toHaveBeenCalledWith({
+      blog: {
+        ...SECOND_PAGE,
+        orders: [
+          { id: 6, order_id: 'ORD-6', status: 'paid' },
+          { id: 5, order_id: 'ORD-5', status: 'shipped' },
+        ],
+      },
+    });
   });
 });

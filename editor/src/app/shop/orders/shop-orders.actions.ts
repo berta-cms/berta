@@ -19,7 +19,18 @@ export class InitShopOrdersAction {
 
 export class LoadShopOrdersPageAction {
   static readonly type = 'SHOP_ORDERS:LOAD_PAGE';
-  constructor(public page: number) {}
+  constructor(
+    public page: number,
+    public statusFilter: string | null = null,
+  ) {}
+}
+
+export class UpdateShopOrderStatusAction {
+  static readonly type = 'SHOP_ORDERS:UPDATE_STATUS';
+  constructor(
+    public id: number,
+    public status: string,
+  ) {}
 }
 
 /* Reset: */

@@ -54,6 +54,7 @@ it('returns 403 from every shop admin endpoint on a domain without a shop key', 
     'products' => ['GET', '/products'],
     'product update' => ['PATCH', '/products'],
     'orders' => ['GET', '/orders'],
+    'order update' => ['PATCH', '/orders'],
     'regional costs' => ['GET', '/regional-costs'],
     'region add' => ['POST', '/region'],
     'region update' => ['PATCH', '/region'],
@@ -200,7 +201,7 @@ describe('regions', function () {
         $regions = new ShopShippingRegionsDataService('');
 
         expect($regions->query()->orderBy('id')->pluck('name')->all())->toBe(['Rock & "Roll"', 'Plain'])
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(5);
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
     });
 });
 
@@ -224,13 +225,33 @@ function placeShopOrders(int $count, ?string $createdAt = null): void
 }
 
 /**
- * @return array{orders: list<array<string, mixed>>, page: int, lastPage: int, total: int}
+ * @return array{orders: list<array<string, mixed>>, page: int, lastPage: int, total: int, statusFilter: string|null}
  */
-function getShopOrdersPage(int $page): array
+function getShopOrdersPage(int $page, ?string $status = null): array
 {
-    return getJson('http://shop.test' . route('orders', [], false) . "?site=&page={$page}")
+    $statusQuery = $status === null ? '' : "&status={$status}";
+
+    return getJson('http://shop.test' . route('orders', [], false) . "?site=&page={$page}{$statusQuery}")
         ->assertOk()
         ->json('data')[''];
+}
+
+/**
+ * @param  array<int, array<string, mixed>>  $columnsById
+ */
+function updateShopOrders(array $columnsById): void
+{
+    foreach ($columnsById as $id => $columns) {
+        (new ShopClientsDataService(''))->query()->where('id', $id)->update($columns);
+    }
+}
+
+/**
+ * @return array<int, string|null>
+ */
+function shopOrderStatuses(): array
+{
+    return (new ShopClientsDataService(''))->query()->orderBy('id')->pluck('status', 'id')->all();
 }
 
 describe('orders', function () {
@@ -284,5 +305,91 @@ describe('orders', function () {
         ];
 
         expect($ids)->toBe(range(25, 1));
+    });
+
+    it('pages only the orders with the filtered status', function () {
+        placeShopOrders(25);
+        updateShopOrders(array_fill_keys(range(1, 21), ['status' => 'shipped']) + [22 => ['status' => 'paid']]);
+
+        $shippedPage = getShopOrdersPage(2, 'shipped');
+
+        expect($shippedPage)->toMatchArray(['page' => 2, 'lastPage' => 2, 'total' => 21, 'statusFilter' => 'shipped'])
+            ->and(array_column($shippedPage['orders'], 'order_id'))->toBe(['ORD-1'])
+            ->and(array_column(getShopOrdersPage(1, 'paid')['orders'], 'order_id'))->toBe(['ORD-22']);
+    });
+
+    it('finds the orders without a status, leaving out baskets', function () {
+        placeShopOrders(3);
+        updateShopOrders([2 => ['status' => 'paid']]);
+
+        $page = getShopOrdersPage(1, 'none');
+
+        expect($page)->toMatchArray(['total' => 2, 'statusFilter' => 'none'])
+            ->and(array_column($page['orders'], 'order_id'))->toBe(['ORD-3', 'ORD-1']);
+    });
+
+    it('returns 422 for an unknown status filter', function () {
+        getJson('http://shop.test' . route('orders', [], false) . '?site=&status=lost')
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['status' => 'The selected status is invalid.']);
+    });
+
+    it('sets the status of an order', function (string $status) {
+        placeShopOrders(2);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/2/status', 'value' => $status])
+            ->assertOk()
+            ->assertJsonPath('data', ['site' => '', 'path' => '2/status', 'value' => $status]);
+
+        expect(shopOrderStatuses())->toBe([1 => null, 2 => $status, 3 => null]);
+    })->with(['awaiting_payment', 'paid', 'shipped', 'cancelled', 'refunded']);
+
+    it('keeps a PayPal order from awaiting payment', function () {
+        placeShopOrders(1);
+        updateShopOrders([1 => ['paypal' => 1, 'status' => 'paid']]);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/1/status', 'value' => 'awaiting_payment'])
+            ->assertStatus(400)
+            ->assertJsonPath('message', 'A PayPal order is already paid!');
+
+        expect(shopOrderStatuses()[1])->toBe('paid');
+    });
+
+    it('returns 404 for a status change of no order', function (string $path, string $message) {
+        placeShopOrders(1);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => $path, 'value' => 'paid'])
+            ->assertNotFound()
+            ->assertJsonPath('message', $message);
+
+        expect(shopOrderStatuses())->toBe([1 => null, 2 => null]);
+    })->with([
+        'a basket' => ['/2/status', 'Order not found!'],
+        'a missing order' => ['/9/status', 'Order not found!'],
+        'an unknown site' => ['nosite/1/status', 'Site not found!'],
+    ]);
+
+    it('returns 422 for a status change of another field or to an unknown status', function () {
+        placeShopOrders(1);
+
+        patchJson('http://shop.test' . route('orders', [], false), ['path' => '/1/order_id', 'value' => 'lost'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['path', 'value']);
+
+        expect(shopOrderStatuses())->toBe([1 => null, 2 => null]);
+    });
+
+    it('adds an empty status to the orders of an older shop version', function () {
+        writeShopSettings($this->bertaRoot, ['version' => '5']);
+        $database = new SQLite3($this->bertaRoot . '/storage/shop-db.sqlite');
+        $database->exec('CREATE TABLE "client" ("id" integer not null, "created_at" datetime not null, "session_id" varchar not null, "order_id" varchar, primary key ("id"))');
+        $database->exec("INSERT INTO client (created_at, session_id, order_id) VALUES ('2026-01-01 00:00:00', 'checkout', 'ORD-1')");
+        $database->close();
+
+        $page = getShopOrdersPage(1);
+
+        expect($page['orders'])->toHaveCount(1)
+            ->and($page['orders'][0])->toHaveKey('status', null)
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
     });
 });

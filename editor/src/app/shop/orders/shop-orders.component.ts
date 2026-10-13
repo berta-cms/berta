@@ -5,33 +5,83 @@ import { finalize } from 'rxjs/operators';
 
 import { stringToCurrency } from '../../shared/helpers';
 import { ShopSettingsState } from '../settings/shop-settings.state';
-import { LoadShopOrdersPageAction } from './shop-orders.actions';
+import {
+  LoadShopOrdersPageAction,
+  UpdateShopOrderStatusAction,
+} from './shop-orders.actions';
 import { ShopOrdersPage, ShopOrdersState } from './shop-orders.state';
+
+/** The statuses of ShopOrderStatus in the shop plugin */
+const ORDER_STATUSES = [
+  { value: 'awaiting_payment', title: 'Awaiting payment' },
+  { value: 'paid', title: 'Paid' },
+  { value: 'shipped', title: 'Shipped' },
+  { value: 'cancelled', title: 'Cancelled' },
+  { value: 'refunded', title: 'Refunded' },
+];
 
 @Component({
   selector: 'berta-shop-orders',
   template: `
     @if (ordersPage$ | async; as ordersPage) {
       <div class="bt-sh-orders-toolbar">
-        <p>{{ ordersPage.total }} orders</p>
-        <button
-          type="button"
-          title="Load the newest orders"
-          [disabled]="isLoading"
-          (click)="goToPage(1)"
+        <p>
+          {{ ordersPage.total }}
+          {{ ordersPage.total === 1 ? 'order' : 'orders' }}
+        </p>
+        <div class="bt-sh-orders-actions">
+          <button
+            type="button"
+            title="Load the newest orders"
+            [disabled]="isLoading"
+            (click)="goToPage(1, ordersPage.statusFilter)"
+          >
+            <bt-icon-refresh></bt-icon-refresh>
+            {{ isLoading ? 'Refreshing…' : 'Refresh' }}
+          </button>
+        </div>
+        <div
+          class="bt-sh-orders-filter"
+          role="group"
+          aria-label="Filter orders by status"
         >
-          <bt-icon-refresh></bt-icon-refresh>
-          {{ isLoading ? 'Refreshing…' : 'Refresh' }}
-        </button>
+          @for (chip of filterChips; track chip.title) {
+            <button
+              type="button"
+              [class.bt-active]="
+                (ordersPage.statusFilter ?? null) === chip.value
+              "
+              [attr.aria-pressed]="
+                (ordersPage.statusFilter ?? null) === chip.value
+              "
+              [disabled]="isLoading"
+              (click)="goToPage(1, chip.value)"
+            >
+              {{ chip.title }}
+            </button>
+          }
+        </div>
       </div>
+      @if (ordersPage.statusFilter && !ordersPage.orders.length) {
+        <div class="bt-sh-orders-empty"><p>No orders with this status.</p></div>
+      }
       @for (order of ordersPage.orders; track order.id) {
         <div class="setting">
-          <p>
-            Order ID
-            <span
-              ><b>{{ order.order_id }}</b></span
-            >
-          </p>
+          <div class="bt-sh-order-header">
+            <p>
+              Order ID <b>{{ order.order_id }}</b>
+            </p>
+            <berta-select-input
+              class="bt-sh-order-status"
+              [attr.data-status]="order.status ?? 'none'"
+              label=""
+              placeholder="Set status"
+              [value]="order.status"
+              [values]="order.paypal ? paypalStatusOptions : statusOptions"
+              [enabledOnUpdate]="true"
+              (update)="updateStatus(order.id, $event)"
+            ></berta-select-input>
+          </div>
           <p>
             Created <span>{{ order.created_at }}</span>
           </p>
@@ -115,10 +165,11 @@ import { ShopOrdersPage, ShopOrdersState } from './shop-orders.state';
                 >{{ currency$ | async }}
                 {{ stringToCurrency(order.price_total) }}</b
               >
-              @if (order.paypal) {
-                <span> (PayPal)</span>
-              }
             </span>
+          </p>
+          <p>
+            Payment
+            <span>{{ order.paypal ? 'PayPal' : 'Bank transfer' }}</span>
           </p>
           <div class="card">
             @if (order.orders && order.orders.length) {
@@ -146,7 +197,7 @@ import { ShopOrdersPage, ShopOrdersState } from './shop-orders.state';
             type="button"
             class="button"
             [disabled]="isLoading || ordersPage.page <= 1"
-            (click)="goToPage(ordersPage.page - 1)"
+            (click)="goToPage(ordersPage.page - 1, ordersPage.statusFilter)"
           >
             ‹ Prev
           </button>
@@ -155,7 +206,7 @@ import { ShopOrdersPage, ShopOrdersState } from './shop-orders.state';
             type="button"
             class="button"
             [disabled]="isLoading || ordersPage.page >= ordersPage.lastPage"
-            (click)="goToPage(ordersPage.page + 1)"
+            (click)="goToPage(ordersPage.page + 1, ordersPage.statusFilter)"
           >
             Next ›
           </button>
@@ -170,6 +221,18 @@ export class ShopOrdersComponent {
   currency$: Observable<string>;
   isLoading = false;
 
+  // 'All' clears the filter; 'none' finds the orders placed before statuses existed
+  readonly filterChips: { value: string | null; title: string }[] = [
+    { value: null, title: 'All' },
+    { value: 'none', title: 'No status' },
+    ...ORDER_STATUSES,
+  ];
+  readonly statusOptions = ORDER_STATUSES;
+  // A PayPal order is saved only once PayPal has taken the money
+  readonly paypalStatusOptions = ORDER_STATUSES.filter(
+    (status) => status.value !== 'awaiting_payment',
+  );
+
   constructor(
     private store: Store,
     private elementRef: ElementRef<HTMLElement>,
@@ -180,14 +243,18 @@ export class ShopOrdersComponent {
     this.currency$ = this.store.select(ShopSettingsState.getCurrentCurrency);
   }
 
-  goToPage(page: number) {
+  goToPage(page: number, statusFilter: string | null) {
     this.isLoading = true;
     this.store
-      .dispatch(new LoadShopOrdersPageAction(page))
+      .dispatch(new LoadShopOrdersPageAction(page, statusFilter))
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(() => {
         this.elementRef.nativeElement.scrollIntoView({ block: 'start' });
       });
+  }
+
+  updateStatus(orderId: number, status: string) {
+    this.store.dispatch(new UpdateShopOrderStatusAction(orderId, status));
   }
 
   stringToCurrency(price) {

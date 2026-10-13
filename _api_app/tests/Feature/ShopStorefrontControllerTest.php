@@ -473,7 +473,8 @@ describe('bank transfer checkout', function () {
             ->price_total->toEqual(122.5)
             ->shipping->toEqual(10)
             ->vat->toEqual(21)
-            ->paypal->toEqual(0);
+            ->paypal->toEqual(0)
+            ->status->toBe('awaiting_payment');
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(2)
             ->and(shopDb()->table('product')->sum('reservation'))->toEqual(0)
             ->and($response->getCookie(ShopBasketService::clientCookie(''), false)->isCleared())->toBeTrue();
@@ -770,7 +771,7 @@ describe('PayPal return', function () {
         $response = returnFromPaypal($paypalToken)->assertRedirect('http://shop.test/?shop_payment=paid');
 
         $order = shopDb()->table('client')->where('session_id', 'checkout')->first();
-        expect($order)->paypal->toEqual(1)->price_total->toEqual(105);
+        expect($order)->paypal->toEqual(1)->status->toBe('paid')->price_total->toEqual(105);
         Storage::disk('local')->assertExists("shop/paypal/{$paypalToken}.json");
         expect(Storage::disk('local')->json("shop/paypal/{$paypalToken}.json"))->order_id->toBe($order->order_id);
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
@@ -1082,7 +1083,7 @@ it('lists only the paid products of an order for the shop admin', function () {
     returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
     actingAs(new User);
 
-    $orders = getJson('http://shop.test' . route('orders', [], false))->assertOk()->json('data')[''];
+    $orders = getJson('http://shop.test' . route('orders', [], false))->assertOk()->json('data')['']['orders'];
 
     expect($orders)->toHaveCount(1)
         ->and(array_column($orders[0]['orders'], 'name'))->toBe(['Chair']);
@@ -1122,5 +1123,5 @@ it('adds the columns of newer shop versions to an older shop database', function
 
     expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address']))->toBeTrue()
         ->and($schema->hasColumn('orders', 'weight'))->toBeTrue()
-        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(5);
+        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(6);
 });

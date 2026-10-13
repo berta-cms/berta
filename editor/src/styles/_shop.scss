@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "variables";
 
 berta-shop {
@@ -220,6 +221,7 @@ berta-shop-orders {
     align-items: center;
     border-bottom: 1px solid variables.$grey-10;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin: 1.3em;
     padding-bottom: 1em;
@@ -229,7 +231,51 @@ berta-shop-orders {
       margin: 0;
     }
 
-    button {
+    .bt-sh-orders-actions {
+      display: flex;
+      gap: 1.5em;
+    }
+
+    // The status filter: chips on a row of its own, unlike the dropdown badge of an order's status
+    .bt-sh-orders-filter {
+      display: flex;
+      flex-basis: 100%;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin-top: 1em;
+
+      button {
+        background-color: variables.$white;
+        border: 1px solid variables.$grey-20;
+        border-radius: 1em;
+        color: variables.$grey-80;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: variables.$input-font-size;
+        padding: 0.3em 0.8em;
+        transition:
+          background-color 0.2s,
+          border-color 0.2s,
+          color 0.2s;
+
+        &:hover {
+          border-color: variables.$berta-accent;
+          color: variables.$berta-accent;
+        }
+
+        &.bt-active {
+          background-color: variables.$berta-accent;
+          border-color: variables.$berta-accent;
+          color: variables.$white;
+        }
+
+        &[disabled] {
+          cursor: default;
+        }
+      }
+    }
+
+    .bt-sh-orders-actions button {
       align-items: center;
       background: none;
       color: variables.$black;
@@ -259,6 +305,113 @@ berta-shop-orders {
         color: variables.$grey-40;
         cursor: default;
       }
+    }
+  }
+
+  .bt-sh-order-header {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em 1em;
+    justify-content: space-between;
+
+    p {
+      display: block;
+      margin: 0;
+    }
+  }
+
+  // An order's status: a dropdown drawn as a badge in the status's colour
+  berta-select-input.bt-sh-order-status {
+    --bt-status-color: #{variables.$grey-40};
+    // Stays on the right when the header wraps, so its list still opens leftwards
+    margin-left: auto;
+
+    &[data-status="awaiting_payment"] {
+      --bt-status-color: #{color.adjust(
+          variables.$warn-color,
+          $lightness: -15%
+        )};
+    }
+
+    &[data-status="paid"] {
+      --bt-status-color: #{color.adjust(
+          variables.$success-color,
+          $lightness: -8%
+        )};
+    }
+
+    &[data-status="shipped"] {
+      --bt-status-color: #{variables.$berta-accent};
+    }
+
+    &[data-status="cancelled"],
+    &[data-status="refunded"] {
+      --bt-status-color: #{variables.$grey-80};
+    }
+
+    .form-group {
+      margin: 0;
+
+      .label-text {
+        display: none;
+      }
+
+      .select-wrapper {
+        background-color: color-mix(
+          in srgb,
+          var(--bt-status-color) 10%,
+          #{variables.$white}
+        );
+        border: 1px solid var(--bt-status-color);
+        border-radius: 1em;
+        color: var(--bt-status-color);
+        margin-left: 0;
+        min-width: 0;
+        width: auto;
+
+        .button-wrapper button,
+        .button-wrapper button:focus {
+          color: inherit;
+          padding: 0.35em 0.5em 0.35em 0.9em;
+        }
+
+        .drop-icon path {
+          stroke: currentColor;
+        }
+
+        // Opens leftwards from the badge's right edge: wider than a short badge, a list
+        // growing rightwards would be cut off by the sidebar
+        ul {
+          border-radius: variables.$border-radius;
+          left: auto;
+          margin-top: 0.25em;
+          min-width: 11em;
+          right: -1px;
+        }
+      }
+
+      &:hover .select-wrapper {
+        background-color: color-mix(
+          in srgb,
+          var(--bt-status-color) 18%,
+          #{variables.$white}
+        );
+      }
+    }
+
+    &[data-status="none"] .form-group .select-wrapper {
+      background-color: variables.$white;
+      border-style: dashed;
+    }
+  }
+
+  .bt-sh-orders-empty {
+    margin: 1.3em;
+
+    p {
+      color: variables.$grey-40;
+      margin: 0;
     }
   }
 
