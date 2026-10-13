@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Sleep;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Tests\TestCase;
@@ -809,6 +810,38 @@ describe('PayPal return', function () {
             ->toEqual(['Chair' => 1, 'T-shirt S' => 0]);
     });
 
+    it('reserves the products again when their reservation expired while the customer was at PayPal', function () {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+        travel(31)->minutes();
+        postJson(storefrontUrl('stock'), ['uniqids' => [SHOP_CHAIR]])->assertJsonPath('data.0.instock', 1);
+
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
+            ->and(shopDb()->table('product')->where('uniqid', SHOP_CHAIR)->value('instock'))->toEqual(0);
+    });
+
+    it('takes no payment for products sold while the customer was at PayPal', function () {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+        travel(31)->minutes();
+        addToShopBasket(SHOP_CHAIR)->assertOk();
+
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=failed');
+
+        expect(capturesSent())->toBe(0)
+            ->and(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeFalse()
+            ->and(shopDb()->table('orders')->count())->toBe(1);
+        Mail::assertNothingSent();
+    });
+
     it('captures nothing for a payment it did not start', function () {
         writeShopSettings($this->bertaRoot, nvpSettings());
         fakeNvp();
@@ -989,6 +1022,36 @@ describe('PayPal buttons', function () {
         Mail::assertSent(ShopOrderMail::class, 2);
     });
 
+    it('takes no second payment for a basket approved twice at once', function () {
+        Mail::fake();
+        Sleep::fake(syncWithCarbon: true);
+        writeShopSettings($this->bertaRoot, restSettings());
+        $order = fn (string $id) => ['id' => $id, 'status' => 'CREATED', 'links' => [['rel' => 'approve', 'href' => "https://www.paypal.com/checkoutnow?token={$id}"]]];
+        $cardCapture = null;
+        Http::fake([
+            'api-m.paypal.com/v1/oauth2/token' => Http::response(['access_token' => 'A21AA', 'expires_in' => 32400]),
+            'api-m.paypal.com/v2/checkout/orders' => Http::sequence()->push($order('CARDORDER1'))->push($order('PAYPALORDER1')),
+            'api-m.paypal.com/v2/checkout/orders/*/capture' => function (HttpRequest $request) use (&$cardCapture) {
+                if (str_contains($request->url(), 'PAYPALORDER1')) {
+                    // The customer approves the card form's payment while PayPal takes the popup's
+                    $cardCapture = postJson(storefrontUrl('paypal/capture'), ['token' => 'CARDORDER1']);
+                }
+
+                return Http::response(paidRestOrder());
+            },
+        ]);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'creditcard', 'paypal_buttons' => true])->assertJsonPath('data.token', 'CARDORDER1');
+        shopCheckout($token, ['payment_method' => 'paypal', 'paypal_buttons' => true])->assertJsonPath('data.token', 'PAYPALORDER1');
+
+        postJson(storefrontUrl('paypal/capture'), ['token' => 'PAYPALORDER1'])->assertJsonPath('data.status', 'paid');
+
+        $cardCapture->assertJsonPath('data.status', 'unconfirmed');
+        // Approved again, the card payment finds the basket paid
+        postJson(storefrontUrl('paypal/capture'), ['token' => 'CARDORDER1'])->assertJsonPath('data.status', 'failed');
+        expect(capturesSent())->toBe(1);
+    });
+
     it('captures nothing for a malformed token', function () {
         writeShopSettings($this->bertaRoot, restSettings());
         fakeRest();
@@ -1007,6 +1070,43 @@ it('lists the products of priced entries for the shop admin', function () {
     getJson('http://shop.test' . route('products', [], false))->assertOk();
 
     expect(shopDb()->table('product')->pluck('name')->sort()->values()->all())->toBe(['Chair', 'T-shirt M', 'T-shirt S']);
+});
+
+it('lists only the paid products of an order for the shop admin', function () {
+    Mail::fake();
+    writeShopSettings($this->bertaRoot, restSettings());
+    fakeRest();
+    $token = fillShopBasket([[SHOP_CHAIR]]);
+    shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+    addToShopBasket(SHOP_TSHIRT, 'S', $token)->assertOk();
+    returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+    actingAs(new User);
+
+    $orders = getJson('http://shop.test' . route('orders', [], false))->assertOk()->json('data')[''];
+
+    expect($orders)->toHaveCount(1)
+        ->and(array_column($orders[0]['orders'], 'name'))->toBe(['Chair']);
+});
+
+it('prices products in whole cents, as the site shows them, so PayPal takes the order', function () {
+    $blog = $this->bertaRoot . '/storage/blog.shop.xml';
+    File::put($blog, str_replace('<cartPrice><![CDATA[100]]>', '<cartPrice><![CDATA[33.333]]>', File::get($blog)));
+    postJson(storefrontUrl('stock'), ['uniqids' => [SHOP_CHAIR]]);
+    shopDb()->table('product')->where('uniqid', SHOP_CHAIR)->update(['instock' => 3]);
+    writeShopSettings($this->bertaRoot, restSettings());
+    fakeRest();
+    $token = fillShopBasket([[SHOP_CHAIR], [SHOP_CHAIR], [SHOP_CHAIR]]);
+
+    shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+
+    Http::assertSent(function (HttpRequest $request) {
+        $purchase = $request['purchase_units'][0] ?? null;
+
+        return $purchase
+            && $purchase['items'][0]['unit_amount']['value'] === '33.33'
+            && $purchase['amount']['breakdown']['item_total']['value'] === '99.99'
+            && $purchase['amount']['value'] === '109.99';
+    });
 });
 
 it('adds the columns of newer shop versions to an older shop database', function () {
