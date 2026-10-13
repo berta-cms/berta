@@ -1,5 +1,13 @@
 import { startWith } from 'rxjs';
-import { take, filter, switchMap, distinct, map } from 'rxjs/operators';
+import {
+  take,
+  filter,
+  switchMap,
+  distinct,
+  map,
+  tap,
+  catchError,
+} from 'rxjs/operators';
 import {
   State,
   StateContext,
@@ -11,20 +19,31 @@ import {
   ofActionSuccessful,
 } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
+import { ShopState } from '../shop.state';
 import { AppState } from '../../app-state/app.state';
+import { AppStateService } from '../../app-state/app-state.service';
 import {
   RenameShopOrdersSiteAction,
   DeleteShopOrdersSiteAction,
   ResetShopOrdersAction,
   InitShopOrdersAction,
+  LoadShopOrdersPageAction,
 } from './shop-orders.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-interface ShopOrdersModel {
-  [site: string]: any[];
+export interface ShopOrdersPage {
+  orders: any[];
+  page: number;
+  lastPage: number;
+  total: number;
+}
+
+export interface ShopOrdersModel {
+  [site: string]: ShopOrdersPage;
 }
 
 const defaultState: ShopOrdersModel = {};
@@ -36,7 +55,10 @@ const defaultState: ShopOrdersModel = {};
 @Injectable()
 export class ShopOrdersState implements NgxsOnInit {
   @Selector([ShopOrdersState, AppState.getSite])
-  static getCurrentSiteOrders(state: ShopOrdersModel, site: string) {
+  static getCurrentSiteOrdersPage(
+    state: ShopOrdersModel,
+    site: string,
+  ): ShopOrdersPage {
     return state[site];
   }
 
@@ -46,6 +68,7 @@ export class ShopOrdersState implements NgxsOnInit {
   constructor(
     private store$: Store,
     private stateService: ShopStateService,
+    private appStateService: AppStateService,
     private actions$: Actions,
   ) {}
 
@@ -87,6 +110,31 @@ export class ShopOrdersState implements NgxsOnInit {
     action: InitShopOrdersAction,
   ) {
     patchState(action.payload);
+  }
+
+  @Action(LoadShopOrdersPageAction)
+  loadOrdersPage(
+    { patchState }: StateContext<ShopOrdersModel>,
+    action: LoadShopOrdersPageAction,
+  ) {
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService
+      .sync(syncURLs.orders, { site, page: action.page }, 'GET')
+      .pipe(
+        tap((response: { message: string; data: ShopOrdersModel }) => {
+          patchState({ [site]: response.data[site] });
+        }),
+        catchError((error: HttpErrorResponse | Error) => {
+          if (error instanceof HttpErrorResponse) {
+            console.error(error.error.message);
+          } else {
+            console.error(error.message);
+          }
+          throw error;
+        }),
+      );
   }
 
   @Action(RenameShopOrdersSiteAction)

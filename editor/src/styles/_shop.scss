@@ -215,4 +215,62 @@ berta-shop-orders {
       padding-left: 0;
     }
   }
+
+  .bt-sh-orders-toolbar {
+    align-items: center;
+    border-bottom: 1px solid variables.$grey-10;
+    display: flex;
+    justify-content: space-between;
+    margin: 1.3em;
+    padding-bottom: 1em;
+
+    p {
+      color: variables.$grey-40;
+      margin: 0;
+    }
+
+    button {
+      align-items: center;
+      background: none;
+      color: variables.$black;
+      cursor: pointer;
+      display: flex;
+      font-family: inherit;
+      font-size: variables.$input-font-size;
+      gap: 0.4em;
+      padding: 0;
+      transition: color 0.2s;
+
+      svg {
+        display: block;
+        height: 1.15em;
+        width: 1.15em;
+
+        path {
+          fill: currentColor;
+        }
+      }
+
+      &:hover {
+        color: variables.$berta-accent;
+      }
+
+      &[disabled] {
+        color: variables.$grey-40;
+        cursor: default;
+      }
+    }
+  }
+
+  .bt-sh-orders-pager {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 1.3em;
+
+    p {
+      margin: 0 0.5em;
+      text-align: center;
+    }
+  }
 }

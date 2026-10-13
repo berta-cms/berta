@@ -3,10 +3,14 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\SetupMiddleware;
 use App\Models\User;
+use App\Plugins\Shop\ShopClientsDataService;
+use App\Plugins\Shop\ShopOrdersDataService;
+use App\Plugins\Shop\ShopProductsDataService;
 use App\Plugins\Shop\ShopSettingsDataService;
 use App\Plugins\Shop\ShopShippingCostsDataService;
 use App\Plugins\Shop\ShopShippingRegionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
@@ -197,5 +201,88 @@ describe('regions', function () {
 
         expect($regions->query()->orderBy('id')->pluck('name')->all())->toBe(['Rock & "Roll"', 'Plain'])
             ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(5);
+    });
+});
+
+/**
+ * Checked-out orders ORD-1 to ORD-{$count}, each a minute after the previous one unless they share
+ * $createdAt and each with a paid poster, plus a newer basket that isn't an order yet
+ */
+function placeShopOrders(int $count, ?string $createdAt = null): void
+{
+    $clients = new ShopClientsDataService('');
+    $orders = new ShopOrdersDataService('');
+    (new ShopProductsDataService(''))->query()->insert(['id' => 1, 'uniqid' => 'poster', 'name' => 'Poster']);
+
+    foreach (range(1, $count) as $id) {
+        $placedAt = $createdAt ?? Carbon::create(2026, 1, 1)->addMinutes($id)->toDateTimeString();
+        $clients->query()->insert(['id' => $id, 'created_at' => $placedAt, 'session_id' => 'checkout', 'order_id' => "ORD-{$id}"]);
+        $orders->query()->insert(['id' => $id, 'created_at' => $placedAt, 'id_client' => $id, 'id_product' => 1, 'paid' => 1, 'price' => 10]);
+    }
+
+    $clients->query()->insert(['id' => $count + 1, 'created_at' => '2027-01-01 00:00:00', 'session_id' => str_repeat('a', 32)]);
+}
+
+/**
+ * @return array{orders: list<array<string, mixed>>, page: int, lastPage: int, total: int}
+ */
+function getShopOrdersPage(int $page): array
+{
+    return getJson('http://shop.test' . route('orders', [], false) . "?site=&page={$page}")
+        ->assertOk()
+        ->json('data')[''];
+}
+
+describe('orders', function () {
+    beforeEach(function () {
+        $this->bertaRoot = setUpShopTestRoot();
+        actingAs(new User);
+    });
+
+    afterEach(function () {
+        if (isset($this->bertaRoot)) {
+            File::deleteDirectory($this->bertaRoot);
+        }
+    });
+
+    it('sends the newest orders as the first page with the shop state, without baskets', function () {
+        placeShopOrders(25);
+
+        $firstPage = getJson('http://shop.test' . route('shop-state', [], false) . '?site=')
+            ->assertOk()
+            ->json('data.orders')[''];
+
+        expect($firstPage)->toMatchArray(['page' => 1, 'lastPage' => 2, 'total' => 25])
+            ->and(array_column($firstPage['orders'], 'order_id'))->toBe(array_map(fn (int $id) => "ORD-{$id}", range(25, 6)));
+    });
+
+    it('returns the requested page of orders with their paid products', function () {
+        placeShopOrders(25);
+
+        $secondPage = getShopOrdersPage(2);
+
+        expect($secondPage)->toMatchArray(['page' => 2, 'lastPage' => 2, 'total' => 25])
+            ->and(array_column($secondPage['orders'], 'order_id'))->toBe(['ORD-5', 'ORD-4', 'ORD-3', 'ORD-2', 'ORD-1'])
+            ->and($secondPage['orders'][0]['orders'])->toEqual([['id_client' => 5, 'name' => 'Poster', 'qty' => 1, 'sum_total' => 10]]);
+    });
+
+    it('returns the last page for a page past the end', function () {
+        placeShopOrders(25);
+
+        $page = getShopOrdersPage(9);
+
+        expect($page['page'])->toBe(2)
+            ->and(array_column($page['orders'], 'order_id'))->toBe(['ORD-5', 'ORD-4', 'ORD-3', 'ORD-2', 'ORD-1']);
+    });
+
+    it('pages orders placed in the same second without repeating or skipping any', function () {
+        placeShopOrders(25, '2026-01-01 12:00:00');
+
+        $ids = [
+            ...array_column(getShopOrdersPage(1)['orders'], 'id'),
+            ...array_column(getShopOrdersPage(2)['orders'], 'id'),
+        ];
+
+        expect($ids)->toBe(range(25, 1));
     });
 });

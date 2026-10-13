@@ -17,6 +17,11 @@ export class InitShopOrdersAction {
   constructor(public payload: any) {}
 }
 
+export class LoadShopOrdersPageAction {
+  static readonly type = 'SHOP_ORDERS:LOAD_PAGE';
+  constructor(public page: number) {}
+}
+
 /* Reset: */
 export class ResetShopOrdersAction {
   public static type = 'SHOP_ORDERS:RESET';
