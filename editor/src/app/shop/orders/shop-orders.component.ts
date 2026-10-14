@@ -21,6 +21,13 @@ const ORDER_STATUSES = [
   { value: 'refunded', title: 'Refunded' },
 ];
 
+/** The payment methods of ShopCheckoutService in the shop plugin */
+const PAYMENT_METHODS: Record<string, string> = {
+  bank_transfer: 'Bank transfer',
+  paypal: 'PayPal',
+  creditcard: 'Debit or credit card',
+};
+
 @Component({
   selector: 'berta-shop-orders',
   template: `
@@ -176,7 +183,7 @@ const ORDER_STATUSES = [
           </p>
           <p>
             Payment
-            <span>{{ order.paypal ? 'PayPal' : 'Bank transfer' }}</span>
+            <span>{{ paymentMethodTitle(order) }}</span>
           </p>
           <div class="card">
             @if (order.orders && order.orders.length) {
@@ -297,6 +304,20 @@ export class ShopOrdersComponent {
     if (!(event.target as HTMLTextAreaElement).value.trim()) {
       this.notesOpenedFor.delete(orderId);
     }
+  }
+
+  /**
+   * Orders placed before the shop saved the payment method only know whether they went through
+   * PayPal, which took card payments too
+   */
+  paymentMethodTitle(order: {
+    payment_method?: string | null;
+    paypal?: number | null;
+  }) {
+    return (
+      PAYMENT_METHODS[order.payment_method] ??
+      (order.paypal ? PAYMENT_METHODS.paypal : PAYMENT_METHODS.bank_transfer)
+    );
   }
 
   stringToCurrency(price) {

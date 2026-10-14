@@ -184,8 +184,8 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
   },
   manualTransfer: {
     setting: 'cartManualTransfer',
-    default: 'Manual transfer',
-    caption: 'Manual transfer',
+    default: 'Bank transfer',
+    caption: 'Bank transfer',
     siteOnly: true,
   },
   checkoutDescription: {

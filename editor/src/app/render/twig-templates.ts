@@ -437,11 +437,11 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           {% if isPaypalAvailable %}
             <div class="choosePaymentRadio">
               <label for="pm_creditcard"><input type="radio" name="payment_method" value="creditcard" id="pm_creditcard" checked="checked" />
-              <img src="/_plugin_shop/images/creditcard.png" alt="Credit card" /></label>
+              <img src="/_plugin_shop/images/creditcard.png" alt="Debit or credit card" /></label>
             </div>
             <div class="choosePaymentRadio">
               <label for="pm_paypal"><input type="radio" name="payment_method" value="paypal" id="pm_paypal" />
-              <img src="/_plugin_shop/images/paypal.png" alt="Paypal" /></label>
+              <img src="/_plugin_shop/images/paypal.png" alt="PayPal" /></label>
             </div>
           {% endif %}
 
@@ -450,7 +450,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer"{% if config.paymentMethod == 'bank' or not isPaypalAvailable %} checked="checked"{% endif %}>
                 {% if isEditMode %}
                   <div{{ manualTransfer.attributes|raw }}>
-                    {% if manualTransfer.content %}{{ manualTransfer.content }}{% else %}<span class="xEmpty">&nbsp;Manual transfer&nbsp;</span>{% endif %}
+                    {% if manualTransfer.content %}{{ manualTransfer.content }}{% else %}<span class="xEmpty">&nbsp;Bank transfer&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ manualTransfer.content }}

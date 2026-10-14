@@ -502,6 +502,7 @@ describe('bank transfer checkout', function () {
             ->shipping->toEqual(10)
             ->vat->toEqual(21)
             ->paypal->toEqual(0)
+            ->payment_method->toBe('bank_transfer')
             ->status->toBe('awaiting_payment');
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(2)
             ->and(shopDb()->table('product')->sum('reservation'))->toEqual(0)
@@ -901,6 +902,7 @@ describe('PayPal return', function () {
 
         returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
 
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->value('payment_method'))->toBe($method);
         Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($title, $paidWith) {
             $html = $mail->render();
 
@@ -923,7 +925,7 @@ describe('PayPal return', function () {
         });
     })->with([
         'PayPal' => ['paypal', 'PayPal', 'with PayPal'],
-        'card' => ['creditcard', 'Card (via PayPal)', 'by card via PayPal'],
+        'card' => ['creditcard', 'Debit or credit card', 'by debit or credit card'],
     ]);
 
     it('saves nothing when PayPal declines the payment', function (string $api) {
@@ -1267,7 +1269,7 @@ it('adds the columns of newer shop versions to an older shop database', function
 
     $schema = (new ShopClientsDataService(''))->getConnection()->getSchemaBuilder();
 
-    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address', 'status', 'admin_notes']))->toBeTrue()
+    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address', 'status', 'admin_notes', 'payment_method']))->toBeTrue()
         ->and($schema->hasColumn('orders', 'weight'))->toBeTrue()
-        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
+        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
 });

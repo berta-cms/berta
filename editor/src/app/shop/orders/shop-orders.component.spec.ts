@@ -11,8 +11,16 @@ import { ShopOrdersPage } from './shop-orders.state';
 describe('ShopOrdersComponent', () => {
   const ORDERS_PAGE: ShopOrdersPage = {
     orders: [
-      { id: 6, order_id: 'ORD-6', admin_notes: 'Ships on Friday.', orders: [] },
-      { id: 5, order_id: 'ORD-5', admin_notes: null, orders: [] },
+      {
+        id: 6,
+        order_id: 'ORD-6',
+        admin_notes: 'Ships on Friday.',
+        paypal: 1,
+        payment_method: 'creditcard',
+        orders: [],
+      },
+      // Placed before the shop saved the payment method
+      { id: 5, order_id: 'ORD-5', admin_notes: null, paypal: 1, orders: [] },
     ],
     page: 1,
     lastPage: 1,
@@ -28,6 +36,11 @@ describe('ShopOrdersComponent', () => {
   const addNotesButton = (card: HTMLElement) =>
     card.querySelector<HTMLButtonElement>('.bt-sh-order-add-notes');
   const notesTextarea = (card: HTMLElement) => card.querySelector('textarea');
+  const paymentMethod = (card: HTMLElement) =>
+    Array.from(card.querySelectorAll('p'))
+      .find((row) => row.textContent.trim().startsWith('Payment'))
+      .querySelector('span')
+      .textContent.trim();
 
   /** The events a browser fires when the textarea loses focus */
   const leave = (textarea: HTMLTextAreaElement) => {
@@ -69,6 +82,13 @@ describe('ShopOrdersComponent', () => {
 
   afterEach(() => {
     fixture.nativeElement.remove();
+  });
+
+  it('shows how an order was paid, and PayPal for an older order paid through PayPal', () => {
+    const [cardOrder, olderOrder] = orderCards();
+
+    expect(paymentMethod(cardOrder)).toBe('Debit or credit card');
+    expect(paymentMethod(olderOrder)).toBe('PayPal');
   });
 
   it('shows the notes of an order that has them, and a button on one without', () => {

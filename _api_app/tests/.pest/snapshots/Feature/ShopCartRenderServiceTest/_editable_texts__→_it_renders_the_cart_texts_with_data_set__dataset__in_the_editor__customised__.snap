@@ -259,16 +259,16 @@
           
                       <div class="choosePaymentRadio">
               <label for="pm_creditcard"><input type="radio" name="payment_method" value="creditcard" id="pm_creditcard" checked="checked" />
-              <img src="/_plugin_shop/images/creditcard.png" alt="Credit card" /></label>
+              <img src="/_plugin_shop/images/creditcard.png" alt="Debit or credit card" /></label>
             </div>
             <div class="choosePaymentRadio">
               <label for="pm_paypal"><input type="radio" name="payment_method" value="paypal" id="pm_paypal" />
-              <img src="/_plugin_shop/images/paypal.png" alt="Paypal" /></label>
+              <img src="/_plugin_shop/images/paypal.png" alt="PayPal" /></label>
             </div>
           
                       <div class="choosePaymentRadio">
               <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer">
-                                  <div class="xNgEditable xProperty-cartManualTransfer xCaption-Manual+transfer" data-path="blog/settings/siteTexts/cartManualTransfer" data-empty-caption="Manual transfer">
+                                  <div class="xNgEditable xProperty-cartManualTransfer xCaption-Bank+transfer" data-path="blog/settings/siteTexts/cartManualTransfer" data-empty-caption="Bank transfer">
                     Custom cartManualTransfer                  </div>
                               </label>
             </div>

@@ -244,7 +244,7 @@
           
                       <div class="choosePaymentRadio">
               <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer" checked="checked">
-                                    Manual transfer
+                                    Bank transfer
                               </label>
             </div>
                   </div>

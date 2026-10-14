@@ -201,7 +201,7 @@ describe('regions', function () {
         $regions = new ShopShippingRegionsDataService('');
 
         expect($regions->query()->orderBy('id')->pluck('name')->all())->toBe(['Rock & "Roll"', 'Plain'])
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
     });
 });
 
@@ -358,7 +358,7 @@ describe('orders', function () {
 
         patchJson('http://shop.test' . route('orders', [], false), ['path' => '/1/status', 'value' => 'awaiting_payment'])
             ->assertStatus(400)
-            ->assertJsonPath('message', 'A PayPal order is already paid!');
+            ->assertJsonPath('message', 'An order paid with PayPal or by debit or credit card is already paid!');
 
         expect(shopOrderStatuses()[1])->toBe('paid');
     });
@@ -421,7 +421,7 @@ describe('orders', function () {
         expect(shopOrderNotes())->toBe([1 => null, 2 => null]);
     });
 
-    it('adds an empty status and private notes to the orders of an older shop version', function () {
+    it('adds an empty status, private notes and payment method to the orders of an older shop version', function () {
         writeShopSettings($this->bertaRoot, ['version' => '5']);
         $database = new SQLite3($this->bertaRoot . '/storage/shop-db.sqlite');
         $database->exec('CREATE TABLE "client" ("id" integer not null, "created_at" datetime not null, "session_id" varchar not null, "order_id" varchar, primary key ("id"))');
@@ -433,6 +433,7 @@ describe('orders', function () {
         expect($page['orders'])->toHaveCount(1)
             ->and($page['orders'][0])->toHaveKey('status', null)
             ->and($page['orders'][0])->toHaveKey('admin_notes', null)
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(7);
+            ->and($page['orders'][0])->toHaveKey('payment_method', null)
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
     });
 });

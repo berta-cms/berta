@@ -148,7 +148,7 @@ describe('ShopCartRenderService', () => {
     },
     manualTransfer: {
       attributes:
-        ' class="xNgEditable xProperty-cartManualTransfer xCaption-Manual+transfer" data-path="blog/settings/siteTexts/cartManualTransfer" data-empty-caption="Manual transfer"',
+        ' class="xNgEditable xProperty-cartManualTransfer xCaption-Bank+transfer" data-path="blog/settings/siteTexts/cartManualTransfer" data-empty-caption="Bank transfer"',
       content: '',
     },
     checkoutDescription: {
