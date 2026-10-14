@@ -64,6 +64,16 @@ it('starts the order numbers of a site cloned from a site with orders from 1, wi
         ->and(shopFiles('second'))->toBe(['invoices/invoice-2026-1.pdf']);
 });
 
+it('copies a media folder of a cloned site that shares the shop files folder name', function () {
+    $mediaFile = $this->bertaRoot . '/storage/-sites/second/media/_shop_files/photo.jpg';
+    File::ensureDirectoryExists(dirname($mediaFile));
+    File::put($mediaFile, 'jpeg');
+
+    $site = (new SitesDataService)->create(Request::create('http://shop.test/'), 'second');
+
+    expect(File::get($this->bertaRoot . "/storage/-sites/{$site['name']}/media/_shop_files/photo.jpg"))->toBe('jpeg');
+});
+
 it('leaves the shop files out of the theme preview copy of a site', function () {
     symlink(realpath(base_path('../_themes')), $this->bertaRoot . '/_themes');
     // The theme's images are copied into the preview's media folder

@@ -166,7 +166,8 @@ class SitesDataService extends Storage
             }
 
             $dir = $this->XML_SITES_ROOT . '/' . $name;
-            $this->copyFolder($src, $dir);
+            // The shop files belong to the source's orders, which the clone doesn't keep
+            $this->copyFolder($src, $dir, [self::SHOP_FILES_FOLDER]);
         } else {
             @mkdir($dir, 0777, true);
         }
@@ -281,7 +282,7 @@ class SitesDataService extends Storage
 
         // generate new preview content
         // for now just copy all the existing contents to preview
-        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT);
+        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT, [self::SHOP_FILES_FOLDER]);
 
         // Merge site settings
         $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);

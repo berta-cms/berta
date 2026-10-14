@@ -10,7 +10,8 @@ class Storage
 {
     /**
      * A site's private shop files, kept next to its shop database so they move, swap and back up with it.
-     * The web server denies it (.htaccess, LocalValetDriver.php). No site or section slug has an underscore.
+     * The web server denies this folder at the top of a site's storage only (.htaccess, LocalValetDriver.php),
+     * so a site or media folder that happens to share the name stays reachable.
      */
     public const SHOP_FILES_FOLDER = '_shop_files';
 
@@ -303,7 +304,10 @@ class Storage
         return [];
     }
 
-    protected function copyFolder($src, $dst)
+    /**
+     * @param  list<string>  $skipFolders  Folders at the top of $src left out of the copy
+     */
+    protected function copyFolder($src, $dst, array $skipFolders = [])
     {
         if (! is_dir($src)) {
             return;
@@ -315,8 +319,7 @@ class Storage
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
-                    // Not copied: other sites, the preview, and the shop files, which belong to the source's orders
-                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER, self::SHOP_FILES_FOLDER])) {
+                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER, ...$skipFolders])) {
                         self::copyFolder($src . '/' . $file, $dst . '/' . $file);
                     }
                 } else {
