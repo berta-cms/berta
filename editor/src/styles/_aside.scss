@@ -173,6 +173,9 @@ aside {
 
   > .settings {
     display: grid;
+    // Never wider than the sidebar: an expanded section's content overflows visibly,
+    // so an auto column would grow to fit an unwrappable line, e.g. a long select label
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.25s ease;
 
