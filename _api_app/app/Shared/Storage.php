@@ -8,6 +8,12 @@ use Swaggest\JsonSchema\Schema;
 
 class Storage
 {
+    /**
+     * A site's private shop files, kept next to its shop database so they move, swap and back up with it.
+     * The web server denies it (.htaccess, LocalValetDriver.php). No site or section slug has an underscore.
+     */
+    public const SHOP_FILES_FOLDER = '_shop_files';
+
     /** @var array
      * Associative array representing data structure handled by this service.
      */
@@ -309,7 +315,8 @@ class Storage
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
-                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER])) {
+                    // Not copied: other sites, the preview, and the shop files, which belong to the source's orders
+                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER, self::SHOP_FILES_FOLDER])) {
                         self::copyFolder($src . '/' . $file, $dst . '/' . $file);
                     }
                 } else {

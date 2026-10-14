@@ -135,3 +135,25 @@ function writeShopSettings(string $bertaRoot, array $shop = [], string $site = '
         . '<texts>' . $xmlValues(array_merge(['ownerName' => 'Shop Owner'], $texts)) . '</texts>'
         . '</settings>');
 }
+
+/**
+ * A file in a site's private shop files, in the test's Berta root
+ */
+function shopFile(string $path, string $site = ''): string
+{
+    return config('app.old_berta_root') . '/storage' . ($site !== '' ? "/-sites/{$site}" : '') . "/_shop_files/{$path}";
+}
+
+/**
+ * The site's private shop files, relative to their folder
+ *
+ * @return list<string>
+ */
+function shopFiles(string $site = ''): array
+{
+    $folder = shopFile('', $site);
+
+    return File::isDirectory($folder)
+        ? array_values(array_map(fn ($file) => $file->getRelativePathname(), File::allFiles($folder)))
+        : [];
+}

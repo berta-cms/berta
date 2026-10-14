@@ -12,12 +12,12 @@ use App\Sites\Settings\SiteSettingsDataService;
 use Illuminate\Database\Connection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Client\Request as HttpRequest;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Sleep;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -65,7 +65,6 @@ beforeEach(function () {
     // SetupMiddleware reconciles the real .env file on every request.
     withoutMiddleware(SetupMiddleware::class);
     Http::preventStrayRequests();
-    Storage::fake('local');
 });
 
 afterEach(function () {
@@ -82,6 +81,31 @@ function nvpSettings(): array
 function restSettings(): array
 {
     return ['paypalClientId' => 'client-id', 'paypalClientSecret' => 'client-secret', 'paypalCurrencyCode' => 'EUR'];
+}
+
+/**
+ * Invoices turned on, with the seller details they need
+ */
+function invoiceSettings(): array
+{
+    return ['invoices' => 'yes', 'sellerDetails' => "Riga Prints SIA\nIBAN LV80BANK0000435195001"];
+}
+
+/**
+ * A second site of a multisite, selling the main site's products
+ *
+ * @param  array<string, string>  $shop
+ */
+function setUpSecondShopSite(string $bertaRoot, array $shop = []): void
+{
+    writeShopSettings($bertaRoot, $shop, 'second');
+    File::put($bertaRoot . '/storage/-sites/sites.xml', '<?xml version="1.0" encoding="utf-8"?><sites>'
+        . '<site published="1"><title><![CDATA[Main]]></title></site>'
+        . '<site published="1"><name><![CDATA[second]]></name><title><![CDATA[Second]]></title></site>'
+        . '</sites>');
+    File::copy($bertaRoot . '/storage/sections.xml', $bertaRoot . '/storage/-sites/second/sections.xml');
+    File::copy($bertaRoot . '/storage/blog.shop.xml', $bertaRoot . '/storage/-sites/second/blog.shop.xml');
+    (new ShopShippingRegionsDataService('second'))->addRegion('Europe', 21);
 }
 
 function storefrontUrl(string $path, array $query = []): string
@@ -102,10 +126,10 @@ function asShopCustomer(?string $token, string $site = ''): TestCase
     return withCredentials()->withUnencryptedCookie(ShopBasketService::clientCookie($site), (string) $token);
 }
 
-function addToShopBasket(string $uniqid, ?string $attribute = null, ?string $token = null): TestResponse
+function addToShopBasket(string $uniqid, ?string $attribute = null, ?string $token = null, string $site = ''): TestResponse
 {
-    return asShopCustomer($token)
-        ->postJson(storefrontUrl('basket'), ['uniqid' => $uniqid, 'attribute' => $attribute]);
+    return asShopCustomer($token, $site)
+        ->postJson(storefrontUrl('basket', array_filter(['site' => $site])), ['uniqid' => $uniqid, 'attribute' => $attribute]);
 }
 
 /**
@@ -113,13 +137,13 @@ function addToShopBasket(string $uniqid, ?string $attribute = null, ?string $tok
  *
  * @param  list<array{0: string, 1?: string}>  $items
  */
-function fillShopBasket(array $items): string
+function fillShopBasket(array $items, string $site = ''): string
 {
     $token = null;
     foreach ($items as $item) {
-        $token = addToShopBasket($item[0], $item[1] ?? null, $token)
+        $token = addToShopBasket($item[0], $item[1] ?? null, $token, $site)
             ->assertOk()
-            ->getCookie(ShopBasketService::clientCookie(''), false)
+            ->getCookie(ShopBasketService::clientCookie($site), false)
             ->getValue();
     }
 
@@ -407,14 +431,7 @@ describe('basket renewal', function () {
 });
 
 it('keeps a separate basket on each site of a multisite', function () {
-    writeShopSettings($this->bertaRoot, [], 'second');
-    File::put($this->bertaRoot . '/storage/-sites/sites.xml', '<?xml version="1.0" encoding="utf-8"?><sites>'
-        . '<site published="1"><title><![CDATA[Main]]></title></site>'
-        . '<site published="1"><name><![CDATA[second]]></name><title><![CDATA[Second]]></title></site>'
-        . '</sites>');
-    File::copy($this->bertaRoot . '/storage/sections.xml', $this->bertaRoot . '/storage/-sites/second/sections.xml');
-    File::copy($this->bertaRoot . '/storage/blog.shop.xml', $this->bertaRoot . '/storage/-sites/second/blog.shop.xml');
-    (new ShopShippingRegionsDataService('second'))->addRegion('Europe', 21);
+    setUpSecondShopSite($this->bertaRoot);
 
     // The cookies a browser keeps for the domain, both sites' baskets among them
     $cookies = [];
@@ -428,6 +445,19 @@ it('keeps a separate basket on each site of a multisite', function () {
 
     shopCheckout($cookies[ShopBasketService::clientCookie('')] ?? '')->assertOk();
     shopCheckout($cookies[ShopBasketService::clientCookie('second')] ?? '', [], 'second')->assertOk();
+});
+
+it('numbers the orders of each site of a multisite on their own, and keeps their invoices apart', function () {
+    Mail::fake();
+    travelTo(Carbon::parse('2026-10-12 10:00:00'));
+    writeShopSettings($this->bertaRoot, invoiceSettings());
+    setUpSecondShopSite($this->bertaRoot, invoiceSettings());
+    shopCheckout(fillShopBasket([[SHOP_CHAIR]]))->assertOk()->assertJsonPath('data.order_id', '2026-1');
+
+    shopCheckout(fillShopBasket([[SHOP_CHAIR]], 'second'), [], 'second')->assertOk()->assertJsonPath('data.order_id', '2026-1');
+
+    expect(shopFiles())->toBe(['invoices/invoice-2026-1.pdf'])
+        ->and(shopFiles('second'))->toBe(['invoices/invoice-2026-1.pdf']);
 });
 
 it('takes a product that is no longer for sale out of the basket', function (string $blog) {
@@ -515,19 +545,64 @@ describe('bank transfer checkout', function () {
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller && $mail->hasTo('ann@buyer.test'));
     });
 
-    it('numbers each order by its date and basket, also for orders placed in the same second', function () {
+    it('numbers the orders of each year from 1, also orders placed in the same second', function () {
         Mail::fake();
-        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        travelTo(Carbon::parse('2026-12-31 23:59:00'));
         $firstToken = fillShopBasket([[SHOP_CHAIR]]);
         $secondToken = fillShopBasket([[SHOP_TSHIRT, 'S']]);
-
         $numbers = [
             shopCheckout($firstToken)->assertOk()->json('data.order_id'),
             shopCheckout($secondToken)->assertOk()->json('data.order_id'),
         ];
+        travelTo(Carbon::parse('2027-01-01 00:01:00'));
 
-        expect($numbers)->toBe(['20261012-1', '20261012-2'])
-            ->and(shopDb()->table('client')->orderBy('id')->pluck('order_id')->all())->toBe($numbers);
+        $numbers[] = shopCheckout(fillShopBasket([[SHOP_TSHIRT, 'M']]))->assertOk()->json('data.order_id');
+
+        expect($numbers)->toBe(['2026-1', '2026-2', '2027-1'])
+            ->and(shopDb()->table('client')->where('session_id', 'checkout')->orderBy('id')->pluck('order_id')->all())->toBe($numbers);
+    });
+
+    it('dates an order when it is placed, not when its basket was last renewed', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        travelTo(Carbon::parse('2026-10-12 10:20:00'));
+
+        shopCheckout($token)->assertOk();
+
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->value('created_at'))->toBe('2026-10-12 10:20:00');
+    });
+
+    it('saves the VAT number of a legal person only, and emails it with the company details', function (bool $isLegalPerson, ?string $savedVatNumber) {
+        Mail::fake();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, [
+            'legal_person' => $isLegalPerson,
+            'company' => 'Riga Prints SIA',
+            'company_reg_no' => '40003000000',
+            'vat_no' => 'LV40003000000',
+            'legal_address' => 'Brivibas 2, Riga',
+        ])->assertOk();
+
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->value('vat_no'))->toBe($savedVatNumber);
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->forSeller
+            && str_contains($mail->render(), 'Reg. no. 40003000000<br>VAT no. LV40003000000<br>') === $isLegalPerson);
+    })->with([
+        'a legal person' => [true, 'LV40003000000'],
+        'a private person' => [false, null],
+    ]);
+
+    it('takes a legal person without a VAT number', function () {
+        Mail::fake();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, ['legal_person' => true, 'company' => 'Riga Prints SIA', 'company_reg_no' => '40003000000', 'legal_address' => 'Brivibas 2, Riga'])
+            ->assertOk();
+
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->first())
+            ->company->toBe('Riga Prints SIA')
+            ->vat_no->toBeNull();
     });
 
     it('thanks the customer for shopping with the site the page title names', function (array $texts, string $thanks) {
@@ -564,6 +639,7 @@ describe('bank transfer checkout', function () {
                 && substr_count($html, 'IBAN LV80BANK0000435195001') === 1
                 && str_contains($html, 'Riga Prints SIA<br />')
                 && str_contains($text, 'PAYMENT Bank transfer, awaiting payment')
+                && ! str_contains($html, 'PayPal transaction')
                 && ! str_contains($html, 'being processed');
         });
         Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($orderId) {
@@ -668,6 +744,19 @@ describe('bank transfer checkout', function () {
         Mail::assertNothingSent();
     });
 
+    it('gives the number of an order that fails to save to the next order', function () {
+        Mail::fake();
+        Exceptions::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        $failingToken = fillShopBasket([[SHOP_CHAIR]]);
+        $token = fillShopBasket([[SHOP_TSHIRT, 'S']]);
+        shopDb()->statement("CREATE TRIGGER fail_checkout BEFORE UPDATE OF session_id ON client WHEN NEW.session_id = 'checkout' BEGIN SELECT RAISE(ABORT, 'disk I/O error'); END");
+        shopCheckout($failingToken)->assertInternalServerError();
+        shopDb()->statement('DROP TRIGGER fail_checkout');
+
+        shopCheckout($token)->assertOk()->assertJsonPath('data.order_id', '2026-1');
+    });
+
     it('places the order when sending its emails fails', function () {
         Exceptions::fake();
         config(['plugin-Shop.mailer.transport' => 'smtp', 'plugin-Shop.mailer.host' => '127.0.0.1', 'plugin-Shop.mailer.port' => 1]);
@@ -761,6 +850,7 @@ describe('PayPal checkout', function () {
             ->assertJsonPath('data.redirect_url', 'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&useraction=commit&token=' . SHOP_NVP_TOKEN);
 
         Http::assertSent(fn (HttpRequest $request) => $request['METHOD'] === 'SetExpressCheckout'
+            && $request['PAYMENTREQUEST_0_DESC'] === 'Order'
             && $request['PAYMENTREQUEST_0_AMT'] === '95.00'
             && $request['PAYMENTREQUEST_0_ITEMAMT'] === '90.00'
             && $request['L_PAYMENTREQUEST_0_AMT1'] === '-10.00'
@@ -790,8 +880,8 @@ describe('PayPal checkout', function () {
             && $request['payment_source']['paypal']['name'] === ['given_name' => 'Ann', 'surname' => 'Buyer']);
     });
 
-    it('starts a PayPal order for the buttons without a redirect to PayPal', function () {
-        writeShopSettings($this->bertaRoot, restSettings());
+    it('starts a PayPal order for the buttons without a redirect to PayPal or an order number', function () {
+        writeShopSettings($this->bertaRoot, restSettings(), '', ['pageTitle' => 'Riga Prints']);
         // An order without a payment source waits for approval in PayPal's buttons
         fakeRest(order: [
             'id' => SHOP_REST_TOKEN,
@@ -805,14 +895,15 @@ describe('PayPal checkout', function () {
         ]);
         $token = fillShopBasket([[SHOP_CHAIR]]);
 
-        $orderId = shopCheckout($token, ['payment_method' => 'creditcard', 'paypal_buttons' => true])
+        shopCheckout($token, ['payment_method' => 'creditcard', 'paypal_buttons' => true])
             ->assertOk()
             ->assertJsonPath('data.token', SHOP_REST_TOKEN)
-            ->json('data.order_id');
+            ->assertJsonMissingPath('data.order_id');
 
         // The buttons choose the PayPal login or the card form, PayPal only skips the shipping address
         Http::assertSent(fn (HttpRequest $request) => str_ends_with($request->url(), '/v2/checkout/orders')
-            && $request['purchase_units'][0]['custom_id'] === $orderId
+            && $request['purchase_units'][0]['description'] === 'Order from Riga Prints'
+            && ! isset($request['purchase_units'][0]['custom_id'])
             && $request['payment_source']['paypal']['experience_context']['shipping_preference'] === 'NO_SHIPPING'
             && ! isset($request['payment_source']['paypal']['experience_context']['landing_page'])
             && $request['payment_source']['paypal']['email_address'] === 'ann@buyer.test'
@@ -885,8 +976,7 @@ describe('PayPal return', function () {
 
         $order = shopDb()->table('client')->where('session_id', 'checkout')->first();
         expect($order)->paypal->toEqual(1)->status->toBe('paid')->price_total->toEqual(105);
-        Storage::disk('local')->assertExists("shop/paypal/{$paypalToken}.json");
-        expect(Storage::disk('local')->json("shop/paypal/{$paypalToken}.json"))->order_id->toBe($order->order_id);
+        expect(File::json(shopFile("paypal/{$paypalToken}.json")))->order_id->toBe($order->order_id);
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
             ->and($response->getCookie(ShopBasketService::clientCookie(''), false)->isCleared())->toBeTrue()
             ->and($response->getCookie('shopping_cart', false)->isCleared())->toBeTrue();
@@ -902,7 +992,9 @@ describe('PayPal return', function () {
 
         returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
 
-        expect(shopDb()->table('client')->where('session_id', 'checkout')->value('payment_method'))->toBe($method);
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->first())
+            ->payment_method->toBe($method)
+            ->payment_reference->toBe('3C679366HH908993F');
         Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($title, $paidWith) {
             $html = $mail->render();
 
@@ -910,6 +1002,7 @@ describe('PayPal return', function () {
                 && $mail->hasSubject('Your order')
                 && str_contains($html, "We've received your payment of <strong>105.00 EUR</strong> {$paidWith} and confirmed your order {$mail->order['order_id']}.")
                 && str_contains(shopMailText($mail), "PAYMENT {$title}, paid")
+                && str_contains(shopMailText($mail), 'PayPal transaction 3C679366HH908993F')
                 && ! str_contains($html, 'bank transfer')
                 && shopMailHexHashWords($mail) === [];
         });
@@ -920,6 +1013,7 @@ describe('PayPal return', function () {
                 && $mail->hasSubject("New order {$mail->order['order_id']}: paid {$paidWith}")
                 && str_contains($html, "Ann Buyer paid <strong>105.00 EUR</strong> {$paidWith}.")
                 && str_contains($html, 'ship the order to the address below')
+                && str_contains(shopMailText($mail), 'PayPal transaction 3C679366HH908993F')
                 && ! str_contains($html, '(paypal)')
                 && shopMailHexHashWords($mail) === [];
         });
@@ -941,9 +1035,23 @@ describe('PayPal return', function () {
             ->assertRedirect('http://shop.test/?shop_payment=failed');
 
         expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue();
-        Storage::disk('local')->assertMissing('shop/paypal/' . ($api === 'nvp' ? SHOP_NVP_TOKEN : SHOP_REST_TOKEN) . '.json');
+        expect(shopFiles())->toBe([]);
         Mail::assertNothingSent();
     })->with(['nvp', 'rest']);
+
+    it('numbers a PayPal order once it is paid, so an unpaid payment takes no number', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        shopCheckout(fillShopBasket([[SHOP_CHAIR]]), ['payment_method' => 'paypal'])->assertOk();
+        shopCheckout(fillShopBasket([[SHOP_TSHIRT, 'S']]))->assertOk()->assertJsonPath('data.order_id', '2026-1');
+
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->pluck('order_id', 'payment_method')->all())
+            ->toBe(['paypal' => '2026-2', 'bank_transfer' => '2026-1']);
+    });
 
     it('leaves products added after the payment started unpaid', function () {
         Mail::fake();
@@ -1034,9 +1142,10 @@ describe('PayPal return', function () {
             && $request->header('PayPal-Request-Id') === ['capture-' . SHOP_REST_TOKEN]);
     });
 
-    it('emails a paid order that fails to save', function () {
+    it('emails a paid order that fails to save under its number', function () {
         Mail::fake();
         Exceptions::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
         writeShopSettings($this->bertaRoot, nvpSettings());
         fakeNvp();
         $token = fillShopBasket([[SHOP_CHAIR]]);
@@ -1045,7 +1154,8 @@ describe('PayPal return', function () {
 
         returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
 
-        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->hasTo('seller@berta.test'));
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->hasTo('seller@berta.test')
+            && $mail->order['order_id'] === '2026-1');
         Exceptions::assertReported(fn (QueryException $e) => str_contains($e->getMessage(), 'disk I/O error'));
     });
 
@@ -1102,8 +1212,9 @@ describe('PayPal buttons', function () {
         'bank transfer only' => fn () => [...restSettings(), 'paymentMethod' => 'bank'],
     ]);
 
-    it('saves and emails an order paid with the buttons', function () {
+    it('saves and emails an order paid with the buttons, and returns its number', function () {
         Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
         writeShopSettings($this->bertaRoot, restSettings());
         fakeRest();
         $token = fillShopBasket([[SHOP_CHAIR]]);
@@ -1112,9 +1223,10 @@ describe('PayPal buttons', function () {
         $response = asShopCustomer($token)
             ->postJson(storefrontUrl('paypal/capture'), ['token' => SHOP_REST_TOKEN])
             ->assertOk()
-            ->assertJsonPath('data.status', 'paid');
+            ->assertJsonPath('data.status', 'paid')
+            ->assertJsonPath('data.order_id', '2026-1');
 
-        expect(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeTrue()
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->value('order_id'))->toBe('2026-1')
             ->and($response->getCookie(ShopBasketService::clientCookie(''), false)->isCleared())->toBeTrue()
             ->and($response->getCookie('shopping_cart', false)->isCleared())->toBeTrue();
         Mail::assertSent(ShopOrderMail::class, 2);
@@ -1130,21 +1242,25 @@ describe('PayPal buttons', function () {
         asShopCustomer($token)
             ->postJson(storefrontUrl('paypal/capture'), ['token' => SHOP_REST_TOKEN])
             ->assertOk()
-            ->assertJsonPath('data.status', 'failed');
+            ->assertJsonPath('data.status', 'failed')
+            ->assertJsonPath('data.order_id', null);
 
         expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue();
         Mail::assertNothingSent();
     });
 
-    it('answers a repeated capture with the first outcome without capturing again', function () {
+    it('answers a repeated capture with the first outcome and number without capturing again', function () {
         Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
         writeShopSettings($this->bertaRoot, restSettings());
         fakeRest();
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
         postJson(storefrontUrl('paypal/capture'), ['token' => SHOP_REST_TOKEN])->assertJsonPath('data.status', 'paid');
 
-        postJson(storefrontUrl('paypal/capture'), ['token' => SHOP_REST_TOKEN])->assertJsonPath('data.status', 'paid');
+        postJson(storefrontUrl('paypal/capture'), ['token' => SHOP_REST_TOKEN])
+            ->assertJsonPath('data.status', 'paid')
+            ->assertJsonPath('data.order_id', '2026-1');
 
         expect(capturesSent())->toBe(1);
     });
@@ -1213,6 +1329,71 @@ describe('PayPal buttons', function () {
     });
 });
 
+describe('invoices', function () {
+    it('attaches the invoice of a bank transfer order to the customer email only, and keeps it', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        writeShopSettings($this->bertaRoot, invoiceSettings());
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        $invoice = File::get(shopFile('invoices/invoice-2026-1.pdf'));
+        expect($invoice)->toStartWith('%PDF-');
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
+            && $mail->hasAttachment(Attachment::fromData(fn () => $invoice, 'invoice-2026-1.pdf')->withMime('application/pdf'))
+            && str_contains(shopMailText($mail), 'Your invoice is attached.')
+            && shopMailHexHashWords($mail) === []);
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->forSeller
+            && $mail->attachments() === []
+            && ! str_contains(shopMailText($mail), 'Your invoice is attached.'));
+    });
+
+    it('attaches the invoice of a PayPal order once PayPal takes the payment', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        writeShopSettings($this->bertaRoot, [...restSettings(), ...invoiceSettings()]);
+        fakeRest();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        $invoice = File::get(shopFile('invoices/invoice-2026-1.pdf'));
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
+            && $mail->hasAttachment(Attachment::fromData(fn () => $invoice, 'invoice-2026-1.pdf')->withMime('application/pdf')));
+    });
+
+    it('makes no invoice when invoices are off or the shop has no seller details', function (array $shop) {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, $shop);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        expect(shopFiles())->toBe([]);
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
+            && $mail->attachments() === []
+            && ! str_contains(shopMailText($mail), 'Your invoice is attached.'));
+    })->with([
+        'invoices off' => [['sellerDetails' => "Riga Prints SIA\nIBAN LV80BANK0000435195001"]],
+        'no seller details' => [['invoices' => 'yes', 'sellerDetails' => ' ']],
+    ]);
+
+    it('keeps the invoice of an order when the shop sends no emails', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        File::delete($this->bertaRoot . '/engine/hosting');
+        writeShopSettings($this->bertaRoot, invoiceSettings());
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        expect(shopFiles())->toBe(['invoices/invoice-2026-1.pdf']);
+        Mail::assertNothingSent();
+    });
+});
+
 it('lists the products of priced entries for the shop admin', function () {
     actingAs(new User);
 
@@ -1269,7 +1450,7 @@ it('adds the columns of newer shop versions to an older shop database', function
 
     $schema = (new ShopClientsDataService(''))->getConnection()->getSchemaBuilder();
 
-    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address', 'status', 'admin_notes', 'payment_method']))->toBeTrue()
+    expect($schema->hasColumns('client', ['company', 'company_reg_no', 'legal_address', 'status', 'admin_notes', 'payment_method', 'vat_no', 'payment_reference']))->toBeTrue()
         ->and($schema->hasColumn('orders', 'weight'))->toBeTrue()
-        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
+        ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(9);
 });

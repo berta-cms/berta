@@ -91,6 +91,11 @@ describe('ShopCartRenderService', () => {
         ' class="xNgEditable xProperty-cartTextCompanyRegNo xCaption-Company+reg.+no." data-path="blog/settings/siteTexts/cartTextCompanyRegNo" data-empty-caption="Company reg. no."',
       content: '',
     },
+    vatNumber: {
+      attributes:
+        ' class="xNgEditable xProperty-cartTextVatNo xCaption-VAT+no." data-path="blog/settings/siteTexts/cartTextVatNo" data-empty-caption="VAT no."',
+      content: '',
+    },
     legalAddress: {
       attributes:
         ' class="xNgEditable xProperty-cartTextLegalAddress xCaption-Legal+address" data-path="blog/settings/siteTexts/cartTextLegalAddress" data-empty-caption="Legal address"',

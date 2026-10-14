@@ -276,8 +276,9 @@ berta-shop-orders {
     }
   }
 
-  // A text button with an icon: Refresh, and an order's "Add private notes"
+  // A text button with an icon: Refresh, and an order's "Download invoice" and "Add private notes"
   .bt-sh-orders-actions button,
+  .bt-sh-order-download-invoice,
   .bt-sh-order-add-notes {
     align-items: center;
     background: none;
@@ -308,6 +309,11 @@ berta-shop-orders {
       color: variables.$grey-40;
       cursor: default;
     }
+  }
+
+  // Apart from "Add private notes" below it
+  .bt-sh-order-download-invoice {
+    margin-bottom: 1em;
   }
 
   .bt-sh-order-header {

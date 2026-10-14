@@ -91,7 +91,7 @@
       </label>
 
       <div class="cart-fields">
-        <div class="cart-field cart-field--required js-cart-field js-cart-company-field">
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field">
           <label class="cart-label" for="company"><span class="xNgEditable xProperty-cartTextCompany xCaption-Company" data-path="blog/settings/siteTexts/cartTextCompany" data-empty-caption="Company"><span class="xEmpty">&nbsp;Company&nbsp;</span></span></label>
           <input class="cart-input" type="text" name="company" id="company" autocomplete="billing organization" aria-required="true">
         </div>
@@ -99,6 +99,11 @@
         <div class="cart-field cart-field--required js-cart-field js-cart-company-field">
           <label class="cart-label" for="company_reg_no"><span class="xNgEditable xProperty-cartTextCompanyRegNo xCaption-Company+reg.+no." data-path="blog/settings/siteTexts/cartTextCompanyRegNo" data-empty-caption="Company reg. no."><span class="xEmpty">&nbsp;Company reg. no.&nbsp;</span></span></label>
           <input class="cart-input" type="text" name="company_reg_no" id="company_reg_no" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field js-cart-field js-cart-company-field">
+          <label class="cart-label" for="vat_no"><span class="xNgEditable xProperty-cartTextVatNo xCaption-VAT+no." data-path="blog/settings/siteTexts/cartTextVatNo" data-empty-caption="VAT no."><span class="xEmpty">&nbsp;VAT no.&nbsp;</span></span></label>
+          <input class="cart-input" type="text" name="vat_no" id="vat_no" autocomplete="off">
         </div>
 
         <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field">

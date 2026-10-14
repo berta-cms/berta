@@ -116,7 +116,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       </label>
 
       <div class="cart-fields">
-        <div class="cart-field cart-field--required js-cart-field js-cart-company-field{% if not isEditMode %} hidden{% endif %}">
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field{% if not isEditMode %} hidden{% endif %}">
           <label class="cart-label" for="company">{{ cart.text(company, 'Company', isEditMode) }}</label>
           <input class="cart-input" type="text" name="company" id="company" autocomplete="billing organization" aria-required="true">
         </div>
@@ -124,6 +124,11 @@ export const TWIG_TEMPLATES: Record<string, string> = {
         <div class="cart-field cart-field--required js-cart-field js-cart-company-field{% if not isEditMode %} hidden{% endif %}">
           <label class="cart-label" for="company_reg_no">{{ cart.text(companyRegistrationNumber, 'Company reg. no.', isEditMode) }}</label>
           <input class="cart-input" type="text" name="company_reg_no" id="company_reg_no" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field js-cart-field js-cart-company-field{% if not isEditMode %} hidden{% endif %}">
+          <label class="cart-label" for="vat_no">{{ cart.text(vatNumber, 'VAT no.', isEditMode) }}</label>
+          <input class="cart-input" type="text" name="vat_no" id="vat_no" autocomplete="off">
         </div>
 
         <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field{% if not isEditMode %} hidden{% endif %}">

@@ -113,6 +113,12 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
     caption: 'Company reg. no.',
     siteOnly: true,
   },
+  vatNumber: {
+    setting: 'cartTextVatNo',
+    default: 'VAT no.',
+    caption: 'VAT no.',
+    siteOnly: true,
+  },
   legalAddress: {
     setting: 'cartTextLegalAddress',
     default: 'Legal address',

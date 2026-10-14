@@ -96,7 +96,7 @@ describe('editable texts', function () {
         'cartTextLegalPerson', 'cartTextNameSurname', 'cartTextPaymentDescription', 'cartTextPaypalPayment',
         'cartTextPhoneNumber', 'cartTextPrice', 'cartTextPromoBtn', 'cartTextPromoCode', 'cartTextQuantity',
         'cartTextReceiveNews', 'cartTextReturnStore', 'cartTextShipAddr', 'cartTextShippingTo', 'cartTextSum',
-        'cartTextTerms', 'cartTextTitle', 'cartTextTotal', 'shippingTotalText',
+        'cartTextTerms', 'cartTextTitle', 'cartTextTotal', 'cartTextVatNo', 'shippingTotalText',
     ])->mapWithKeys(fn ($setting) => [$setting => "Custom {$setting}"])->all();
 
     it('renders the cart texts', function (bool $isEditMode, array $siteTexts) {

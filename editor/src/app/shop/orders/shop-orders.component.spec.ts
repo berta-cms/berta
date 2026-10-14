@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngxs/store';
 import { of } from 'rxjs';
 
+import { AppState } from '../../app-state/app.state';
 import { SitesSharedModule } from '../../sites/shared/sites-shared.module';
 import { ShopSettingsState } from '../settings/shop-settings.state';
+import { ShopStateService } from '../shop-state.service';
 import { UpdateShopOrderNotesAction } from './shop-orders.actions';
 import { ShopOrdersComponent } from './shop-orders.component';
 import { ShopOrdersPage } from './shop-orders.state';
@@ -30,12 +32,16 @@ describe('ShopOrdersComponent', () => {
 
   let fixture: ComponentFixture<ShopOrdersComponent>;
   let dispatch: jasmine.Spy;
+  let getOrderInvoice: jasmine.Spy;
+  let invoicesEnabled: boolean;
 
   const orderCards = () =>
     Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.setting'));
   const addNotesButton = (card: HTMLElement) =>
     card.querySelector<HTMLButtonElement>('.bt-sh-order-add-notes');
   const notesTextarea = (card: HTMLElement) => card.querySelector('textarea');
+  const invoiceButton = (card: HTMLElement) =>
+    card.querySelector<HTMLButtonElement>('.bt-sh-order-download-invoice');
   const paymentMethod = (card: HTMLElement) =>
     Array.from(card.querySelectorAll('p'))
       .find((row) => row.textContent.trim().startsWith('Payment'))
@@ -57,27 +63,44 @@ describe('ShopOrdersComponent', () => {
     return notesTextarea(card);
   };
 
+  const createComponent = () => {
+    fixture?.nativeElement.remove();
+    fixture = TestBed.createComponent(ShopOrdersComponent);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+  };
+
   beforeEach(async () => {
     dispatch = jasmine.createSpy('dispatch').and.returnValue(of(undefined));
+    getOrderInvoice = jasmine.createSpy('getOrderInvoice');
+    invoicesEnabled = true;
     const store = {
-      select: (selector: unknown) =>
-        of(
-          selector === ShopSettingsState.getCurrentCurrency
-            ? 'EUR'
-            : ORDERS_PAGE,
-        ),
+      select: (selector: unknown) => {
+        if (selector === ShopSettingsState.getCurrentCurrency) {
+          return of('EUR');
+        }
+        if (selector === ShopSettingsState.getCurrentInvoicesEnabled) {
+          return of(invoicesEnabled);
+        }
+        return of(ORDERS_PAGE);
+      },
+      selectSnapshot: (selector: unknown) =>
+        selector === AppState.getSite
+          ? 'second'
+          : { orders: 'http://berta.test/_api/v1/plugin/shop/orders' },
       dispatch,
     } as unknown as Store;
 
     await TestBed.configureTestingModule({
       imports: [SitesSharedModule],
       declarations: [ShopOrdersComponent],
-      providers: [{ provide: Store, useValue: store }],
+      providers: [
+        { provide: Store, useValue: store },
+        { provide: ShopStateService, useValue: { getOrderInvoice } },
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ShopOrdersComponent);
-    document.body.appendChild(fixture.nativeElement);
-    fixture.detectChanges();
+    createComponent();
   });
 
   afterEach(() => {
@@ -131,5 +154,39 @@ describe('ShopOrdersComponent', () => {
       new UpdateShopOrderNotesAction(5, 'Gift wrap'),
     );
     expect(notesTextarea(card)).toBe(textarea);
+  });
+
+  it('offers the invoice of each order only while the shop makes invoices', () => {
+    expect(orderCards().map((card) => !!invoiceButton(card))).toEqual([
+      true,
+      true,
+    ]);
+
+    invoicesEnabled = false;
+    createComponent();
+
+    expect(orderCards().map((card) => !!invoiceButton(card))).toEqual([
+      false,
+      false,
+    ]);
+  });
+
+  it("saves an order's invoice as a PDF named by the order's number", () => {
+    getOrderInvoice.and.returnValue(
+      of(new Blob(['%PDF-'], { type: 'application/pdf' })),
+    );
+    const click = spyOn(HTMLAnchorElement.prototype, 'click');
+
+    invoiceButton(orderCards()[0]).click();
+
+    expect(getOrderInvoice).toHaveBeenCalledWith(
+      'http://berta.test/_api/v1/plugin/shop/orders',
+      'second',
+      6,
+    );
+    expect(click).toHaveBeenCalledTimes(1);
+    const link = click.calls.mostRecent().object as HTMLAnchorElement;
+    expect(link.download).toBe('invoice-ORD-6.pdf');
+    expect(link.href).toMatch(/^blob:/);
   });
 });

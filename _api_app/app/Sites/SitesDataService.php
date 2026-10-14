@@ -3,6 +3,7 @@
 namespace App\Sites;
 
 use App\Plugins\Shop\ShopClientsDataService;
+use App\Plugins\Shop\ShopOrderNumbersDataService;
 use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
 use App\Shared\Helpers;
@@ -188,6 +189,9 @@ class SitesDataService extends Storage
             $clientsDataService->TruncateClients();
             $ordersDataService = new ShopOrdersDataService($name);
             $ordersDataService->TruncateOrders();
+            // A cloned site's order numbers start from 1
+            $orderNumbersDataService = new ShopOrderNumbersDataService($name);
+            $orderNumbersDataService->TruncateOrderNumbers();
             $productsDataService = new ShopProductsDataService($name);
             $productsDataService->ClearReservation();
         }

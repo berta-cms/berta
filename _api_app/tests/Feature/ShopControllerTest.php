@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\patchJson;
 use function Pest\Laravel\postJson;
@@ -55,6 +56,7 @@ it('returns 403 from every shop admin endpoint on a domain without a shop key', 
     'product update' => ['PATCH', '/products'],
     'orders' => ['GET', '/orders'],
     'order update' => ['PATCH', '/orders'],
+    'order invoice' => ['GET', '/orders/1/invoice'],
     'regional costs' => ['GET', '/regional-costs'],
     'region add' => ['POST', '/region'],
     'region update' => ['PATCH', '/region'],
@@ -201,7 +203,7 @@ describe('regions', function () {
         $regions = new ShopShippingRegionsDataService('');
 
         expect($regions->query()->orderBy('id')->pluck('name')->all())->toBe(['Rock & "Roll"', 'Plain'])
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(9);
     });
 });
 
@@ -234,6 +236,11 @@ function getShopOrdersPage(int $page, ?string $status = null): array
     return getJson('http://shop.test' . route('orders', [], false) . "?site=&page={$page}{$statusQuery}")
         ->assertOk()
         ->json('data')[''];
+}
+
+function shopOrderInvoiceUrl(int $id, string $site = ''): string
+{
+    return 'http://shop.test' . route('order-invoice', ['id' => $id], false) . '?site=' . $site;
 }
 
 /**
@@ -421,7 +428,59 @@ describe('orders', function () {
         expect(shopOrderNotes())->toBe([1 => null, 2 => null]);
     });
 
-    it('adds an empty status, private notes and payment method to the orders of an older shop version', function () {
+    it('downloads the invoice issued to the customer unchanged', function () {
+        writeShopSettings($this->bertaRoot, ['invoices' => 'yes', 'sellerDetails' => 'Riga Prints SIA']);
+        placeShopOrders(1);
+        File::ensureDirectoryExists(dirname(shopFile('invoices/invoice-ORD-1.pdf')));
+        File::put(shopFile('invoices/invoice-ORD-1.pdf'), '%PDF-issued');
+
+        $response = get(shopOrderInvoiceUrl(1));
+
+        $response->assertDownload('invoice-ORD-1.pdf')->assertHeader('Content-Type', 'application/pdf');
+        expect($response->streamedContent())->toBe('%PDF-issued');
+    });
+
+    it('makes and keeps the invoice of an order that has none', function () {
+        writeShopSettings($this->bertaRoot, ['invoices' => 'yes', 'sellerDetails' => 'Riga Prints SIA']);
+        placeShopOrders(1);
+        updateShopOrders([1 => ['name' => 'Ann Buyer', 'price_total' => 15, 'shipping' => 5, 'vat' => 21, 'payment_method' => 'bank_transfer', 'paypal' => 0]]);
+
+        $response = get(shopOrderInvoiceUrl(1));
+
+        $response->assertDownload('invoice-ORD-1.pdf');
+        expect($response->streamedContent())
+            ->toStartWith('%PDF-')
+            ->toBe(File::get(shopFile('invoices/invoice-ORD-1.pdf')));
+    });
+
+    it('returns 404 for an invoice when invoices are off or the shop has no seller details', function (array $shop) {
+        writeShopSettings($this->bertaRoot, $shop);
+        placeShopOrders(1);
+
+        getJson(shopOrderInvoiceUrl(1))
+            ->assertNotFound()
+            ->assertJsonPath('message', 'Invoices are turned off, or the shop has no seller details.');
+
+        expect(shopFiles())->toBe([]);
+    })->with([
+        'invoices off' => [['sellerDetails' => 'Riga Prints SIA']],
+        'no seller details' => [['invoices' => 'yes']],
+    ]);
+
+    it('returns 404 for the invoice of no order', function (int $id, string $site, string $message) {
+        writeShopSettings($this->bertaRoot, ['invoices' => 'yes', 'sellerDetails' => 'Riga Prints SIA']);
+        placeShopOrders(1);
+
+        getJson(shopOrderInvoiceUrl($id, $site))
+            ->assertNotFound()
+            ->assertJsonPath('message', $message);
+    })->with([
+        'an unknown order' => [99, '', 'Order not found!'],
+        'a basket' => [2, '', 'Order not found!'],
+        'an unknown site' => [1, 'elsewhere', 'Site not found!'],
+    ]);
+
+    it('adds an empty status, private notes, payment method, VAT number and payment reference to the orders of an older shop version', function () {
         writeShopSettings($this->bertaRoot, ['version' => '5']);
         $database = new SQLite3($this->bertaRoot . '/storage/shop-db.sqlite');
         $database->exec('CREATE TABLE "client" ("id" integer not null, "created_at" datetime not null, "session_id" varchar not null, "order_id" varchar, primary key ("id"))');
@@ -434,6 +493,8 @@ describe('orders', function () {
             ->and($page['orders'][0])->toHaveKey('status', null)
             ->and($page['orders'][0])->toHaveKey('admin_notes', null)
             ->and($page['orders'][0])->toHaveKey('payment_method', null)
-            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(8);
+            ->and($page['orders'][0])->toHaveKey('vat_no', null)
+            ->and($page['orders'][0])->toHaveKey('payment_reference', null)
+            ->and((new SiteSettingsDataService(''))->get()['shop']['version'])->toEqual(9);
     });
 });

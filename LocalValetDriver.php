@@ -110,7 +110,12 @@ class LocalValetDriver extends BasicValetDriver
             return [self::STATIC, $sitePath . '/engine/dist/index.html'];
         }
 
-        if (preg_match('#^/storage.*\.(xml|sqlite|db|log|php)$#', $uri) || $uri === '/storage/' || $uri === '/_templates/') {
+        if (
+            preg_match('#^/storage/(.*/)?_shop_files/#', $uri)
+            || preg_match('#^/storage.*\.(xml|sqlite|db|log|php)$#', $uri)
+            || $uri === '/storage/'
+            || $uri === '/_templates/'
+        ) {
             return [self::NOT_FOUND, null];
         }
 

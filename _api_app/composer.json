@@ -18,6 +18,7 @@
         "ext-gd": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
+        "barryvdh/laravel-dompdf": "^3.1",
         "firebase/php-jwt": "^7.0",
         "intervention/image": "^3.11",
         "laravel/ai": "^1.0",

@@ -3,8 +3,11 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
+import { AppState } from '../../app-state/app.state';
 import { stringToCurrency } from '../../shared/helpers';
 import { ShopSettingsState } from '../settings/shop-settings.state';
+import { ShopStateService } from '../shop-state.service';
+import { ShopState } from '../shop.state';
 import {
   LoadShopOrdersPageAction,
   UpdateShopOrderNotesAction,
@@ -103,6 +106,11 @@ const PAYMENT_METHODS: Record<string, string> = {
               Company reg. no. <span>{{ order.company_reg_no }}</span>
             </p>
           }
+          @if (order.vat_no) {
+            <p>
+              VAT no. <span>{{ order.vat_no }}</span>
+            </p>
+          }
           @if (order.legal_address) {
             <p>
               Legal address <span>{{ order.legal_address }}</span>
@@ -185,6 +193,11 @@ const PAYMENT_METHODS: Record<string, string> = {
             Payment
             <span>{{ paymentMethodTitle(order) }}</span>
           </p>
+          @if (order.payment_reference) {
+            <p>
+              PayPal transaction <span>{{ order.payment_reference }}</span>
+            </p>
+          }
           <div class="card">
             @if (order.orders && order.orders.length) {
               <table>
@@ -203,6 +216,17 @@ const PAYMENT_METHODS: Record<string, string> = {
               </table>
             }
           </div>
+          @if (invoicesEnabled$ | async) {
+            <button
+              type="button"
+              class="bt-sh-order-download-invoice"
+              [disabled]="invoiceLoadingFor.has(order.id)"
+              (click)="downloadInvoice(order)"
+            >
+              <bt-icon-download></bt-icon-download>
+              Download invoice
+            </button>
+          }
           @if (order.admin_notes || notesOpenedFor.has(order.id)) {
             <berta-long-text-input
               label="Private notes"
@@ -252,9 +276,12 @@ const PAYMENT_METHODS: Record<string, string> = {
 export class ShopOrdersComponent {
   ordersPage$: Observable<ShopOrdersPage>;
   currency$: Observable<string>;
+  invoicesEnabled$: Observable<boolean>;
   isLoading = false;
   /** The orders without notes whose notes field the shop owner has opened */
   notesOpenedFor = new Set<number>();
+  /** The orders whose invoice is being downloaded */
+  invoiceLoadingFor = new Set<number>();
 
   // 'All' clears the filter; 'none' finds the orders placed before statuses existed
   readonly filterChips: { value: string | null; title: string }[] = [
@@ -271,11 +298,15 @@ export class ShopOrdersComponent {
   constructor(
     private store: Store,
     private elementRef: ElementRef<HTMLElement>,
+    private shopStateService: ShopStateService,
   ) {
     this.ordersPage$ = this.store.select(
       ShopOrdersState.getCurrentSiteOrdersPage,
     );
     this.currency$ = this.store.select(ShopSettingsState.getCurrentCurrency);
+    this.invoicesEnabled$ = this.store.select(
+      ShopSettingsState.getCurrentInvoicesEnabled,
+    );
   }
 
   goToPage(page: number, statusFilter: string | null) {
@@ -304,6 +335,30 @@ export class ShopOrdersComponent {
     if (!(event.target as HTMLTextAreaElement).value.trim()) {
       this.notesOpenedFor.delete(orderId);
     }
+  }
+
+  /** Saves the order's invoice PDF. The shop's message is shown when it has none. */
+  downloadInvoice(order: { id: number; order_id: string }) {
+    const site = this.store.selectSnapshot(AppState.getSite);
+    const ordersUrl = this.store.selectSnapshot(ShopState.getURLs).orders;
+
+    this.invoiceLoadingFor.add(order.id);
+    this.shopStateService
+      .getOrderInvoice(ordersUrl, site, order.id)
+      .pipe(finalize(() => this.invoiceLoadingFor.delete(order.id)))
+      .subscribe({
+        next: (pdf) => {
+          const url = URL.createObjectURL(pdf);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `invoice-${order.order_id}.pdf`;
+          link.click();
+          // Once the browser has taken the file
+          setTimeout(() => URL.revokeObjectURL(url));
+        },
+        // The service shows the error
+        error: () => {},
+      });
   }
 
   /**
