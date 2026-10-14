@@ -15,6 +15,7 @@
 
   <div id="shoppingCartOrderPlaced" class="hidden">
     <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNextStep"></p>
     <p class="xOrderNumber"></p>
     <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">Custom cartTextReturnStore</a></p>
   </div>
@@ -84,7 +85,7 @@
           <span>
             Custom shippingTotalText
           </span>
-          <div class="total pull-right">EUR <span id="shippingTotalSum"></span></div>
+          <div class="total pull-right"><span id="shippingTotalSum"></span> EUR</div>
         </div>
       </div>
     </div>
@@ -103,8 +104,8 @@
         <div class="padded shoppingCartTotal">
                         Custom cartTextTotal
           
-                    <div class="pull-right total">EUR <span class="sumTotal"></span></div>
-          <div class="vatprice hidden">Custom cartTextInclVat (<span class="vatRate"></span>%)<span class="pull-right">EUR <span class="vatAmount"></span></span></div>
+                    <div class="pull-right total"><span class="sumTotal"></span> EUR</div>
+          <div class="vatprice hidden">Custom cartTextInclVat (<span class="vatRate"></span>%)<span class="pull-right"><span class="vatAmount"></span> EUR</span></div>
         </div>
       </div>
     </div>
@@ -257,7 +258,7 @@
                       <p>
               Custom cartTextCheckoutDescription            </p>
           
-          <p class="text-right checkoutSumTotal">Custom cartTextTotal EUR <span class="sumTotal"></span></p>
+          <p class="text-right checkoutSumTotal">Custom cartTextTotal <span class="sumTotal"></span> EUR</p>
 
                       
             <p class="text-right no-margin" id="required-fields-error">Custom cartTextFillRequiredFields</p>

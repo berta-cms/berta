@@ -18,6 +18,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
   <div id="shoppingCartOrderPlaced" class="hidden">
     <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNextStep"></p>
     <p class="xOrderNumber"></p>
     <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">{{ returnToStore.content }}</a></p>
   </div>
@@ -127,7 +128,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <span{{ shippingTotal.attributes|raw }}>
             {{ shippingTotal.content }}
           </span>
-          <div class="total pull-right">{{ currency }} <span id="shippingTotalSum"></span></div>
+          <div class="total pull-right"><span id="shippingTotalSum"></span> {{ currency }}</div>
         </div>
       </div>
     </div>
@@ -163,8 +164,8 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               {% if includedVat.content %}{{ includedVat.content }}{% else %}<span class="xEmpty">&nbsp;incl vat&nbsp;</span>{% endif %}
             </div>
           {% endif %}
-          <div class="pull-right total">{{ currency }} <span class="sumTotal"></span></div>
-          <div class="vatprice hidden">{{ includedVat.content }} (<span class="vatRate"></span>%)<span class="pull-right">{{ currency }} <span class="vatAmount"></span></span></div>
+          <div class="pull-right total"><span class="sumTotal"></span> {{ currency }}</div>
+          <div class="vatprice hidden">{{ includedVat.content }} (<span class="vatRate"></span>%)<span class="pull-right"><span class="vatAmount"></span> {{ currency }}</span></div>
         </div>
       </div>
     </div>
@@ -466,7 +467,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             </p>
           {% endif %}
 
-          <p class="text-right checkoutSumTotal">{{ totalLabel }} {{ currency }} <span class="sumTotal"></span></p>
+          <p class="text-right checkoutSumTotal">{{ totalLabel }} <span class="sumTotal"></span> {{ currency }}</p>
 
           {% if isEditMode %}
             {% if config.termsLink %}

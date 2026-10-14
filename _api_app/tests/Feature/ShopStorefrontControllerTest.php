@@ -144,6 +144,34 @@ function shopCheckout(string $token, array $form = [], string $site = ''): TestR
         ], $form));
 }
 
+/**
+ * The order email's text as its reader sees it, without the markup
+ */
+function shopMailText(ShopOrderMail $mail): string
+{
+    return preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($mail->render()), ENT_QUOTES));
+}
+
+/**
+ * Where the order email's html and text parts match SpamAssassin's HEXHASH_WORD pattern: a word, a hash-like run
+ * of digits and hyphens (as an order number is), then a word. Two matches in an email add spam points.
+ *
+ * @return list<string>
+ */
+function shopMailHexHashWords(ShopOrderMail $mail): array
+{
+    // Spam filters read the html with whitespace at block tags, as a reader sees it
+    $html = html_entity_decode(strip_tags(preg_replace('/<(br|p|div|td|tr|h1|title)\b/i', ' $0', $mail->render())), ENT_QUOTES);
+    $text = view('Plugins/Shop/orderMailText', $mail->buildViewData())->render();
+    preg_match_all(
+        '/\s[A-Z]?[a-z]{1,15}\s(?![a-z]{10,20}\s)[a-z]{0,10}(?!-?\d{1,5}-)(?!\d{10}\s)(?:(?!--)[-0-9a-f]){10,64}(?:[g-z][a-z]{0,10})?\s[A-Z]?[a-z]{1,15}\b/',
+        preg_replace('/\s+/', ' ', "{$html} {$text}"),
+        $matches,
+    );
+
+    return $matches[0];
+}
+
 function fakeNvp(string $captureAck = 'Success'): void
 {
     Http::fake(['api-3t.paypal.com/nvp' => fn (HttpRequest $request) => match ($request['METHOD']) {
@@ -509,10 +537,94 @@ describe('bank transfer checkout', function () {
         shopCheckout($token)->assertOk();
 
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
-            && str_contains($mail->render(), "<strong>{$thanks}</strong>"));
+            && str_contains(shopMailText($mail), $thanks));
     })->with([
         'with a page title' => [['pageTitle' => 'Riga Prints'], 'Thanks for shopping with Riga Prints!'],
         'without one' => [[], 'Thanks for shopping with us!'],
+    ]);
+
+    it('asks the customer to pay to the seller details and tells the seller the order is not paid yet', function () {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, ['sellerDetails' => "Riga Prints SIA\nIBAN LV80BANK0000435195001"]);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        $orderId = shopCheckout($token)->assertOk()->json('data.order_id');
+
+        // 100 + 5 shipping
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($orderId) {
+            $html = $mail->render();
+            $text = shopMailText($mail);
+
+            return ! $mail->forSeller
+                && $mail->hasSubject('Your order')
+                && str_contains($text, 'To complete it, please pay by bank transfer.')
+                && str_contains($html, "Transfer <strong>105.00 EUR</strong> to the account below, with the payment reference <strong>{$orderId}</strong>, so we can match your payment.")
+                && str_contains($text, "Amount 105.00 EUR Reference {$orderId}")
+                && substr_count($html, 'IBAN LV80BANK0000435195001') === 1
+                && str_contains($html, 'Riga Prints SIA<br />')
+                && str_contains($text, 'PAYMENT Bank transfer, awaiting payment')
+                && ! str_contains($html, 'being processed');
+        });
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($orderId) {
+            $html = $mail->render();
+
+            return $mail->forSeller
+                && $mail->hasSubject("New order {$orderId}: awaiting bank transfer")
+                && str_contains($html, 'No payment has been received yet.')
+                && str_contains($html, "Wait for 105.00 EUR to arrive in your bank account, with the payment reference {$orderId}.")
+                && str_contains($html, 'IBAN LV80BANK0000435195001')
+                && ! str_contains($html, 'did not get bank details');
+        });
+    });
+
+    it('tells the customer the bank details follow and the seller to send them when the shop has none', function () {
+        Mail::fake();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
+            && str_contains($mail->render(), "We'll send you the bank details for the transfer shortly"));
+        Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->forSeller
+            && str_contains($mail->render(), 'the customer did not get bank details. Send them yours.'));
+    });
+
+    it('sends a plain text part with the same words as the html one', function () {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, ['sellerDetails' => 'Riga Prints SIA, IBAN LV80BANK0000435195001']);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        $orderId = shopCheckout($token, ['name' => "Ann & O'Brien"])->assertOk()->json('data.order_id');
+
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($orderId) {
+            if ($mail->forSeller) {
+                $mail->assertSeeInText("Ann & O'Brien placed an order of 105.00 EUR and chose to pay by bank transfer.")
+                    ->assertSeeInText('Total: 105.00 EUR');
+            } else {
+                $mail->assertSeeInText("Transfer 105.00 EUR to the account below, with the payment reference {$orderId}, so we can match your payment.")
+                    ->assertSeeInText('IBAN LV80BANK0000435195001');
+            }
+            $mail->assertDontSeeInText('<strong>');
+
+            return true;
+        });
+    });
+
+    it('words the order number so spam filters do not take it for a hash', function (array $shop) {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, $shop);
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token)->assertOk();
+
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) {
+            expect(shopMailHexHashWords($mail))->toBe([]);
+
+            return true;
+        });
+    })->with([
+        'with seller details' => [['sellerDetails' => "Riga Prints SIA\nIBAN LV80BANK0000435195001"]],
+        'without seller details' => [[]],
     ]);
 
     it('takes off at most the price of the products for a promo discount over 100%', function () {
@@ -534,11 +646,11 @@ describe('bank transfer checkout', function () {
         // 100 + 5 shipping, of which 25.5% VAT
         expect(shopDb()->table('client')->where('session_id', 'checkout')->value('vat'))->toEqual(25.5);
         Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) {
-            $html = $mail->render();
+            $text = shopMailText($mail);
 
             return $mail->totals['vat_percent'] === 25.5
-                && str_contains($html, 'Total excl. VAT</td><td>83.67')
-                && str_contains($html, 'VAT (25.5%)</td><td>21.33');
+                && str_contains($text, 'Total excl. VAT 83.67')
+                && str_contains($text, 'VAT (25.5%) 21.33');
         });
     });
 
@@ -779,6 +891,40 @@ describe('PayPal return', function () {
             ->and($response->getCookie('shopping_cart', false)->isCleared())->toBeTrue();
         Mail::assertSent(ShopOrderMail::class, 2);
     })->with(['nvp', 'rest']);
+
+    it('tells the customer the order is paid and the seller to ship it', function (string $method, string $title, string $paidWith) {
+        Mail::fake();
+        writeShopSettings($this->bertaRoot, restSettings());
+        fakeRest();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => $method])->assertOk();
+
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($title, $paidWith) {
+            $html = $mail->render();
+
+            return ! $mail->forSeller
+                && $mail->hasSubject('Your order')
+                && str_contains($html, "We've received your payment of <strong>105.00 EUR</strong> {$paidWith} and confirmed your order {$mail->order['order_id']}.")
+                && str_contains(shopMailText($mail), "PAYMENT {$title}, paid")
+                && ! str_contains($html, 'bank transfer')
+                && shopMailHexHashWords($mail) === [];
+        });
+        Mail::assertSent(ShopOrderMail::class, function (ShopOrderMail $mail) use ($paidWith) {
+            $html = $mail->render();
+
+            return $mail->forSeller
+                && $mail->hasSubject("New order {$mail->order['order_id']}: paid {$paidWith}")
+                && str_contains($html, "Ann Buyer paid <strong>105.00 EUR</strong> {$paidWith}.")
+                && str_contains($html, 'ship the order to the address below')
+                && ! str_contains($html, '(paypal)')
+                && shopMailHexHashWords($mail) === [];
+        });
+    })->with([
+        'PayPal' => ['paypal', 'PayPal', 'with PayPal'],
+        'card' => ['creditcard', 'Card (via PayPal)', 'by card via PayPal'],
+    ]);
 
     it('saves nothing when PayPal declines the payment', function (string $api) {
         Mail::fake();

@@ -15,6 +15,7 @@
 
   <div id="shoppingCartOrderPlaced" class="hidden">
     <h2 class="xOrderPlacedMessage"></h2>
+    <p class="xOrderNextStep"></p>
     <p class="xOrderNumber"></p>
     <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();"></a></p>
   </div>
@@ -90,7 +91,7 @@
           <span class="xNgEditable xProperty-shippingTotalText xCaption-Shipping" data-path="blog/settings/siteTexts/shippingTotalText" data-empty-caption="Shipping">
             Shipping
           </span>
-          <div class="total pull-right">EUR <span id="shippingTotalSum"></span></div>
+          <div class="total pull-right"><span id="shippingTotalSum"></span> EUR</div>
         </div>
       </div>
     </div>
@@ -113,8 +114,8 @@
           
                       <div class="xNgEditable xProperty-cartTextInclVat xCaption-incl+vat" data-path="blog/settings/siteTexts/cartTextInclVat" data-empty-caption="incl vat">
               <span class="xEmpty">&nbsp;incl vat&nbsp;</span>            </div>
-                    <div class="pull-right total">EUR <span class="sumTotal"></span></div>
-          <div class="vatprice hidden"> (<span class="vatRate"></span>%)<span class="pull-right">EUR <span class="vatAmount"></span></span></div>
+                    <div class="pull-right total"><span class="sumTotal"></span> EUR</div>
+          <div class="vatprice hidden"> (<span class="vatRate"></span>%)<span class="pull-right"><span class="vatAmount"></span> EUR</span></div>
         </div>
       </div>
     </div>
@@ -277,7 +278,7 @@
                       <p class="xNgEditable xProperty-cartTextCheckoutDescription xCaption-checkout+description" data-path="blog/settings/siteTexts/cartTextCheckoutDescription" data-empty-caption="checkout description">
               <span class="xEmpty">&nbsp;checkout description&nbsp;</span>            </p>
           
-          <p class="text-right checkoutSumTotal">total EUR <span class="sumTotal"></span></p>
+          <p class="text-right checkoutSumTotal">total <span class="sumTotal"></span> EUR</p>
 
                       
             <div class="xNgEditable xProperty-cartTextFillRequiredFields xCaption-Please+fill+in+all+required+fields" data-path="blog/settings/siteTexts/cartTextFillRequiredFields" data-empty-caption="Please fill in all required fields">
