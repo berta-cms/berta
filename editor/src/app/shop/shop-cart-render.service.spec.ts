@@ -8,32 +8,32 @@ describe('ShopCartRenderService', () => {
   const DEFAULT_TEXTS = {
     emptyCart: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextEmpty xCaption-shopping+cart+empty" data-path="blog/settings/siteTexts/cartTextEmpty" data-empty-caption="shopping cart empty"',
-      content: 'shopping cart is empty',
+        ' class="xNgEditable xProperty-cartTextEmpty xCaption-Shopping+cart+empty" data-path="blog/settings/siteTexts/cartTextEmpty" data-empty-caption="Shopping cart empty"',
+      content: 'Shopping cart is empty',
     },
     expiredCart: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextExpired xCaption-shopping+cart+is+expired" data-path="blog/settings/siteTexts/cartTextExpired" data-empty-caption="shopping cart is expired"',
-      content: 'shopping cart is expired',
+        ' class="xNgEditable xProperty-cartTextExpired xCaption-Shopping+cart+is+expired" data-path="blog/settings/siteTexts/cartTextExpired" data-empty-caption="Shopping cart is expired"',
+      content: 'Shopping cart is expired',
     },
     tableHeadTitle: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextTitle xCaption-title" style="width: 100px;" data-path="blog/settings/siteTexts/cartTextTitle" data-empty-caption="title"',
+        ' class="xNgEditable xProperty-cartTextTitle xCaption-Title" data-path="blog/settings/siteTexts/cartTextTitle" data-empty-caption="Title"',
       content: '',
     },
     tableHeadQuantity: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextQuantity xCaption-quantity" data-path="blog/settings/siteTexts/cartTextQuantity" data-empty-caption="quantity"',
+        ' class="xNgEditable xProperty-cartTextQuantity xCaption-Quantity" data-path="blog/settings/siteTexts/cartTextQuantity" data-empty-caption="Quantity"',
       content: '',
     },
     tableHeadPrice: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextPrice xCaption-price" data-path="blog/settings/siteTexts/cartTextPrice" data-empty-caption="price"',
+        ' class="xNgEditable xProperty-cartTextPrice xCaption-Price" data-path="blog/settings/siteTexts/cartTextPrice" data-empty-caption="Price"',
       content: '',
     },
     tableHeadSum: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextSum xCaption-sum" data-path="blog/settings/siteTexts/cartTextSum" data-empty-caption="sum"',
+        ' class="xNgEditable xProperty-cartTextSum xCaption-Sum" data-path="blog/settings/siteTexts/cartTextSum" data-empty-caption="Sum"',
       content: '',
     },
     promoCode: {
@@ -48,8 +48,8 @@ describe('ShopCartRenderService', () => {
     },
     shippingTo: {
       attributes:
-        ' class="cCartShippingTo xNgEditable xProperty-cartTextShippingTo xCaption-shipping+to" data-path="blog/settings/siteTexts/cartTextShippingTo" data-empty-caption="shipping to"',
-      content: 'shipping to',
+        ' class="xNgEditable xProperty-cartTextShippingTo xCaption-Shipping+to" data-path="blog/settings/siteTexts/cartTextShippingTo" data-empty-caption="Shipping to"',
+      content: 'Shipping to',
     },
     shippingTotal: {
       attributes:
@@ -58,27 +58,27 @@ describe('ShopCartRenderService', () => {
     },
     discount: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextDiscount xCaption-discount" data-path="blog/settings/siteTexts/cartTextDiscount" data-empty-caption="discount"',
+        ' class="xNgEditable xProperty-cartTextDiscount xCaption-Discount" data-path="blog/settings/siteTexts/cartTextDiscount" data-empty-caption="Discount"',
       content: '',
     },
     total: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextTotal xCaption-total" data-path="blog/settings/siteTexts/cartTextTotal" data-empty-caption="total"',
+        ' class="xNgEditable xProperty-cartTextTotal xCaption-Total" data-path="blog/settings/siteTexts/cartTextTotal" data-empty-caption="Total"',
       content: '',
     },
     includedVat: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextInclVat xCaption-incl+vat" data-path="blog/settings/siteTexts/cartTextInclVat" data-empty-caption="incl vat"',
+        ' class="xNgEditable xProperty-cartTextInclVat xCaption-Incl+vat" data-path="blog/settings/siteTexts/cartTextInclVat" data-empty-caption="Incl vat"',
       content: '',
     },
     billingAddress: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextBillAddr xCaption-billing+address" data-path="blog/settings/siteTexts/cartTextBillAddr" data-empty-caption="billing address"',
+        ' class="xNgEditable xProperty-cartTextBillAddr xCaption-Billing+address" data-path="blog/settings/siteTexts/cartTextBillAddr" data-empty-caption="Billing address"',
       content: 'Billing address',
     },
     legalPerson: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextLegalPerson xCaption-legal+person" data-path="blog/settings/siteTexts/cartTextLegalPerson" data-empty-caption="legal person"',
+        ' class="xNgEditable xProperty-cartTextLegalPerson xCaption-Legal+person" data-path="blog/settings/siteTexts/cartTextLegalPerson" data-empty-caption="Legal person"',
       content: '',
     },
     company: {
@@ -98,52 +98,62 @@ describe('ShopCartRenderService', () => {
     },
     nameSurname: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextNameSurname xCaption-name+surname" data-path="blog/settings/siteTexts/cartTextNameSurname" data-empty-caption="name surname"',
+        ' class="xNgEditable xProperty-cartTextNameSurname xCaption-Name+surname" data-path="blog/settings/siteTexts/cartTextNameSurname" data-empty-caption="Name surname"',
       content: '',
     },
     address: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextAddress xCaption-address" data-path="blog/settings/siteTexts/cartTextAddress" data-empty-caption="address"',
+        ' class="xNgEditable xProperty-cartTextAddress xCaption-Address" data-path="blog/settings/siteTexts/cartTextAddress" data-empty-caption="Address"',
       content: '',
     },
     phone: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextPhoneNumber xCaption-phone+number" data-path="blog/settings/siteTexts/cartTextPhoneNumber" data-empty-caption="phone number"',
+        ' class="xNgEditable xProperty-cartTextPhoneNumber xCaption-Phone+number" data-path="blog/settings/siteTexts/cartTextPhoneNumber" data-empty-caption="Phone number"',
       content: '',
     },
     email: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextEmail xCaption-email" data-path="blog/settings/siteTexts/cartTextEmail" data-empty-caption="email"',
+        ' class="xNgEditable xProperty-cartTextEmail xCaption-Email" data-path="blog/settings/siteTexts/cartTextEmail" data-empty-caption="Email"',
       content: '',
     },
     comments: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextComments xCaption-comments" data-path="blog/settings/siteTexts/cartTextComments" data-empty-caption="comments"',
+        ' class="xNgEditable xProperty-cartTextComments xCaption-Comments" data-path="blog/settings/siteTexts/cartTextComments" data-empty-caption="Comments"',
       content: '',
     },
     deliverToBillingAddress: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextDeliverBilling xCaption-deliver+to+billing_address" data-path="blog/settings/siteTexts/cartTextDeliverBilling" data-empty-caption="deliver to billing_address"',
+        ' class="xNgEditable xProperty-cartTextDeliverBilling xCaption-Deliver+to+billing_address" data-path="blog/settings/siteTexts/cartTextDeliverBilling" data-empty-caption="Deliver to billing_address"',
       content: '',
     },
     shippingAddressHeader: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextShipAddr xCaption-shipping+address" data-path="blog/settings/siteTexts/cartTextShipAddr" data-empty-caption="shipping address"',
+        ' class="xNgEditable xProperty-cartTextShipAddr xCaption-Shipping+address" data-path="blog/settings/siteTexts/cartTextShipAddr" data-empty-caption="Shipping address"',
       content: '',
     },
     receiveNews: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextReceiveNews xCaption-receive+news+and+updates" data-path="blog/settings/siteTexts/cartTextReceiveNews" data-empty-caption="receive news and updates"',
+        ' class="xNgEditable xProperty-cartTextReceiveNews xCaption-Receive+news+and+updates" data-path="blog/settings/siteTexts/cartTextReceiveNews" data-empty-caption="Receive news and updates"',
       content: '',
     },
     paymentHeader: {
       attributes:
-        ' id="cartFromRightTitle" class="xNgEditable xProperty-cartTextCPM xCaption-choose+payment+method" data-path="blog/settings/siteTexts/cartTextCPM" data-empty-caption="choose payment method"',
+        ' class="xNgEditable xProperty-cartTextCPM xCaption-Choose+payment+method" data-path="blog/settings/siteTexts/cartTextCPM" data-empty-caption="Choose payment method"',
       content: 'Choose payment method',
     },
     paymentDescription: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextPaymentDescription xCaption-payment+description" data-path="blog/settings/siteTexts/cartTextPaymentDescription" data-empty-caption="payment description"',
+        ' class="xNgEditable xProperty-cartTextPaymentDescription xCaption-Payment+description" data-path="blog/settings/siteTexts/cartTextPaymentDescription" data-empty-caption="Payment description"',
+      content: '',
+    },
+    cardPayment: {
+      attributes:
+        ' class="xNgEditable xProperty-cartTextCardPayment xCaption-Debit+or+credit+card" data-path="blog/settings/siteTexts/cartTextCardPayment" data-empty-caption="Debit or credit card"',
+      content: '',
+    },
+    paypalPayment: {
+      attributes:
+        ' class="xNgEditable xProperty-cartTextPaypalPayment xCaption-PayPal" data-path="blog/settings/siteTexts/cartTextPaypalPayment" data-empty-caption="PayPal"',
       content: '',
     },
     manualTransfer: {
@@ -153,7 +163,7 @@ describe('ShopCartRenderService', () => {
     },
     checkoutDescription: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextCheckoutDescription xCaption-checkout+description" data-path="blog/settings/siteTexts/cartTextCheckoutDescription" data-empty-caption="checkout description"',
+        ' class="xNgEditable xProperty-cartTextCheckoutDescription xCaption-Checkout+description" data-path="blog/settings/siteTexts/cartTextCheckoutDescription" data-empty-caption="Checkout description"',
       content: '',
     },
     terms: {
@@ -168,17 +178,20 @@ describe('ShopCartRenderService', () => {
     },
     checkoutButton: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextCheckoutButton xCaption-checkout+and+pay" data-path="blog/settings/siteTexts/cartTextCheckoutButton" data-empty-caption="checkout and pay"',
+        ' class="xNgEditable xProperty-cartTextCheckoutButton xCaption-Checkout+and+pay" data-path="blog/settings/siteTexts/cartTextCheckoutButton" data-empty-caption="Checkout and pay"',
       content: '',
     },
     returnToStore: {
       attributes:
-        ' class="xNgEditable xProperty-cartTextReturnStore xCaption-return+to+store" data-path="blog/settings/siteTexts/cartTextReturnStore" data-empty-caption="return to store"',
+        ' class="xNgEditable xProperty-cartTextReturnStore xCaption-Return+to+store" data-path="blog/settings/siteTexts/cartTextReturnStore" data-empty-caption="Return to store"',
       content: '',
     },
   };
 
-  function renderCartViewData(siteTexts: Record<string, string>) {
+  function renderCartViewData(
+    siteTexts: Record<string, string>,
+    config: Record<string, string> = {},
+  ) {
     const render = jasmine.createSpy('render').and.returnValue('');
     const service = new ShopCartRenderService({
       render,
@@ -192,8 +205,10 @@ describe('ShopCartRenderService', () => {
       {
         group_config: {
           currency: 'EUR',
+          promoCode: 'SAVE10',
           promoCodeDiscount: '10',
           paymentMethod: 'both',
+          ...config,
         },
       },
       [],
@@ -216,7 +231,7 @@ describe('ShopCartRenderService', () => {
     for (const [name, text] of Object.entries(DEFAULT_TEXTS)) {
       expect(viewData[name]).withContext(name).toEqual(text);
     }
-    expect(viewData.totalLabel).toBe('total');
+    expect(viewData.totalLabel).toBe('Total');
   });
 
   it("renders the site's own texts", () => {
@@ -236,5 +251,15 @@ describe('ShopCartRenderService', () => {
         .toEqual({ attributes, content: `Custom ${settingOf(attributes)}` });
     }
     expect(viewData.totalLabel).toBe('Custom cartTextTotal');
+  });
+
+  it('shows the promo code entry only for a promo code with a discount', () => {
+    expect(renderCartViewData({}).discountAvailable).toBeTrue();
+    expect(
+      renderCartViewData({}, { promoCode: '' }).discountAvailable,
+    ).toBeFalse();
+    expect(
+      renderCartViewData({}, { promoCodeDiscount: '' }).discountAvailable,
+    ).toBeFalse();
   });
 });

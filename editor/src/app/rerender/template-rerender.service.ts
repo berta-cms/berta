@@ -138,6 +138,7 @@ export class TemplateRerenderService {
               [
                 'currency',
                 'addToBasket',
+                'promoCode',
                 'promoCodeDiscount',
                 'termsLink',
               ].includes(action.payload.field)) ||

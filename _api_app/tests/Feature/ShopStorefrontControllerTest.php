@@ -670,7 +670,7 @@ describe('bank transfer checkout', function () {
 
     it('places the order when sending its emails fails', function () {
         Exceptions::fake();
-        config(['plugin-Shop.mailer.host' => '127.0.0.1', 'plugin-Shop.mailer.port' => 1]);
+        config(['plugin-Shop.mailer.transport' => 'smtp', 'plugin-Shop.mailer.host' => '127.0.0.1', 'plugin-Shop.mailer.port' => 1]);
         $token = fillShopBasket([[SHOP_CHAIR]]);
 
         shopCheckout($token)
@@ -1051,7 +1051,7 @@ describe('PayPal return', function () {
 
     it('tells the customer the payment went through when the email fails', function () {
         Exceptions::fake();
-        config(['plugin-Shop.mailer.host' => '127.0.0.1', 'plugin-Shop.mailer.port' => 1]);
+        config(['plugin-Shop.mailer.transport' => 'smtp', 'plugin-Shop.mailer.host' => '127.0.0.1', 'plugin-Shop.mailer.port' => 1]);
         writeShopSettings($this->bertaRoot, nvpSettings());
         fakeNvp();
         $token = fillShopBasket([[SHOP_CHAIR]]);

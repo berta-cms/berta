@@ -60,6 +60,16 @@ it('preselects card payment when PayPal is set up', function () {
         ->not->toMatch('/id="pm_bank_transfer"[^>]*checked/');
 });
 
+it('shows the promo code entry only for a promo code with a discount', function (array $shop, bool $isShown) {
+    $html = renderSiteCart($this->bertaRoot, $shop);
+
+    expect(str_contains($html, 'id="promo_code"'))->toBe($isShown);
+})->with([
+    'a code and a discount' => [['promoCode' => 'SAVE10', 'promoCodeDiscount' => '10'], true],
+    'no code' => [['promoCode' => '', 'promoCodeDiscount' => '10'], false],
+    'no discount' => [['promoCode' => 'SAVE10', 'promoCodeDiscount' => ''], false],
+]);
+
 it('escapes shipping region names once', function () {
     writeShopSettings($this->bertaRoot);
 
@@ -79,14 +89,14 @@ it('escapes shipping region names once', function () {
 
 describe('editable texts', function () {
     $customTexts = collect([
-        'cartManualTransfer', 'cartTextAddress', 'cartTextBillAddr', 'cartTextCPM', 'cartTextCheckoutButton',
-        'cartTextCheckoutDescription', 'cartTextComments', 'cartTextCompany', 'cartTextCompanyRegNo',
-        'cartTextDeliverBilling', 'cartTextDiscount', 'cartTextEmail', 'cartTextEmpty', 'cartTextExpired',
-        'cartTextFillRequiredFields', 'cartTextInclVat', 'cartTextLegalAddress', 'cartTextLegalPerson',
-        'cartTextNameSurname', 'cartTextPaymentDescription', 'cartTextPhoneNumber', 'cartTextPrice',
-        'cartTextPromoBtn', 'cartTextPromoCode', 'cartTextQuantity', 'cartTextReceiveNews', 'cartTextReturnStore',
-        'cartTextShipAddr', 'cartTextShippingTo', 'cartTextSum', 'cartTextTerms', 'cartTextTitle', 'cartTextTotal',
-        'shippingTotalText',
+        'cartManualTransfer', 'cartTextAddress', 'cartTextBillAddr', 'cartTextCPM', 'cartTextCardPayment',
+        'cartTextCheckoutButton', 'cartTextCheckoutDescription', 'cartTextComments', 'cartTextCompany',
+        'cartTextCompanyRegNo', 'cartTextDeliverBilling', 'cartTextDiscount', 'cartTextEmail', 'cartTextEmpty',
+        'cartTextExpired', 'cartTextFillRequiredFields', 'cartTextInclVat', 'cartTextLegalAddress',
+        'cartTextLegalPerson', 'cartTextNameSurname', 'cartTextPaymentDescription', 'cartTextPaypalPayment',
+        'cartTextPhoneNumber', 'cartTextPrice', 'cartTextPromoBtn', 'cartTextPromoCode', 'cartTextQuantity',
+        'cartTextReceiveNews', 'cartTextReturnStore', 'cartTextShipAddr', 'cartTextShippingTo', 'cartTextSum',
+        'cartTextTerms', 'cartTextTitle', 'cartTextTotal', 'shippingTotalText',
     ])->mapWithKeys(fn ($setting) => [$setting => "Custom {$setting}"])->all();
 
     it('renders the cart texts', function (bool $isEditMode, array $siteTexts) {

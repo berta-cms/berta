@@ -8,9 +8,6 @@ interface EditableText {
   default: string;
   caption: string;
   siteOnly?: boolean;
-  id?: string;
-  class?: string;
-  editorStyle?: string;
 }
 
 /**
@@ -21,56 +18,54 @@ interface EditableText {
 const EDITABLE_TEXTS: Record<string, EditableText> = {
   emptyCart: {
     setting: 'cartTextEmpty',
-    default: 'shopping cart is empty',
-    caption: 'shopping cart empty',
+    default: 'Shopping cart is empty',
+    caption: 'Shopping cart empty',
   },
   expiredCart: {
     setting: 'cartTextExpired',
-    default: 'shopping cart is expired',
-    caption: 'shopping cart is expired',
+    default: 'Shopping cart is expired',
+    caption: 'Shopping cart is expired',
   },
   tableHeadTitle: {
     setting: 'cartTextTitle',
-    default: 'title',
-    caption: 'title',
+    default: 'Title',
+    caption: 'Title',
     siteOnly: true,
-    editorStyle: 'width: 100px;',
   },
   tableHeadQuantity: {
     setting: 'cartTextQuantity',
-    default: 'quantity',
-    caption: 'quantity',
+    default: 'Quantity',
+    caption: 'Quantity',
     siteOnly: true,
   },
   tableHeadPrice: {
     setting: 'cartTextPrice',
-    default: 'price',
-    caption: 'price',
+    default: 'Price',
+    caption: 'Price',
     siteOnly: true,
   },
   tableHeadSum: {
     setting: 'cartTextSum',
-    default: 'sum',
-    caption: 'sum',
+    default: 'Sum',
+    caption: 'Sum',
     siteOnly: true,
   },
   promoCode: {
     setting: 'cartTextPromoCode',
-    default: 'promo code',
+    default: 'Promo code',
     caption: 'Promo code',
     siteOnly: true,
   },
   promoButton: {
     setting: 'cartTextPromoBtn',
-    default: 'ok',
+    default: 'OK',
     caption: 'OK',
     siteOnly: true,
   },
   shippingTo: {
     setting: 'cartTextShippingTo',
-    default: 'shipping to',
-    caption: 'shipping to',
-    class: 'cCartShippingTo',
+    default: 'Shipping to',
+    caption: 'Shipping to',
   },
   shippingTotal: {
     setting: 'shippingTotalText',
@@ -79,31 +74,31 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
   },
   discount: {
     setting: 'cartTextDiscount',
-    default: 'discount',
-    caption: 'discount',
+    default: 'Discount',
+    caption: 'Discount',
     siteOnly: true,
   },
   total: {
     setting: 'cartTextTotal',
-    default: 'total',
-    caption: 'total',
+    default: 'Total',
+    caption: 'Total',
     siteOnly: true,
   },
   includedVat: {
     setting: 'cartTextInclVat',
-    default: 'incl. VAT',
-    caption: 'incl vat',
+    default: 'Incl. VAT',
+    caption: 'Incl vat',
     siteOnly: true,
   },
   billingAddress: {
     setting: 'cartTextBillAddr',
     default: 'Billing address',
-    caption: 'billing address',
+    caption: 'Billing address',
   },
   legalPerson: {
     setting: 'cartTextLegalPerson',
     default: 'Legal person',
-    caption: 'legal person',
+    caption: 'Legal person',
     siteOnly: true,
   },
   company: {
@@ -127,60 +122,71 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
   nameSurname: {
     setting: 'cartTextNameSurname',
     default: 'Name, surname',
-    caption: 'name surname',
+    caption: 'Name surname',
     siteOnly: true,
   },
   address: {
     setting: 'cartTextAddress',
     default: 'Address',
-    caption: 'address',
+    caption: 'Address',
     siteOnly: true,
   },
   phone: {
     setting: 'cartTextPhoneNumber',
     default: 'Phone',
-    caption: 'phone number',
+    caption: 'Phone number',
     siteOnly: true,
   },
   email: {
     setting: 'cartTextEmail',
     default: 'Email',
-    caption: 'email',
+    caption: 'Email',
     siteOnly: true,
   },
   comments: {
     setting: 'cartTextComments',
     default: 'Comments',
-    caption: 'comments',
+    caption: 'Comments',
     siteOnly: true,
   },
   deliverToBillingAddress: {
     setting: 'cartTextDeliverBilling',
     default: 'Deliver to billing address',
-    caption: 'deliver to billing_address',
+    caption: 'Deliver to billing_address',
     siteOnly: true,
   },
   shippingAddressHeader: {
     setting: 'cartTextShipAddr',
-    default: 'Shippping address',
-    caption: 'shipping address',
+    default: 'Shipping address',
+    caption: 'Shipping address',
     siteOnly: true,
   },
   receiveNews: {
     setting: 'cartTextReceiveNews',
     default: '',
-    caption: 'receive news and updates',
+    caption: 'Receive news and updates',
   },
   paymentHeader: {
     setting: 'cartTextCPM',
     default: 'Choose payment method',
-    caption: 'choose payment method',
-    id: 'cartFromRightTitle',
+    caption: 'Choose payment method',
   },
   paymentDescription: {
     setting: 'cartTextPaymentDescription',
     default: '',
-    caption: 'payment description',
+    caption: 'Payment description',
+  },
+  cardPayment: {
+    setting: 'cartTextCardPayment',
+    default: 'Debit or credit card',
+    caption: 'Debit or credit card',
+    siteOnly: true,
+  },
+  paypalPayment: {
+    setting: 'cartTextPaypalPayment',
+    default: 'PayPal',
+    caption: 'PayPal',
+    siteOnly: true,
   },
   manualTransfer: {
     setting: 'cartManualTransfer',
@@ -191,7 +197,7 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
   checkoutDescription: {
     setting: 'cartTextCheckoutDescription',
     default: '',
-    caption: 'checkout description',
+    caption: 'Checkout description',
   },
   terms: {
     setting: 'cartTextTerms',
@@ -207,14 +213,14 @@ const EDITABLE_TEXTS: Record<string, EditableText> = {
   },
   checkoutButton: {
     setting: 'cartTextCheckoutButton',
-    default: 'checkout and pay',
-    caption: 'checkout and pay',
+    default: 'Checkout and pay',
+    caption: 'Checkout and pay',
     siteOnly: true,
   },
   returnToStore: {
     setting: 'cartTextReturnStore',
-    default: 'return to store',
-    caption: 'return to store',
+    default: 'Return to store',
+    caption: 'Return to store',
     siteOnly: true,
   },
 };
@@ -313,14 +319,7 @@ export class ShopCartRenderService {
   getEditableTextData(siteSlug: string, siteSettings, text: EditableText) {
     return {
       attributes: toHtmlAttributes({
-        id: text.id,
-        class: [
-          ...(text.class ? [text.class] : []),
-          'xNgEditable',
-          `xProperty-${text.setting}`,
-          `xCaption-${text.caption.replace(/ /g, '+')}`,
-        ].join(' '),
-        style: text.editorStyle,
+        class: `xNgEditable xProperty-${text.setting} xCaption-${text.caption.replace(/ /g, '+')}`,
         'data-path': `${siteSlug}/settings/siteTexts/${text.setting}`,
         'data-empty-caption': text.caption,
       }),
@@ -354,7 +353,10 @@ export class ShopCartRenderService {
       currency: shopSettings.group_config.currency,
       isEditMode: true,
       cartTitle: section.title,
-      discountAvailable: shopSettings.group_config.promoCodeDiscount.length > 0,
+      // Only a code with a discount gives the customer something to enter
+      discountAvailable:
+        String(shopSettings.group_config.promoCode ?? '').trim() !== '' &&
+        parseInt(shopSettings.group_config.promoCodeDiscount) > 0,
       shippingRegions: shippingRegions,
       isPaypalAvailable: ['paypal', 'both'].includes(
         shopSettings.group_config.paymentMethod,
@@ -364,7 +366,7 @@ export class ShopCartRenderService {
       ),
       totalLabel: siteSettings.siteTexts.cartTextTotal
         ? siteSettings.siteTexts.cartTextTotal
-        : 'total',
+        : 'Total',
     };
 
     try {

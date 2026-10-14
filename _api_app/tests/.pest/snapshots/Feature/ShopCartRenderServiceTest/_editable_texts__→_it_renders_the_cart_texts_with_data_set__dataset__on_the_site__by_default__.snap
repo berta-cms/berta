@@ -1,268 +1,210 @@
-<div id="shoppingCartOuter">
-  <div id="shoppingCartEmpty" class="hidden">
-    <div>
-        shopping cart is empty
+<div id="shoppingCartOuter" class="cart">
+  <h1 id="shoppingCartTitle" class="cart-title">Cart</h1>
+
+  <div id="shoppingCartEmpty" class="cart-title hidden">
+    <div>Shopping cart is empty</div>
+  </div>
+
+  <div class="cart-notice cart-expired js-cart-expired hidden">
+    <div>Shopping cart is expired</div>
+  </div>
+
+  <div class="cart-order-placed js-cart-order-placed hidden">
+    <h2 class="cart-order-placed-headline js-cart-order-placed-headline"></h2>
+    <p class="cart-order-placed-next-step js-cart-order-placed-next-step"></p>
+    <p class="cart-notice js-cart-order-number"></p>
+    <button type="button" class="cart-button cart-button--primary" onclick="closeShoppingCart();">Return to store</button>
+  </div>
+
+  <div class="cart-contents js-cart-contents">
+    <div class="cart-lines-head">
+      <div class="cart-line-name"><span>Title</span></div>
+      <div class="cart-line-quantity"><span>Quantity</span></div>
+      <div class="cart-line-price"><span>Price</span></div>
+      <div class="cart-line-sum"><span>Sum</span> (EUR)</div>
     </div>
-  </div>
 
-  <div id="shoppingCartTitle">Cart</div>
+    <ul class="cart-lines js-cart-lines"></ul>
 
-  <div id="shoppingCartExpired" class="hidden">
-    <div>
-        shopping cart is expired
+        <template class="js-cart-line-template">
+      <li class="cart-line js-cart-line">
+        <div class="cart-line-image js-cart-line-image hidden"></div>
+        <div class="cart-line-name js-cart-line-name"></div>
+        <div class="cart-line-quantity cart-stepper">
+          <button type="button" class="cart-stepper-button js-cart-quantity-decrease" aria-label="Remove one">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8h9" /></svg>
+          </button>
+          <span class="cart-stepper-value js-cart-line-quantity"></span>
+          <button type="button" class="cart-stepper-button js-cart-quantity-increase" aria-label="Add one">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8h9M8 3.5v9" /></svg>
+          </button>
+        </div>
+        <div class="cart-line-price js-cart-line-price"></div>
+        <div class="cart-line-sum js-cart-line-sum"></div>
+      </li>
+    </template>
+
+    <div class="cart-options">
+              <div class="cart-field">
+          <label class="cart-label" for="promo_code"><span>Promo code</span></label>
+          <div class="cart-input-group">
+            <input class="cart-input" type="text" name="promo_code" id="promo_code" autocomplete="off">
+                          <button type="button" class="cart-button cart-button--secondary">OK</button>
+                      </div>
+        </div>
+      
+      <div class="cart-field">
+        <label class="cart-label" for="shipping_select"><span>Shipping to</span></label>
+        <select class="cart-select" id="shipping_select">
+                      <option value="1">Europe</option>
+                  </select>
+      </div>
     </div>
+
+    <dl class="cart-totals">
+      <div class="cart-totals-row">
+        <dt><span>Shipping</span></dt>
+        <dd><span class="js-cart-shipping-sum"></span> EUR</dd>
+      </div>
+      <div class="cart-totals-row js-cart-discount hidden">
+        <dt><span>Discount</span></dt>
+        <dd class="js-cart-discount-percent"></dd>
+      </div>
+      <div class="cart-totals-row cart-totals-row--total">
+        <dt><span>Total</span></dt>
+        <dd><span class="js-cart-total"></span> EUR</dd>
+      </div>
+      <div class="cart-totals-row cart-totals-row--vat js-cart-vat hidden">
+        <dt><span>Incl. VAT</span> (<span class="js-cart-vat-rate"></span>%)</dt>
+        <dd><span class="js-cart-vat-amount"></span> EUR</dd>
+      </div>
+    </dl>
   </div>
 
-  <div id="shoppingCartOrderPlaced" class="hidden">
-    <h2 class="xOrderPlacedMessage"></h2>
-    <p class="xOrderNextStep"></p>
-    <p class="xOrderNumber"></p>
-    <p><a href="javascript:;" class="xReturnToStore" onclick="closeShoppingCart();">return to store</a></p>
-  </div>
+  <div class="cart-checkout js-cart-checkout">
+    <section class="cart-section">
+      <h2 class="cart-section-title"><span>Billing address</span></h2>
 
-  <div id="shoppingCartContents">
-    <div class="row thead">
-      <div class="column column-half padded title">
-                    title
+      <label class="cart-check">
+        <input type="checkbox" id="cartTextLegalPerson" value="1">
+        <span>Legal person</span>
+      </label>
+
+      <div class="cart-fields">
+        <div class="cart-field cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="company"><span>Company</span></label>
+          <input class="cart-input" type="text" name="company" id="company" autocomplete="billing organization" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="company_reg_no"><span>Company reg. no.</span></label>
+          <input class="cart-input" type="text" name="company_reg_no" id="company_reg_no" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="legal_address"><span>Legal address</span></label>
+          <input class="cart-input" type="text" name="legal_address" id="legal_address" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="name"><span>Name, surname</span></label>
+          <input class="cart-input" type="text" name="name" id="name" autocomplete="billing name" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="address"><span>Address</span></label>
+          <input class="cart-input" type="text" name="address" id="address" autocomplete="billing street-address" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="phone"><span>Phone</span></label>
+          <input class="cart-input" type="tel" name="phone" id="phone" autocomplete="billing tel" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="email"><span>Email</span></label>
+          <input class="cart-input" type="email" name="email" id="email" autocomplete="billing email" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide js-cart-field">
+          <label class="cart-label" for="notes"><span>Comments</span></label>
+          <textarea class="cart-input" rows="3" name="notes" id="notes"></textarea>
+        </div>
+      </div>
+
+      <label class="cart-check">
+        <input type="checkbox" id="deliver_billing_addr" checked="checked">
+        <span>Deliver to billing address</span>
+      </label>
+    </section>
+
+    <section class="cart-section js-cart-shipping-address hidden">
+      <h2 class="cart-section-title"><span>Shipping address</span></h2>
+
+      <div class="cart-fields">
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_name"><span>Name, surname</span></label>
+          <input class="cart-input" type="text" name="ship_name" id="ship_name" autocomplete="shipping name" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_address"><span>Address</span></label>
+          <input class="cart-input" type="text" name="ship_address" id="ship_address" autocomplete="shipping street-address" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_phone"><span>Phone</span></label>
+          <input class="cart-input" type="tel" name="ship_phone" id="ship_phone" autocomplete="shipping tel" aria-required="true">
+        </div>
+
+        <div class="cart-field js-cart-field">
+          <label class="cart-label" for="ship_email"><span>Email</span></label>
+          <input class="cart-input" type="email" name="ship_email" id="ship_email" autocomplete="shipping email">
+        </div>
+
+        <div class="cart-field cart-field--wide js-cart-field">
+          <label class="cart-label" for="ship_notes"><span>Comments</span></label>
+          <textarea class="cart-input" rows="3" name="ship_notes" id="ship_notes"></textarea>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="cart-section">
+      <h2 class="cart-section-title" id="shoppingCartPaymentTitle"><span>Choose payment method</span></h2>
+
+      
+      <div class="cart-payment-methods" role="radiogroup" aria-labelledby="shoppingCartPaymentTitle">
+        
+                  <label class="cart-payment-option">
+            <input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer" checked="checked">
+            <span class="cart-payment-option-name"><span>Bank transfer</span></span>
+            <span class="cart-payment-option-marks" aria-hidden="true">
+              <svg class="cart-payment-mark cart-payment-mark--icon" viewBox="0 0 24 24" focusable="false"><path d="M3 9.5 12 4l9 5.5M4.5 10v8M9.5 10v8M14.5 10v8M19.5 10v8M3 20.5h18" /></svg>
+            </span>
+          </label>
+              </div>
+    </section>
+
+    <div class="cart-pay">
+      
+      <div class="cart-pay-total">
+        <span>Total</span>
+        <span><span class="js-cart-total"></span> EUR</span>
+      </div>
+
+      
+      <p class="cart-message cart-message--error js-cart-required-message hidden" role="alert">
+        <span>Please fill in all required fields</span>
+      </p>
+
+      <div class="cart-pay-button js-cart-checkout-slot">
+                  <button type="button" class="cart-button cart-button--primary js-cart-checkout-button">Checkout and pay</button>
               </div>
 
-      <div class="column column-half properties">
-        <div class="row">
-          <div class="column column-half padded qty">
-                            quantity
-                      </div>
-          <div class="column column-fourth padded price">
-                            price
-                      </div>
-          <div class="column column-fourth padded sum">
-                            sum
-                        (EUR)
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tbody prodList">
-      <div class="row prodline">
-        <div class="column column-half padded title"><span></span> <div class="image hidden"></div></div>
-        <div class="column column-half">
-          <div class="row">
-            <div class="column column-half padded qty"><span></span> <span class="adremovecart"><a href="#" class="add">+</a> <a href="#" class="remove">-</a></span></div>
-            <div class="column column-fourth padded price"></div>
-            <div class="column column-fourth padded sum"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row tbody shipping">
-      <div class="column column-half padded promo">
-                  <div id="promoCodeEntry">
-                            promo code
-                        <span class="pull-right">
-              <input type="text" name="promo_code" id="promo_code" />
-                                <input type="button" value="ok" />
-                          </span>
-          </div>
-              </div>
-
-      <div class="column column-half padded">
-        <div class="padded-left">
-          <div class="cCartShippingTo">
-            shipping to
-          </div>
-
-          <select id="shipping_select" class="pull-right">
-                          <option value="1">Europe</option>
-                      </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="row tbody">
-      <div class="column padded-left column-half pull-right">
-        <div class="padded shippingTotal">
-          <span>
-            Shipping
-          </span>
-          <div class="total pull-right"><span id="shippingTotalSum"></span> EUR</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row tbody discount hidden">
-      <div class="column column-half padded-left pull-right">
-        <div class="padded shoppingCartDiscount">
-                        discount
-                    <span class="pull-right sumDiscount"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row tbody total">
-      <div class="column column-half padded-left pull-right">
-        <div class="padded shoppingCartTotal">
-                        total
-          
-                    <div class="pull-right total"><span class="sumTotal"></span> EUR</div>
-          <div class="vatprice hidden">incl. VAT (<span class="vatRate"></span>%)<span class="pull-right"><span class="vatAmount"></span> EUR</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row" id="cartBottomPart">
-    <div class="column column-half" id="cartFromleftPart">
-      <div class="padded-right">
-        <input type="hidden" name="cartemail" value="seller@berta.test" id="cartemail">
-        <div class="cc-fields" id="billing_address_form">
-          <h2>
-            Billing address
-          </h2>
-
-          <div class="padded">
-            <p class="checkbox">
-                              <input type="checkbox" id="cartTextLegalPerson" value="1" /> <label for="cartTextLegalPerson" class="auto-width"> Legal person</label>
-                          </p>
-
-            <p class="xLegalPerson hidden">
-              <label for="company">
-                                    Company
-                              </label>
-                              <input class="iText" type="text" name="company" id="company">
-                          </p>
-
-            <p class="xLegalPerson hidden">
-              <label for="company_reg_no">
-                                    Company reg. no.
-                              </label>
-                              <input class="iText" type="text" name="company_reg_no" id="company_reg_no">
-                          </p>
-
-            <p class="xLegalPerson hidden">
-              <label for="legal_address">
-                                    Legal address
-                              </label>
-                              <input class="iText" type="text" name="legal_address" id="legal_address">
-                          </p>
-
-            <p>
-              <label for="name">
-                                    Name, surname
-                              </label>
-                              <input class="iText" type="text" name="name" id="name">
-                          </p>
-
-            <p>
-              <label for="address">
-                                    Address
-                              </label>
-                              <input class="iText" type="text" name="address" id="address">
-                          </p>
-
-            <p>
-              <label for="phone">
-                                    Phone
-                              </label>
-                              <input class="iText" type="text" name="phone" id="phone">
-                          </p>
-
-            <p>
-              <label for="email">
-                                    Email
-                              </label>
-                              <input class="iText" type="text" name="email" id="email">
-                          </p>
-
-            <p>
-              <label for="notes">
-                                    Comments
-                              </label>
-                              <textarea rows="3" cols="5" name="notes" id="notes"></textarea>
-                          </p>
-
-                          <p class="no-margin-bottom">
-                <input type="checkbox" id="deliver_billing_addr" checked="checked" /> <label for="deliver_billing_addr" class="auto-width">Deliver to billing address</label>
+      <p class="cart-return">
+                  <button type="button" class="cart-link" onclick="closeShoppingCart();">Return to store</button>
               </p>
-                      </div>
-        </div>
-
-        <div class="cc-fields hidden" id="shipping_address_form">
-          <h2>
-            Shippping address          </h2>
-
-          <div class="padded">
-            <p>
-              <label for="ship_name">
-                                    Name, surname
-                              </label>
-                              <input class="iText" type="text" name="ship_name" id="ship_name">
-                          </p>
-
-            <p>
-              <label for="ship_address">
-                                    Address
-                              </label>
-                              <input class="iText" type="text" name="ship_address" id="ship_address">
-                          </p>
-
-            <p>
-              <label for="ship_phone">
-                                    Phone
-                              </label>
-                              <input class="iText" type="text" name="ship_phone" id="ship_phone">
-                          </p>
-
-            <p>
-              <label for="ship_email">
-                                    Email
-                              </label>
-                              <input class="iText" type="text" name="ship_email" id="ship_email">
-                          </p>
-
-            <p>
-              <label for="ship_notes">
-                                    Comments
-                              </label>
-                              <textarea rows="3" cols="5" name="ship_notes" id="ship_notes"></textarea>
-                          </p>
-          </div>
-        </div>
-
-              </div>
-    </div>
-
-    <div class="column column-half">
-      <div id="cartFromrightPart" class="padded-left">
-        <h2 id="cartFromRightTitle">
-          Choose payment method
-        </h2>
-
-        <div class="padded choosePaymentMethod">
-
-          
-          
-                      <div class="choosePaymentRadio">
-              <label for="pm_bank_transfer"><input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer" checked="checked">
-                                    Bank transfer
-                              </label>
-            </div>
-                  </div>
-
-        <div class="padded checkOut">
-          
-          <p class="text-right checkoutSumTotal">total <span class="sumTotal"></span> EUR</p>
-
-                      
-            <p class="text-right no-margin" id="required-fields-error">Please fill in all required fields</p>
-
-            <p class="text-right"><a href="#" id="checkoutSubmit">checkout and pay</a></p>
-
-            <p class="text-right no-margin"><a href="javascript:;" onclick="closeShoppingCart();">return to store</a></p>
-          
-          <div id="shoppingCart" class="hidden"></div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

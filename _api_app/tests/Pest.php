@@ -94,6 +94,8 @@ function setUpShopTestRoot(): string
     config([
         'app.old_berta_root' => $bertaRoot,
         'plugin-Shop.key' => 'shop.test',
+        // Order emails stay in memory instead of reaching the mail server in .env
+        'plugin-Shop.mailer.transport' => 'array',
         'plugin-Shop.database-connections.sqlite.database' => $bertaRoot . '/storage/shop-db.sqlite',
         'plugin-Shop.database-connections.site-sqlite-template.database' => $bertaRoot . '/storage/-sites/{site}/shop-db.sqlite',
         'cache.stores.file.path' => $bertaRoot . '/cache',
