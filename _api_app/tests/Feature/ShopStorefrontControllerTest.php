@@ -888,10 +888,26 @@ describe('PayPal checkout', function () {
             && $request['L_PAYMENTREQUEST_0_AMT1'] === '-10.00'
             && (string) $request['NOSHIPPING'] === '1'
             && $request['EMAIL'] === 'ann@buyer.test'
-            && ! isset($request['SOLUTIONTYPE']));
+            && ! isset($request['SOLUTIONTYPE'])
+            && ! isset($request['LANDINGPAGE']));
         expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue()
             ->and(shopDb()->table('orders')->where('paid', 1)->count())->toBe(0);
         Mail::assertNothingSent();
+    });
+
+    it("starts an NVP card payment on PayPal's guest checkout", function () {
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, ['payment_method' => 'creditcard'])
+            ->assertOk()
+            ->assertJsonPath('data.status', 'redirect');
+
+        Http::assertSent(fn (HttpRequest $request) => $request['METHOD'] === 'SetExpressCheckout'
+            && $request['SOLUTIONTYPE'] === 'Sole'
+            && $request['LANDINGPAGE'] === 'Billing'
+            && $request['EMAIL'] === 'ann@buyer.test');
     });
 
     it('charges in the PayPal currency in capitals, and in US dollars when it is empty', function (string $setting, string $currency) {
