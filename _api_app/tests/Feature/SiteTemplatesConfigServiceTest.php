@@ -14,6 +14,9 @@ it('translates the template settings into the editor\'s language', function () {
 });
 
 it('adds the shop\'s section types to a template on a domain with the shop', function (string $host, bool $hasShop) {
+    if ($hasShop) {
+        skipWithoutShopPlugin();
+    }
     app()->instance('request', Request::create("http://{$host}/"));
 
     $sectionTypes = (new SiteTemplatesConfigService)->get()['messy-0.4.2']['sectionTypes'];
