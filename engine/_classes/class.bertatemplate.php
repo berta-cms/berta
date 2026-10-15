@@ -85,7 +85,7 @@ class BertaTemplate extends BertaBase
         }
 
         if (file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
-            [, $settingsDefinition] = include $tPath . '/template.conf.php';
+            [, $settingsDefinition] = (include $tPath . '/template.conf.php')(bertaUntranslated(...), ! empty($GLOBALS['shopEnabled']));
 
             $this->settings = new Settings($settingsDefinition, $generalSettingsInstance, $this->name);
 

@@ -60,3 +60,12 @@ function d($var)
     print_r($var);
     echo '</pre></div>';
 }
+
+/**
+ * The translator the engine hands the settings definitions: it reads only their default values,
+ * so their titles and descriptions stay as written. The editor's API translates them.
+ */
+function bertaUntranslated(string $text): string
+{
+    return $text;
+}

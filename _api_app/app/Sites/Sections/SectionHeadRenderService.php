@@ -169,7 +169,7 @@ class SectionHeadRenderService
             if ($isShopAvailable) {
                 $cssFiles[] = "/_plugin_shop/css/shop.css?{$this->version}";
                 $inlineCSS .= $this->getShopCSS(
-                    $this->withDefaults($siteTemplateSettings['group_price_item'] ?? [], array_map(fn($setting) => $setting['default'] ?? null, $shopSettingsDS->getRawConfig())),
+                    $this->withDefaults($siteTemplateSettings['group_price_item'] ?? [], array_map(fn ($setting) => $setting['default'] ?? null, $shopSettingsDS->getRawConfig())),
                     $this->withDefaults($siteTemplateSettings['entryHeading'] ?? [], $siteTemplatesConfig[$siteSettings['template']['template']]['templateConf']['entryHeading'] ?? []),
                     $siteTemplateSettings['pageLayout'] ?? [],
                 );
@@ -262,14 +262,14 @@ class SectionHeadRenderService
      */
     private function getCSSRule(string $selector, array $declarations): string
     {
-        $declarations = array_filter(array_map('trim', $declarations), fn($value) => $value !== '');
+        $declarations = array_filter(array_map('trim', $declarations), fn ($value) => $value !== '');
 
         if (empty($declarations)) {
             return '';
         }
 
         return $selector . ' { ' . implode(' ', array_map(
-            fn($property, $value) => "{$property}: {$value};",
+            fn ($property, $value) => "{$property}: {$value};",
             array_keys($declarations),
             $declarations,
         )) . ' }';

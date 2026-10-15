@@ -92,6 +92,47 @@ it('translates the shop settings config', function () {
     }
 });
 
+it('returns the settings config in the language asked for', function () {
+    actingAs(new User);
+
+    getJson('http://shop.test' . route('settings-config', ['language' => 'lv'], false))
+        ->assertOk()
+        ->assertJsonPath('data.group_config._.title', 'Konfigurācijas vērtības')
+        ->assertJsonPath('data.group_config.email.description', '<b>Obligāts.</b> Tava e-pasta adrese, uz kuru veikals sūta katru jauno pasūtījumu.');
+});
+
+it('returns the settings config texts, not translation keys, in every language', function (string $language) {
+    $texts = collect((new ShopSettingsDataService(''))->getConfig($language))
+        ->dot()
+        ->filter(fn ($value, $path) => preg_match('/\.(title|description)$/', $path))
+        ->values();
+
+    expect($texts)->not->toBeEmpty()
+        ->and($texts->filter(fn ($text) => preg_match('/^shop_\w+_description$/', (string) $text))->all())->toBe([]);
+})->with(['en', 'lv', 'pl', 'es', 'fr', 'nl', 'ru']);
+
+it('returns 422 for a settings config language that is not a language code', function () {
+    actingAs(new User);
+
+    getJson('http://shop.test' . route('settings-config', ['language' => '../inc.settings'], false))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('language');
+});
+
+it('sends the settings config in the site\'s language with the shop state', function () {
+    $bertaRoot = setUpShopTestRoot();
+    actingAs(new User);
+    (new SiteSettingsDataService(''))->saveValueByPath('/settings/language/language', 'lv');
+
+    try {
+        getJson('http://shop.test' . route('shop-state', [], false) . '?site=')
+            ->assertOk()
+            ->assertJsonPath('data.settingsConfig.group_config._.title', 'Konfigurācijas vērtības');
+    } finally {
+        File::deleteDirectory($bertaRoot);
+    }
+});
+
 it('returns the explanation of each PayPal credentials group', function () {
     actingAs(new User);
 

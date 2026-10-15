@@ -83,9 +83,9 @@ function setUpShopTestRoot(): string
     File::ensureDirectoryExists($bertaRoot . '/storage');
     File::ensureDirectoryExists($bertaRoot . '/engine');
     File::ensureDirectoryExists($bertaRoot . '/_plugin_shop');
-    // Site settings read the legacy engine's definitions, and an anonymous request's auth
-    // check logs out through the legacy engine
-    foreach (['engine/_classes', 'engine/lang', 'engine/inc.settings.php', 'engine/inc.version.php', '_templates'] as $path) {
+    // Site settings read the engine's definitions, and an anonymous request's auth check logs
+    // out through the legacy engine
+    foreach (['engine/_classes', 'engine/lang', 'engine/inc.setting-definition.php', 'engine/inc.font-options.php', 'engine/inc.version.php', '_templates'] as $path) {
         symlink("{$realRoot}/{$path}", "{$bertaRoot}/{$path}");
     }
     File::copy($realRoot . '/_plugin_shop/inc.setting-definition.php', $bertaRoot . '/_plugin_shop/inc.setting-definition.php');

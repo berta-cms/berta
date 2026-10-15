@@ -1,7 +1,6 @@
 <?php
 
 include_once 'class.bertabase.php';
-include_once 'class.i18n.php';
 include_once 'class.bertasecurity.php';
 include_once 'class.bertautils.php';
 include_once 'class.bertacontent.php';
@@ -46,8 +45,6 @@ class Berta extends BertaBase
     public function init(array $setttingsDefaults)
     {
         $this->settings = new Settings($setttingsDefaults); // general site-wide settings
-
-        I18n::load_language($this->settings->get('language', 'language'));
 
         $templateName = $this->settings->get('template', 'template', true);
 

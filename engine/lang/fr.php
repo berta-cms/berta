@@ -6,57 +6,23 @@ return [
     // Translations from the top "admin" menu
 
     /* menu item */
-    'close this' => 'fermer',
     /* menu item */
-    'my site' => 'mon site',
     /* menu item */
-    'sections' => 'sections',
     /* menu item */
-    'settings' => 'paramètres',
     /* menu item */
-    'design' => 'design',
     /* menu item */
-    'profile' => 'profil',
     /* menu item */
-    'log out' => 'se déconnecter',
-
-    // Translatins from login / logout window
-
-    'Logout ok. Please wait...' => 'Déconnexion. Merci de patienter…',
-    'Log in' => 'Se connecter',
 
     // Translatins from sections editor (sections.php)
 
     /* title */
-    'Sections' => 'Sections',
     /* column */
-    'Title as displayed in main menu' => 'Titre affiché dans le menu principal',
     /* column */
-    'Type' => 'Type',
     /* column */
-    'Details' => 'Détails',
     /* column */
-    'Is published?' => 'Publié ?',
     /* column */
-    'Delete' => 'Supprimer',
     /* button */
-    'create new section' => 'créer une nouvelle section',
     /* button */
-    'delete' => 'supprimer',
-
-    'What are sections?' => 'Que sont les sections ?',
-    'sections_help_text' => 'Les sections sont les principales divisions de votre site. Elles servent à contenir et organiser votre contenu. Chaque section est accessible dans le menu principal. ',
-    'What is the "external link"?' => 'Qu’est-ce qu’un « lien externe » ?',
-    'external_link_help_text' => 'Si vous désirez qu\'un élément de votre menu principal pointe ailleurs que sur une section de votre site, utilisez le lien externe. Il peut être un lien de type email (ex., <em>mailto:exemple@site.net</em>) ou un lien vers un autre site web (ex. <em>http://www.example.com</em>).',
-
-    // Translations from profile page (profile.php)
-    'Profile' => 'Profil',
-    'Old password' => 'Ancien mot de passe',
-    'New password' => 'Nouveau mot de passe',
-    'Retype new password' => 'Confirmez le mot de passe',
-    'Change password' => 'Changer le mot de passe',
-    'password_help_text' => 'Le mot de passe doit comporter au moins 6 caractères alphanumériques (A-Z, a-z, 0-9).',
-    '' => '',
 
     // Translations from settings page (settings.php)
 
@@ -64,13 +30,8 @@ return [
     'Settings' => 'Paramètres',
     /* title */
     'Design' => 'Design',
-    'These are settings for template' => 'Voici les paramètres des templates',
 
-    'Some help with CSS values' => 'Un peu d’aide avec les propriétés CSS',
-    'Units' => 'Unités',
-    'units_help_text' => 'Les unités valides pour les valeurs numériques sont : <br /><strong>px</strong> - pixels<br /><strong>em</strong> - 1 em = une longueur de lettre M dans la fonte utilisée<br /><strong>%</strong> - pourcentage en fonction de la taille de la fonte ou de la dimension de l\'élément conteneur (ex. la page).',
     'Margins' => 'Marges',
-    'margins_help_text' => 'Se servir des marges est un peu délicat. Utilisez les unités px ou em. Vous pouvez déclarer des marges de 4 façons, en écrivant : <br/><strong>1 valeur</strong> - déclarez la marge du haut, droite, bas et gauche en une seule valeur. Exemple : <em>10px</em>.<br /><strong>2 valeurs</strong> - déclarez la marge de haut et bas avec la première valeur, et gauche et droite avec la seconde valeur. Exemple : <em>0 5px</em>.<br /><strong>3 valeurs</strong> - déclarez la marge de haut avec la première valeur, de gauche et droite avec la seconde valeur et la marge de bas avec la troisième valeur. Exemple : <em>10px 0 20px</em>.<br /><strong>4 valeurs</strong> - déclarez toutes les marges selon l\'ordre suivant: haut, droit, bas, gauche. Exemple : <em>10px 0 20px 2px</em>.',
 
     // Translations from inc.settings.php
 
@@ -83,7 +44,6 @@ return [
     'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Les templates définissent l’apparence de votre site. Vous pouvez choisir un jeu de templates parmi ceux installés dans votre dossier de templates. Pour ajouter un nouveau jeu à cette liste, téléchargez-le dans ce dossier via FTP.',
 
     /* setting tab */
-    'Info' => 'Info',
     /* setting name */
     'Your name' => 'Votre nom',
     /* help text */
@@ -95,7 +55,7 @@ return [
     /* setting name */
     '<META> description' => '<META> description',
     /* help text */
-    'Site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
+    'Short site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
 
     /* setting tab */
     'Navigation' => 'Navigation',
@@ -149,9 +109,7 @@ return [
     /* setting subcategory */
     'Image gallery appearance:' => 'Apparence de la galerie d’image:',
     /* setting name */
-    'Video player' => 'Lecteur vidéo',
     /* help text */
-    'Choose between the two visually different players for your video files.' => 'Choisissez parmie les deux lecteurs pour la lecture de vos vidéos.',
 
     /* setting tab */
     'Banners' => 'Bannières',
@@ -172,7 +130,6 @@ return [
 
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Bravo ! Vous avez bien installé Berta.</p><p>Maintenant, avant d’ajouter du contenu, vous devez créer une première section. Allez à <a href="sections.php">la page sections</a> et faites-le !</p>',
     'create new entry here' => 'ajoutez une entrée ici',
     'create new entry' => 'ajoutez une entrée',
 
@@ -266,7 +223,6 @@ return [
     /* setting name */
     'Header image' => 'Image d’entête',
     /* help text */
-    'Picture to use instead of text.' => 'Image à utiliser au lieu du texte',
     /* help text */
     'How far the heading is from other elements in page.' => 'Distance entre l’entête et les autres éléments de la page.',
     /* help text */
@@ -342,7 +298,6 @@ return [
     /* setting name */
     'Left margin' => 'Marge gauche',
     /* help text */
-    'How far the sidebar is from the left side of the screen.' => 'Distance entre le menu et la gauche de l’écran.',
     /* setting name */
     'Top padding' => 'Marge supérieure',
     /* help text */
@@ -431,25 +386,25 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Important : à spécifier en pourcentages, ex. : 60%',
 
-    'googleFont_description' => 'Tapez le nom d’une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
+    'google_font_description' => 'Tapez le nom d’une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Position du menu',
     'Positon X' => 'Position X',
     'Positon Y' => 'Position Y',
-    'description_tagsMenu_x' => 'Position X du sous-menu en pixels (ex. 50px)',
-    'description_tagsMenu_y' => 'Position Y du sous-menu en pixels (ex. 50px)',
+    'tags_menu_x_description' => 'Position X du sous-menu en pixels (ex. 50px)',
+    'tags_menu_y_description' => 'Position Y du sous-menu en pixels (ex. 50px)',
 
-    'description_menu_position' => 'Position du menu',
-    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'N’oubliez pas « https:// » devant les liens de bannière.',
-    'description_language' => 'Choisissez votre langue pour l’interface de Berta. Rafraîchissez la page pour pour appliquer les modifications.',
+    'menu_position_description' => 'Position du menu',
+    'banner_image_description' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
+    'banner_link_description' => 'N’oubliez pas « https:// » devant les liens de bannière.',
+    'language_description' => 'Choisissez votre langue pour l’interface de Berta. Rafraîchissez la page pour pour appliquer les modifications.',
     'Heading position' => 'Position de l’entête',
-    'description_heading_position' => 'Position de la description d’entête : fixe (Fixed) ou absolue (Absolute). La position fixe restera toujours en place sur la page, la positions absolue se déplace avec le contenu au défilement.',
-    'description_submenu_alwaysopen' => 'Un sous-menu est ouvert lorsqu’un élément de menu est actif.',
+    'heading_position_description' => 'Position de la description d’entête : fixe (Fixed) ou absolue (Absolute). La position fixe restera toujours en place sur la page, la positions absolue se déplace avec le contenu au défilement.',
+    'tags_menu_always_open_description' => 'Un sous-menu est ouvert lorsqu’un élément de menu est actif.',
 
     'Submenu is allways open' => 'Le sous-menu est toujours ouvert',
     'Submenu is hidden' => 'Le sous-menu est masqué',
-    'javascript_include' => 'Code javascript qui sera inclus avant la balise &lt;/body&gt;. Pour en savoir plus <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">visitez notre page consacrée aux inclusions javascript.</a>',
-    'description_custom_css' => 'Insérez votre code CSS personnalisé ici. Il surchargera toutes les autres règles précédemment définies. Pour en savoir plus, consultez notre <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Wiki</a>.',
+    'js_include_description' => 'Code javascript qui sera inclus avant la balise &lt;/body&gt;. Pour en savoir plus <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">visitez notre page consacrée aux inclusions javascript.</a>',
+    'custom_css_description' => 'Insérez votre code CSS personnalisé ici. Il surchargera toutes les autres règles précédemment définies. Pour en savoir plus, consultez notre <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Wiki</a>.',
     'Custom CSS' => 'CSS perso.',
     'section_type' => 'Type',
     'section_type_tip' => 'Defines the layout and functionality of the section.',
@@ -458,4 +413,150 @@ return [
     'shuffle_marked' => 'Shuffle marked entries and galleries',
     'entries_limit' => 'Entries limit',
     'entries_limit_tip' => 'How many entries to show in this section',
+
+    // shop translations
+    'Configuration values' => 'Valeurs de configuration',
+    'Shop currency' => 'Devise de la boutique',
+    'shop_currency_description' => 'Abréviation ou symbole de la devise affiché avec chaque prix du site.',
+    'Order email subject' => 'Objet de l’e-mail de commande',
+    'shop_order_email_subject_description' => 'Objet de l’e-mail de commande envoyé au client.',
+    'Seller details' => 'Coordonnées du vendeur',
+    'shop_seller_details_description' => 'Les coordonnées de votre entreprise et de votre compte bancaire, incluses dans les e-mails de commande. Les clients qui paient par virement bancaire paient sur le compte indiqué ici.',
+    'Required.' => 'Obligatoire.',
+    'PDF invoices' => 'Factures PDF',
+    'shop_invoices_description' => 'Choisissez « Yes » pour joindre une facture PDF à l’e-mail de commande du client et pour télécharger les factures dans « Orders ». Les factures nécessitent les coordonnées du vendeur ci-dessus, avec les coordonnées de votre entreprise et de votre compte bancaire : sans elles, aucune facture n’est créée.',
+    'Basket expires' => 'Expiration du panier',
+    'shop_basket_expires_minutes_description' => 'Nombre de minutes pendant lesquelles les produits d’un panier restent réservés après la dernière action du client dans la boutique.',
+    'Add to basket' => 'Ajouter au panier',
+    'shop_add_to_basket_description' => 'Texte du bouton qui ajoute un produit au panier.',
+    'Added to basket' => 'Ajouté au panier',
+    'shop_added_to_basket_description' => 'Message affiché après l’ajout d’un produit au panier.',
+    'Out of stock' => 'Épuisé',
+    'shop_out_of_stock_description' => 'Message affiché lorsqu’un produit est épuisé.',
+    'Email' => 'E-mail',
+    'shop_email_description' => 'Votre adresse e-mail, à laquelle la boutique envoie chaque nouvelle commande.',
+    'PayPal and debit or credit card' => 'PayPal et carte de débit ou de crédit',
+    'Bank transfer' => 'Virement bancaire',
+    'PayPal, debit or credit card and bank transfer' => 'PayPal, carte de débit ou de crédit et virement bancaire',
+    'Payment method' => 'Mode de paiement',
+    'shop_payment_method_description' => 'Modes de paiement proposés lors de la commande. Les paiements PayPal et par carte nécessitent aussi les identifiants PayPal ci-dessous.',
+    'Promo code' => 'Code promo',
+    'shop_promo_code_description' => 'Un code qui donne une réduction aux clients. Lorsque ce champ et la réduction ci-dessous sont remplis, le panier demande un code promo.',
+    'Promo code discount' => 'Réduction du code promo',
+    'shop_promo_code_discount_description' => 'Réduction en pourcentage pour les clients qui saisissent le code promo.',
+    'Terms of service link' => 'Lien vers les conditions générales',
+    'shop_terms_link_description' => 'Adresse de votre page de conditions générales. Lorsqu’elle est remplie, le panier affiche un lien vers celle-ci avant la commande.',
+    'Weight units' => 'Unité de poids',
+    'shop_weight_unit_description' => 'Unité de poids des produits, comme g ou oz. Les frais de port sont calculés à partir des poids.',
+    'PayPal' => 'PayPal',
+    'shop_paypal_description' => 'Pour accepter les paiements par PayPal et par carte de débit ou de crédit, connectez votre compte PayPal professionnel. Remplissez <strong>un seul</strong> jeu d’identifiants ci-dessous, pas les deux : les <strong>identifiants d’app REST</strong> (pour une nouvelle configuration) ou les <strong>identifiants d’API Classic</strong> (boutiques plus anciennes déjà configurées avec eux). Si les deux sont remplis, ce sont les identifiants REST qui sont utilisés.',
+    'Currency' => 'Devise',
+    'Required for PayPal payments.' => 'Obligatoire pour les paiements PayPal.',
+    'shop_paypal_currency_code_description' => 'Code à trois lettres de la devise dans laquelle vos clients paient, par exemple EUR ou USD. Utilisez la devise des prix de votre boutique : si le champ est vide, PayPal facture les mêmes montants en dollars américains, sans les convertir. <a href="https://developer.paypal.com/reports/reference/supported-currencies" target="_blank">Devises prises en charge par PayPal</a>',
+    'Test mode (sandbox)' => 'Mode test (sandbox)',
+    'shop_paypal_sandbox_description' => 'Lorsqu’il est activé, les paiements passent par l’environnement de test de PayPal (sandbox), où aucun argent réel n’est transféré, pour que vous puissiez essayer la commande. L’environnement de test nécessite des identifiants sandbox, différents de vos identifiants réels. Désactivez-le et saisissez vos identifiants réels avant de commencer à vendre.',
+    'PayPal REST app credentials (recommended)' => 'Identifiants d’app REST PayPal (recommandé)',
+    'shop_paypal_rest_description' => 'Où les trouver : connectez-vous au <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank">PayPal Developer Dashboard</a> avec votre compte PayPal professionnel et ouvrez <strong>Apps &amp; Credentials</strong>. Ouvrez-y votre app, ou cliquez sur <strong>Create App</strong> pour en créer une, puis copiez son Client ID et son Secret dans les champs ci-dessous. Pour le mode test, copiez-les depuis l’onglet <strong>Sandbox</strong> au lieu de <strong>Live</strong>. <a href="https://developer.paypal.com/api/rest/" target="_blank">Guide de PayPal</a>',
+    'Client ID' => 'Client ID',
+    'shop_paypal_client_id_description' => 'Un long code de lettres et de chiffres, affiché sur la page de votre app.',
+    'Secret' => 'Secret',
+    'shop_paypal_client_secret_description' => 'Affiché sous le Client ID sur la même page ; faites-le apparaître pour le copier. Gardez-le confidentiel.',
+    'PayPal Classic API credentials (older shops)' => 'Identifiants d’API Classic PayPal (anciennes boutiques)',
+    'shop_paypal_classic_description' => 'Uniquement pour les boutiques déjà configurées avec eux : laissez ces champs vides si vous utilisez les identifiants d’app REST ci-dessus. Où les trouver : connectez-vous sur paypal.com, allez dans <strong>Account Settings</strong> › <strong>Account access</strong>, cliquez sur <strong>Update</strong> à côté de <strong>API access</strong>, puis sur <strong>Manage API credentials</strong> sous <strong>NVP/SOAP API integration (Classic)</strong>. Pour le mode test, faites de même sur sandbox.paypal.com avec un compte professionnel sandbox. <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" target="_blank">Guide de PayPal</a>',
+    'API username' => 'Nom d’utilisateur API',
+    'shop_paypal_user_name_description' => 'Ressemble à <em>yourname_api1.example.com</em>.',
+    'API password' => 'Mot de passe API',
+    'API signature' => 'Signature API',
+    'shop_paypal_signature_description' => 'Une longue chaîne de lettres et de chiffres.',
+    'Shopping cart image' => 'Image du panier',
+    'shop_cart_image_description' => 'Image affichée à la place du texte du lien du panier. Taille recommandée : jusqu’à 50 × 50 pixels.',
+    'shop_price_item_font_color_description' => 'Couleur du texte du prix affiché sur chaque entrée de produit.',
+    'shop_price_item_font_family_description' => 'Fonte du prix du produit. Si une fonte Google est indiquée ci-dessous, elle est utilisée à la place.',
+    'Google web fonts' => 'Fontes web Google',
+    'shop_price_item_font_size_description' => 'Corps du prix du produit, par exemple 12px ou 1.2em.',
+    'shop_price_item_font_weight_description' => 'Affiche le prix du produit en texte normal ou gras.',
+    'shop_price_item_font_style_description' => 'Affiche le prix du produit en texte normal ou italique.',
+    'shop_price_item_font_variant_description' => 'small-caps affiche les lettres du prix, comme la devise, en petites capitales.',
+    'shop_price_item_line_height_description' => 'Hauteur de la ligne de texte du prix du produit, par exemple 14px, 1.2em ou normal.',
+    'Shop entry width' => 'Largeur des entrées de la boutique',
+    'shop_entry_width_description' => 'Largeur des entrées de produits en pixels. Utilisée uniquement par le modèle Messy lorsque sa mise en page n’est pas responsive. La largeur propre d’une entrée la remplace. Laissez vide pour la largeur par défaut.',
+
+    // Settings and templates
+    'Additional text' => 'Texte supplémentaire',
+    'Background video (embed)' => 'Vidéo d’arrière-plan (intégrée)',
+    'Background video ratio' => 'Proportions de la vidéo d’arrière-plan',
+    'Button color' => 'Couleur des boutons',
+    'Centered content width' => 'Largeur du contenu centré',
+    'Centered contents' => 'Contenu centré',
+    'Centered layout' => 'Mise en page centrée',
+    'Centering guides color tone' => 'Ton des repères de centrage',
+    'Choose "no" to hide page heading in first section.' => 'Choisissez « No » pour masquer l’entête de page dans la première section.',
+    'Choose "yes" to show gridlines in background. Available only in Messy template.' => 'Choisissez « Yes » pour afficher une grille en arrière-plan. Disponible uniquement dans le template Messy.',
+    'Choose theme' => 'Choisissez un thème',
+    'Color of the fullscreen gallery background.' => 'Couleur de fond de la galerie en plein écran.',
+    'Color tone for centering guides (dark for bright background colors, bright for dark background colors).' => 'Ton des repères de centrage (sombre pour les fonds clairs, clair pour les fonds sombres).',
+    'Column count for Mash-up section.' => 'Nombre de colonnes de la section Mash-up.',
+    'Columns' => 'Colonnes',
+    'Content width if layout is centered.' => 'Largeur du contenu lorsque la mise en page est centrée.',
+    'Custom social media buttons' => 'Boutons de réseaux sociaux personnalisés',
+    'Displayed image will be half of the original size, full size will be used for hi-res displays.' => 'L’image affichée fait la moitié de sa taille d’origine ; la taille complète est utilisée sur les écrans haute résolution.',
+    'Enable navigation to page top' => 'Activer le retour en haut de page',
+    'Enabled' => 'Activé',
+    'Enables fullscreen gallery slide numbers.' => 'Active la numérotation des images de la galerie en plein écran.',
+    'Enables gallery fullscreen mode for new entries.' => 'Active le mode plein écran de la galerie pour les nouvelles entrées.',
+    'Enables responsive layout for mobile devices.' => 'Active la mise en page responsive pour les appareils mobiles.',
+    'Entries are organised in columns. Column count can be changed under section settings.' => 'Les entrées sont disposées en colonnes. Le nombre de colonnes se règle dans les paramètres de la section.',
+    'Entry max width' => 'Largeur maximale des entrées',
+    'Entry padding' => 'Marge intérieure des entrées',
+    'Fill window' => 'Remplir la fenêtre',
+    'Gallery fullscreen settings:' => 'Paramètres de la galerie en plein écran :',
+    'Google Analytics measurement ID' => 'ID de mesure Google Analytics',
+    'Google Tag Manager container ID' => 'ID de conteneur Google Tag Manager',
+    'Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.' => 'Balise <meta> de validation de propriété Google. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">En savoir plus</a>.',
+    'Grid layout' => 'Mise en page en grille',
+    'Gridlines color' => 'Couleur de la grille',
+    'HTML code' => 'Code HTML',
+    'Heading margin' => 'Marges de l’entête',
+    'Hide copyrights' => 'Masquer les mentions de copyright',
+    'Hides Berta\'s copyrights' => 'Masque les mentions de copyright de Berta',
+    'How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.' => 'Distance entre la sidebar et le bord gauche de l’écran. Ignorée si la mise en page centrée est activée.',
+    'How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.' => 'Comment obtenir l’<a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">ID de mesure</a>. Laissez vide si l’ID de conteneur Google Tag Manager est rempli.',
+    'How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.' => 'Comment obtenir l’<a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">ID de conteneur</a>. Laissez vide si l’ID de mesure Google Analytics est rempli.',
+    'Icon' => 'Icône',
+    'Javascript code' => 'Code Javascript',
+    'Javascript include' => 'Javascript inclus',
+    'Keep ratio' => 'Conserver les proportions',
+    'Link' => 'Lien',
+    'Link address' => 'Adresse du lien',
+    'Location' => 'Emplacement',
+    'Location of social media buttons. Content of additional text or additional footer will be replaced.' => 'Emplacement des boutons de réseaux sociaux. Ils remplacent le contenu du texte supplémentaire ou du pied de page supplémentaire.',
+    'Margin around menu.' => 'Marge autour du menu.',
+    'Margin around page heading or logo.' => 'Marge autour de l’entête de page ou du logo.',
+    'Mash-up columns' => 'Colonnes Mash-up',
+    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale d’une image moyenne (visible si « Medium images » est activé dans l’éditeur de galerie). Ces paramètres ne modifient pas l’image d’origine.',
+    'Medium image height' => 'Hauteur des images moyennes',
+    'Medium image width' => 'Largeur des images moyennes',
+    'Menu margin' => 'Marges du menu',
+    'Name of your site. Visible in all sections.' => 'Nom de votre site. Visible dans toutes les sections.',
+    'Opens in' => 'S’ouvre dans',
+    'Page heading, menu items and section entries is horizontally centered to window.' => 'L’entête de page, les éléments du menu et les entrées des sections sont centrés horizontalement dans la fenêtre.',
+    'Paste or write your HTML code here.' => 'Collez ou écrivez votre code HTML ici.',
+    'Paste or write your Javascript code here.' => 'Collez ou écrivez votre code Javascript ici.',
+    'Reset design' => 'Réinitialiser le design',
+    'Reset design to default values.' => 'Rétablit les valeurs par défaut du design.',
+    'Responsive design' => 'Design responsive',
+    'Responsive layout' => 'Mise en page responsive',
+    'Set the default state of image number visibility in slideshow galleries.' => 'Définit si les numéros d’image sont affichés par défaut dans les galeries en diaporama.',
+    'Sets whether layout should be centered or not.' => 'Définit si la mise en page est centrée ou non.',
+    'Sets whether layout should be responsive or not.' => 'Définit si la mise en page est responsive ou non.',
+    'Show gridlines' => 'Afficher la grille',
+    'Show page heading in first section?' => 'Afficher l’entête de page dans la première section ?',
+    'Show slideshow image numbers' => 'Afficher les numéros d’image du diaporama',
+    'Shows navigation button at the bottom when page is scrolled.' => 'Affiche un bouton de navigation en bas lorsque la page défile.',
+    'Slideshow loop mode' => 'Diaporama en boucle',
+    'Social media buttons' => 'Boutons de réseaux sociaux',
+    'Social media links' => 'Liens de réseaux sociaux',
+    'Texts' => 'Textes',
+    'Theme' => 'Thème',
+    'Themes are ready made sites with predefined design settings.' => 'Les thèmes sont des sites prêts à l’emploi avec des réglages de design prédéfinis.',
 ];

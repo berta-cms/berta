@@ -68,6 +68,14 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
 
     public function getPlan()
     {
+        return self::hostingPlan();
+    }
+
+    /**
+     * The site's Berta hosting plan, null when it isn't hosted by Berta
+     */
+    public static function hostingPlan(): ?int
+    {
         $path = config('app.old_berta_root') . '/engine/plan';
         if (! file_exists($path)) {
             return null;

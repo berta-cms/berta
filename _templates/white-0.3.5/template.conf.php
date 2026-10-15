@@ -1,1030 +1,1019 @@
 <?php
 
-$fontOptions = [
-    'Arial, sans-serif' => 'Arial, sans-serif',
-    'Helvetica, Arial, sans-serif' => 'Helvetica, Arial, sans-serif',
-    '"Helvetica Neue", Helvetica, Arial, sans-serif' => 'Helvetica Neue, Helvetica, Arial, sans-serif',
-    '"Arial Black", Gadget, sans-serif' => 'Arial Black, Gadget',
-    '"Comic Sans MS", cursive' => 'Comic Sans MS',
-    '"Courier New", Courier, monospace' => 'Courier New, Courier',
-    'Georgia, "Times New Roman", Times, serif' => 'Georgia, Times New Roman, Times',
-    'Impact, Charcoal, sans-serif' => 'Impact, Charcoal',
-    '"Lucida Console", Monaco, monospace' => 'Lucida Console, Monaco',
-    '"Lucida Sans Unicode", "Lucida Grande", sans-serif' => 'Lucida Sans Unicode, Lucida Grande',
-    '"Palatino Linotype", "Book Antiqua", Palatino, serif' => 'Palatino Linotype, Book Antiqua, Palatino',
-    'Tahoma, Geneva, sans-serif' => 'Tahoma, Geneva',
-    '"Times New Roman", Times, serif' => 'Times New Roman, Times',
-    '"Trebuchet MS", Helvetica, sans-serif' => 'Trebuchet MS, Helvetica',
-    'Verdana, Geneva, sans-serif' => 'Verdana, Geneva',
-];
-$fontOptionsWithInherit = array_merge([
-    'inherit' => '(inherit from general-font-settings)',
-], $fontOptions);
+/**
+ * The template's section types and settings: their default values for the site engine, and their titles and
+ * descriptions for the editor. `$translate` translates a title or description into the editor's language.
+ *
+ * @return Closure(callable(string): string, bool): array{0: array<string, mixed>, 1: array<string, mixed>, 2: array<string, mixed>}
+ */
+return static function (callable $translate, bool $isShopEnabled): array {
+    ['fonts' => $fontOptions, 'withInherit' => $fontOptionsWithInherit] = require dirname(__DIR__, 2) . '/engine/inc.font-options.php';
 
-$sectionTypes = [
-    'default' => [
-        'title' => 'Default',
-    ],
-    'external_link' => [
-        'title' => 'External link',
-        'params' => [
-            'link' => [
-                'format' => 'url',
+    $sectionTypes = [
+        'default' => [
+            'title' => 'Default',
+        ],
+        'external_link' => [
+            'title' => 'External link',
+            'params' => [
+                'link' => [
+                    'format' => 'url',
+                    'default' => '',
+                    'allow_blank' => true,
+                    'link' => true,
+                ],
+                'target' => [
+                    'format' => 'select',
+                    'values' => [
+                        '_self' => 'Same window',
+                        '_blank' => 'New window',
+                    ],
+                    'default' => '_blank',
+                ],
+            ],
+        ],
+        'portfolio' => [
+            'title' => 'Portfolio',
+        ],
+    ];
+
+    $templateConf = [
+        'generalFontSettings' => [
+            '_' => [
+                'title' => $translate('General font settings'),
+            ],
+            'color' => [
+                'format' => 'color',
+                'default' => '#000000',
+                'title' => $translate('Color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'color',
+                    ],
+                ],
+            ],
+            'fontFamily' => [
+                'format' => 'fontselect',
+                'values' => $fontOptions,
+                'default' => 'Arial, sans-serif',
+                'title' => $translate('Font face'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-family',
+                    ],
+                ],
+            ],
+            'googleFont' => [
+                'format' => 'text',
                 'default' => '',
                 'allow_blank' => true,
-                'link' => true,
+                'html_entities' => true,
+                'title' => 'Google web fonts',
+                'description' => $translate('google_font_description'),
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-family',
+                    ],
+                ],
             ],
-            'target' => [
+            'fontSize' => [
+                'format' => 'text',
+                'default' => '11px',
+                'allow_blank' => true,
+                'title' => $translate('Font size'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-size',
+                    ],
+                ],
+            ],
+            'fontWeight' => [
                 'format' => 'select',
                 'values' => [
-                    '_self' => 'Same window',
-                    '_blank' => 'New window',
+                    'normal',
+                    'bold',
                 ],
-                'default' => '_blank',
+                'default' => 'normal',
+                'title' => $translate('Font weight'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-weight',
+                    ],
+                ],
+            ],
+            'fontStyle' => [
+                'format' => 'select',
+                'values' => [
+                    'normal',
+                    'italic',
+                ],
+                'default' => 'normal',
+                'title' => $translate('Font style'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-style',
+                    ],
+                ],
+            ],
+            'fontVariant' => [
+                'format' => 'select',
+                'values' => [
+                    'normal',
+                    'small-caps',
+                ],
+                'default' => 'normal',
+                'title' => $translate('Font variant'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'font-variant',
+                    ],
+                ],
+            ],
+            'lineHeight' => [
+                'format' => 'text',
+                'default' => 'normal',
+                'allow_blank' => true,
+                'title' => $translate('Line height'),
+                'description' => $translate('Height of text line. Use em, px or % values or the default value "normal"'),
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'line-height',
+                    ],
+                ],
             ],
         ],
-    ],
-    'portfolio' => [
-        'title' => 'Portfolio',
-    ],
-];
 
-$templateConf = [
-    'generalFontSettings' => [
-        '_' => [
-            'title' => I18n::_('General font settings'),
-        ],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'color',
+        'links' => [
+            '_' => [
+                'title' => $translate('Hyperlinks'),
+            ],
+            'colorLink' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Link color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:link',
+                        'property' => 'color',
+                    ],
+                ],
+            ],
+            'colorVisited' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Visited link color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:visited',
+                        'property' => 'color',
+                    ],
+                ],
+            ],
+            'colorHover' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Link color when hovered'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:hover',
+                        'property' => 'color',
+                    ],
+                ],
+            ],
+            'colorActive' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Link color when clicked'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:active',
+                        'property' => 'color',
+                    ],
+                ],
+            ],
+            'textDecorationLink' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'none',
+                'title' => $translate('Link decoration'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:link',
+                        'property' => 'text-decoration',
+                    ],
+                ],
+            ],
+            'textDecorationVisited' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'none',
+                'title' => $translate('Visited link decoration'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:visited',
+                        'property' => 'text-decoration',
+                    ],
+                ],
+            ],
+            'textDecorationHover' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'underline',
+                'title' => $translate('Link decoration when hovered'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:hover',
+                        'property' => 'text-decoration',
+                    ],
+                ],
+            ],
+            'textDecorationActive' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'underline',
+                'title' => $translate('Link decoration when clicked'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'a:active',
+                        'property' => 'text-decoration',
+                    ],
                 ],
             ],
         ],
-        'fontFamily' => [
-            'format' => 'fontselect',
-            'values' => $fontOptions,
-            'default' => 'Arial, sans-serif',
-            'title' => I18n::_('Font face'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-family',
-                ],
-            ],
-        ],
-        'googleFont' => [
-            'format' => 'text',
-            'default' => '',
-            'allow_blank' => true,
-            'html_entities' => true,
-            'title' => 'Google web fonts',
-            'description' => I18n::_('googleFont_description'),
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-family',
-                ],
-            ],
-        ],
-        'fontSize' => [
-            'format' => 'text',
-            'default' => '11px',
-            'allow_blank' => true,
-            'title' => I18n::_('Font size'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-size',
-                ],
-            ],
-        ],
-        'fontWeight' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'bold',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font weight'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-weight',
-                ],
-            ],
-        ],
-        'fontStyle' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'italic',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font style'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-style',
-                ],
-            ],
-        ],
-        'fontVariant' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'small-caps',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font variant'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'font-variant',
-                ],
-            ],
-        ],
-        'lineHeight' => [
-            'format' => 'text',
-            'default' => 'normal',
-            'allow_blank' => true,
-            'title' => I18n::_('Line height'),
-            'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'line-height',
-                ],
-            ],
-        ],
-    ],
 
-    'links' => [
-        '_' => [
-            'title' => I18n::_('Hyperlinks'),
-        ],
-        'colorLink' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Link color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:link',
-                    'property' => 'color',
+        'background' => [
+            '_' => [
+                'title' => $translate('Background'),
+            ],
+            'backgroundColor' => [
+                'format' => 'color',
+                'default' => '#FFFFFF',
+                'title' => $translate('Background color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'background-color',
+                    ],
                 ],
             ],
-        ],
-        'colorVisited' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Visited link color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:visited',
-                    'property' => 'color',
+            'backgroundImageEnabled' => [
+                'format' => 'select',
+                'values' => [
+                    'yes',
+                    'no',
+                ],
+                'default' => 'no',
+                'title' => $translate('Is background image enabled?'),
+                'description' => '',
+            ],
+            'backgroundImage' => [
+                'format' => 'image',
+                'default' => '',
+                'min_width' => 1,
+                'min_height' => 1,
+                'max_width' => 3000,
+                'max_height' => 3000,
+                'affectsStyle' => true,
+                'title' => $translate('Background image'),
+                'description' => $translate('Picture to use for page background.'),
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'background-image',
+                    ],
                 ],
             ],
-        ],
-        'colorHover' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Link color when hovered'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:hover',
-                    'property' => 'color',
+            'backgroundRepeat' => [
+                'format' => 'select',
+                'values' => [
+                    'repeat' => 'tile vertically and horizontally',
+                    'repeat-x' => 'tile horizontally',
+                    'repeat-y' => 'tile vertically',
+                    'no-repeat' => 'no tiling',
+                ],
+                'default' => 'repeat',
+                'title' => $translate('Background tiling'),
+                'description' => $translate('How the background fills the screen?'),
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'background-repeat',
+                    ],
                 ],
             ],
-        ],
-        'colorActive' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Link color when clicked'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:active',
-                    'property' => 'color',
+            'backgroundPosition' => [
+                'format' => 'select',
+                'values' => [
+                    'top left',
+                    'top center',
+                    'top right',
+                    'center left',
+                    'center',
+                    'center right',
+                    'bottom left',
+                    'bottom center',
+                    'bottom right',
+                ],
+                'default' => 'top left',
+                'title' => $translate('Background alignment'),
+                'description' => $translate('Where the background image is positioned?'),
+                'css' => [
+                    [
+                        'selector' => 'body',
+                        'property' => 'background-position',
+                    ],
                 ],
             ],
-        ],
-        'textDecorationLink' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'none',
-            'title' => I18n::_('Link decoration'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:link',
-                    'property' => 'text-decoration',
+            'backgroundAttachment' => [
+                'format' => 'select',
+                'values' => [
+                    'fixed' => 'Fixed to browser window',
+                    'fill' => 'Filled in browser window',
+                    'scroll' => 'No stretch, scroll along with content',
                 ],
+                'default' => 'scroll',
+                'title' => $translate('Background position'),
+                'description' => $translate('Sets how background behaves in relation with the browser window.'),
             ],
         ],
-        'textDecorationVisited' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'none',
-            'title' => I18n::_('Visited link decoration'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:visited',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-        'textDecorationHover' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'underline',
-            'title' => I18n::_('Link decoration when hovered'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:hover',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-        'textDecorationActive' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'underline',
-            'title' => I18n::_('Link decoration when clicked'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'a:active',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-    ],
 
-    'background' => [
-        '_' => [
-            'title' => I18n::_('Background'),
-        ],
-        'backgroundColor' => [
-            'format' => 'color',
-            'default' => '#FFFFFF',
-            'title' => I18n::_('Background color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'background-color',
+        'pageLayout' => [
+            '_' => [
+                'title' => $translate('Page layout'),
+            ],
+            'centered' => [
+                'format' => 'select',
+                'default' => 'no',
+                'values' => [
+                    'yes',
+                    'no',
+                ],
+                'title' => $translate('Centered layout'),
+                'description' => $translate('Sets whether layout should be centered or not.'),
+            ],
+            'contentWidth' => [
+                'format' => 'text',
+                'default' => '600px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Entry text max width'),
+                'description' => $translate('Width of texts in the entries. This does not apply to the width of images.'),
+                'css' => [
+                    [
+                        'selector' => '#mainColumn',
+                        'property' => 'max-width',
+                    ],
                 ],
             ],
-        ],
-        'backgroundImageEnabled' => [
-            'format' => 'select',
-            'values' => [
-                'yes',
-                'no',
-            ],
-            'default' => 'no',
-            'title' => I18n::_('Is background image enabled?'),
-            'description' => '',
-        ],
-        'backgroundImage' => [
-            'format' => 'image',
-            'default' => '',
-            'min_width' => 1,
-            'min_height' => 1,
-            'max_width' => 3000,
-            'max_height' => 3000,
-            'affectsStyle' => true,
-            'title' => I18n::_('Background image'),
-            'description' => I18n::_('Picture to use for page background.'),
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'background-image',
+            'paddingTop' => [
+                'format' => 'text',
+                'default' => '90px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('How far content is from page top?'),
+                'description' => $translate('The vertical distance between the top of the page and the content area.'),
+                'css' => [
+                    [
+                        'selector' => '#mainColumn',
+                        'property' => 'padding-top',
+                    ],
                 ],
             ],
-        ],
-        'backgroundRepeat' => [
-            'format' => 'select',
-            'values' => [
-                'repeat' => 'tile vertically and horizontally',
-                'repeat-x' => 'tile horizontally',
-                'repeat-y' => 'tile vertically',
-                'no-repeat' => 'no tiling',
-            ],
-            'default' => 'repeat',
-            'title' => I18n::_('Background tiling'),
-            'description' => I18n::_('How the background fills the screen?'),
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'background-repeat',
+            'paddingLeft' => [
+                'format' => 'text',
+                'default' => '30px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('How far content is from menu?'),
+                'description' => $translate('The horizontal distance between the menu and the content area.'),
+                'css' => [
+                    [
+                        'selector' => '#mainColumn',
+                        'property' => 'padding-left',
+                    ],
+                    [
+                        'selector' => '#mainColumn',
+                        'property' => 'padding-right',
+                    ],
+                    [
+                        'selector' => '.floating-banners',
+                        'property' => 'padding-left',
+                    ],
+                    [
+                        'selector' => '.bt-responsive #sideColumn',
+                        'property' => 'padding-left',
+                        'breakpoint' => '(max-width: 767px)',
+                    ],
+                    [
+                        'selector' => '.bt-responsive #sideColumnBottom',
+                        'property' => 'padding-left',
+                        'breakpoint' => '(max-width: 767px)',
+                    ],
                 ],
             ],
-        ],
-        'backgroundPosition' => [
-            'format' => 'select',
-            'values' => [
-                'top left',
-                'top center',
-                'top right',
-                'center left',
-                'center',
-                'center right',
-                'bottom left',
-                'bottom center',
-                'bottom right',
-            ],
-            'default' => 'top left',
-            'title' => I18n::_('Background alignment'),
-            'description' => I18n::_('Where the background image is positioned?'),
-            'css' => [
-                [
-                    'selector' => 'body',
-                    'property' => 'background-position',
+            'leftColumnWidth' => [
+                'format' => 'text',
+                'default' => '170px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Width of the left column'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumn',
+                        'property' => 'width',
+                    ],
+                    [
+                        'selector' => '#mainColumn',
+                        'property' => 'margin-left',
+                    ],
+                    [
+                        'selector' => '.xNarrow #mainColumn.xCentered',
+                        'property' => 'margin-left',
+                    ],
+                    [
+                        'selector' => '.floating-banners',
+                        'property' => 'margin-left',
+                    ],
                 ],
             ],
-        ],
-        'backgroundAttachment' => [
-            'format' => 'select',
-            'values' => [
-                'fixed' => 'Fixed to browser window',
-                'fill' => 'Filled in browser window',
-                'scroll' => 'No stretch, scroll along with content',
+            'group_responsive' => [
+                'format' => false,
+                'default' => false,
+                'title' => $translate('Responsive design'),
             ],
-            'default' => 'scroll',
-            'title' => I18n::_('Background position'),
-            'description' => I18n::_('Sets how background behaves in relation with the browser window.'),
+            'responsive' => [
+                'format' => 'select',
+                'default' => 'yes',
+                'values' => [
+                    'no',
+                    'yes',
+                ],
+                'title' => $translate('Enabled'),
+                'description' => $translate('Sets whether layout should be responsive or not.'),
+            ],
         ],
-    ],
 
-    'pageLayout' => [
-        '_' => [
-            'title' => I18n::_('Page layout'),
-        ],
-        'centered' => [
-            'format' => 'select',
-            'default' => 'no',
-            'values' => [
-                'yes',
-                'no',
+        'pageHeading' => [
+            '_' => [
+                'title' => $translate('Page heading'),
             ],
-            'title' => I18n::_('Centered layout'),
-            'description' => I18n::_('Sets whether layout should be centered or not.'),
-        ],
-        'contentWidth' => [
-            'format' => 'text',
-            'default' => '600px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Entry text max width'),
-            'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.'),
-            'css' => [
-                [
-                    'selector' => '#mainColumn',
-                    'property' => 'max-width',
-                ],
+            'image' => [
+                'format' => 'image',
+                'default' => '',
+                'min_width' => 1,
+                'min_height' => 1,
+                'max_width' => 140,
+                'max_height' => 400,
+                'title' => $translate('Header image'),
+                'description' => '<span class="warning">' . $translate('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>',
             ],
-        ],
-        'paddingTop' => [
-            'format' => 'text',
-            'default' => '90px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('How far content is from page top?'),
-            'description' => I18n::_('The vertical distance between the top of the page and the content area.'),
-            'css' => [
-                [
-                    'selector' => '#mainColumn',
-                    'property' => 'padding-top',
-                ],
-            ],
-        ],
-        'paddingLeft' => [
-            'format' => 'text',
-            'default' => '30px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('How far content is from menu?'),
-            'description' => I18n::_('The horizontal distance between the menu and the content area.'),
-            'css' => [
-                [
-                    'selector' => '#mainColumn',
-                    'property' => 'padding-left',
-                ],
-                [
-                    'selector' => '#mainColumn',
-                    'property' => 'padding-right',
-                ],
-                [
-                    'selector' => '.floating-banners',
-                    'property' => 'padding-left',
-                ],
-                [
-                    'selector' => '.bt-responsive #sideColumn',
-                    'property' => 'padding-left',
-                    'breakpoint' => '(max-width: 767px)',
-                ],
-                [
-                    'selector' => '.bt-responsive #sideColumnBottom',
-                    'property' => 'padding-left',
-                    'breakpoint' => '(max-width: 767px)',
+            'color' => [
+                'format' => 'color',
+                'default' => '#000000',
+                'title' => $translate('Color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop h1 a',
+                        'property' => 'color',
+                        'important' => true,
+                    ],
+                    [
+                        'selector' => '#sideColumnTop h1 a:link',
+                        'property' => 'color',
+                        'important' => true,
+                    ],
+                    [
+                        'selector' => '#sideColumnTop h1 a:visited',
+                        'property' => 'color',
+                        'important' => true,
+                    ],
+                    [
+                        'selector' => '#sideColumnTop h1 a:hover',
+                        'property' => 'color',
+                        'important' => true,
+                    ],
+                    [
+                        'selector' => '#sideColumnTop h1 a:active',
+                        'property' => 'color',
+                        'important' => true,
+                    ],
                 ],
             ],
-        ],
-        'leftColumnWidth' => [
-            'format' => 'text',
-            'default' => '170px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Width of the left column'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumn',
-                    'property' => 'width',
+            'fontFamily' => [
+                'format' => 'fontselect',
+                'values' => $fontOptionsWithInherit,
+                'default' => 'inherit',
+                'title' => $translate('Font face'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-family',
+                    ],
                 ],
-                [
-                    'selector' => '#mainColumn',
-                    'property' => 'margin-left',
+            ],
+            'googleFont' => [
+                'format' => 'text',
+                'default' => '',
+                'allow_blank' => true,
+                'html_entities' => true,
+                'title' => 'Google web fonts',
+                'description' => $translate('google_font_description'),
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-family',
+                    ],
                 ],
-                [
-                    'selector' => '.xNarrow #mainColumn.xCentered',
-                    'property' => 'margin-left',
+            ],
+            'fontSize' => [
+                'format' => 'text',
+                'default' => '20px',
+                'allow_blank' => true,
+                'title' => $translate('Font size'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-size',
+                    ],
                 ],
-                [
-                    'selector' => '.floating-banners',
-                    'property' => 'margin-left',
+            ],
+            'fontWeight' => [
+                'format' => 'select',
+                'values' => [
+                    'normal',
+                    'bold',
+                ],
+                'default' => 'normal',
+                'title' => $translate('Font weight'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-weight',
+                    ],
+                ],
+            ],
+            'fontStyle' => [
+                'format' => 'select',
+                'values' => [
+                    'normal',
+                    'italic',
+                ],
+                'default' => 'normal',
+                'title' => $translate('Font style'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-style',
+                    ],
+                ],
+            ],
+            'fontVariant' => [
+                'format' => 'select',
+                'values' => [
+                    'normal',
+                    'small-caps',
+                ],
+                'default' => 'normal',
+                'title' => $translate('Font variant'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'font-variant',
+                    ],
+                ],
+            ],
+            'lineHeight' => [
+                'format' => 'text',
+                'default' => '1em',
+                'allow_blank' => true,
+                'title' => $translate('Line height'),
+                'description' => $translate('Height of text line. Use em, px or % values or the default value "normal"'),
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'line-height',
+                    ],
+                ],
+            ],
+            'marginTop' => [
+                'format' => 'text',
+                'default' => '0',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Empty space on top'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'margin-top',
+                    ],
+                ],
+            ],
+            'marginBottom' => [
+                'format' => 'text',
+                'default' => '20px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Empty space on bottom'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop h1',
+                        'property' => 'margin-bottom',
+                    ],
                 ],
             ],
         ],
-        'group_responsive' => [
-            'format' => false,
-            'default' => false,
-            'title' => I18n::_('Responsive design'),
-        ],
-        'responsive' => [
-            'format' => 'select',
-            'default' => 'yes',
-            'values' => [
-                'no',
-                'yes',
-            ],
-            'title' => I18n::_('Enabled'),
-            'description' => I18n::_('Sets whether layout should be responsive or not.'),
-        ],
-    ],
 
-    'pageHeading' => [
-        '_' => [
-            'title' => I18n::_('Page heading'),
-        ],
-        'image' => [
-            'format' => 'image',
-            'default' => '',
-            'min_width' => 1,
-            'min_height' => 1,
-            'max_width' => 140,
-            'max_height' => 400,
-            'title' => I18n::_('Header image'),
-            'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>',
-        ],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'color',
+        'additionalText' => [
+            '_' => [
+                'title' => $translate('Additional text'),
+            ],
+            'color' => [
+                'format' => 'color',
+                'default' => 'inherit',
+                'title' => $translate('Color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#additionalText',
+                        'property' => 'color',
+                    ],
                 ],
-                [
-                    'selector' => '#sideColumnTop h1 a',
-                    'property' => 'color',
-                    'important' => true,
+            ],
+            'fontFamily' => [
+                'format' => 'fontselect',
+                'values' => $fontOptionsWithInherit,
+                'default' => 'inherit',
+                'title' => $translate('Font face'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#additionalText',
+                        'property' => 'font-family',
+                    ],
                 ],
-                [
-                    'selector' => '#sideColumnTop h1 a:link',
-                    'property' => 'color',
-                    'important' => true,
+            ],
+            'googleFont' => [
+                'format' => 'text',
+                'default' => '',
+                'allow_blank' => true,
+                'html_entities' => true,
+                'title' => $translate('Google web fonts'),
+                'description' => $translate('google_font_description'),
+                'css' => [
+                    [
+                        'selector' => '#additionalText',
+                        'property' => 'font-family',
+                    ],
                 ],
-                [
-                    'selector' => '#sideColumnTop h1 a:visited',
-                    'property' => 'color',
-                    'important' => true,
-                ],
-                [
-                    'selector' => '#sideColumnTop h1 a:hover',
-                    'property' => 'color',
-                    'important' => true,
-                ],
-                [
-                    'selector' => '#sideColumnTop h1 a:active',
-                    'property' => 'color',
-                    'important' => true,
+            ],
+            'fontSize' => [
+                'format' => 'text',
+                'default' => 'inherit',
+                'allow_blank' => true,
+                'title' => $translate('Font size'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#additionalText',
+                        'property' => 'font-size',
+                    ],
                 ],
             ],
         ],
-        'fontFamily' => [
-            'format' => 'fontselect',
-            'values' => $fontOptionsWithInherit,
-            'default' => 'inherit',
-            'title' => I18n::_('Font face'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-family',
-                ],
-            ],
-        ],
-        'googleFont' => [
-            'format' => 'text',
-            'default' => '',
-            'allow_blank' => true,
-            'html_entities' => true,
-            'title' => 'Google web fonts',
-            'description' => I18n::_('googleFont_description'),
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-family',
-                ],
-            ],
-        ],
-        'fontSize' => [
-            'format' => 'text',
-            'default' => '20px',
-            'allow_blank' => true,
-            'title' => I18n::_('Font size'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-size',
-                ],
-            ],
-        ],
-        'fontWeight' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'bold',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font weight'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-weight',
-                ],
-            ],
-        ],
-        'fontStyle' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'italic',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font style'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-style',
-                ],
-            ],
-        ],
-        'fontVariant' => [
-            'format' => 'select',
-            'values' => [
-                'normal',
-                'small-caps',
-            ],
-            'default' => 'normal',
-            'title' => I18n::_('Font variant'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'font-variant',
-                ],
-            ],
-        ],
-        'lineHeight' => [
-            'format' => 'text',
-            'default' => '1em',
-            'allow_blank' => true,
-            'title' => I18n::_('Line height'),
-            'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'line-height',
-                ],
-            ],
-        ],
-        'marginTop' => [
-            'format' => 'text',
-            'default' => '0',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Empty space on top'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'margin-top',
-                ],
-            ],
-        ],
-        'marginBottom' => [
-            'format' => 'text',
-            'default' => '20px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Empty space on bottom'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop h1',
-                    'property' => 'margin-bottom',
-                ],
-            ],
-        ],
-    ],
 
-    'additionalText' => [
-        '_' => [
-            'title' => I18n::_('Additional text'),
-        ],
-        'color' => [
-            'format' => 'color',
-            'default' => 'inherit',
-            'title' => I18n::_('Color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#additionalText',
-                    'property' => 'color',
+        'menu' => [
+            '_' => [
+                'title' => $translate('Main menu'),
+            ],
+            'colorLink' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:link',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop a:visited',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
+                        'property' => 'color',
+                    ],
                 ],
             ],
-        ],
-        'fontFamily' => [
-            'format' => 'fontselect',
-            'values' => $fontOptionsWithInherit,
-            'default' => 'inherit',
-            'title' => I18n::_('Font face'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#additionalText',
-                    'property' => 'font-family',
+            'colorHover' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Color when hovered'),
+                'description' => $translate('Color of the element under mouse cursor'),
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:hover',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
+                        'property' => 'color',
+                    ],
                 ],
             ],
-        ],
-        'googleFont' => [
-            'format' => 'text',
-            'default' => '',
-            'allow_blank' => true,
-            'html_entities' => true,
-            'title' => I18n::_('Google web fonts'),
-            'description' => I18n::_('googleFont_description'),
-            'css' => [
-                [
-                    'selector' => '#additionalText',
-                    'property' => 'font-family',
-                ],
-            ],
-        ],
-        'fontSize' => [
-            'format' => 'text',
-            'default' => 'inherit',
-            'allow_blank' => true,
-            'title' => I18n::_('Font size'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#additionalText',
-                    'property' => 'font-size',
-                ],
-            ],
-        ],
-    ],
+            'colorActive' => [
+                'format' => 'color',
+                'default' => '#666666',
+                'title' => $translate('Color when selected'),
+                'description' => $translate('Color of the element of the currently opened section'),
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:active',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop li.selected > a',
+                        'property' => 'color',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop li.selected > span',
+                        'property' => 'color',
+                    ],
 
-    'menu' => [
-        '_' => [
-            'title' => I18n::_('Main menu'),
-        ],
-        'colorLink' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:link',
-                    'property' => 'color',
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
+                        'property' => 'color',
+                    ],
                 ],
-                [
-                    'selector' => '#sideColumnTop a:visited',
-                    'property' => 'color',
+            ],
+            'textDecorationLink' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
                 ],
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
-                    'property' => 'color',
+                'default' => 'none',
+                'title' => $translate('Decoration'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:link',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop a:visited',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
+                        'property' => 'text-decoration',
+                    ],
+                ],
+            ],
+            'textDecorationHover' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'underline',
+                'title' => $translate('Decoration when hovered'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:hover',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
+                        'property' => 'text-decoration',
+                    ],
+                ],
+            ],
+            'textDecorationActive' => [
+                'format' => 'select',
+                'values' => [
+                    'none',
+                    'underline',
+                    'overline',
+                    'line-through',
+                ],
+                'default' => 'underline',
+                'title' => $translate('Decoration when selected'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '#sideColumnTop a:active',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop li.selected > a',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => '#sideColumnTop li.selected > span',
+                        'property' => 'text-decoration',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
+                        'property' => 'text-decoration',
+                    ],
                 ],
             ],
         ],
-        'colorHover' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Color when hovered'),
-            'description' => I18n::_('Color of the element under mouse cursor'),
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:hover',
-                    'property' => 'color',
-                ],
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
-                    'property' => 'color',
-                ],
-            ],
-        ],
-        'colorActive' => [
-            'format' => 'color',
-            'default' => '#666666',
-            'title' => I18n::_('Color when selected'),
-            'description' => I18n::_('Color of the element of the currently opened section'),
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:active',
-                    'property' => 'color',
-                ],
-                [
-                    'selector' => '#sideColumnTop li.selected > a',
-                    'property' => 'color',
-                ],
-                [
-                    'selector' => '#sideColumnTop li.selected > span',
-                    'property' => 'color',
-                ],
 
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
-                    'property' => 'color',
+        'entryLayout' => [
+            '_' => [
+                'title' => $translate('Entry layout'),
+            ],
+            'spaceBetween' => [
+                'format' => 'text',
+                'default' => '20px',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Space between entries'),
+                'description' => $translate('Distance from entry to entry. In pixels.'),
+                'css' => [
+                    [
+                        'selector' => 'ol#pageEntries li.xEntry',
+                        'property' => 'margin-bottom',
+                    ],
+                ],
+            ],
+            'defaultGalleryType' => [
+                'format' => 'select',
+                'values' => [
+                    'slideshow',
+                    'row',
+                    'grid',
+                ],
+                'default' => 'slideshow',
+                'title' => $translate('Default gallery type'),
+                'description' => '',
+            ],
+            'spaceBetweenImages' => [
+                'format' => 'text',
+                'default' => '1em',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Space between images in row and column'),
+                'description' => $translate('Horizontal/vertical space between images when gallery is in "row"/"column" mode'),
+                'css' => [
+                    [
+                        'selector' => 'ol#pageEntries li.xEntry .xGalleryType-column .xGalleryItem',
+                        'property' => 'padding-bottom',
+                    ],
+                    [
+                        'selector' => 'ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem',
+                        'property' => 'margin-right',
+                    ],
+                    [
+                        'selector' => '.bt-responsive ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
+                        'property' => 'padding-bottom',
+                    ],
+                ],
+            ],
+            'galleryNavMargin' => [
+                'format' => 'text',
+                'default' => '0',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Space between images and image navigation'),
+                'description' => $translate('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
+                'css' => [
+                    [
+                        'selector' => 'ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery',
+                        'property' => 'margin-bottom',
+                    ],
+                ],
+            ],
+            'galleryMargin' => [
+                'format' => 'text',
+                'default' => '1em',
+                'allow_blank' => true,
+                'css_units' => true,
+                'title' => $translate('Empty space below gallery'),
+                'description' => $translate('Distance between the gallery and the content below'),
+                'css' => [
+                    [
+                        'selector' => 'ol#pageEntries li.xEntry .xGalleryContainer',
+                        'property' => 'margin-bottom',
+                    ],
                 ],
             ],
         ],
-        'textDecorationLink' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'none',
-            'title' => I18n::_('Decoration'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:link',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => '#sideColumnTop a:visited',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-        'textDecorationHover' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'underline',
-            'title' => I18n::_('Decoration when hovered'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:hover',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-        'textDecorationActive' => [
-            'format' => 'select',
-            'values' => [
-                'none',
-                'underline',
-                'overline',
-                'line-through',
-            ],
-            'default' => 'underline',
-            'title' => I18n::_('Decoration when selected'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '#sideColumnTop a:active',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => '#sideColumnTop li.selected > a',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => '#sideColumnTop li.selected > span',
-                    'property' => 'text-decoration',
-                ],
-                [
-                    'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
-                    'property' => 'text-decoration',
-                ],
-            ],
-        ],
-    ],
 
-    'entryLayout' => [
-        '_' => [
-            'title' => I18n::_('Entry layout'),
-        ],
-        'spaceBetween' => [
-            'format' => 'text',
-            'default' => '20px',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Space between entries'),
-            'description' => I18n::_('Distance from entry to entry. In pixels.'),
-            'css' => [
-                [
-                    'selector' => 'ol#pageEntries li.xEntry',
-                    'property' => 'margin-bottom',
+        'socialMediaLinks' => [
+            '_' => [
+                'title' => $translate('Social media buttons'),
+            ],
+            'color' => [
+                'format' => 'color',
+                'default' => '#000000',
+                'title' => $translate('Button color'),
+                'description' => '',
+                'css' => [
+                    [
+                        'selector' => '.social-icon path',
+                        'property' => 'fill',
+                    ],
                 ],
             ],
         ],
-        'defaultGalleryType' => [
-            'format' => 'select',
-            'values' => [
-                'slideshow',
-                'row',
-                'grid',
-            ],
-            'default' => 'slideshow',
-            'title' => I18n::_('Default gallery type'),
-            'description' => '',
-        ],
-        'spaceBetweenImages' => [
-            'format' => 'text',
-            'default' => '1em',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Space between images in row and column'),
-            'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode'),
-            'css' => [
-                [
-                    'selector' => 'ol#pageEntries li.xEntry .xGalleryType-column .xGalleryItem',
-                    'property' => 'padding-bottom',
-                ],
-                [
-                    'selector' => 'ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem',
-                    'property' => 'margin-right',
-                ],
-                [
-                    'selector' => '.bt-responsive ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
-                    'property' => 'padding-bottom',
-                ],
-            ],
-        ],
-        'galleryNavMargin' => [
-            'format' => 'text',
-            'default' => '0',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Space between images and image navigation'),
-            'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
-            'css' => [
-                [
-                    'selector' => 'ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery',
-                    'property' => 'margin-bottom',
-                ],
-            ],
-        ],
-        'galleryMargin' => [
-            'format' => 'text',
-            'default' => '1em',
-            'allow_blank' => true,
-            'css_units' => true,
-            'title' => I18n::_('Empty space below gallery'),
-            'description' => I18n::_('Distance between the gallery and the content below'),
-            'css' => [
-                [
-                    'selector' => 'ol#pageEntries li.xEntry .xGalleryContainer',
-                    'property' => 'margin-bottom',
-                ],
-            ],
-        ],
-    ],
 
-    'socialMediaLinks' => [
-        '_' => [
-            'title' => I18n::_('Social media buttons'),
-        ],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Button color'),
-            'description' => '',
-            'css' => [
-                [
-                    'selector' => '.social-icon path',
-                    'property' => 'fill',
-                ],
+        'css' => [
+            '_' => [
+                'title' => $translate('Custom CSS'),
+            ],
+            'customCSS' => [
+                'format' => 'longtext',
+                'allow_blank' => true,
+                'default' => '',
+                'html_entities' => true,
+                'title' => $translate('Custom CSS'),
+                'description' => $translate('custom_css_description'),
             ],
         ],
-    ],
 
-    'css' => [
-        '_' => [
-            'title' => I18n::_('Custom CSS'),
+        'settings' => [
+            '_' => [
+                'title' => $translate('Other settings'),
+            ],
+            'resetTemplate' => [
+                'format' => 'action',
+                'default' => 'resetTemplate',
+                'title' => $translate('Reset design'),
+                'description' => $translate('Reset design to default values.'),
+            ],
         ],
-        'customCSS' => [
-            'format' => 'longtext',
-            'allow_blank' => true,
-            'default' => '',
-            'html_entities' => true,
-            'title' => I18n::_('Custom CSS'),
-            'description' => I18n::_('description_custom_css'),
-        ],
-    ],
+    ];
 
-    'settings' => [
-        '_' => [
-            'title' => I18n::_('Other settings'),
+    $translations = [
+        'sectionTypes' => [
+            'type' => $translate('section_type'),
+            'type_tip' => $translate('section_type_tip'),
         ],
-        'resetTemplate' => [
-            'format' => 'action',
-            'default' => 'resetTemplate',
-            'title' => I18n::_('Reset design'),
-            'description' => I18n::_('Reset design to default values.'),
-        ],
-    ],
-];
+    ];
 
-$translations = [
-    'sectionTypes' => [
-        'type' => I18n::_('section_type'),
-        'type_tip' => I18n::_('section_type_tip'),
-    ],
-];
-
-return [$sectionTypes, $templateConf, $translations];
+    return [$sectionTypes, $templateConf, $translations];
+};

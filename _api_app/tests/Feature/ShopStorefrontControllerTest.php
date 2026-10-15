@@ -3,6 +3,7 @@
 use App\Http\Middleware\SetupMiddleware;
 use App\Models\User;
 use App\Plugins\Shop\ShopBasketService;
+use App\Plugins\Shop\ShopCheckoutService;
 use App\Plugins\Shop\ShopClientsDataService;
 use App\Plugins\Shop\ShopOrderMail;
 use App\Plugins\Shop\ShopProductsDataService;
@@ -829,6 +830,37 @@ describe('bank transfer checkout', function () {
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['company', 'company_reg_no', 'legal_address']);
     });
+
+    it('requires a shipping region', function () {
+        Mail::fake();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, ['region' => ''])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['region' => 'The region field is required.']);
+
+        expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue();
+        Mail::assertNothingSent();
+    });
+
+    it('places a basket checked out twice at once only once', function () {
+        Mail::fake();
+        travelTo(Carbon::parse('2026-10-12 10:00:00'));
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        $basket = new ShopBasketService('');
+        $checkout = new ShopCheckoutService('', $basket);
+        // The second checkout, e.g. from another tab, found the basket open before the first one placed it
+        $client = $basket->findClient($token);
+        $totals = $checkout->totals($client, 1, '');
+        shopCheckout($token)->assertOk()->assertJsonPath('data.order_id', '2026-1');
+
+        $orderId = $checkout->placeManualOrder($client, $checkout->order(['payment_method' => 'bank_transfer']), $totals);
+
+        expect($orderId)->toBeNull();
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->pluck('order_id')->all())->toBe(['2026-1']);
+        expect(shopDb()->table('order_numbers')->value('last_number'))->toEqual(1);
+        Mail::assertSent(ShopOrderMail::class, 2);
+    });
 });
 
 describe('PayPal checkout', function () {
@@ -861,6 +893,20 @@ describe('PayPal checkout', function () {
             ->and(shopDb()->table('orders')->where('paid', 1)->count())->toBe(0);
         Mail::assertNothingSent();
     });
+
+    it('charges in the PayPal currency in capitals, and in US dollars when it is empty', function (string $setting, string $currency) {
+        writeShopSettings($this->bertaRoot, [...restSettings(), 'paypalCurrencyCode' => $setting]);
+        fakeRest();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+
+        Http::assertSent(fn (HttpRequest $request) => str_ends_with($request->url(), '/v2/checkout/orders')
+            && $request['purchase_units'][0]['amount']['currency_code'] === $currency);
+    })->with([
+        'typed in lowercase' => ['eur', 'EUR'],
+        'left empty' => ['', 'USD'],
+    ]);
 
     it('starts a REST payment on the guest checkout page for card payments', function () {
         writeShopSettings($this->bertaRoot, restSettings());
@@ -1140,6 +1186,53 @@ describe('PayPal return', function () {
         expect(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeTrue();
         Http::assertSent(fn (HttpRequest $request) => str_ends_with($request->url(), '/capture')
             && $request->header('PayPal-Request-Id') === ['capture-' . SHOP_REST_TOKEN]);
+    });
+
+    it('takes the payment on a return after an unconfirmed one, also for products reserved again', function () {
+        Mail::fake();
+        Exceptions::fake();
+        writeShopSettings($this->bertaRoot, restSettings());
+        $attempts = 0;
+        fakeRest(function () use (&$attempts) {
+            return $attempts++ === 0 ? Http::failedConnection() : Http::response(paidRestOrder());
+        });
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        // Another customer's order, so the chair's reservation gets a new id when it's reserved again
+        shopCheckout(fillShopBasket([[SHOP_TSHIRT, 'S']]))->assertOk();
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+        // The chair's reservation expires while the customer is at PayPal, the first return reserves it again
+        travel(31)->minutes();
+        postJson(storefrontUrl('stock'), ['uniqids' => [SHOP_CHAIR]])->assertJsonPath('data.0.instock', 1);
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=unconfirmed');
+
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        expect(capturesSent())->toBe(2);
+        expect(shopDb()->table('orders')->join('product', 'product.id', '=', 'orders.id_product')->pluck('orders.paid', 'product.name')->all())
+            ->toEqual(['T-shirt S' => 1, 'Chair' => 1]);
+        expect(shopDb()->table('product')->where('uniqid', SHOP_CHAIR)->value('instock'))->toEqual(0);
+    });
+
+    it('returns 409 for a bank transfer checkout of a basket while PayPal takes its payment', function () {
+        Mail::fake();
+        Sleep::fake(syncWithCarbon: true);
+        writeShopSettings($this->bertaRoot, restSettings());
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        $bankCheckout = null;
+        fakeRest(function () use (&$bankCheckout, $token) {
+            // The customer places the basket by bank transfer in another tab meanwhile
+            $bankCheckout = shopCheckout($token);
+
+            return Http::response(paidRestOrder());
+        });
+        shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
+
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+
+        $bankCheckout->assertConflict();
+        expect(shopDb()->table('client')->where('session_id', 'checkout')->pluck('payment_method')->all())->toBe(['paypal']);
+        expect(shopDb()->table('order_numbers')->value('last_number'))->toEqual(1);
+        Mail::assertSent(ShopOrderMail::class, 2);
     });
 
     it('emails a paid order that fails to save under its number', function () {

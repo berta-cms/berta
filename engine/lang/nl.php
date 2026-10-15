@@ -6,57 +6,23 @@ return [
     // Translations from the top "admin" menu
 
     /* menu item */
-    'close this' => 'sluiten',
     /* menu item */
-    'my site' => 'mijn site',
     /* menu item */
-    'sections' => 'sections',
     /* menu item */
-    'settings' => 'instellingen',
     /* menu item */
-    'design' => 'design',
     /* menu item */
-    'profile' => 'profiel',
     /* menu item */
-    'log out' => 'uitloggen',
-
-    // Translatins from login / logout window
-
-    'Logout ok. Please wait...' => 'Uitloggen. Wacht even A.U.B.…',
-    'Log in' => 'Inloggen',
 
     // Translatins from sections editor (sections.php)
 
     /* title */
-    'Sections' => 'Sections',
     /* column */
-    'Title as displayed in main menu' => 'Titel zoals die in het hoofdmenu verschijnt',
     /* column */
-    'Type' => 'Type',
     /* column */
-    'Details' => 'Details',
     /* column */
-    'Is published?' => 'is het gepubliceerd?',
     /* column */
-    'Delete' => 'Delete',
     /* button */
-    'create new section' => 'Maak nieuwe Section',
     /* button */
-    'delete' => 'Delete',
-
-    'What are sections?' => 'Wat zijn Sections?',
-    'sections_help_text' => 'Sections zijn de grootste of grofste onderverdelingen in jouw site. Je kan ze zien als containers voor jouw content (beeld, tekst, video). Sections verschijnen dus menu-items in het main menu.',
-    'What is the "external link"?' => 'Wat is een external link?',
-    'external_link_help_text' => 'Als je een menu item een link naar een andere site wilt laten zijn moet je de externe link exact ingeven. Dit kan een email link zijn (bijv., <em>mailto:somebody@someplace.net</em>) of een link naar een andere website (bijv. <em>http://www.artez.nl</em>).',
-
-    // Translations from profile page (profile.php)
-    'Profile' => 'Profiel',
-    'Old password' => 'Oud wachtwoord',
-    'New password' => 'Nieuw wachtwoord',
-    'Retype new password' => 'Bevestig nieuw wachtwoord',
-    'Change password' => 'Verander wachtwoord',
-    'password_help_text' => 'Het wachtwoord moet tenminste 6 karakters bevatten<br /> en alphanumerieke (A-Z, a-z, 0-9) karakters, maar geen leestekens zoals *&%$?.:;/, en ook geen spaties.',
-    '' => '',
 
     // Translations from settings page (settings.php)
 
@@ -64,13 +30,8 @@ return [
     'Settings' => 'Instellingen',
     /* title */
     'Design' => 'Design',
-    'These are settings for template' => 'Dit zijn de instellingen voor de Template',
 
-    'Some help with CSS values' => 'Hulp met CSS waarden (units)',
-    'Units' => 'Units',
-    'units_help_text' => 'Correcte Units (eenheden) om numerieke waarden in te geven zijn:<br /><strong>px</strong> - pixels. Voorbeeld: <em>10px</em>. Als je alleen nummers invoert veranderen de waarden NIET.<br /><strong>em</strong> - 1em = een breedte van de letter M in het gebruikte font. Voorbeeld: <em>1em</em><br /><strong>%</strong> - procent van de fontsize of procent van de afmetingen van het container element (bijv. the page etc.)',
     'Margins' => 'Margins',
-    'margins_help_text' => 'Margins kunnen lastig zijn. Gebruik px of em als units. Je kan op 4 manieren margins aangeven, door in te geven:<br/><strong>1 waarde</strong> - zet top, right, bottom en left margins naar dezelfde waarde. Voorbeeld: <em>10px</em>.<br /><strong>2 waarden</strong> - zet top en bottom margins naar de eerste waarde, left en right - naar de tweede. Voorbeeld: <em>0 5px</em>.<br /><strong>3 waarden</strong> - zet top margin naar de eerste waarde, left en right - naar de tweede, bottom - naar de derde waarde. Voorbeeld: <em>10px 0 20px</em>.<br /><strong>4 waarden</strong> - zet alle margins in deze volgorde: top, right, bottom, left. Voorbeeld: <em>10px 0 20px 2px</em>.',
 
     // Translations from inc.settings.php
 
@@ -83,7 +44,6 @@ return [
     'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Templates zijn als een Theme of Skin voor jouw site. Je kan een Template kiezen uit degene die in jouw Templates folder zijn geinstalleerd (Settings>Templates). Om zelf een nieuwe Template toe te voegen aan deze lijst moet je die uploaden via FTP.',
 
     /* setting tab */
-    'Info' => 'Info',
     /* setting name */
     'Your name' => 'Jouw naam',
     /* help text */
@@ -155,9 +115,7 @@ return [
     /* help text */
     'Set the default state of image number visibility in slideshow galleries.' => 'Zijn de image numbers zichtbaar in de slide show?',
     /* setting name */
-    'Video player' => 'Video player',
     /* help text */
-    'Choose between the two visually different players for your video files.' => 'Maak hier een keuze tussen twee qua uiterlijk verschillende videoplayers voor jouw videobestanden.',
 
     /* setting tab */
     'Banners' => 'Banners',
@@ -177,7 +135,7 @@ return [
     /* setting tab */
     'Location' => 'Plaatsing',
     /* setting name */
-    'Location of social media buttons. Content of addition text or addition footer will be replaced.' => 'Plaatsing van  de social media buttons. De inhoud van additional text of additional footer text wordt door deze inhoud vervangen.',
+    'Location of social media buttons. Content of additional text or additional footer will be replaced.' => 'Plaatsing van  de social media buttons. De inhoud van additional text of additional footer text wordt door deze inhoud vervangen.',
 
     /* setting tab */
     'Language' => 'Taal',
@@ -191,7 +149,6 @@ return [
 
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Gefeliciteerd! Berta is geinstalleerd.</p><p>Voor dat je content gaat toevoegen, moet je eerst een Section maken. Ga naar de<a href="sections.php">pagina om dit te doen</a> Nu aan de gang!</p>',
     'create new entry here' => 'maak hier een nieuwe entry',
     'create new entry' => 'maak een nieuwe entry',
 
@@ -200,19 +157,19 @@ return [
     /* setting tab */
     'General font settings' => 'Algemene font settings',
     /* setting name */
-    'Color' => 'Color',
+    'Color' => 'Kleur',
     /* setting name */
-    'Font face' => 'Font face',
+    'Font face' => 'Lettertype',
     /* setting name */
-    'Font size' => 'Font size',
+    'Font size' => 'Lettergrootte',
     /* setting name */
-    'Font weight' => 'Bold',
+    'Font weight' => 'Letterdikte',
     /* setting name */
-    'Font style' => 'Italic',
+    'Font style' => 'Letterstijl',
     /* setting name */
-    'Font variant' => 'SmallCaps',
+    'Font variant' => 'Lettervariant',
     /* setting name */
-    'Line height' => 'Line height',
+    'Line height' => 'Regelhoogte',
     /* help text */
     'Height of text line. Use em, px or % values or the default value "normal"' => 'Ruimte tussen de regels tekst. Gebruik de units (eenheden) em, px of %, of de standaard waarde « normal ».',
 
@@ -296,7 +253,6 @@ return [
     /* setting name */
     'Header image' => 'Header image',
     /* help text */
-    'Picture to use instead of text.' => 'Image Die je wilt gebruiken in plaats van tekst.',
     /* help text */
     'How far the heading is from other elements in page.' => 'Hoe ver is de heading van de andere elementen verwijderd? Zie ook korte CSS gids onderaan de pagina.',
     /* help text */
@@ -461,24 +417,24 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Belangrijk! Dit moet als percentage worden ingevoerd, bijv. 60%',
 
-    'googleFont_description' => 'Type of copy/paste een Google font naam. Beschikbare fonts vind je hier: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Let op: Google font overschrijft systeem font. Vakje leeglaten als je een systeem font wilt gebruiken. Voorbeeld: <em>Marvel</em>, <em>Marvel:700italic</em> of <em>Josefin Slab:700italic</em>',
+    'google_font_description' => 'Type of copy/paste een Google font naam. Beschikbare fonts vind je hier: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Let op: Google font overschrijft systeem font. Vakje leeglaten als je een systeem font wilt gebruiken. Voorbeeld: <em>Marvel</em>, <em>Marvel:700italic</em> of <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Menu position',
     'Positon X' => 'Positie X',
     'Positon Y' => 'Positie Y',
-    'description_tagsMenu_x' => 'Submenu X positie in pixels (bijv. 10px)',
-    'description_tagsMenu_y' => 'Submenu Y positie in pixels (bijv. 10px)',
-    'description_menu_position' => 'Menu positie',
-    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Banner link \'https://\' moet zich voor het adres bevinden',
-    'description_language' => 'Kies hier de taal van de Berta interface. Refresh site om toe te passen.',
-    'Heading position' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',
-    'description_heading_position' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',
-    'description_submenu_alwaysopen' => 'Submenu is open als het menu item geselecteerd is.',
+    'tags_menu_x_description' => 'Submenu X positie in pixels (bijv. 10px)',
+    'tags_menu_y_description' => 'Submenu Y positie in pixels (bijv. 10px)',
+    'menu_position_description' => 'Menu positie',
+    'banner_image_description' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
+    'banner_link_description' => 'Banner link \'https://\' moet zich voor het adres bevinden',
+    'language_description' => 'Kies hier de taal van de Berta interface. Refresh site om toe te passen.',
+    'Heading position' => 'Positie van de kop',
+    'heading_position_description' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',
+    'tags_menu_always_open_description' => 'Submenu is open als het menu item geselecteerd is.',
 
     'Submenu is allways open' => 'Submenu is altijd open',
     'Submenu is hidden' => 'Submenu is verborgen',
-    'javascript_include' => 'Javascript code invoegen voor closing &lt;/body&gt; element. Leer hier meer over <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
-    'description_custom_css' => 'Plak jouw custom CSS code hier. Bestaande CSS definities worden overschreven. Voor meer informatie ga naar onze <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
+    'js_include_description' => 'Javascript code invoegen voor closing &lt;/body&gt; element. Leer hier meer over <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
+    'custom_css_description' => 'Plak jouw custom CSS code hier. Bestaande CSS definities worden overschreven. Voor meer informatie ga naar onze <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
     'Custom CSS' => 'Custom CSS.',
     'section_type' => 'Type',
     'section_type_tip' => 'Defines the layout and functionality of the section.',
@@ -487,4 +443,135 @@ return [
     'shuffle_marked' => 'Shuffle marked entries and galleries',
     'entries_limit' => 'Entries limit',
     'entries_limit_tip' => 'How many entries to show in this section',
+
+    // shop translations
+    'Configuration values' => 'Configuratiewaarden',
+    'Shop currency' => 'Valuta van de winkel',
+    'shop_currency_description' => 'Afkorting of symbool van de valuta, getoond bij elke prijs op de site.',
+    'Order email subject' => 'Onderwerp van de bestelmail',
+    'shop_order_email_subject_description' => 'Onderwerp van de bestelmail die naar de klant wordt gestuurd.',
+    'Seller details' => 'Verkopergegevens',
+    'shop_seller_details_description' => 'Je bedrijfs- en bankrekeninggegevens, opgenomen in de bestelmails. Klanten die per bankoverschrijving betalen, betalen naar de rekening die hier staat.',
+    'Required.' => 'Verplicht.',
+    'PDF invoices' => 'PDF-facturen',
+    'shop_invoices_description' => 'Kies "Yes" om een PDF-factuur aan de bestelmail van de klant toe te voegen en facturen te downloaden in "Orders". Facturen hebben de verkopergegevens hierboven nodig, met je bedrijfs- en bankrekeninggegevens: zonder die gegevens wordt er geen factuur gemaakt.',
+    'Basket expires' => 'Winkelmand verloopt',
+    'shop_basket_expires_minutes_description' => 'Aantal minuten dat de producten in een winkelmand gereserveerd blijven na de laatste actie van de klant in de winkel.',
+    'Add to basket' => 'Toevoegen aan winkelmand',
+    'shop_add_to_basket_description' => 'Tekst van de knop die een product aan de winkelmand toevoegt.',
+    'Added to basket' => 'Toegevoegd aan winkelmand',
+    'shop_added_to_basket_description' => 'Bericht dat verschijnt nadat een product aan de winkelmand is toegevoegd.',
+    'Out of stock' => 'Uitverkocht',
+    'shop_out_of_stock_description' => 'Bericht dat verschijnt als een product uitverkocht is.',
+    'Email' => 'E-mail',
+    'shop_email_description' => 'Je e-mailadres, waar de winkel elke nieuwe bestelling naartoe stuurt.',
+    'PayPal and debit or credit card' => 'PayPal en debet- of creditcard',
+    'Bank transfer' => 'Bankoverschrijving',
+    'PayPal, debit or credit card and bank transfer' => 'PayPal, debet- of creditcard en bankoverschrijving',
+    'Payment method' => 'Betaalmethode',
+    'shop_payment_method_description' => 'Betaalmethoden die bij het afrekenen worden aangeboden. Voor betalingen met PayPal en met een kaart zijn ook de PayPal-gegevens hieronder nodig.',
+    'Promo code' => 'Kortingscode',
+    'shop_promo_code_description' => 'Een code die klanten korting geeft. Als deze code en de korting hieronder zijn ingevuld, vraagt de winkelmand om een kortingscode.',
+    'Promo code discount' => 'Korting van de kortingscode',
+    'shop_promo_code_discount_description' => 'Korting in procenten voor klanten die de kortingscode invoeren.',
+    'Terms of service link' => 'Link naar de algemene voorwaarden',
+    'shop_terms_link_description' => 'Adres van je pagina met algemene voorwaarden. Als dit is ingevuld, toont de winkelmand er vóór het afrekenen een link naar.',
+    'Weight units' => 'Gewichtseenheid',
+    'shop_weight_unit_description' => 'Eenheid van het productgewicht, zoals g of oz. De verzendkosten worden berekend op basis van het gewicht.',
+    'PayPal' => 'PayPal',
+    'shop_paypal_description' => 'Koppel je zakelijke PayPal-account om betalingen met PayPal en met een debet- of creditcard te ontvangen. Vul <strong>één</strong> set gegevens hieronder in, niet beide: de <strong>REST-app-gegevens</strong> (gebruik deze voor een nieuwe installatie) of de <strong>Classic API-gegevens</strong> (oudere winkels die er al mee zijn ingesteld). Als beide zijn ingevuld, worden de REST-gegevens gebruikt.',
+    'Currency' => 'Valuta',
+    'Required for PayPal payments.' => 'Verplicht voor PayPal-betalingen.',
+    'shop_paypal_currency_code_description' => 'Drieletterige code van de valuta waarin je klanten betalen, bijvoorbeeld EUR of USD. Gebruik de valuta van je winkelprijzen: als dit leeg blijft, rekent PayPal dezelfde bedragen in Amerikaanse dollars af, zonder ze om te rekenen. <a href="https://developer.paypal.com/reports/reference/supported-currencies" target="_blank">Valuta die PayPal ondersteunt</a>',
+    'Test mode (sandbox)' => 'Testmodus (sandbox)',
+    'shop_paypal_sandbox_description' => 'Als deze aan staat, gaan betalingen naar de testomgeving van PayPal (sandbox), waar geen echt geld wordt overgemaakt, zodat je het afrekenen kunt uitproberen. De testomgeving heeft sandbox-gegevens nodig, die verschillen van je echte gegevens. Zet de testmodus uit en vul je echte gegevens in voordat je begint te verkopen.',
+    'PayPal REST app credentials (recommended)' => 'PayPal REST-app-gegevens (aanbevolen)',
+    'shop_paypal_rest_description' => 'Waar je ze vindt: log met je zakelijke PayPal-account in op het <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank">PayPal Developer Dashboard</a> en open <strong>Apps &amp; Credentials</strong>. Open daar je app, of klik op <strong>Create App</strong> om er een te maken, en kopieer de Client ID en het Secret naar de velden hieronder. Kopieer ze voor de testmodus uit het tabblad <strong>Sandbox</strong> in plaats van <strong>Live</strong>. <a href="https://developer.paypal.com/api/rest/" target="_blank">Handleiding van PayPal</a>',
+    'Client ID' => 'Client ID',
+    'shop_paypal_client_id_description' => 'Een lange code van letters en cijfers, te zien op de pagina van je app.',
+    'Secret' => 'Secret',
+    'shop_paypal_client_secret_description' => 'Staat onder de Client ID op dezelfde pagina; maak het zichtbaar om het te kopiëren. Houd het geheim.',
+    'PayPal Classic API credentials (older shops)' => 'PayPal Classic API-gegevens (oudere winkels)',
+    'shop_paypal_classic_description' => 'Alleen voor winkels die er al mee zijn ingesteld: laat deze velden leeg als je de REST-app-gegevens hierboven gebruikt. Waar je ze vindt: log in op paypal.com, ga naar <strong>Account Settings</strong> › <strong>Account access</strong>, klik op <strong>Update</strong> naast <strong>API access</strong> en daarna op <strong>Manage API credentials</strong> onder <strong>NVP/SOAP API integration (Classic)</strong>. Doe voor de testmodus hetzelfde op sandbox.paypal.com met een zakelijk sandbox-account. <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" target="_blank">Handleiding van PayPal</a>',
+    'API username' => 'API-gebruikersnaam',
+    'shop_paypal_user_name_description' => 'Ziet eruit als <em>yourname_api1.example.com</em>.',
+    'API password' => 'API-wachtwoord',
+    'API signature' => 'API-handtekening',
+    'shop_paypal_signature_description' => 'Een lange reeks letters en cijfers.',
+    'Shopping cart image' => 'Afbeelding van de winkelmand',
+    'shop_cart_image_description' => 'Afbeelding die in plaats van de linktekst van de winkelmand wordt getoond. Aanbevolen formaat: maximaal 50 × 50 pixels.',
+    'shop_price_item_font_color_description' => 'Tekstkleur van de prijs bij elk product.',
+    'shop_price_item_font_family_description' => 'Lettertype van de productprijs. Als hieronder een Google-font is ingevuld, wordt dat gebruikt.',
+    'Google web fonts' => 'Google-webfonts',
+    'shop_price_item_font_size_description' => 'Grootte van de productprijs, bijvoorbeeld 12px of 1.2em.',
+    'shop_price_item_font_weight_description' => 'Toont de productprijs in normale of vette tekst.',
+    'shop_price_item_font_style_description' => 'Toont de productprijs in normale of cursieve tekst.',
+    'shop_price_item_font_variant_description' => 'small-caps toont de letters in de prijs, zoals de valuta, als kleinkapitalen.',
+    'shop_price_item_line_height_description' => 'Hoogte van de tekstregel van de productprijs, bijvoorbeeld 14px, 1.2em of normal.',
+    'Shop entry width' => 'Breedte van winkelitems',
+    'shop_entry_width_description' => 'Breedte van productitems in pixels. Alleen gebruikt door de Messy-template als de lay-out niet responsive is. De eigen breedte van een item gaat voor. Laat leeg voor de standaardbreedte.',
+
+    // Settings and templates
+    'Additional text' => 'Extra tekst',
+    'Background video (embed)' => 'Achtergrondvideo (ingesloten)',
+    'Background video ratio' => 'Verhouding van de achtergrondvideo',
+    'Button color' => 'Knopkleur',
+    'Centered contents' => 'Gecentreerde inhoud',
+    'Choose "no" to hide page heading in first section.' => 'Kies "No" om de page heading in de eerste sectie te verbergen.',
+    'Choose "yes" to show gridlines in background. Available only in Messy template.' => 'Kies "Yes" om rasterlijnen in de achtergrond te tonen. Alleen beschikbaar in de Messy-template.',
+    'Choose theme' => 'Kies een thema',
+    'Color of the fullscreen gallery background.' => 'Achtergrondkleur van de fullscreen gallery.',
+    'Column count for Mash-up section.' => 'Aantal kolommen in een Mash-up-sectie.',
+    'Columns' => 'Kolommen',
+    'Custom social media buttons' => 'Eigen social media buttons',
+    'Displayed image will be half of the original size, full size will be used for hi-res displays.' => 'De getoonde afbeelding is half zo groot als het origineel; op schermen met hoge resolutie wordt het volledige formaat gebruikt.',
+    'Enable navigation to page top' => 'Navigatie naar de bovenkant van de pagina inschakelen',
+    'Enabled' => 'Ingeschakeld',
+    'Enables fullscreen gallery slide numbers.' => 'Schakelt de nummering van de slides in de fullscreen gallery in.',
+    'Enables gallery fullscreen mode for new entries.' => 'Schakelt de fullscreen-modus van de gallery in voor nieuwe entries.',
+    'Enables responsive layout for mobile devices.' => 'Schakelt de responsive layout voor mobiele apparaten in.',
+    'Entries are organised in columns. Column count can be changed under section settings.' => 'Entries staan in kolommen. Het aantal kolommen stel je in bij de instellingen van de sectie.',
+    'Entry max width' => 'Maximale breedte van een entry',
+    'Entry padding' => 'Binnenmarge van een entry',
+    'Fill window' => 'Venster vullen',
+    'Gallery fullscreen settings:' => 'Instellingen van de fullscreen gallery:',
+    'Google Analytics measurement ID' => 'Google Analytics-metings-ID',
+    'Google Tag Manager container ID' => 'Google Tag Manager-container-ID',
+    'Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.' => '<meta>-tag voor de eigendomsverificatie van Google. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">Meer info</a>.',
+    'Grid layout' => 'Rasterlayout',
+    'Gridlines color' => 'Kleur van de rasterlijnen',
+    'Heading margin' => 'Marges van de heading',
+    'Hide copyrights' => 'Copyright verbergen',
+    'Hides Berta\'s copyrights' => 'Verbergt de copyrightvermelding van Berta',
+    'How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.' => 'Zo vind je de <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">metings-ID</a>. Laat leeg als de Google Tag Manager-container-ID is ingevuld.',
+    'How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.' => 'Zo vind je de <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container-ID</a>. Laat leeg als de Google Analytics-metings-ID is ingevuld.',
+    'Icon' => 'Icoon',
+    'Javascript include' => 'Javascript invoegen',
+    'Keep ratio' => 'Verhouding behouden',
+    'Link' => 'Link',
+    'Link address' => 'Linkadres',
+    'Margin around menu.' => 'Marge rond het menu.',
+    'Margin around page heading or logo.' => 'Marge rond de page heading of het logo.',
+    'Mash-up columns' => 'Mash-up-kolommen',
+    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maximale grootte van een middelgrote afbeelding (zichtbaar als \'Medium images\' in de gallery-editor aan staat). Deze instellingen veranderen de originele afbeelding niet.',
+    'Medium image height' => 'Hoogte van middelgrote afbeeldingen',
+    'Medium image width' => 'Breedte van middelgrote afbeeldingen',
+    'Menu margin' => 'Marges van het menu',
+    'Name of your site. Visible in all sections.' => 'Naam van je site. Zichtbaar in alle secties.',
+    'Opens in' => 'Opent in',
+    'Page heading, menu items and section entries is horizontally centered to window.' => 'De page heading, de menu-items en de entries van de sectie worden horizontaal in het venster gecentreerd.',
+    'Reset design' => 'Design resetten',
+    'Reset design to default values.' => 'Zet het design terug naar de standaardwaarden.',
+    'Responsive design' => 'Responsive design',
+    'Responsive layout' => 'Responsive layout',
+    'Sets whether layout should be responsive or not.' => 'Bepaalt of de layout responsive is.',
+    'Show gridlines' => 'Rasterlijnen tonen',
+    'Show page heading in first section?' => 'Page heading in de eerste sectie tonen?',
+    'Shows navigation button at the bottom when page is scrolled.' => 'Toont een navigatieknop onderaan wanneer de pagina gescrold is.',
+    'Slideshow loop mode' => 'Slideshow herhalen',
+    'Social media buttons' => 'Social media buttons',
+    'Social media links' => 'Social media links',
+    'Texts' => 'Teksten',
+    'Theme' => 'Thema',
+    'Themes are ready made sites with predefined design settings.' => 'Thema\'s zijn kant-en-klare sites met vooraf ingestelde designinstellingen.',
 ];
