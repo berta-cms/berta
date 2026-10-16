@@ -110,7 +110,12 @@ class LocalValetDriver extends BasicValetDriver
             return [self::STATIC, $sitePath . '/engine/dist/index.html'];
         }
 
-        if (preg_match('#^/storage.*\.(xml|sqlite|db|log|php)$#', $uri) || $uri === '/storage/' || $uri === '/_templates/') {
+        if (
+            preg_match('#^/storage/(-sites/[^/]+/)?_shop_files/#', $uri)
+            || preg_match('#^/storage.*\.(xml|sqlite|db|log|php)$#', $uri)
+            || $uri === '/storage/'
+            || $uri === '/_templates/'
+        ) {
             return [self::NOT_FOUND, null];
         }
 
@@ -118,7 +123,7 @@ class LocalValetDriver extends BasicValetDriver
             return $this->passthroughRoute($path, $uri);
         }
 
-        if (! $this->isActualFile($path) && ! $this->endsWith($uri, 'index.php') && ! $this->endsWith($uri, '/')) {
+        if (! $this->isActualFile($path) && ! $this->endsWith($uri, 'index.php') && ! $this->endsWith($uri, '/sitemap.xml') && ! $this->endsWith($uri, '/')) {
             return [self::REDIRECT, $uri . '/'];
         }
 

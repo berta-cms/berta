@@ -123,7 +123,7 @@ class SectionMashupEntriesRenderService
                 $urlParts[] = Helpers::slugify($entry['tags']['tag'][0], '-', '-');
             }
 
-            $url = '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+            $url = Helpers::sitePath($urlParts, $isPreviewMode);
         }
 
         $galleryItem = ImageHelpers::getGalleryItem(

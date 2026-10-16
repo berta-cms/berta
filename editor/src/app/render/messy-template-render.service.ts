@@ -282,7 +282,6 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.templateName,
           commonViewData.user,
         ),
-        alertMessage: false,
         cartSection:
           commonViewData.isShopAvailable &&
           commonViewData.currentSectionType === 'shopping_cart'

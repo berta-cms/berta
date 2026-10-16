@@ -20,13 +20,6 @@ require 'config/inc.conf.php';
  */
 require 'inc.version.php';
 
-/**
- * Interface language (I18n)
- * A file named like the value of this option must be placed into engine/lang folder, containing all translations
- */
-$options['default_language'] = 'en';
-$options['languages'] = ['en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish'];
-
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,15 +94,6 @@ if (! empty($options['MULTISITE'])) {
  * Berta's hosting options
  */
 require 'inc.hosting.php';
-
-$options['images']['small_width'] = 200;
-$options['images']['small_height'] = 200;
-
-$options['images']['medium_width'] = 400;
-$options['images']['medium_height'] = 400;
-
-$options['images']['large_width'] = 600;
-$options['images']['large_height'] = 600;
 
 // Row gallery image limit returned from server
 // Remaining images will be rendered in frontend

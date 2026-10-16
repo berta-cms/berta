@@ -8,6 +8,13 @@ use Swaggest\JsonSchema\Schema;
 
 class Storage
 {
+    /**
+     * A site's private shop files, kept next to its shop database so they move, swap and back up with it.
+     * The web server denies this folder at the top of a site's storage only (.htaccess, LocalValetDriver.php),
+     * so a site or media folder that happens to share the name stays reachable.
+     */
+    public const SHOP_FILES_FOLDER = '_shop_files';
+
     /** @var array
      * Associative array representing data structure handled by this service.
      */
@@ -297,7 +304,10 @@ class Storage
         return [];
     }
 
-    protected function copyFolder($src, $dst)
+    /**
+     * @param  list<string>  $skipFolders  Folders at the top of $src left out of the copy
+     */
+    protected function copyFolder($src, $dst, array $skipFolders = [])
     {
         if (! is_dir($src)) {
             return;
@@ -309,7 +319,7 @@ class Storage
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
-                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER])) {
+                    if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER, ...$skipFolders])) {
                         self::copyFolder($src . '/' . $file, $dst . '/' . $file);
                     }
                 } else {

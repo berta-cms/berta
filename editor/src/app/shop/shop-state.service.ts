@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, from } from 'rxjs';
 import {
   take,
   filter,
@@ -12,6 +12,7 @@ import {
   pairwise,
   shareReplay,
   catchError,
+  finalize,
 } from 'rxjs/operators';
 
 import { Store } from '@ngxs/store';
@@ -114,6 +115,55 @@ export class ShopStateService {
     }
 
     return this.cachedSectionStates[site];
+  }
+
+  /**
+   * An order's invoice PDF. When the shop has none, e.g. invoices are turned off, its message is shown.
+   */
+  getOrderInvoice(
+    ordersUrl: string,
+    site: string,
+    orderId: number,
+  ): Observable<Blob> {
+    const user = this.store.selectSnapshot((state) => state.user);
+    this.store.dispatch(new AppShowLoading());
+
+    return this.http
+      .get(`${ordersUrl}/${orderId}/invoice`, {
+        headers: { 'X-Authorization': 'Bearer ' + user.token },
+        params: site ? { site: site } : {},
+        responseType: 'blob',
+      })
+      .pipe(
+        finalize(() => this.store.dispatch(new AppHideLoading())),
+        catchError((error: HttpErrorResponse) => {
+          // An error's JSON arrives as a blob too
+          const body: Promise<string> =
+            error.error instanceof Blob
+              ? error.error.text()
+              : Promise.resolve('');
+
+          return from(body).pipe(
+            map((text) => {
+              let message = '';
+              try {
+                message = JSON.parse(text).message;
+              } catch {
+                // Not the API's JSON, the HTTP error's message is shown
+              }
+              this.showError(
+                {
+                  status: error.status,
+                  error: { message },
+                  message: error.message,
+                },
+                {},
+              );
+              throw error;
+            }),
+          );
+        }),
+      );
   }
 
   private showError(error: any, data: any) {

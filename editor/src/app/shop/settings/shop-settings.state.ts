@@ -86,6 +86,20 @@ export class ShopSettingsState implements NgxsOnInit {
     );
   }
 
+  /** Whether the shop makes invoices: turned on, and with the seller details invoices need */
+  @Selector([ShopSettingsState.getCurrentSiteSettings])
+  static getCurrentInvoicesEnabled(currentSiteSettings): boolean {
+    const configSettings =
+      currentSiteSettings?.find((group) => group.slug === 'group_config')
+        ?.settings ?? [];
+    const value = (slug: string) =>
+      String(
+        configSettings.find((setting) => setting.slug === slug)?.value ?? '',
+      ).trim();
+
+    return value('invoices') === 'yes' && value('sellerDetails') !== '';
+  }
+
   private destroyRef = inject(DestroyRef);
   private counter = 0;
 

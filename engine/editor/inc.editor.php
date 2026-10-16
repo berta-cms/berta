@@ -53,7 +53,7 @@ if ($berta->apacheRewriteUsed) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 $berta->initContent($sectionName, $tagName);
-if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionName != $querySectionName) {
+if (($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionName != $querySectionName) || ! $berta->isSectionPageShown()) {
     include dirname(__DIR__) . '/error/404.php';
     exit;
 }

@@ -2,6 +2,8 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\Helpers;
+
 class GridViewRenderService
 {
     private $USED_IN_TEMPLATES = ['messy'];
@@ -31,7 +33,7 @@ class GridViewRenderService
 
             return '?' . implode('&', $parts);
         } else {
-            return '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+            return Helpers::sitePath($urlParts, $isPreviewMode);
         }
     }
 

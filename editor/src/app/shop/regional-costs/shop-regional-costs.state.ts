@@ -258,7 +258,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
       .sync(
         syncURLs.regionalCosts,
         {
-          path: `${site}/${action.id}/${action.payload.field}`,
+          path: `${site}/${action.costId}/${action.payload.field}`,
           value: action.payload.value,
         },
         'PATCH',

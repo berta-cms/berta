@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { take } from 'rxjs/operators';
 import * as WebFont from 'webfontloader';
 import { TemplateSiteModel } from '../sites/template-settings/site-templates.interface';
 import { SettingsGroupModel } from '../shared/interfaces';
@@ -18,8 +17,6 @@ import { ShopSettingsConfigModel } from '../shop/settings/shop-settings-config.s
 export class StyleService {
   contextWindow: Window;
   styleSheet: CSSStyleSheet;
-  templateConfig: TemplateSiteModel['templateConf'];
-  shopSettingsConfig: ShopSettingsConfigModel;
 
   constructor(
     private store: Store,
@@ -32,19 +29,6 @@ export class StyleService {
   initializeStyleSheet(contextWindow: Window, styleSheet: CSSStyleSheet) {
     this.contextWindow = contextWindow;
     this.styleSheet = styleSheet;
-    this.store
-      .select(SiteTemplatesState.getCurrentTemplateConfig)
-      .pipe(take(1))
-      .subscribe((templateConfig) => {
-        this.templateConfig = templateConfig;
-      });
-
-    this.store
-      .select((state) => state.shopSettingsConfig)
-      .pipe(take(1))
-      .subscribe((shopSettingsConfig) => {
-        this.shopSettingsConfig = shopSettingsConfig;
-      });
   }
 
   updateStyle(
@@ -53,7 +37,10 @@ export class StyleService {
     style,
     templateSettings: SettingsGroupModel[],
   ) {
-    const settingGroup = this.templateConfig[style.group];
+    // Read when a setting changes: the template's config may load after the preview
+    const templateConfig: TemplateSiteModel['templateConf'] | undefined =
+      this.store.selectSnapshot(SiteTemplatesState.getCurrentTemplateConfig);
+    const settingGroup = templateConfig?.[style.group];
     if (!settingGroup) {
       return;
     }
@@ -130,7 +117,10 @@ export class StyleService {
   }
 
   updateShopStyle(style, templateSettings: SettingsGroupModel[]) {
-    const settingGroup = this.shopSettingsConfig[style.group];
+    // Read when a setting changes: the shop's config loads with the shop, after the preview
+    const shopSettingsConfig: ShopSettingsConfigModel | undefined =
+      this.store.selectSnapshot((state) => state.shopSettingsConfig);
+    const settingGroup = shopSettingsConfig?.[style.group];
     if (!settingGroup) {
       return;
     }

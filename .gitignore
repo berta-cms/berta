@@ -1,14 +1,6 @@
 node_modules
 storage/*
-.idea/*
 .DS_Store
 _plugin_shop/
 editor/src/templates
-.buildpath
-.dropbox
-.project
-.settings
-Icon
-*.esproj/
 .vscode/settings.json
-TODO

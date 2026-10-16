@@ -202,6 +202,9 @@ export class TemplateRenderService {
     const siteTemplateSectionTypes = this.store.selectSnapshot(
       SiteTemplatesState.getCurrentTemplateSectionTypes,
     );
+    const siteTemplateConfig = this.store.selectSnapshot(
+      SiteTemplatesState.getCurrentTemplateConfig,
+    );
 
     const entries = this.store.selectSnapshot(
       SectionEntriesState.getCurrentSiteEntries,
@@ -220,8 +223,11 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
     let shopSettings = {};
+    let shopSettingsConfig = {};
 
     if (isShopAvailable) {
+      shopSettingsConfig =
+        this.store.selectSnapshot((state) => state.shopSettingsConfig) || {};
       const shopSettingsState = this.store.selectSnapshot(
         ShopSettingsState.getCurrentSiteSettings,
       );
@@ -282,6 +288,8 @@ export class TemplateRenderService {
         isResponsive,
         isAutoResponsive,
         user,
+        siteTemplateConfig,
+        shopSettingsConfig,
       ),
       googleTagManagerNoscript:
         this.googleTagManagerNoscriptRender(siteSettings),

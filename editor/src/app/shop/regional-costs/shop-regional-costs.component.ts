@@ -120,6 +120,14 @@ import {
           </div>
         </form>
       </div>
+    } @empty {
+      <div class="setting">
+        <p class="setting-description">
+          <b>Required.</b> The shopping cart takes orders once the shop has a
+          shipping region. For free shipping or pickup, add a region without
+          costs. For prices without VAT, leave VAT empty.
+        </p>
+      </div>
     }
     <form (submit)="addRegion($event)" class="setting bt-sh-region-add">
       <h4>Add region</h4>

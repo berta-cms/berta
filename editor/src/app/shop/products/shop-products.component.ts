@@ -1,57 +1,124 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
+import {
+  Component,
+  DestroyRef,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest, merge } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
 
+import { AppState } from '../../app-state/app.state';
 import { SiteSectionsState } from '../../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../../sites/sections/tags/section-tags.state';
 import { SectionEntriesState } from '../../sites/sections/entries/entries-state/section-entries.state';
+import {
+  UpdateSectionEntryAction,
+  UpdateSectionEntryFromSyncAction,
+} from '../../sites/sections/entries/entries-state/section-entries.actions';
+import { SwapContentsSitesAction } from '../../sites/sites-state/sites.actions';
+import { RefreshIndicator } from '../../shared/refresh-indicator';
 import { ShopProductsState } from './shop-products.state';
-import { UpdateShopProductAction } from './shop-products.actions';
+import {
+  LoadShopProductsAction,
+  UpdateShopProductAction,
+} from './shop-products.actions';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 import { SiteSectionStateModel } from '../../sites/sections/sections-state/site-sections-state.model';
 import { SectionTagsInterface } from '../../sites/sections/tags/section-tags-state.model';
 import { SectionEntry } from '../../sites/sections/entries/entries-state/section-entries-state.model';
 
+/** The entry fields a product is made of: its price makes it one, its title and attributes name it */
+const CART_FIELDS = ['cartTitle', 'cartPrice', 'cartAttributes'];
+
+interface ProductGroup {
+  name: string;
+  title: string;
+  isTag: boolean;
+  hasProducts: boolean;
+  products: any[];
+}
+
 @Component({
   selector: 'berta-shop-products',
   template: `
-    @for (group of productGroups$ | async; track group) {
-      <div class="setting" [class.bt-is-empty]="group.products.length === 0">
-        <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
-        @for (product of group.products; track product) {
-          <div class="product">
-            <berta-text-input
-              [value]="product.instock"
-              [label]="product.name"
-              [title]="'In stock'"
-              (update)="updateProducts('instock', $event, product.id)"
-              (inputFocus)="updateInputFocus($event)"
-            ></berta-text-input>
-            <p>
-              Reservations: <span>{{ product.reservation }}</span>
-            </p>
-          </div>
-        }
-      </div>
+    @if (productGroups$ | async; as productGroups) {
+      @if (hasProducts(productGroups)) {
+        <div class="bt-sh-products-toolbar">
+          <button
+            type="button"
+            class="bt-sh-refresh"
+            title="Load the current stock and reservations"
+            [class.bt-loading]="loading.showsLoading"
+            (click)="loadProducts()"
+          >
+            <bt-icon-refresh></bt-icon-refresh>
+            Refresh stock
+          </button>
+        </div>
+      }
+      @for (group of productGroups; track group) {
+        <div class="setting" [class.bt-is-empty]="group.products.length === 0">
+          <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
+          @for (product of group.products; track product) {
+            <div class="product">
+              <berta-text-input
+                [value]="product.instock"
+                [label]="product.name"
+                [title]="'In stock'"
+                (update)="updateProducts('instock', $event, product.id)"
+                (inputFocus)="updateInputFocus($event)"
+              ></berta-text-input>
+              <p>
+                Reservations: <span>{{ product.reservation }}</span>
+              </p>
+            </div>
+          }
+        </div>
+      }
     }
   `,
+  host: {
+    // The listed products fade only while a slow load is still running
+    '[class.bt-sh-products-loading]':
+      'loading.isLoading && loading.showsLoading',
+    '[attr.aria-busy]': 'loading.isLoading',
+  },
   standalone: false,
 })
-export class ShopProductsComponent implements OnInit {
-  productGroups$: Observable<
-    {
-      name: string;
-      title: string;
-      isTag: boolean;
-      hasProducts: boolean;
-      products: any[];
-    }[]
-  >;
+export class ShopProductsComponent implements OnInit, OnDestroy {
+  productGroups$: Observable<ProductGroup[]>;
+  readonly loading = new RefreshIndicator();
+  private destroyRef = inject(DestroyRef);
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+  ) {}
 
   ngOnInit() {
+    // Shoppers change the stock, and entries added or edited since make new products: the
+    // products load as the shop opens, for each site it shows, and as an entry's cart fields change
+    merge(
+      this.store.select(AppState.getSite).pipe(filter((site) => site !== null)),
+      this.actions$.pipe(
+        ofActionSuccessful(
+          UpdateSectionEntryFromSyncAction,
+          UpdateSectionEntryAction,
+          SwapContentsSitesAction,
+        ),
+        filter(
+          (action) =>
+            action instanceof SwapContentsSitesAction ||
+            CART_FIELDS.includes(action.path.split('/').pop()),
+        ),
+      ),
+    )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.loadProducts());
+
     this.productGroups$ = combineLatest([
       this.store.select(SiteSectionsState.getCurrentSiteShopSections),
       this.store.select(SectionTagsState.getCurrentSiteTags),
@@ -65,7 +132,8 @@ export class ShopProductsComponent implements OnInit {
           SectionEntry[],
           any,
         ]) => {
-          let leftOverProducts = [...products];
+          // None until the site's products have loaded
+          let leftOverProducts = [...(products ?? [])];
 
           // 1. Add entry data to products
           let productData: any[] = entries.reduce((_productData, entry) => {
@@ -179,6 +247,22 @@ export class ShopProductsComponent implements OnInit {
         },
       ),
     );
+  }
+
+  ngOnDestroy() {
+    this.loading.destroy();
+  }
+
+  hasProducts(productGroups: ProductGroup[]): boolean {
+    return productGroups.some((group) => group.products.length > 0);
+  }
+
+  /** A load started while another runs cancels the other */
+  loadProducts() {
+    this.loading
+      .track(this.store.dispatch(new LoadShopProductsAction()))
+      // The service shows the error
+      .subscribe({ error: () => {} });
   }
 
   updateProducts(field: string, value, id: string) {

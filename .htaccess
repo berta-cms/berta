@@ -47,6 +47,8 @@ RewriteCond %{REQUEST_URI} !^/engine/editor.*
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /engine/dist/index.html [L]
 
+# A site's private shop files: invoices and payment records
+RewriteCond %{REQUEST_URI} ^/storage/(-sites/[^/]+/)?_shop_files/ [OR]
 RewriteCond %{REQUEST_URI} ^/storage.*\.(xml|sqlite|db|log|php)$ [OR]
 RewriteCond %{REQUEST_URI} ^/storage/$ [OR]
 RewriteCond %{REQUEST_URI} ^/_templates/$
@@ -71,6 +73,7 @@ RewriteRule .* - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !index.php$
+RewriteCond %{REQUEST_URI} !/sitemap\.xml$
 RewriteCond %{REQUEST_URI} !^(.*)/$
 RewriteRule ^(.*)$ /$1/ [R=301,L]
 

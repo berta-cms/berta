@@ -1,0 +1,223 @@
+<div id="shoppingCartOuter" class="cart">
+  <h1 id="shoppingCartTitle" class="cart-title">Cart</h1>
+
+  <div id="shoppingCartEmpty" class="cart-title hidden">
+    <div>Custom cartTextEmpty</div>
+  </div>
+
+  <div class="cart-notice cart-expired js-cart-expired hidden">
+    <div>Custom cartTextExpired</div>
+  </div>
+
+  <div class="cart-order-placed js-cart-order-placed hidden">
+    <h2 class="cart-order-placed-headline js-cart-order-placed-headline"></h2>
+    <p class="cart-order-placed-next-step js-cart-order-placed-next-step"></p>
+    <p class="cart-notice js-cart-order-number"></p>
+    <button type="button" class="cart-button cart-button--primary" onclick="closeShoppingCart();">Custom cartTextReturnStore</button>
+  </div>
+
+  <div class="cart-contents js-cart-contents">
+    <div class="cart-lines-head">
+      <div class="cart-line-name"><span>Custom cartTextTitle</span></div>
+      <div class="cart-line-quantity"><span>Custom cartTextQuantity</span></div>
+      <div class="cart-line-price"><span>Custom cartTextPrice</span></div>
+      <div class="cart-line-sum"><span>Custom cartTextSum</span> (EUR)</div>
+    </div>
+
+    <ul class="cart-lines js-cart-lines"></ul>
+
+        <template class="js-cart-line-template">
+      <li class="cart-line js-cart-line">
+        <div class="cart-line-image js-cart-line-image hidden"></div>
+        <div class="cart-line-name js-cart-line-name"></div>
+        <div class="cart-line-quantity cart-stepper">
+          <button type="button" class="cart-stepper-button js-cart-quantity-decrease" aria-label="Remove one">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8h9" /></svg>
+          </button>
+          <span class="cart-stepper-value js-cart-line-quantity"></span>
+          <button type="button" class="cart-stepper-button js-cart-quantity-increase" aria-label="Add one">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8h9M8 3.5v9" /></svg>
+          </button>
+        </div>
+        <div class="cart-line-price js-cart-line-price"></div>
+        <div class="cart-line-sum js-cart-line-sum"></div>
+      </li>
+    </template>
+
+    <div class="cart-options">
+              <div class="cart-field">
+          <label class="cart-label" for="promo_code"><span>Custom cartTextPromoCode</span></label>
+          <div class="cart-input-group">
+            <input class="cart-input" type="text" name="promo_code" id="promo_code" autocomplete="off">
+                          <button type="button" class="cart-button cart-button--secondary">Custom cartTextPromoBtn</button>
+                      </div>
+        </div>
+      
+      <div class="cart-field">
+        <label class="cart-label" for="shipping_select"><span>Custom cartTextShippingTo</span></label>
+        <select class="cart-select" id="shipping_select">
+                      <option value="1">Europe</option>
+                  </select>
+      </div>
+    </div>
+
+    <dl class="cart-totals">
+      <div class="cart-totals-row">
+        <dt><span>Custom shippingTotalText</span></dt>
+        <dd><span class="js-cart-shipping-sum"></span> EUR</dd>
+      </div>
+      <div class="cart-totals-row js-cart-discount hidden">
+        <dt><span>Custom cartTextDiscount</span></dt>
+        <dd class="js-cart-discount-percent"></dd>
+      </div>
+      <div class="cart-totals-row cart-totals-row--total">
+        <dt><span>Custom cartTextTotal</span></dt>
+        <dd><span class="js-cart-total"></span> EUR</dd>
+      </div>
+      <div class="cart-totals-row cart-totals-row--vat js-cart-vat hidden">
+        <dt><span>Custom cartTextInclVat</span> (<span class="js-cart-vat-rate"></span>%)</dt>
+        <dd><span class="js-cart-vat-amount"></span> EUR</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="cart-checkout js-cart-checkout">
+    <section class="cart-section">
+      <h2 class="cart-section-title"><span>Custom cartTextBillAddr</span></h2>
+
+      <label class="cart-check">
+        <input type="checkbox" id="cartTextLegalPerson" value="1">
+        <span>Custom cartTextLegalPerson</span>
+      </label>
+
+      <div class="cart-fields">
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="company"><span>Custom cartTextCompany</span></label>
+          <input class="cart-input" type="text" name="company" id="company" autocomplete="billing organization" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="company_reg_no"><span>Custom cartTextCompanyRegNo</span></label>
+          <input class="cart-input" type="text" name="company_reg_no" id="company_reg_no" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="vat_no"><span>Custom cartTextVatNo</span></label>
+          <input class="cart-input" type="text" name="vat_no" id="vat_no" autocomplete="off">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field js-cart-company-field hidden">
+          <label class="cart-label" for="legal_address"><span>Custom cartTextLegalAddress</span></label>
+          <input class="cart-input" type="text" name="legal_address" id="legal_address" autocomplete="off" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="name"><span>Custom cartTextNameSurname</span></label>
+          <input class="cart-input" type="text" name="name" id="name" autocomplete="billing name" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="address"><span>Custom cartTextAddress</span></label>
+          <input class="cart-input" type="text" name="address" id="address" autocomplete="billing street-address" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="phone"><span>Custom cartTextPhoneNumber</span></label>
+          <input class="cart-input" type="tel" name="phone" id="phone" autocomplete="billing tel" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="email"><span>Custom cartTextEmail</span></label>
+          <input class="cart-input" type="email" name="email" id="email" autocomplete="billing email" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide js-cart-field">
+          <label class="cart-label" for="notes"><span>Custom cartTextComments</span></label>
+          <textarea class="cart-input" rows="3" name="notes" id="notes"></textarea>
+        </div>
+      </div>
+
+      <label class="cart-check">
+        <input type="checkbox" id="deliver_billing_addr" checked="checked">
+        <span>Custom cartTextDeliverBilling</span>
+      </label>
+    </section>
+
+    <section class="cart-section js-cart-shipping-address hidden">
+      <h2 class="cart-section-title"><span>Custom cartTextShipAddr</span></h2>
+
+      <div class="cart-fields">
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_name"><span>Custom cartTextNameSurname</span></label>
+          <input class="cart-input" type="text" name="ship_name" id="ship_name" autocomplete="shipping name" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--wide cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_address"><span>Custom cartTextAddress</span></label>
+          <input class="cart-input" type="text" name="ship_address" id="ship_address" autocomplete="shipping street-address" aria-required="true">
+        </div>
+
+        <div class="cart-field cart-field--required js-cart-field">
+          <label class="cart-label" for="ship_phone"><span>Custom cartTextPhoneNumber</span></label>
+          <input class="cart-input" type="tel" name="ship_phone" id="ship_phone" autocomplete="shipping tel" aria-required="true">
+        </div>
+
+        <div class="cart-field js-cart-field">
+          <label class="cart-label" for="ship_email"><span>Custom cartTextEmail</span></label>
+          <input class="cart-input" type="email" name="ship_email" id="ship_email" autocomplete="shipping email">
+        </div>
+
+        <div class="cart-field cart-field--wide js-cart-field">
+          <label class="cart-label" for="ship_notes"><span>Custom cartTextComments</span></label>
+          <textarea class="cart-input" rows="3" name="ship_notes" id="ship_notes"></textarea>
+        </div>
+      </div>
+    </section>
+
+          <label class="cart-check cart-check--news">
+        <input type="checkbox" id="receive_news_updates">
+        <span>Custom cartTextReceiveNews</span>
+      </label>
+    
+    <section class="cart-section">
+      <h2 class="cart-section-title" id="shoppingCartPaymentTitle"><span>Custom cartTextCPM</span></h2>
+
+              <p class="cart-note"><span>Custom cartTextPaymentDescription</span></p>
+      
+      <div class="cart-payment-methods" role="radiogroup" aria-labelledby="shoppingCartPaymentTitle">
+        
+                  <label class="cart-payment-option">
+            <input type="radio" name="payment_method" value="bank_transfer" id="pm_bank_transfer" checked="checked">
+            <span class="cart-payment-option-name"><span>Custom cartManualTransfer</span></span>
+            <span class="cart-payment-option-marks" aria-hidden="true">
+              <svg class="cart-payment-mark cart-payment-mark--icon" viewBox="0 0 24 24" focusable="false"><path d="M3 9.5 12 4l9 5.5M4.5 10v8M9.5 10v8M14.5 10v8M19.5 10v8M3 20.5h18" /></svg>
+            </span>
+          </label>
+              </div>
+    </section>
+
+    <div class="cart-pay">
+              <p class="cart-note"><span>Custom cartTextCheckoutDescription</span></p>
+      
+      <div class="cart-pay-total">
+        <span>Custom cartTextTotal</span>
+        <span><span class="js-cart-total"></span> EUR</span>
+      </div>
+
+      
+      <p class="cart-message cart-message--error js-cart-required-message hidden" role="alert">
+        <span>Custom cartTextFillRequiredFields</span>
+      </p>
+
+            <p class="cart-message cart-message--error js-cart-payment-message hidden" role="alert"></p>
+
+      <div class="cart-pay-button js-cart-checkout-slot">
+                  <button type="button" class="cart-button cart-button--primary js-cart-checkout-button">Custom cartTextCheckoutButton</button>
+              </div>
+
+      <p class="cart-return">
+                  <button type="button" class="cart-link" onclick="closeShoppingCart();">Custom cartTextReturnStore</button>
+              </p>
+    </div>
+  </div>
+</div>

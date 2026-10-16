@@ -665,16 +665,9 @@ input#xFirstTimeCheckContinue {
 
 /*------------------------- shop cart --------------------------------*/
 
-.xProperty-cartManualTransfer {
-    display: inline-block;
-}
-
-#shoppingCartOuter {
-    width: 655px;
-}
-
-#shoppingCartOuter .fr {
-    float: none;
+/* The cart's buttons have white text, the editable's hover background is light */
+.cart-button .xNgEditable:hover {
+    color: #111111;
 }
 
 

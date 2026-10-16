@@ -228,23 +228,14 @@ class SiteTemplatesConfigService
         $ret = [];
         I18n::load_language($lang);
 
-        foreach ($this->getAllTemplates() as $tpl) {
-            $ret[$tpl] = [];
-            $conf = file_get_contents(
-                $this->TEMPLATE_ROOT . '/' . $tpl . '/template.conf.php'
-            );
+        $isShopEnabled = Helpers::isShopEnabled(request()->getHost());
 
-            /**
-             * @todo Fix this HACK
-             */
-            // @@@:HACK: read in template config and set up namespace
-            //           so that I18n would be visible there
-            $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
+        foreach ($this->getAllTemplates() as $tpl) {
             [
                 $ret[$tpl]['sectionTypes'],
                 $ret[$tpl]['templateConf'],
-                $ret[$tpl]['translations']
-            ] = eval($conf);
+                $ret[$tpl]['translations'],
+            ] = (require "{$this->TEMPLATE_ROOT}/{$tpl}/template.conf.php")(I18n::_(...), $isShopEnabled);
         }
 
         return $ret;

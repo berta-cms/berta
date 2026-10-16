@@ -62,7 +62,7 @@ class SitesMenuRenderService
             if ($isEditMode) {
                 $link = ! empty($site['name']) ? './?site=' . $site['name'] : './';
             } else {
-                $link = '/' . $site['name'];
+                $link = Helpers::sitePath(array_filter([$site['name']]));
             }
 
             return [

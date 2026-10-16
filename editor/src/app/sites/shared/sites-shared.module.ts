@@ -28,6 +28,9 @@ import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';
 import { IconCropComponent } from './icon-crop.component';
 import { IconSwapComponent } from './icon-switch.component';
+import { IconRefreshComponent } from './icon-refresh.component';
+import { IconDownloadComponent } from './icon-download.component';
+import { IconEditComponent } from './icon-edit.component';
 
 @NgModule({
   imports: [
@@ -62,6 +65,9 @@ import { IconSwapComponent } from './icon-switch.component';
     IconPublishComponent,
     IconMoveComponent,
     IconSwapComponent,
+    IconRefreshComponent,
+    IconDownloadComponent,
+    IconEditComponent,
     HelpTooltipComponent,
   ],
   exports: [
@@ -88,6 +94,9 @@ import { IconSwapComponent } from './icon-switch.component';
     IconPublishComponent,
     IconMoveComponent,
     IconSwapComponent,
+    IconRefreshComponent,
+    IconDownloadComponent,
+    IconEditComponent,
     HelpTooltipComponent,
   ],
 })

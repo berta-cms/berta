@@ -6,57 +6,23 @@ return [
     // Translations from the top "admin" menu
 
     /* menu item */
-    'close this' => 'закрыть',
     /* menu item */
-    'my site' => 'мой сайт',
     /* menu item */
-    'sections' => 'разделы',
     /* menu item */
-    'settings' => 'настройки',
     /* menu item */
-    'design' => 'дизайн',
     /* menu item */
-    'profile' => 'профиль',
     /* menu item */
-    'log out' => 'выйти',
-
-    // Translatins from login / logout window
-
-    'Logout ok. Please wait...' => 'Пожалуйста, подождите...',
-    'Log in' => 'Войти',
 
     // Translatins from sections editor (sections.php)
 
     /* title */
-    'Sections' => 'Разделы',
     /* column */
-    'Title as displayed in main menu' => 'Название, отображаемое в главном меню',
     /* column */
-    'Type' => 'Вид',
     /* column */
-    'Details' => 'Настройки',
     /* column */
-    'Is published?' => 'Опубликован?',
     /* column */
-    'Delete' => 'Удалить',
     /* button */
-    'create new section' => 'создать новый раздел',
     /* button */
-    'delete' => 'удалить',
-
-    'What are sections?' => 'Что такое разделы?',
-    'sections_help_text' => 'Разделы – это основные элементы сайта и их названия формируют главное меню.',
-    'What is the "external link"?' => 'Что такое "внешняя ссылка"?',
-    'external_link_help_text' => 'Элемент меню может быть внешней ссылкой. (например, адрес электронной почты <em>mailto:sombeody@someplace.net</em>) или ссылка на другой сайт (например, <em>http://www.example.com</em>)',
-
-    // Translations from profile page (profile.php)
-    'Profile' => 'Профиль',
-    'Old password' => 'Старый пароль',
-    'New password' => 'Новый пароль',
-    'Retype new password' => 'Новый пароль еще раз',
-    'Change password' => 'Сменить пароль',
-    'password_help_text' => 'Пароль должен состоять минимум из 6 символов <br /> и содержать только большие/маленькие латинские буквы и/или цифры(A-Z, a-z, 0-9).',
-    '' => '',
 
     // Translations from settings page (settings.php)
 
@@ -64,13 +30,8 @@ return [
     'Settings' => 'Настройки',
     /* title */
     'Design' => 'Шаблон',
-    'These are settings for template' => 'Это настройки шаблона',
 
-    'Some help with CSS values' => 'Объяснение значений CSS',
-    'Units' => 'Единицы',
-    'units_help_text' => 'Можно использовать следующие единицы: <br /><strong>px</strong> – пиксели<br /><strong>em</strong> - 1 em = ширина одной буквы M в определенном шрифте<br /><strong>%</strong> - проценты размера шрифта или проценты размера элемента контейнера',
     'Margins' => 'Поля отступа',
-    'margins_help_text' => 'Есть 4 способа, как можно вводить размер отступов:<br/><strong>1 значение</strong> – задает размер верхнего, правого, нижнего и левого отступа одного размера. Например, <em>10px</em>.<br /><strong>2 значения</strong> – первая цифра задает размер верхнего и нижнего отступа, вторая – размер правого и левого отступа. Например: <em>0 5px</em>.<br /><strong>3 значения</strong> – первая цифра определяет размер верхнего отступа, вторая – правого и левого отступа, а третья – размер нижнего отступа. Например: <em>10px 0 20px</em>.<br /><strong>4 значения</strong> - определяет размеры всех отступов в следующем порядке: верх, правая сторона, низ, левая сторона. Например: <em>10px 0 20px 2px</em>',
 
     // Translations from inc.settings.php
 
@@ -80,10 +41,8 @@ return [
     /* setting tab & setting name */
     'Template' => 'Шаблон',
     /* help text */
-    'Шаблоны – это "скины" или темы вашего сайта. Вы можете выбрать один шаблон из установленных в вашей папке шаблонов. Чтобы добавить новый шаблон в этот список, загрузите его в папку шаблонов через FTP клиент.' => 'Шаблоны – это "скины" или темы, которые меняют расположение и вид элементов сайта.',
 
     /* setting tab */
-    'Info' => 'Информация',
     /* setting name */
     'Your name' => 'Ваше имя',
     /* help text */
@@ -95,7 +54,7 @@ return [
     /* setting name */
     '<META> description' => '<META> описание',
     /* help text */
-    'Site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
+    'Short site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
 
     /* setting tab */
     'Navigation' => 'Навигация',
@@ -155,9 +114,7 @@ return [
     /* help text */
     'Set the default state of image number visibility in slideshow galleries.' => 'Отображает нумерацию изображений в галереях по умолчанию.',
     /* setting name */
-    'Video player' => 'Вид видео проигрывателя',
     /* help text */
-    'Choose between the two visually different players for your video files.' => 'Выберите между двумя предлагаемыми видами видео проигрывателей.',
 
     /* setting tab */
     'Banners' => 'Баннеры',
@@ -176,7 +133,6 @@ return [
 
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Поздравляем! Вы успешно создали свой web сайт!</p><p>Прежде чем добавить содержание, создайте новый раздел. Перейти к <a href="sections.php">разделам</a></p>',
     'create new entry here' => 'создать новую запись здесь',
     'create new entry' => 'создать новую запись',
 
@@ -268,7 +224,6 @@ return [
     /* setting name */
     'Header image' => 'Изображение шапки сайта',
     /* help text */
-    'Picture to use instead of text.' => 'Изображение, которое будет использовано вместо заголовка в шапке страницы.',
     /* help text */
     'How far the heading is from other elements in page.' => 'Расстояние между шапкой страницы и другими элементами.',
     /* help text */
@@ -344,7 +299,6 @@ return [
     /* setting name */
     'Left margin' => 'Отступ слева',
     /* help text */
-    'How far the sidebar is from the left side of the screen.' => 'Определяет расстояние боковой панели от левой стороны экрана.',
     /* setting name */
     'Top padding' => 'Расстояние сверху',
     /* help text */
@@ -433,30 +387,26 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'ВАЖНО! Данный параметр вводится как процентное соотношение. Например, 60%',
 
-    'googleFont_description' => 'Укажите название Google шрифта. Ознакомтесь, какие шрифты доступны: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Если выбран Google шрифт, системные шрифты не будут приниматься во внимание. Например: <em>Marvel</em>, <em>Marvel:700italic</em> или <em>Josefin Slab:700italic</em>',
+    'google_font_description' => 'Укажите название Google шрифта. Ознакомьтесь, какие шрифты доступны: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Если выбран Google шрифт, системные шрифты не будут приниматься во внимание. Например: <em>Marvel</em>, <em>Marvel:700italic</em> или <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Положение меню',
     'Positon X' => 'Положение X',
     'Positon Y' => 'Положение Y',
-    'description_tagsMenu_x' => 'Положение подменю на оси X в пикселях (например: 50px)',
-    'description_tagsMenu_y' => 'Положение подменю на оси Y в пикселях (например: 50px)',
-    'description_menu_position' => 'Позиционирование меню',
-    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Ссылка баннера. Добавьте https:// перед адресом ссылки (например: https://www.berta.me)',
-    'description_language' => 'Выберите язык интерфейса berta. Обновите страницу, чтобы активировать изменения.',
+    'tags_menu_x_description' => 'Положение подменю на оси X в пикселях (например: 50px)',
+    'tags_menu_y_description' => 'Положение подменю на оси Y в пикселях (например: 50px)',
+    'menu_position_description' => 'Позиционирование меню',
+    'banner_image_description' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
+    'banner_link_description' => 'Ссылка баннера. Добавьте https:// перед адресом ссылки (например: https://www.berta.me)',
+    'language_description' => 'Выберите язык интерфейса berta. Обновите страницу, чтобы активировать изменения.',
     'Heading position' => 'Положение заголовка',
-    'description_heading_position' => 'Положение шапки, фиксированное или нефиксированное ',
-    'description_submenu_alwaysopen' => 'Подменю всегда открыто',
+    'heading_position_description' => 'Положение шапки, фиксированное или нефиксированное ',
+    'tags_menu_always_open_description' => 'Подменю всегда открыто',
     'Submenu is allways open' => 'Подменю всегда открыто',
     'Submenu is hidden' => 'Спрятать подменю',
-    'javascript_include' => 'Код Javascript, который будет включен прямо перед элементом body. Узнайте больше о том, как <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">добавить код JavaScript.</a>',
-    'description_custom_css' => 'Добавьте свой код CSS здесь. Ранее заданные дефиниции CSS будут обновлены. Больше информации найдете в нашем <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Справочнике</a>.',
+    'js_include_description' => 'Код Javascript, который будет включен прямо перед элементом body. Узнайте больше о том, как <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">добавить код JavaScript.</a>',
+    'custom_css_description' => 'Добавьте свой код CSS здесь. Ранее заданные дефиниции CSS будут обновлены. Больше информации найдете в нашем <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Справочнике</a>.',
 
     // Videos panel & newsticker
-    'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Чтобы просмотреть обучающее видео о Berta, вашему компьютеру необходим доступ в интернет.<br />Когда подключите компьютер к интернету, выйдите и снова зайдите в панель управления сайтом, чтобы посмотреть видео.',
-    'Show this window on startup' => 'Всегда показывать данное окно при входе в систему',
-    'Close' => 'Закрыть',
 
-    'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Чтобы читать новости Berta, вашему компьютеру необходим доступ в интернет!',
     'section_type' => 'Type',
     'section_type_tip' => 'Defines the layout and functionality of the section.',
     'select_on' => 'On',
@@ -464,4 +414,151 @@ return [
     'shuffle_marked' => 'Shuffle marked entries and galleries',
     'entries_limit' => 'Entries limit',
     'entries_limit_tip' => 'How many entries to show in this section',
+
+    // shop translations
+    'Configuration values' => 'Значения конфигурации',
+    'Shop currency' => 'Валюта магазина',
+    'shop_currency_description' => 'Сокращение или символ валюты, который показывается рядом с каждой ценой на сайте.',
+    'Order email subject' => 'Тема письма о заказе',
+    'shop_order_email_subject_description' => 'Тема письма о заказе, которое отправляется покупателю.',
+    'Seller details' => 'Реквизиты продавца',
+    'shop_seller_details_description' => 'Реквизиты вашей компании и банковского счёта, которые включаются в письма о заказе. Покупатели, оплачивающие банковским переводом, платят на указанный здесь счёт.',
+    'Required.' => 'Обязательно.',
+    'PDF invoices' => 'PDF-счета',
+    'shop_invoices_description' => 'Выберите «Yes», чтобы прикреплять PDF-счёт к письму о заказе для покупателя и скачивать счета в разделе «Orders». Для счетов нужны указанные выше реквизиты продавца с данными вашей компании и банковского счёта: без них счёт не создаётся.',
+    'Basket expires' => 'Срок действия корзины',
+    'shop_basket_expires_minutes_description' => 'Сколько минут товары в корзине остаются зарезервированными после последнего действия покупателя в магазине.',
+    'Add to basket' => 'Добавить в корзину',
+    'shop_add_to_basket_description' => 'Текст кнопки, которая добавляет товар в корзину.',
+    'Added to basket' => 'Добавлено в корзину',
+    'shop_added_to_basket_description' => 'Сообщение, которое показывается после добавления товара в корзину.',
+    'Out of stock' => 'Нет в наличии',
+    'shop_out_of_stock_description' => 'Сообщение, которое показывается, когда товар распродан.',
+    'Email' => 'Электронная почта',
+    'shop_email_description' => 'Ваш адрес электронной почты, на который магазин отправляет каждый новый заказ.',
+    'PayPal and debit or credit card' => 'PayPal и дебетовая или кредитная карта',
+    'Bank transfer' => 'Банковский перевод',
+    'PayPal, debit or credit card and bank transfer' => 'PayPal, дебетовая или кредитная карта и банковский перевод',
+    'Payment method' => 'Способ оплаты',
+    'shop_payment_method_description' => 'Способы оплаты, предлагаемые при оформлении заказа. Для оплаты через PayPal и картой также нужны данные PayPal ниже.',
+    'Promo code' => 'Промокод',
+    'shop_promo_code_description' => 'Код, который даёт покупателям скидку. Если заполнены и он, и скидка ниже, корзина запрашивает промокод.',
+    'Promo code discount' => 'Скидка по промокоду',
+    'shop_promo_code_discount_description' => 'Скидка в процентах для покупателей, которые вводят промокод.',
+    'Terms of service link' => 'Ссылка на условия использования',
+    'shop_terms_link_description' => 'Адрес вашей страницы с условиями использования. Если он указан, корзина показывает ссылку на неё перед оформлением заказа.',
+    'Weight units' => 'Единицы веса',
+    'shop_weight_unit_description' => 'Единица веса товаров, например g или oz. Стоимость доставки рассчитывается по весу.',
+    'PayPal' => 'PayPal',
+    'shop_paypal_description' => 'Чтобы принимать платежи через PayPal и дебетовыми или кредитными картами, подключите свой бизнес-аккаунт PayPal. Заполните <strong>один</strong> набор учётных данных ниже, а не оба: <strong>учётные данные REST-приложения</strong> (для новой настройки) или <strong>учётные данные Classic API</strong> (для старых магазинов, уже настроенных с ними). Если заполнены оба, используются данные REST.',
+    'Currency' => 'Валюта',
+    'Required for PayPal payments.' => 'Обязательно для платежей через PayPal.',
+    'shop_paypal_currency_code_description' => 'Трёхбуквенный код валюты, в которой платят ваши покупатели, например EUR или USD. Укажите валюту цен вашего магазина: если поле пустое, PayPal списывает те же суммы в долларах США, не конвертируя их. <a href="https://developer.paypal.com/reports/reference/supported-currencies" target="_blank">Валюты, которые поддерживает PayPal</a>',
+    'Test mode (sandbox)' => 'Тестовый режим (sandbox)',
+    'shop_paypal_sandbox_description' => 'Когда включено, платежи идут в тестовую среду PayPal (sandbox), где реальные деньги не переводятся, поэтому можно опробовать оформление заказа. Для тестовой среды нужны учётные данные sandbox, которые отличаются от рабочих. Перед началом продаж выключите тестовый режим и введите рабочие учётные данные.',
+    'PayPal REST app credentials (recommended)' => 'Учётные данные REST-приложения PayPal (рекомендуется)',
+    'shop_paypal_rest_description' => 'Где их найти: войдите в <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank">PayPal Developer Dashboard</a> со своим бизнес-аккаунтом PayPal и откройте <strong>Apps &amp; Credentials</strong>. Откройте там своё приложение или нажмите <strong>Create App</strong>, чтобы создать его, и скопируйте его Client ID и Secret в поля ниже. Для тестового режима копируйте их со вкладки <strong>Sandbox</strong>, а не <strong>Live</strong>. <a href="https://developer.paypal.com/api/rest/" target="_blank">Руководство PayPal</a>',
+    'Client ID' => 'Client ID',
+    'shop_paypal_client_id_description' => 'Длинный код из букв и цифр, указанный на странице вашего приложения.',
+    'Secret' => 'Secret',
+    'shop_paypal_client_secret_description' => 'Указан под Client ID на той же странице; откройте его, чтобы скопировать. Храните его в тайне.',
+    'PayPal Classic API credentials (older shops)' => 'Учётные данные Classic API PayPal (для старых магазинов)',
+    'shop_paypal_classic_description' => 'Только для магазинов, уже настроенных с ними: оставьте эти поля пустыми, если используете учётные данные REST-приложения выше. Где их найти: войдите на paypal.com, перейдите в <strong>Account Settings</strong> › <strong>Account access</strong>, нажмите <strong>Update</strong> рядом с <strong>API access</strong>, затем <strong>Manage API credentials</strong> в разделе <strong>NVP/SOAP API integration (Classic)</strong>. Для тестового режима сделайте то же самое на sandbox.paypal.com с бизнес-аккаунтом sandbox. <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" target="_blank">Руководство PayPal</a>',
+    'API username' => 'Имя пользователя API',
+    'shop_paypal_user_name_description' => 'Выглядит так: <em>yourname_api1.example.com</em>.',
+    'API password' => 'Пароль API',
+    'API signature' => 'Подпись API',
+    'shop_paypal_signature_description' => 'Длинная строка из букв и цифр.',
+    'Shopping cart image' => 'Изображение корзины',
+    'shop_cart_image_description' => 'Изображение, которое показывается вместо текста ссылки на корзину. Рекомендуемый размер: до 50 × 50 пикселей.',
+    'shop_price_item_font_color_description' => 'Цвет текста цены в каждой записи товара.',
+    'shop_price_item_font_family_description' => 'Шрифт цены товара. Если ниже указан шрифт Google, используется он.',
+    'Google web fonts' => 'Веб-шрифты Google',
+    'shop_price_item_font_size_description' => 'Размер цены товара, например 12px или 1.2em.',
+    'shop_price_item_font_weight_description' => 'Показывает цену товара обычным или жирным шрифтом.',
+    'shop_price_item_font_style_description' => 'Показывает цену товара обычным шрифтом или курсивом.',
+    'shop_price_item_font_variant_description' => 'small-caps показывает буквы в цене, например валюту, капителью.',
+    'shop_price_item_line_height_description' => 'Высота строки текста цены товара, например 14px, 1.2em или normal.',
+    'Shop entry width' => 'Ширина записи магазина',
+    'shop_entry_width_description' => 'Ширина записей товаров в пикселях. Используется только шаблоном Messy, когда его макет не адаптивный. Собственная ширина записи имеет приоритет. Оставьте пустым для ширины по умолчанию.',
+
+    // Settings and templates
+    'Additional text' => 'Дополнительный текст',
+    'Background video (embed)' => 'Фоновое видео (встроенное)',
+    'Background video ratio' => 'Пропорции фонового видео',
+    'Button color' => 'Цвет кнопок',
+    'Centered content width' => 'Ширина центрированного содержимого',
+    'Centered contents' => 'Центрированное содержимое',
+    'Centered layout' => 'Центрированный макет',
+    'Centering guides color tone' => 'Тон направляющих центрирования',
+    'Choose "no" to hide page heading in first section.' => 'Выберите «No», чтобы скрыть заголовок страницы в первом разделе.',
+    'Choose "yes" to show gridlines in background. Available only in Messy template.' => 'Выберите «Yes», чтобы показать сетку на фоне. Доступно только в шаблоне Messy.',
+    'Choose theme' => 'Выберите тему',
+    'Color of the fullscreen gallery background.' => 'Цвет фона полноэкранной галереи.',
+    'Color tone for centering guides (dark for bright background colors, bright for dark background colors).' => 'Тон направляющих центрирования (тёмный для светлого фона, светлый для тёмного фона).',
+    'Column count for Mash-up section.' => 'Количество колонок в разделе Mash-up.',
+    'Columns' => 'Колонки',
+    'Content width if layout is centered.' => 'Ширина содержимого при центрированном макете.',
+    'Custom CSS' => 'Собственный CSS',
+    'Custom social media buttons' => 'Собственные кнопки социальных сетей',
+    'Displayed image will be half of the original size, full size will be used for hi-res displays.' => 'Изображение показывается в половину исходного размера, на экранах высокого разрешения используется полный размер.',
+    'Enable navigation to page top' => 'Включить переход к началу страницы',
+    'Enabled' => 'Включено',
+    'Enables fullscreen gallery slide numbers.' => 'Включает нумерацию слайдов в полноэкранной галерее.',
+    'Enables gallery fullscreen mode for new entries.' => 'Включает полноэкранный режим галереи для новых записей.',
+    'Enables responsive layout for mobile devices.' => 'Включает адаптивный макет для мобильных устройств.',
+    'Entries are organised in columns. Column count can be changed under section settings.' => 'Записи расположены в колонках. Количество колонок меняется в настройках раздела.',
+    'Entry max width' => 'Максимальная ширина записи',
+    'Entry padding' => 'Внутренний отступ записи',
+    'Fill window' => 'Заполнить окно',
+    'Gallery fullscreen settings:' => 'Настройки полноэкранной галереи:',
+    'Google Analytics measurement ID' => 'Идентификатор потока данных Google Analytics',
+    'Google Tag Manager container ID' => 'Идентификатор контейнера Google Tag Manager',
+    'Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.' => 'Тег <meta> подтверждения прав на сайт в Google. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">Подробнее</a>.',
+    'Google site verification tag' => 'Тег подтверждения сайта Google',
+    'Grid layout' => 'Сетка',
+    'Gridlines color' => 'Цвет линий сетки',
+    'HTML code' => 'HTML-код',
+    'Heading margin' => 'Поля заголовка',
+    'Hide copyrights' => 'Скрыть копирайт',
+    'Hides Berta\'s copyrights' => 'Скрывает упоминание авторских прав Berta',
+    'How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.' => 'Расстояние боковой панели от левого края экрана. Не учитывается, если включён центрированный макет.',
+    'How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.' => 'Как получить <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">идентификатор потока данных</a>. Оставьте пустым, если указан идентификатор контейнера Google Tag Manager.',
+    'How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.' => 'Как получить <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">идентификатор контейнера</a>. Оставьте пустым, если указан идентификатор потока данных Google Analytics.',
+    'Icon' => 'Значок',
+    'Javascript code' => 'Код Javascript',
+    'Javascript include' => 'Подключение Javascript',
+    'Keep ratio' => 'Сохранять пропорции',
+    'Link' => 'Ссылка',
+    'Link address' => 'Адрес ссылки',
+    'Location' => 'Расположение',
+    'Location of social media buttons. Content of additional text or additional footer will be replaced.' => 'Расположение кнопок социальных сетей. Они заменят содержимое дополнительного текста или дополнительного нижнего колонтитула.',
+    'Margin around menu.' => 'Отступ вокруг меню.',
+    'Margin around page heading or logo.' => 'Отступ вокруг заголовка страницы или логотипа.',
+    'Mash-up columns' => 'Колонки Mash-up',
+    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальный размер среднего изображения (видно, если в редакторе галереи включено «Medium images»). Эти настройки не меняют исходное изображение.',
+    'Medium image height' => 'Высота среднего изображения',
+    'Medium image width' => 'Ширина среднего изображения',
+    'Menu margin' => 'Поля меню',
+    'Name of your site. Visible in all sections.' => 'Название вашего сайта. Видно во всех разделах.',
+    'Opens in' => 'Открывается в',
+    'Page heading, menu items and section entries is horizontally centered to window.' => 'Заголовок страницы, пункты меню и записи раздела центрированы в окне по горизонтали.',
+    'Paste or write your HTML code here.' => 'Вставьте или напишите здесь свой HTML-код.',
+    'Paste or write your Javascript code here.' => 'Вставьте или напишите здесь свой код Javascript.',
+    'Reset design' => 'Сбросить дизайн',
+    'Reset design to default values.' => 'Возвращает дизайну значения по умолчанию.',
+    'Responsive design' => 'Адаптивный дизайн',
+    'Responsive layout' => 'Адаптивный макет',
+    'Sets whether layout should be centered or not.' => 'Определяет, центрирован ли макет.',
+    'Sets whether layout should be responsive or not.' => 'Определяет, адаптивный ли макет.',
+    'Show gridlines' => 'Показывать сетку',
+    'Show page heading in first section?' => 'Показывать заголовок страницы в первом разделе?',
+    'Shows navigation button at the bottom when page is scrolled.' => 'Показывает кнопку навигации внизу, когда страница прокручена.',
+    'Slideshow loop mode' => 'Зацикливание слайд-шоу',
+    'Social media buttons' => 'Кнопки социальных сетей',
+    'Social media links' => 'Ссылки на социальные сети',
+    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Шаблоны – это «скины» или темы вашего сайта. Вы можете выбрать один из шаблонов, установленных в папке шаблонов. Чтобы добавить в этот список новый шаблон, загрузите его в папку шаблонов по FTP.',
+    'Texts' => 'Тексты',
+    'Theme' => 'Тема',
+    'Themes are ready made sites with predefined design settings.' => 'Темы – это готовые сайты с заранее заданными настройками дизайна.',
 ];

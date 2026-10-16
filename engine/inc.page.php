@@ -1,9 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-@ini_set('display_errors', 1);
-@ini_set('ignore_user_abort', 1);
-
 /**
  * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
  *

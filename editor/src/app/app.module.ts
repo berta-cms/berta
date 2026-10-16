@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import {
   provideHttpClient,
+  withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
@@ -48,6 +49,7 @@ import { SentryConfigService } from './sentry/sentry-config.service';
 import * as Sentry from '@sentry/angular';
 import { Router } from '@angular/router';
 import { sentryInitFactory } from './sentry/sentry-init.factory';
+import { pendingRequestsInterceptor } from './shared/pending-requests';
 
 @NgModule({
   declarations: [
@@ -118,7 +120,10 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     MashupTemplateStyleService,
     MessyTemplateStyleService,
     { provide: APP_BASE_HREF, useValue: '/engine/' },
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([pendingRequestsInterceptor]),
+    ),
   ],
 })
 export class AppModule {}

@@ -6,57 +6,23 @@ return [
     // Translations from the top "admin" menu
 
     /* menu item */
-    'close this' => 'aizvērt',
     /* menu item */
-    'my site' => 'mana berta',
     /* menu item */
-    'sections' => 'sadaļas',
     /* menu item */
-    'settings' => 'uzstādījumi',
     /* menu item */
-    'design' => 'dizains',
     /* menu item */
-    'profile' => 'konts',
     /* menu item */
-    'log out' => 'izlogoties',
-
-    // Translatins from login / logout window
-
-    'Logout ok. Please wait...' => 'Lūdzu, uzgaidi...',
-    'Log in' => 'Ielogoties',
 
     // Translatins from sections editor (sections.php)
 
     /* title */
-    'Sections' => 'Sadaļas',
     /* column */
-    'Title as displayed in main menu' => 'Nosaukums (galvenajā izvēlnē)',
     /* column */
-    'Type' => 'Veids',
     /* column */
-    'Details' => 'Uzstādījumi',
     /* column */
-    'Is published?' => 'Publicēts?',
     /* column */
-    'Delete' => 'Dzēst',
     /* button */
-    'create new section' => 'izveidot jaunu sadaļu',
     /* button */
-    'delete' => 'dzēst',
-
-    'What are sections?' => 'Kas ir sadaļas?',
-    'sections_help_text' => 'Sadaļas ir lapas pamatelementi un to nosaukumi veido galveno izvēlni (menu).',
-    'What is the "external link"?' => 'Kas ir "external link" (ārējā saite)?',
-    'external_link_help_text' => 'Izvēlnes elements var būt ārējā saite. Piemēram epasta adrese <em>mailto:sombeody@someplace.net</em>) vai saite uz citu mājas lapu (piemēram, <em>http://www.example.com</em>)',
-
-    // Translations from profile page (profile.php)
-    'Profile' => 'Profils',
-    'Old password' => 'Vecā parole',
-    'New password' => 'Jaunā parole',
-    'Retype new password' => 'Jaunā parole vēlreiz',
-    'Change password' => 'Nomainīt paroli',
-    'password_help_text' => 'Parolei jābūt vismaz 6 simbolus garai<br /> un tai jāsatur tikai lielie/mazie latīņu burti un/vai cipari (A-Z, a-z, 0-9).',
-    '' => '',
 
     // Translations from settings page (settings.php)
 
@@ -64,13 +30,8 @@ return [
     'Settings' => 'Uzstādījumi',
     /* title */
     'Design' => 'Dizains',
-    'These are settings for template' => 'Šie ir uzstādījumi veidnei',
 
-    'Some help with CSS values' => 'CSS vērtību skaidrojums',
-    'Units' => 'Vienības',
-    'units_help_text' => 'Var izmantot sekojošas vienības: <br /><strong>px</strong> – pikseļi<br /><strong>em</strong> - 1 em = viena burta M platums attiecīgajā šriftā<br /><strong>%</strong> - procenti no šrifta izmēra vai arī procenti no konteinera elementa izmēra',
     'Margins' => 'Malas',
-    'margins_help_text' => 'Ir 4 veidi kā var ievadīt izmēru apmalēm (margins):<br/><strong>1 vērtība</strong> – iestāda augšējo, labo, apakšējo un kreiso apmales platumu vienādā izmērā. Piemēram, <em>10px</em>.<br /><strong>2 vērtības</strong> – pirmais cipars iestāda augšējo un apakšējo apmales platumu, bet otrs kreiso un labo malas platumu. Piemēram: <em>0 5px</em>.<br /><strong>3 vērtības</strong> – pirmā vērtība iestāda augšējās apmales platumu, otra kreiso un labo apmali, bet trešā apakšas apmales platumu. Piemēram: <em>10px 0 20px</em>.<br /><strong>4 vērtības</strong> - iestāda platumus visām apmalēm sekojošā secībā: augša, labā mala, apakša, kreisā apmale. Piemēram: <em>10px 0 20px 2px</em>',
 
     // Translations from inc.settings.php
 
@@ -83,7 +44,6 @@ return [
     'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
 
     /* setting tab */
-    'Info' => 'Vispārīgi',
     /* setting name */
     'Your name' => 'Tavs vārds',
     /* help text */
@@ -95,7 +55,7 @@ return [
     /* setting name */
     '<META> description' => '<META> apraksts',
     /* help text */
-    'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
+    'Short site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
 
     /* setting tab */
     'Navigation' => 'Navigācija',
@@ -174,9 +134,7 @@ return [
     /* help text */
     'Set the default state of image number visibility in slideshow galleries.' => 'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
     /* setting name */
-    'Video player' => 'Video player izskats',
     /* help text */
-    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
 
     /* setting tab */
     'Banners' => 'Banneri',
@@ -195,7 +153,6 @@ return [
 
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Apsveicam! Esi veiksmīgi izveidojis savu web lapu!</p><p>Pirms pievienot saturu, tev jāizveido jauna sadaļa. Dodies uz <a href="sections.php">sadaļas</a></p>',
     'create new entry here' => 'izveidot jaunu ierakstu',
     'create new entry' => 'izveidot jaunu ierakstu',
 
@@ -208,7 +165,7 @@ return [
     /* setting name */
     'Font face' => 'Burtu šrifts',
     /* setting name */
-    'Font size' => 'Šritfta izmērs',
+    'Font size' => 'Šrifta izmērs',
     /* setting name */
     'Font weight' => 'Šrifta treknums',
     /* setting name */
@@ -289,7 +246,6 @@ return [
     /* setting name */
     'Header image' => 'Lapas galvenes attēls',
     /* help text */
-    'Picture to use instead of text.' => 'Attēls, kas tiks izmantots teksta vietā lapas galvenē (header).',
     /* help text */
     'How far the heading is from other elements in page.' => 'Cik tālu lapas galvene (header) atrodas no citiem elementiem.',
     /* help text */
@@ -365,7 +321,6 @@ return [
     /* setting name */
     'Left margin' => 'Attālums no kreisās malas',
     /* help text */
-    'How far the sidebar is from the left side of the screen.' => 'Cik tālu sānjosla atrodas no ekrāna kreisās malas?',
     /* setting name */
     'Top padding' => 'Attālums no augšas',
     /* help text */
@@ -454,75 +409,90 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UZMANĪBU! Šim parametram jābūt ievadītam kā procentiem. Piemēram, 60%',
 
-    'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
+    'google_font_description' => 'Ieraksti google fonta nosaukumu. Apskati, kādi fonti ir pieejami: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Izvēlnes pozīcija',
     'Positon X' => 'X pozīcija',
     'Positon Y' => 'Y pozīcija',
-    'description_tagsMenu_x' => 'Apakšizvēlnes X pozīcija pikseļos (piem.: 50px)',
-    'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
-    'description_menu_position' => 'Izvēlnes pozicionēšana',
-    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot https:// (piem.: https://www.berta.me)',
-    'description_language' => 'Izvēlies interfeisa valodu.',
+    'tags_menu_x_description' => 'Apakšizvēlnes X pozīcija pikseļos (piem.: 50px)',
+    'tags_menu_y_description' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
+    'menu_position_description' => 'Izvēlnes pozicionēšana',
+    'banner_image_description' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
+    'banner_link_description' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot https:// (piem.: https://www.berta.me)',
+    'language_description' => 'Izvēlies interfeisa valodu.',
     'Heading position' => 'Galvenes pozīcija',
-    'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
-    'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',
+    'heading_position_description' => 'Galvenes novietojums, fiksēts vai nefiksēts',
+    'tags_menu_always_open_description' => 'Apakšizvēlnes ir vienmēr atvērtas.',
     'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
     'Submenu is hidden' => 'Apakšizvēlnes slēptas',
-    'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
-    'description_custom_css' => 'Ievietojiet savu CSS kodu šeit. Iepriekš eksistējošas CSS definīcijas tiks pārrakstītas. Vairāk informācijai apskatiet mūsu <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
-
-    // Videos panel & newsticker
-    'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Lai skatītu Bertas pamācību video, Jūsu datoram nepieciešama interneta pieeja.<br />Kad dators pieslēgts pie interneta, izlogojieties no <em>engine</em> paneļa un ielogojieties no jauna.',
-    'Show this window on startup' => 'Vienmēr rādīt šo logu pēc ielogošanās',
-    'Close' => 'Aizvērt',
-
-    'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Lai redzētu Bertas jaunumus, Jūsu datoram nepieciešama interneta pieeja!',
+    'js_include_description' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
+    'custom_css_description' => 'Ievietojiet savu CSS kodu šeit. Iepriekš eksistējošas CSS definīcijas tiks pārrakstītas. Vairāk informācijai apskatiet mūsu <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 
     // shop translations
-    'Shop' => 'Veikals',
-    'shop' => 'veikals',
-    'Inventory' => 'Noliktava',
-    'Regional costs' => 'Reģionālās izmaksas',
-    'Item name' => 'Vienības nosaukums',
-    'Price' => 'Cena',
-    'price' => 'cena',
-    'In stock' => 'Noliktavā',
-    'Reservation' => 'Rezervēts',
-    'if weight is less than' => 'ja svars ir mazāks par',
-    'weight' => 'svars',
-    'then price is' => 'tad cena ir',
-    'region name' => 'reģiona nosaukums',
-    'vat' => 'pvn',
-    '+ add new costs condition' => '+ pievienot jaunu izmaksu nosacījumu',
-    '+ add new region' => '+ pievienot jaunu reģionu',
-    'Save' => 'Saglabāt',
     'Configuration values' => 'Konfigurācijas vērtības',
     'Shop currency' => 'Veikala valūta',
-    'Currency abbreviation or symbol displayed by all prices in the site.' => 'Valūtas abreviatūra vai simbols, kurš redzams pie preces cenas.',
-    'Order Email Subject' => 'Tēmas nosaukums e-pastam',
-    'Subject of order email' => 'Tēmas nosaukums e-pastam pie pasūtījuma veikšanas.',
+    'shop_currency_description' => 'Valūtas saīsinājums vai simbols, kas redzams pie katras cenas vietnē.',
+    'Order email subject' => 'Pasūtījuma e-pasta temats',
+    'shop_order_email_subject_description' => 'Pircējam nosūtītā pasūtījuma e-pasta temats.',
+    'Required.' => 'Obligāts.',
     'Seller details' => 'Tirgotāja rekvizīti',
-    'Seller details will be included in bill and e-mail message' => 'Tirgotāja rekvizīti tiks iekļauti rēķinā un e-pasta saturā.',
+    'shop_seller_details_description' => 'Tava uzņēmuma un bankas konta rekvizīti, kas tiek iekļauti pasūtījumu e-pastos. Pircēji, kas maksā ar bankas pārskaitījumu, maksā uz šeit norādīto kontu.',
     'Add to basket' => 'Pievienot grozam',
-    'Add to basket text' => 'Pogas "Pievienot grozam" nosaukums.',
+    'shop_add_to_basket_description' => 'Pogas, kas pievieno preci grozam, teksts.',
     'Out of stock' => 'Noliktavā nav',
-    'Out of stock text' => 'Paziņojuma "Noliktavā nav" teksts.',
-    'Email' => 'e-pasts',
-    'Email where send order data' => 'e-pasts, uz kuru sūtīt pasūtījuma datus.',
+    'shop_out_of_stock_description' => 'Paziņojums, kas tiek parādīts, kad prece ir izpārdota.',
+    'Email' => 'E-pasts',
+    'shop_email_description' => 'Tava e-pasta adrese, uz kuru veikals sūta katru jauno pasūtījumu.',
     'Payment method' => 'Maksājuma metode',
-    'Payment method.' => 'Maksājuma metode.',
+    'shop_payment_method_description' => 'Pirkuma noformēšanā piedāvātās maksājuma metodes. PayPal un karšu maksājumiem vajadzīgi arī zemāk esošie PayPal piekļuves dati.',
     'Promo code' => 'Atlaides kods',
-    'If Yes - promo code entry will be displayed.' => 'Ja lauciņš ir aizpildīts, tad pircējam būs iespēja ievadīt atlaides kodu.',
+    'shop_promo_code_description' => 'Kods, ar kuru pircēji saņem atlaidi. Ja aizpildīts gan tas, gan zemāk esošā atlaide, grozā tiek prasīts atlaides kods.',
     'Promo code discount' => 'Atlaides apjoms',
-    'Discount in precents when user enters valid promo code' => 'Atlaides procentuāls apjoms uz precēm, ja pircējs ievadījis pareizu kodu.',
+    'shop_promo_code_discount_description' => 'Atlaide procentos pircējiem, kuri ievada atlaides kodu.',
     'Weight units' => 'Svara mērvienība',
-    'Weight units (g, oz) used for postage cost calculation.' => 'Svara mērvienība (g, oz), kas tie lietota pie pasta izdevumu aprēķina.',
+    'shop_weight_unit_description' => 'Preču svara mērvienība, piemēram, g vai oz. Pēc svara tiek aprēķinātas piegādes izmaksas.',
     'Shop entry width' => 'Veikala ieraksta platums',
-    'Title' => 'Virsraksts',
-    'What is SEO?' => 'Kas ir SEO?',
-    'seo_help_text' => 'Search Engine Optimization (SEO) palīdz uzlabot mājaslapas reitingu Google meklēšanas rezultātos. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Uzzini vairāk, kā tas strādā</a>.',
-    'Content description' => 'Satura apraksts',
+    'PDF invoices' => 'PDF rēķini',
+    'shop_invoices_description' => 'Izvēlies "Yes", lai klienta pasūtījuma e-pastam pievienotu PDF rēķinu un rēķinus varētu lejupielādēt sadaļā "Orders". Rēķiniem vajadzīgi augstāk norādītie tirgotāja rekvizīti ar tava uzņēmuma un bankas konta datiem: bez tiem rēķins netiek izveidots.',
+    'Basket expires' => 'Groza derīgums',
+    'shop_basket_expires_minutes_description' => 'Cik minūtes preces grozā paliek rezervētas pēc pircēja pēdējās darbības veikalā.',
+    'Added to basket' => 'Pievienots grozam',
+    'shop_added_to_basket_description' => 'Paziņojums, kas tiek parādīts pēc preces pievienošanas grozam.',
+    'PayPal and debit or credit card' => 'PayPal un debetkarte vai kredītkarte',
+    'Bank transfer' => 'Bankas pārskaitījums',
+    'PayPal, debit or credit card and bank transfer' => 'PayPal, debetkarte vai kredītkarte un bankas pārskaitījums',
+    'Terms of service link' => 'Saite uz lietošanas noteikumiem',
+    'shop_terms_link_description' => 'Tavas lietošanas noteikumu lapas adrese. Ja aizpildīta, grozā pirms pirkuma noformēšanas tiek parādīta saite uz to.',
+    'PayPal' => 'PayPal',
+    'shop_paypal_description' => 'Lai pieņemtu maksājumus ar PayPal un debetkarti vai kredītkarti, pievieno savu PayPal biznesa kontu. Aizpildi <strong>vienu</strong> no zemāk esošajiem piekļuves datu komplektiem, nevis abus: <strong>REST lietotnes piekļuves datus</strong> (jaunai uzstādīšanai) vai <strong>Classic API piekļuves datus</strong> (vecākiem veikaliem, kas jau ar tiem uzstādīti). Ja aizpildīti abi, tiek lietoti REST dati.',
+    'Currency' => 'Valūta',
+    'Required for PayPal payments.' => 'Obligāts PayPal maksājumiem.',
+    'shop_paypal_currency_code_description' => 'Trīs burtu kods valūtai, kurā maksā tavi pircēji, piemēram, EUR vai USD. Norādi savu veikala cenu valūtu: ja lauks atstāts tukšs, PayPal iekasē tās pašas summas ASV dolāros, tās nekonvertējot. <a href="https://developer.paypal.com/reports/reference/supported-currencies" target="_blank">PayPal atbalstītās valūtas</a>',
+    'Test mode (sandbox)' => 'Testa režīms (sandbox)',
+    'shop_paypal_sandbox_description' => 'Kad ieslēgts, maksājumi notiek PayPal testa vidē (sandbox), kur īsta nauda netiek pārskaitīta, tāpēc vari izmēģināt pirkuma noformēšanu. Testa videi vajadzīgi testa vides piekļuves dati, kas atšķiras no īstajiem. Pirms sāc pārdot, izslēdz testa režīmu un ievadi īstos piekļuves datus.',
+    'PayPal REST app credentials (recommended)' => 'PayPal REST lietotnes piekļuves dati (ieteicami)',
+    'shop_paypal_rest_description' => 'Kur tos atrast: ar savu PayPal biznesa kontu ielogojies <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank">PayPal Developer Dashboard</a> un atver <strong>Apps &amp; Credentials</strong>. Tur atver savu lietotni vai uzklikšķini <strong>Create App</strong>, lai to izveidotu, un iekopē tās Client ID un Secret zemāk esošajos laukos. Testa režīmam kopē tos no cilnes <strong>Sandbox</strong>, nevis <strong>Live</strong>. <a href="https://developer.paypal.com/api/rest/" target="_blank">PayPal pamācība</a>',
+    'Client ID' => 'Client ID',
+    'shop_paypal_client_id_description' => 'Garš burtu un ciparu kods, kas redzams tavas lietotnes lapā.',
+    'Secret' => 'Secret',
+    'shop_paypal_client_secret_description' => 'Redzams zem Client ID tajā pašā lapā; lai to nokopētu, parādi to. Glabā to slepenībā.',
+    'PayPal Classic API credentials (older shops)' => 'PayPal Classic API piekļuves dati (vecākiem veikaliem)',
+    'shop_paypal_classic_description' => 'Tikai veikaliem, kas jau ar tiem uzstādīti: atstāj šos laukus tukšus, ja lieto augstāk esošos REST lietotnes piekļuves datus. Kur tos atrast: ielogojies paypal.com, atver <strong>Account Settings</strong> › <strong>Account access</strong>, uzklikšķini <strong>Update</strong> pie <strong>API access</strong> un tad <strong>Manage API credentials</strong> sadaļā <strong>NVP/SOAP API integration (Classic)</strong>. Testa režīmam dari to pašu vietnē sandbox.paypal.com ar testa vides biznesa kontu. <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" target="_blank">PayPal pamācība</a>',
+    'API username' => 'API lietotājvārds',
+    'shop_paypal_user_name_description' => 'Izskatās šādi: <em>yourname_api1.example.com</em>.',
+    'API password' => 'API parole',
+    'API signature' => 'API paraksts',
+    'shop_paypal_signature_description' => 'Gara burtu un ciparu virkne.',
+    'Shopping cart image' => 'Iepirkumu groza attēls',
+    'shop_cart_image_description' => 'Attēls, ko rādīt iepirkumu groza saites teksta vietā. Ieteicamais izmērs: līdz 50 × 50 pikseļiem.',
+    'shop_price_item_font_color_description' => 'Cenas teksta krāsa katrā preces ierakstā.',
+    'shop_price_item_font_family_description' => 'Preces cenas šrifts. Ja zemāk norādīts Google fonts, tiek lietots tas.',
+    'Google web fonts' => 'Google tīmekļa fonti',
+    'shop_price_item_font_size_description' => 'Preces cenas izmērs, piemēram, 12px vai 1.2em.',
+    'shop_price_item_font_weight_description' => 'Rāda preces cenu parastā vai treknā tekstā.',
+    'shop_price_item_font_style_description' => 'Rāda preces cenu parastā tekstā vai slīprakstā.',
+    'shop_price_item_font_variant_description' => 'Ar small-caps cenas burti, piemēram, valūta, tiek rādīti kā kapiteļi (mazi lielie burti).',
+    'shop_price_item_line_height_description' => 'Preces cenas teksta rindas augstums, piemēram, 14px, 1.2em vai normal.',
+    'shop_entry_width_description' => 'Preču ierakstu platums pikseļos. Tiek lietots tikai Messy veidnē, ja tās izkārtojums nav responsīvs. Ieraksta paša platums to aizstāj. Atstāj tukšu, lai lietotu noklusējuma platumu.',
     'section_type' => 'Veids',
     'section_type_tip' => 'Nosaka sadaļas funkcionalitāti un satura izklājumu.',
     'select_on' => 'Ieslēgts',
@@ -530,4 +500,73 @@ return [
     'shuffle_marked' => 'Rādīt ierakstus un galerijas jauktā secībā',
     'entries_limit' => 'Ierakstu ierobežojums',
     'entries_limit_tip' => 'Cik ierakstus rādīt šajā sadaļā.',
+
+    // Settings and templates
+    'Additional text' => 'Papildu teksts',
+    'Background video (embed)' => 'Fona video (iegults)',
+    'Background video ratio' => 'Fona video proporcijas',
+    'Button color' => 'Pogas krāsa',
+    'Centered content width' => 'Centrētā satura platums',
+    'Centered contents' => 'Centrēts saturs',
+    'Centered layout' => 'Centrēts izkārtojums',
+    'Centering guides color tone' => 'Centrēšanas palīglīniju tonis',
+    'Choose "no" to hide page heading in first section.' => 'Izvēlies "No", lai paslēptu lapas virsrakstu pirmajā sadaļā.',
+    'Choose "yes" to show gridlines in background. Available only in Messy template.' => 'Izvēlies "Yes", lai fonā rādītu režģa līnijas. Pieejams tikai Messy veidnē.',
+    'Choose theme' => 'Izvēlies tēmu',
+    'Color tone for centering guides (dark for bright background colors, bright for dark background colors).' => 'Centrēšanas palīglīniju tonis (tumšs gaišām fona krāsām, gaišs tumšām fona krāsām).',
+    'Column count for Mash-up section.' => 'Kolonnu skaits Mash-up sadaļā.',
+    'Columns' => 'Kolonnas',
+    'Content width if layout is centered.' => 'Satura platums, ja izkārtojums ir centrēts.',
+    'Custom CSS' => 'Pielāgots CSS',
+    'Custom social media buttons' => 'Pielāgotas sociālo tīklu pogas',
+    'Displayed image will be half of the original size, full size will be used for hi-res displays.' => 'Attēls tiek rādīts uz pusi mazāks par oriģinālu, augstas izšķirtspējas ekrāniem tiek izmantots pilnais izmērs.',
+    'Enabled' => 'Ieslēgts',
+    'Enables responsive layout for mobile devices.' => 'Ieslēdz responsīvo izkārtojumu mobilajām ierīcēm.',
+    'Entries are organised in columns. Column count can be changed under section settings.' => 'Ieraksti tiek kārtoti kolonnās. Kolonnu skaitu var mainīt sadaļas uzstādījumos.',
+    'Entry max width' => 'Ieraksta maksimālais platums',
+    'Entry padding' => 'Ieraksta iekšējās atkāpes',
+    'Fill window' => 'Aizpildīt logu',
+    'Google Analytics measurement ID' => 'Google Analytics mērījuma ID',
+    'Google Tag Manager container ID' => 'Google Tag Manager konteinera ID',
+    'Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.' => 'Google īpašumtiesību apstiprināšanas <meta> tags. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">Vairāk informācijas</a>.',
+    'Google site verification tag' => 'Google vietnes apstiprināšanas tags',
+    'Grid layout' => 'Režģa izkārtojums',
+    'Gridlines color' => 'Režģa līniju krāsa',
+    'HTML code' => 'HTML kods',
+    'Heading margin' => 'Virsraksta malas',
+    'Hide copyrights' => 'Paslēpt autortiesības',
+    'Hides Berta\'s copyrights' => 'Paslēpj Bertas autortiesību norādi',
+    'How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.' => 'Cik tālu sānjosla ir no ekrāna kreisās malas. Netiek ņemts vērā, ja ieslēgts centrēts izkārtojums.',
+    'How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.' => 'Kā iegūt <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">mērījuma ID</a>. Atstāj tukšu, ja aizpildīts Google Tag Manager konteinera ID.',
+    'How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.' => 'Kā iegūt <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">konteinera ID</a>. Atstāj tukšu, ja aizpildīts Google Analytics mērījuma ID.',
+    'Icon' => 'Ikona',
+    'Javascript code' => 'Javascript kods',
+    'Javascript include' => 'Javascript iekļaušana',
+    'Keep ratio' => 'Saglabāt proporcijas',
+    'Link' => 'Saite',
+    'Link address' => 'Saites adrese',
+    'Location' => 'Novietojums',
+    'Location of social media buttons. Content of additional text or additional footer will be replaced.' => 'Sociālo tīklu pogu novietojums. Papildu teksta vai papildu kājenes saturs tiks aizstāts.',
+    'Margin around menu.' => 'Atstarpe ap izvēlni.',
+    'Margin around page heading or logo.' => 'Atstarpe ap lapas virsrakstu vai logo.',
+    'Mash-up columns' => 'Mash-up kolonnas',
+    'Menu margin' => 'Izvēlnes malas',
+    'Name of your site. Visible in all sections.' => 'Tavas vietnes nosaukums. Redzams visās sadaļās.',
+    'Opens in' => 'Atveras',
+    'Page heading, menu items and section entries is horizontally centered to window.' => 'Lapas virsraksts, izvēlnes punkti un sadaļu ieraksti ir horizontāli centrēti logā.',
+    'Paste or write your HTML code here.' => 'Ielīmē vai ieraksti šeit savu HTML kodu.',
+    'Paste or write your Javascript code here.' => 'Ielīmē vai ieraksti šeit savu Javascript kodu.',
+    'Reset design' => 'Atiestatīt dizainu',
+    'Reset design to default values.' => 'Atiestatīt dizainu uz noklusējuma vērtībām.',
+    'Responsive design' => 'Responsīvs dizains',
+    'Responsive layout' => 'Responsīvs izkārtojums',
+    'Sets whether layout should be centered or not.' => 'Nosaka, vai izkārtojums ir centrēts.',
+    'Sets whether layout should be responsive or not.' => 'Nosaka, vai izkārtojums ir responsīvs.',
+    'Show gridlines' => 'Rādīt režģa līnijas',
+    'Show page heading in first section?' => 'Rādīt lapas virsrakstu pirmajā sadaļā?',
+    'Social media buttons' => 'Sociālo tīklu pogas',
+    'Social media links' => 'Sociālo tīklu saites',
+    'Texts' => 'Teksti',
+    'Theme' => 'Tēma',
+    'Themes are ready made sites with predefined design settings.' => 'Tēmas ir gatavas vietnes ar iepriekš noteiktiem dizaina uzstādījumiem.',
 ];

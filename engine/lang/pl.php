@@ -6,57 +6,23 @@ return [
     // Translations from the top "admin" menu
 
     /* menu item */
-    'close this' => 'zamknąć',
     /* menu item */
-    'my site' => 'moja berta',
     /* menu item */
-    'sections' => 'działy',
     /* menu item */
-    'settings' => 'ustawienia',
     /* menu item */
-    'design' => 'wygląd',
     /* menu item */
-    'profile' => 'mój profil',
     /* menu item */
-    'log out' => 'wylogować się',
-
-    // Translatins from login / logout window
-
-    'Logout ok. Please wait...' => 'Proszę, czekać...',
-    'Log in' => 'Zalogować się',
 
     // Translatins from sections editor (sections.php)
 
     /* title */
-    'Sections' => 'Działy',
     /* column */
-    'Title as displayed in main menu' => 'Tytuł (w głównym menu)',
     /* column */
-    'Type' => 'Typ',
     /* column */
-    'Details' => 'Ustawienia',
     /* column */
-    'Is published?' => 'Publikowany?',
     /* column */
-    'Delete' => 'Kasować',
     /* button */
-    'create new section' => 'stworzyć nowy dział',
     /* button */
-    'delete' => 'kasować',
-
-    'What are sections?' => 'Co to są działy?',
-    'sections_help_text' => 'Działy są podstawowe elementy strony i ich tytuły tworzą główne menu.',
-    'What is the "external link"?' => 'Co to jest "external link" (link zewnētrzny)?',
-    'external_link_help_text' => 'Elementem menu może być link zewnętrzny. Na przykład, adres e-mail <em>mailto:sombeody@someplace.net</em>) lub link do innej strony internetowej (na przykład, <em>http://www.example.com</em>)',
-
-    // Translations from profile page (profile.php)
-    'Profile' => 'Profil',
-    'Old password' => 'Stare hasło',
-    'New password' => 'Nowe hasło',
-    'Retype new password' => 'Powtórz hasło',
-    'Change password' => 'Zmienić hasło',
-    'password_help_text' => 'Hasło musi mieć przynajmniej 6 symboli <br /> oraz zawierać jedynie duże/małe litery łaciny i/lub cyfry (A-Z, a-z, 0-9).',
-    '' => '',
 
     // Translations from settings page (settings.php)
 
@@ -64,13 +30,8 @@ return [
     'Settings' => 'Ustawienia',
     /* title */
     'Design' => 'Projekt',
-    'These are settings for template' => 'Te są ustawienia projektu',
 
-    'Some help with CSS values' => 'Objaśnienia wartości CSS',
-    'Units' => 'Jednostki',
-    'units_help_text' => 'Można wykorzystywać następujące jednostki: <br /><strong>px</strong> – piksele<br /><strong>em</strong> - 1 em = szerokość jednej litery M w odpowiedniej czcionce<br /><strong>%</strong> - procenty od rozmiaru czcionki lub procenty od rozmiaru elementu kontenera',
     'Margins' => 'Krawędzie',
-    'margins_help_text' => 'Są 4 sposoby jak można ustawić rozmiar dla krawędzi (margins):<br/><strong>1 wartość</strong> – ustala szerokość krawędzi górnej, prawej, dolnej i lewej w takich samych wartościach. Na przykład, <em>10px</em>.<br /><strong>2 wartość</strong> – Pierwsza cyfra ustala szerokość krawędzi górnej i dolnej, druga – szerokość krawędzi lewej i prawej.  Na przykład: <em>0 5px</em>.<br /><strong>3 jednostki</strong> – pierwsza wartość ustala szerokość górnej krawędzi, druga – lewej i prawej krawędzi, i trzecia – szerokość dolnej krawędzi. Na przykład: <em>10px 0 20px</em>.<br /><strong>4 wartości</strong> - ustala szerokości dla wszystkich krawędzi w następującej kolejności: górna, krawędź prawa, dolna, krawędź lewa. Na przykład: <em>10px 0 20px 2px</em>',
 
     // Translations from inc.settings.php
 
@@ -83,7 +44,6 @@ return [
     'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Projekty są "skórki" lub tematy, które zmieniają umiejscowienie elementów strony lub wygląd.',
 
     /* setting tab */
-    'Info' => 'Informacja',
     /* setting name */
     'Your name' => 'Twoje imię',
     /* help text */
@@ -95,7 +55,7 @@ return [
     /* setting name */
     '<META> description' => '<META> opis',
     /* help text */
-    'Site description. It should not be longer than one or two sentences.' => 'Opis strony. Nie powinien być dłuższy niż 2 zdania.',
+    'Short site description. It should not be longer than one or two sentences.' => 'Opis strony. Nie powinien być dłuższy niż 2 zdania.',
 
     /* setting tab */
     'Navigation' => 'Navigacja',
@@ -104,7 +64,7 @@ return [
     /* help text */
     'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Wybierz "No", jeżeli chcesz, aby pierwszy dział nie byłby widoczny. Przejść do działu będzie można tylko otwierając stronę lub klikając na logo strony. Ustawienie to nie działa, jeżeli ten dział ma poddziały.',
     /* setting name */
-    'Show menu in first section' => 'Pokazać menu w pierwszym dziale?',
+    'Show menu in first section?' => 'Pokazać menu w pierwszym dziale?',
     /* help text */
     'Choose "no" to hide the menu in first section.' => 'Wybierz "No", aby schować menu w pierwszym dziale.',
     /* setting name */
@@ -155,9 +115,7 @@ return [
     /* help text */
     'Set the default state of image number visibility in slideshow galleries.' => 'Ustanawia, czy domyślnie pokazywać numery obrazów w galeriach pokazów slajdów.',
     /* setting name */
-    'Video player' => 'Wygląd video player',
     /* help text */
-    'Choose between the two visually different players for your video files.' => 'Wybierz pomiędzy dwoma różnymi odtwarzaczami wideo.',
 
     /* setting tab */
     'Banners' => 'Banery',
@@ -176,7 +134,6 @@ return [
 
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Gratulacje! Z powodzeniem zainstalowałeś swoją stronę internetową!</p><p>Przed dodaniem informacji, stwórz nowy dział. Idź do <a href="sections.php">tytuł</a></p>',
     'create new entry here' => 'stworzyć nowy wpis',
     'create new entry' => 'stworzyć nowy wpis',
 
@@ -195,7 +152,7 @@ return [
     /* setting name */
     'Font style' => 'Styl czcionki',
     /* setting name */
-    'Font variant' => 'rodzaj czcionki',
+    'Font variant' => 'Rodzaj czcionki',
     /* setting name */
     'Line height' => 'Wysokość wiersza',
     /* help text */
@@ -268,7 +225,6 @@ return [
     /* setting name */
     'Header image' => 'Obraz nagłówka strony',
     /* help text */
-    'Picture to use instead of text.' => 'Obraz, który będzie wykorzystany zamiast tekstu w nagłówku strony.',
     /* help text */
     'How far the heading is from other elements in page.' => 'Jak daleko nagłówek strony znajduje się od innych elementów.',
     /* help text */
@@ -305,17 +261,11 @@ return [
     /* help text */
     'Margin around gallery block' => 'Krawędzie wokół bloku galerii',
     /* setting name */
-    'Display tags by each entry' => 'Pokazywać Tagi przy każdym wpisie',
     /* help text */
-    'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.' => 'To ustala, czy pokazywać Tagi przy każdym wpisie. Niezależnie od ustawień, Tagi będą widoczne w głównym menu.',
     /* setting name */
-    'Date format in entries' => 'Format daty dla wpisów',
     /* setting name */
-    'Date separator' => 'Oddzielać daty',
     /* help text */
-    'Separator symbol that divides year, month and day' => 'Symbol, który oddziela rok, miesiąc i dzień',
     /* setting name */
-    'Time separator' => 'Symbol oddzielający cyfry godziny',
 
     /* setting tab */
     'Entry heading' => 'Tytuł wpisu',
@@ -355,7 +305,6 @@ return [
     /* setting name */
     'Left margin' => 'Odległość od lewej strony',
     /* help text */
-    'How far the sidebar is from the left side of the screen.' => 'Jak daleko pasek boczny znajduje się od lewej krawędzi strony?',
     /* setting name */
     'Top padding' => 'Odległość od góry',
     /* help text */
@@ -444,71 +393,90 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UWAGA! Ten parametr musi być wprowadzony jako procenty. Na przykład, 60%',
 
-    'googleFont_description' => 'Wpisz nazwę czcionki google. Obejrzyj, jakie czcionki są dostępne: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Jeżeli wybrana jest czcionka google, wtedy czcionki systemu nie będą brane pod uwagę. Na przykład: <em>Marvel</em>, <em>Marvel:700italic</em> lub <em>Josefin Slab:700italic</em>',
+    'google_font_description' => 'Wpisz nazwę czcionki google. Obejrzyj, jakie czcionki są dostępne: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Jeżeli wybrana jest czcionka google, wtedy czcionki systemu nie będą brane pod uwagę. Na przykład: <em>Marvel</em>, <em>Marvel:700italic</em> lub <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Pozycja menu',
     'Positon X' => 'Pozycja X',
     'Positon Y' => 'Pozycja Y',
-    'description_tagsMenu_x' => 'Pozycja X w menu podrzędnym w pikselach (np.: 50px)',
-    'description_tagsMenu_y' => 'Pozycja Y w menu podrzędnym w pikselach (np.: 50px)',
-    'description_menu_position' => 'Pozycjonowanie menu',
-    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
-    'description_banner_link' => 'Link banera. Przed adresem nie zapomnij dodać https:// (piem.: https://www.berta.me)',
-    'description_language' => 'Choose language of interface.',
+    'tags_menu_x_description' => 'Pozycja X w menu podrzędnym w pikselach (np.: 50px)',
+    'tags_menu_y_description' => 'Pozycja Y w menu podrzędnym w pikselach (np.: 50px)',
+    'menu_position_description' => 'Pozycjonowanie menu',
+    'banner_image_description' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
+    'banner_link_description' => 'Link banera. Przed adresem nie zapomnij dodać https:// (piem.: https://www.berta.me)',
+    'language_description' => 'Choose language of interface.',
     'Heading position' => 'Pozycja nagłówka',
-    'description_heading_position' => 'Pozycja nagłówka, niezmienna lub zmienna',
-    'description_submenu_alwaysopen' => 'Rozdziały zawsze są otwarte.',
+    'heading_position_description' => 'Pozycja nagłówka, niezmienna lub zmienna',
+    'tags_menu_always_open_description' => 'Rozdziały zawsze są otwarte.',
     'Submenu is allways open' => 'Menu podrzędne zawsze otwarte',
     'Submenu is hidden' => 'Menu podrzędne schowane',
-    'javascript_include' => 'Kod javascript, który będzie dodany przed elementem &lt;/body&gt;. Dowiedz się więcej jak <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">Jak zawierać kod JavaScript.</a>',
-    'description_custom_css' => 'Wprowadź swój kod CSS tu. Definicje CSS, które istniały wcześniej, zostaną przepisane. Do uzyskania więcej informacji obejrzyj   <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
-
-    // Videos panel & newsticker
-    'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Aby obejrzeć pouczenie Berty, komputer musi posiadać podłączenie internetowe.<br />Kiedy komputer jest podłączony do internetu, wyloguj się z panela <em>engine</em> i zaloguj się ponownie.',
-    'Show this window on startup' => 'Zawsze pokazywać to okno po zalogowaniu się',
-    'Close' => 'Zamknąć',
-
-    'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Aby zobaczyć nowości Berta, niezbędne jest połączenie internetowe do komputera!',
+    'js_include_description' => 'Kod javascript, który będzie dodany przed elementem &lt;/body&gt;. Dowiedz się więcej jak <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">Jak zawierać kod JavaScript.</a>',
+    'custom_css_description' => 'Wprowadź swój kod CSS tu. Definicje CSS, które istniały wcześniej, zostaną przepisane. Do uzyskania więcej informacji obejrzyj   <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 
     // shop translations
-    'Shop' => 'Sklep',
-    'shop' => 'sklep',
-    'Inventory' => 'Magazyn',
-    'Regional costs' => 'Koszty regionalne',
-    'Item name' => 'Nazwa jednostki',
-    'Price' => 'Cena',
-    'price' => 'cena',
-    'In stock' => 'W magazynie',
-    'Reservation' => 'Zarezerwowane',
-    'if weight is less than' => 'jeżeli waga jest mniejsza niż',
-    'weight' => 'waga',
-    'then price is' => 'wtedy cena jest',
-    'region name' => 'nazwa regionu',
-    'vat' => 'vat',
-    '+ add new costs condition' => '+ dodać nowe kryterium kosztów',
-    '+ add new region' => '+ dodać nowy region',
-    'Save' => 'Zapisać',
     'Configuration values' => 'Wartości konfiguracji',
     'Shop currency' => 'Waluta sklepu',
-    'Currency abbreviation or symbol displayed by all prices in the site.' => 'Skrót waluty lub symbol, który będzie widoczny przy cenie towaru.',
-    'Order Email Subject' => 'Nazwa tematu w e-mailu',
-    'Subject of order email' => 'Nazwa tematu dla e-mailu przy dokonywaniu zamówienia.',
+    'shop_currency_description' => 'Skrót lub symbol waluty wyświetlany przy każdej cenie na stronie.',
+    'Order email subject' => 'Temat e-maila z zamówieniem',
+    'shop_order_email_subject_description' => 'Temat e-maila z zamówieniem wysyłanego do klienta.',
+    'Required.' => 'Wymagane.',
     'Seller details' => 'Dane sprzedawcy',
-    'Seller details will be included in bill and e-mail message' => 'Dane sprzedawcy będą zawarte na fakturze oraz w treści e-mailu.',
-    'Add to basket' => 'Włożyć do koszyka',
-    'Add to basket text' => 'Nazwa przycisku "Włożyć do koszyka".',
-    'Out of stock' => 'Nie ma w magazynie',
-    'Out of stock text' => 'Tekst uwagi "Nie ma w magazynie".',
-    'Email' => 'e-mail',
-    'Email where send order data' => 'e-mail, na który wysyłać dane zamówienia.',
+    'shop_seller_details_description' => 'Dane Twojej firmy i rachunku bankowego, zawarte w e-mailach z zamówieniem. Klienci płacący przelewem bankowym wpłacają na podany tu rachunek.',
+    'Add to basket' => 'Dodaj do koszyka',
+    'shop_add_to_basket_description' => 'Tekst przycisku, który dodaje produkt do koszyka.',
+    'Out of stock' => 'Brak w magazynie',
+    'shop_out_of_stock_description' => 'Komunikat wyświetlany, gdy produkt jest wyprzedany.',
+    'Email' => 'E-mail',
+    'shop_email_description' => 'Twój adres e-mail, na który sklep wysyła każde nowe zamówienie.',
     'Payment method' => 'Metoda płatności',
-    'Payment method.' => 'Metoda płatności.',
     'Promo code' => 'Kod rabatowy',
-    'If Yes - promo code entry will be displayed.' => 'Jeżeli pole jest wypełnione, kupujący będzie mógł wpisać kod rabatowy.',
     'Promo code discount' => 'Wartość rabatu',
-    'Discount in precents when user enters valid promo code' => 'Wartość rabatu w procentach na towary, jeżeli kupujący wprowadził poprawny kod.',
+    'shop_promo_code_discount_description' => 'Rabat w procentach dla klientów, którzy wpiszą kod rabatowy.',
     'Weight units' => 'Jednostka wagi',
-    'Weight units (g, oz) used for postage cost calculation.' => 'Jednostka wagi (g, oz), która jest używana, obliczając koszty wysyłki pocztowej.',
+    'shop_weight_unit_description' => 'Jednostka wagi produktów, np. g lub oz. Koszty wysyłki są obliczane na podstawie wagi.',
     'Shop entry width' => 'Szerokość wpisu sklepu',
+    'PDF invoices' => 'Faktury PDF',
+    'shop_invoices_description' => 'Wybierz "Yes", aby dołączać fakturę PDF do e-maila z zamówieniem dla klienta i pobierać faktury w zakładce "Orders". Faktury wymagają powyższych danych sprzedawcy, z danymi Twojej firmy i rachunku bankowego: bez nich faktura nie zostanie utworzona.',
+    'Basket expires' => 'Ważność koszyka',
+    'shop_basket_expires_minutes_description' => 'Liczba minut, przez które produkty w koszyku pozostają zarezerwowane po ostatniej czynności klienta w sklepie.',
+    'Added to basket' => 'Dodano do koszyka',
+    'shop_added_to_basket_description' => 'Komunikat wyświetlany po dodaniu produktu do koszyka.',
+    'PayPal and debit or credit card' => 'PayPal i karta debetowa lub kredytowa',
+    'Bank transfer' => 'Przelew bankowy',
+    'PayPal, debit or credit card and bank transfer' => 'PayPal, karta debetowa lub kredytowa i przelew bankowy',
+    'shop_payment_method_description' => 'Metody płatności oferowane przy składaniu zamówienia. Płatności PayPal i kartą wymagają też poniższych danych logowania PayPal.',
+    'shop_promo_code_description' => 'Kod, który daje klientom rabat. Gdy wypełniony jest ten kod i poniższy rabat, koszyk prosi o kod rabatowy.',
+    'Terms of service link' => 'Link do regulaminu',
+    'shop_terms_link_description' => 'Adres strony z Twoim regulaminem. Gdy jest wypełniony, koszyk pokazuje link do niego przed złożeniem zamówienia.',
+    'PayPal' => 'PayPal',
+    'shop_paypal_description' => 'Aby przyjmować płatności PayPal oraz kartą debetową lub kredytową, połącz swoje firmowe konto PayPal. Wypełnij <strong>jeden</strong> zestaw danych logowania poniżej, nie oba: <strong>dane aplikacji REST</strong> (do nowej konfiguracji) lub <strong>dane Classic API</strong> (starsze sklepy już z nimi skonfigurowane). Gdy wypełnione są oba, używane są dane REST.',
+    'Currency' => 'Waluta',
+    'Required for PayPal payments.' => 'Wymagane do płatności PayPal.',
+    'shop_paypal_currency_code_description' => 'Trzyliterowy kod waluty, w której płacą Twoi klienci, np. EUR lub USD. Użyj waluty cen w Twoim sklepie: gdy pole jest puste, PayPal pobiera te same kwoty w dolarach amerykańskich, bez przeliczania. <a href="https://developer.paypal.com/reports/reference/supported-currencies" target="_blank">Waluty obsługiwane przez PayPal</a>',
+    'Test mode (sandbox)' => 'Tryb testowy (sandbox)',
+    'shop_paypal_sandbox_description' => 'Gdy jest włączony, płatności trafiają do środowiska testowego PayPal (sandbox), w którym nie są przesyłane prawdziwe pieniądze, więc możesz wypróbować składanie zamówienia. Środowisko testowe wymaga danych logowania sandbox, innych niż prawdziwe. Przed rozpoczęciem sprzedaży wyłącz tryb testowy i wpisz prawdziwe dane logowania.',
+    'PayPal REST app credentials (recommended)' => 'Dane aplikacji REST PayPal (zalecane)',
+    'shop_paypal_rest_description' => 'Gdzie je znaleźć: zaloguj się do <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank">PayPal Developer Dashboard</a> swoim firmowym kontem PayPal i otwórz <strong>Apps &amp; Credentials</strong>. Otwórz tam swoją aplikację lub kliknij <strong>Create App</strong>, aby ją utworzyć, i skopiuj jej Client ID oraz Secret do pól poniżej. W trybie testowym skopiuj je z karty <strong>Sandbox</strong> zamiast <strong>Live</strong>. <a href="https://developer.paypal.com/api/rest/" target="_blank">Przewodnik PayPal</a>',
+    'Client ID' => 'Client ID',
+    'shop_paypal_client_id_description' => 'Długi kod z liter i cyfr, widoczny na stronie Twojej aplikacji.',
+    'Secret' => 'Secret',
+    'shop_paypal_client_secret_description' => 'Widoczny pod Client ID na tej samej stronie; odkryj go, aby go skopiować. Zachowaj go w tajemnicy.',
+    'PayPal Classic API credentials (older shops)' => 'Dane Classic API PayPal (starsze sklepy)',
+    'shop_paypal_classic_description' => 'Tylko dla sklepów już z nimi skonfigurowanych: zostaw te pola puste, gdy używasz powyższych danych aplikacji REST. Gdzie je znaleźć: zaloguj się na paypal.com, przejdź do <strong>Account Settings</strong> › <strong>Account access</strong>, kliknij <strong>Update</strong> obok <strong>API access</strong>, a potem <strong>Manage API credentials</strong> w sekcji <strong>NVP/SOAP API integration (Classic)</strong>. W trybie testowym zrób to samo na sandbox.paypal.com z firmowym kontem sandbox. <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" target="_blank">Przewodnik PayPal</a>',
+    'API username' => 'Nazwa użytkownika API',
+    'shop_paypal_user_name_description' => 'Wygląda tak: <em>yourname_api1.example.com</em>.',
+    'API password' => 'Hasło API',
+    'API signature' => 'Podpis API',
+    'shop_paypal_signature_description' => 'Długi ciąg liter i cyfr.',
+    'Shopping cart image' => 'Obrazek koszyka',
+    'shop_cart_image_description' => 'Obrazek wyświetlany zamiast tekstu linku do koszyka. Zalecany rozmiar: do 50 × 50 pikseli.',
+    'shop_price_item_font_color_description' => 'Kolor tekstu ceny wyświetlanej przy każdym produkcie.',
+    'shop_price_item_font_family_description' => 'Czcionka ceny produktu. Gdy poniżej podana jest czcionka Google, używana jest ona.',
+    'Google web fonts' => 'Czcionki internetowe Google',
+    'shop_price_item_font_size_description' => 'Rozmiar ceny produktu, np. 12px lub 1.2em.',
+    'shop_price_item_font_weight_description' => 'Wyświetla cenę produktu zwykłym lub pogrubionym tekstem.',
+    'shop_price_item_font_style_description' => 'Wyświetla cenę produktu zwykłym tekstem lub kursywą.',
+    'shop_price_item_font_variant_description' => 'small-caps wyświetla litery w cenie, np. walutę, jako kapitaliki.',
+    'shop_price_item_line_height_description' => 'Wysokość wiersza tekstu ceny produktu, np. 14px, 1.2em lub normal.',
+    'shop_entry_width_description' => 'Szerokość wpisów produktów w pikselach. Używana tylko przez szablon Messy, gdy jego układ nie jest responsywny. Własna szerokość wpisu ma pierwszeństwo. Zostaw puste, aby użyć domyślnej szerokości.',
     'section_type' => 'Type',
     'section_type_tip' => 'Defines the layout and functionality of the section.',
     'select_on' => 'On',
@@ -516,4 +484,83 @@ return [
     'shuffle_marked' => 'Shuffle marked entries and galleries',
     'entries_limit' => 'Entries limit',
     'entries_limit_tip' => 'How many entries to show in this section',
+
+    // Settings and templates
+    'Additional text' => 'Dodatkowy tekst',
+    'Background video (embed)' => 'Wideo w tle (osadzone)',
+    'Background video ratio' => 'Proporcje wideo w tle',
+    'Button color' => 'Kolor przycisku',
+    'Centered content width' => 'Szerokość wyśrodkowanej treści',
+    'Centered contents' => 'Wyśrodkowana treść',
+    'Centered layout' => 'Wyśrodkowany układ',
+    'Centering guides color tone' => 'Odcień linii pomocniczych wyśrodkowania',
+    'Choose "no" to hide page heading in first section.' => 'Wybierz "No", aby ukryć tytuł strony w pierwszym dziale.',
+    'Choose "yes" to show gridlines in background. Available only in Messy template.' => 'Wybierz "Yes", aby pokazać linie siatki w tle. Dostępne tylko w szablonie Messy.',
+    'Choose theme' => 'Wybierz motyw',
+    'Color of the fullscreen gallery background.' => 'Kolor tła galerii pełnoekranowej.',
+    'Color tone for centering guides (dark for bright background colors, bright for dark background colors).' => 'Odcień linii pomocniczych wyśrodkowania (ciemny dla jasnych kolorów tła, jasny dla ciemnych kolorów tła).',
+    'Column count for Mash-up section.' => 'Liczba kolumn w dziale Mash-up.',
+    'Columns' => 'Kolumny',
+    'Content width if layout is centered.' => 'Szerokość treści, gdy układ jest wyśrodkowany.',
+    'Custom CSS' => 'Własny CSS',
+    'Custom social media buttons' => 'Własne przyciski mediów społecznościowych',
+    'Displayed image will be half of the original size, full size will be used for hi-res displays.' => 'Wyświetlany obraz ma połowę oryginalnego rozmiaru, pełny rozmiar jest używany na ekranach o wysokiej rozdzielczości.',
+    'Enable navigation to page top' => 'Włącz przycisk powrotu na górę strony',
+    'Enabled' => 'Włączone',
+    'Enables fullscreen gallery slide numbers.' => 'Włącza numery slajdów w galerii pełnoekranowej.',
+    'Enables gallery fullscreen mode for new entries.' => 'Włącza tryb pełnoekranowy galerii dla nowych wpisów.',
+    'Enables responsive layout for mobile devices.' => 'Włącza układ responsywny dla urządzeń mobilnych.',
+    'Entries are organised in columns. Column count can be changed under section settings.' => 'Wpisy są ułożone w kolumnach. Liczbę kolumn można zmienić w ustawieniach działu.',
+    'Entry max width' => 'Maksymalna szerokość wpisu',
+    'Entry padding' => 'Wewnętrzny odstęp wpisu',
+    'Fill window' => 'Wypełnij okno',
+    'Gallery fullscreen settings:' => 'Ustawienia galerii pełnoekranowej:',
+    'Google Analytics measurement ID' => 'Identyfikator pomiaru Google Analytics',
+    'Google Tag Manager container ID' => 'Identyfikator kontenera Google Tag Manager',
+    'Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.' => 'Tag <meta> weryfikacji własności Google. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">Więcej informacji</a>.',
+    'Google site verification tag' => 'Tag weryfikacji witryny Google',
+    'Grid layout' => 'Układ siatki',
+    'Gridlines color' => 'Kolor linii siatki',
+    'HTML code' => 'Kod HTML',
+    'Heading margin' => 'Krawędzie tytułu',
+    'Hide copyrights' => 'Ukryj prawa autorskie',
+    'Hides Berta\'s copyrights' => 'Ukrywa informację o prawach autorskich Berty',
+    'How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.' => 'Odległość paska bocznego od lewej krawędzi ekranu. Ignorowana, gdy włączony jest wyśrodkowany układ.',
+    'How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.' => 'Jak uzyskać <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">identyfikator pomiaru</a>. Zostaw puste, jeśli wypełniony jest identyfikator kontenera Google Tag Manager.',
+    'How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.' => 'Jak uzyskać <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">identyfikator kontenera</a>. Zostaw puste, jeśli wypełniony jest identyfikator pomiaru Google Analytics.',
+    'Icon' => 'Ikona',
+    'Javascript code' => 'Kod Javascript',
+    'Javascript include' => 'Dołączony Javascript',
+    'Keep ratio' => 'Zachowaj proporcje',
+    'Link' => 'Link',
+    'Link address' => 'Adres linku',
+    'Location' => 'Położenie',
+    'Location of social media buttons. Content of additional text or additional footer will be replaced.' => 'Położenie przycisków mediów społecznościowych. Treść dodatkowego tekstu lub dodatkowej stopki zostanie zastąpiona.',
+    'Margin around menu.' => 'Odstęp wokół menu.',
+    'Margin around page heading or logo.' => 'Odstęp wokół tytułu strony lub logo.',
+    'Mash-up columns' => 'Kolumny Mash-up',
+    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksymalny rozmiar średniego obrazu (widoczny, gdy w edytorze galerii włączone są „Medium images”). Te ustawienia nie zmieniają oryginalnego obrazu.',
+    'Medium image height' => 'Wysokość średniego obrazu',
+    'Medium image width' => 'Szerokość średniego obrazu',
+    'Menu margin' => 'Krawędzie menu',
+    'Name of your site. Visible in all sections.' => 'Nazwa Twojej strony. Widoczna we wszystkich działach.',
+    'Opens in' => 'Otwiera się w',
+    'Page heading, menu items and section entries is horizontally centered to window.' => 'Tytuł strony, pozycje menu i wpisy działu są wyśrodkowane w poziomie w oknie.',
+    'Paste or write your HTML code here.' => 'Wklej lub wpisz tutaj swój kod HTML.',
+    'Paste or write your Javascript code here.' => 'Wklej lub wpisz tutaj swój kod Javascript.',
+    'Reset design' => 'Przywróć projekt',
+    'Reset design to default values.' => 'Przywraca domyślne wartości projektu.',
+    'Responsive design' => 'Projekt responsywny',
+    'Responsive layout' => 'Układ responsywny',
+    'Sets whether layout should be centered or not.' => 'Określa, czy układ ma być wyśrodkowany.',
+    'Sets whether layout should be responsive or not.' => 'Określa, czy układ ma być responsywny.',
+    'Show gridlines' => 'Pokaż linie siatki',
+    'Show page heading in first section?' => 'Pokazać tytuł strony w pierwszym dziale?',
+    'Shows navigation button at the bottom when page is scrolled.' => 'Pokazuje przycisk nawigacji na dole, gdy strona jest przewinięta.',
+    'Slideshow loop mode' => 'Pętla pokazu slajdów',
+    'Social media buttons' => 'Przyciski mediów społecznościowych',
+    'Social media links' => 'Linki do mediów społecznościowych',
+    'Texts' => 'Teksty',
+    'Theme' => 'Motyw',
+    'Themes are ready made sites with predefined design settings.' => 'Motywy to gotowe strony z ustawieniami projektu.',
 ];
