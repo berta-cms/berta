@@ -61,8 +61,9 @@ class Berta extends BertaBase
             if ($this->environment == 'engine') {
                 $sectionName = current(array_keys($this->sections));
             } else {
+                // The cart section is the shop's cart dialog, no page of its own
                 foreach ($this->sections as $sName => $s) {
-                    if (! empty($s['@attributes']['published'])) {
+                    if (! empty($s['@attributes']['published']) && ! self::isCartSection($s)) {
                         $sectionName = $sName;
                         break;
                     }
@@ -102,5 +103,21 @@ class Berta extends BertaBase
     public function output()
     {
         return $this->template->output();
+    }
+
+    /**
+     * The site shows the current section's page. The shop's cart section is shown only in the
+     * editor, and in the cart dialog, which the shop script loads with ?shopping_cart=1.
+     */
+    public function isSectionPageShown()
+    {
+        return $this->environment == 'engine'
+            || ! self::isCartSection($this->sections[$this->sectionName] ?? [])
+            || ! empty($_GET['shopping_cart']);
+    }
+
+    private static function isCartSection($section)
+    {
+        return ($section['@attributes']['type'] ?? null) == 'shopping_cart';
     }
 }

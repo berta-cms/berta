@@ -1,6 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-import { Actions, StateContext, Store } from '@ngxs/store';
-import { of } from 'rxjs';
+import { StateContext, Store } from '@ngxs/store';
+import { BehaviorSubject, of } from 'rxjs';
 
 import {
   ShopOrdersModel,
@@ -14,7 +13,7 @@ import {
 } from './shop-orders.actions';
 import { AppState } from '../../app-state/app.state';
 import { AppStateService } from '../../app-state/app-state.service';
-import { ShopStateService } from '../shop-state.service';
+import { ShopState } from '../shop.state';
 
 describe('ShopOrdersState', () => {
   const SECOND_PAGE: ShopOrdersPage = {
@@ -25,29 +24,25 @@ describe('ShopOrdersState', () => {
     statusFilter: null,
   };
 
+  let urls$: BehaviorSubject<{ [sectionSlug: string]: string }>;
   let sync: jasmine.Spy;
   let patchState: jasmine.Spy;
   let state: ShopOrdersState;
 
   beforeEach(() => {
+    urls$ = new BehaviorSubject({ orders: '/orders' });
     sync = jasmine
       .createSpy('sync')
       .and.returnValue(of({ message: '', data: { blog: SECOND_PAGE } }));
     patchState = jasmine.createSpy('patchState');
     const store = {
+      select: (selector: unknown) =>
+        selector === ShopState.getURLs ? urls$ : undefined,
       selectSnapshot: (selector: unknown) =>
         selector === AppState.getSite ? 'blog' : { orders: '/orders' },
     } as unknown as Store;
 
-    state = TestBed.runInInjectionContext(
-      () =>
-        new ShopOrdersState(
-          store,
-          {} as ShopStateService,
-          { sync } as unknown as AppStateService,
-          {} as Actions,
-        ),
-    );
+    state = new ShopOrdersState(store, { sync } as unknown as AppStateService);
   });
 
   it("replaces the current site's orders with the requested page", () => {
@@ -58,6 +53,24 @@ describe('ShopOrdersState', () => {
     expect(sync).toHaveBeenCalledWith(
       '/orders',
       { site: 'blog', page: 2 },
+      'GET',
+    );
+    expect(patchState).toHaveBeenCalledWith({ blog: SECOND_PAGE });
+  });
+
+  it("loads the orders once the shop's URLs have come", () => {
+    const context = { patchState } as unknown as StateContext<ShopOrdersModel>;
+    urls$.next({});
+
+    state.loadOrdersPage(context, new LoadShopOrdersPageAction(1)).subscribe();
+
+    expect(sync).not.toHaveBeenCalled();
+
+    urls$.next({ orders: '/orders' });
+
+    expect(sync).toHaveBeenCalledWith(
+      '/orders',
+      { site: 'blog', page: 1 },
       'GET',
     );
     expect(patchState).toHaveBeenCalledWith({ blog: SECOND_PAGE });

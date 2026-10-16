@@ -8,6 +8,16 @@ it('slugifies the text string', function () {
     expect($result)->toBe('hello-world');
 });
 
+it('gives a page its address ending in a slash', function (array $urlParts, bool $isPreviewMode, string $path) {
+    expect(Helpers::sitePath($urlParts, $isPreviewMode))->toBe($path);
+})->with([
+    'the front page' => [[], false, '/'],
+    'a section' => [['section' => 'about'], false, '/about/'],
+    'a tag of a multisite section' => [['site' => 'second', 'section' => 'blog', 'tag' => 'news'], false, '/second/blog/news/'],
+    'a preview' => [['section' => 'about'], true, '/about/?preview=1'],
+    'the front page preview' => [[], true, '/?preview=1'],
+]);
+
 it('converts an array to html attributes string', function () {
     $array = [
         'class' => 'btn btn-primary',

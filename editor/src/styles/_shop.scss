@@ -47,6 +47,41 @@ berta-shop-orders {
       width: 50%;
     }
   }
+
+  // A text button with an icon: a list's Refresh, and an order's "Download invoice" and "Add private notes"
+  .bt-sh-refresh,
+  .bt-sh-order-download-invoice,
+  .bt-sh-order-add-notes {
+    align-items: center;
+    background: none;
+    color: variables.$black;
+    cursor: pointer;
+    display: flex;
+    font-family: inherit;
+    font-size: variables.$input-font-size;
+    gap: 0.4em;
+    padding: 0;
+    transition: color 0.2s;
+
+    svg {
+      display: block;
+      height: 1.15em;
+      width: 1.15em;
+
+      path {
+        fill: currentColor;
+      }
+    }
+
+    &:hover {
+      color: variables.$berta-accent;
+    }
+
+    &[disabled] {
+      color: variables.$grey-40;
+      cursor: default;
+    }
+  }
 }
 
 berta-shop-orders {
@@ -58,6 +93,12 @@ berta-shop-orders {
 }
 
 berta-shop-products {
+  .bt-sh-products-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1.3em;
+  }
+
   .product {
     &:not(:last-child) {
       border-bottom: 1px solid variables.$grey-10;
@@ -70,6 +111,15 @@ berta-shop-products {
       border-top: 0;
       padding-top: 0;
     }
+  }
+
+  // A slow load: the listed products fade until the loaded ones arrive
+  > .setting {
+    transition: opacity 0.2s;
+  }
+
+  &.bt-sh-products-loading > .setting {
+    opacity: 0.5;
   }
 }
 
@@ -268,46 +318,22 @@ berta-shop-orders {
           border-color: variables.$berta-accent;
           color: variables.$white;
         }
-
-        &[disabled] {
-          cursor: default;
-        }
       }
     }
   }
 
-  // A text button with an icon: Refresh, and an order's "Download invoice" and "Add private notes"
-  .bt-sh-orders-actions button,
-  .bt-sh-order-download-invoice,
-  .bt-sh-order-add-notes {
-    align-items: center;
-    background: none;
-    color: variables.$black;
-    cursor: pointer;
-    display: flex;
-    font-family: inherit;
-    font-size: variables.$input-font-size;
-    gap: 0.4em;
-    padding: 0;
-    transition: color 0.2s;
+  // A slow load: the listed orders fade until the next ones arrive
+  > .setting,
+  > .bt-sh-orders-empty,
+  > .bt-sh-orders-pager {
+    transition: opacity 0.2s;
+  }
 
-    svg {
-      display: block;
-      height: 1.15em;
-      width: 1.15em;
-
-      path {
-        fill: currentColor;
-      }
-    }
-
-    &:hover {
-      color: variables.$berta-accent;
-    }
-
-    &[disabled] {
-      color: variables.$grey-40;
-      cursor: default;
+  &.bt-sh-orders-loading {
+    > .setting,
+    > .bt-sh-orders-empty,
+    > .bt-sh-orders-pager {
+      opacity: 0.5;
     }
   }
 

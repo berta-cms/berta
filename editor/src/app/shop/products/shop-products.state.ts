@@ -1,44 +1,19 @@
-import {
-  State,
-  StateContext,
-  NgxsOnInit,
-  Selector,
-  Action,
-  Actions,
-  Store,
-  ofActionSuccessful,
-} from '@ngxs/store';
-import { ShopStateService } from '../shop-state.service';
-import {
-  take,
-  tap,
-  catchError,
-  filter,
-  switchMap,
-  distinct,
-  map,
-} from 'rxjs/operators';
+import { State, StateContext, Selector, Action, Store } from '@ngxs/store';
+import { take, tap, catchError, filter, switchMap } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateShopProductAction,
   RenameShopProductSiteAction,
   DeleteShopProductSiteAction,
   ResetShopProductsAction,
-  InitShopProductsAction,
+  LoadShopProductsAction,
 } from './shop-products.actions';
-import {
-  UpdateSectionEntryAction,
-  UpdateSectionEntryFromSyncAction,
-} from '../../sites/sections/entries/entries-state/section-entries.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DestroyRef, inject, Injectable } from '@angular/core';
-import { combineLatest, startWith } from 'rxjs';
-import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Injectable } from '@angular/core';
 
-interface ShopProduct {
+export interface ShopProduct {
   id: string;
   uniqid: string;
   name: string;
@@ -46,7 +21,7 @@ interface ShopProduct {
   reservation: number;
 }
 
-interface ShopProductsModel {
+export interface ShopProductsModel {
   [site: string]: Array<ShopProduct>;
 }
 
@@ -57,7 +32,7 @@ const defaultState: ShopProductsModel = {};
   defaults: defaultState,
 })
 @Injectable()
-export class ShopProductsState implements NgxsOnInit {
+export class ShopProductsState {
   @Selector([ShopProductsState, AppState.getSite])
   static getCurrentSiteProducts(
     state: ShopProductsModel,
@@ -66,68 +41,38 @@ export class ShopProductsState implements NgxsOnInit {
     return state[site];
   }
 
-  private destroyRef = inject(DestroyRef);
-  private counter = 0;
-
   constructor(
     private store$: Store,
-    private actions$: Actions,
     private appStateService: AppStateService,
-    private stateService: ShopStateService,
   ) {}
 
-  ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
-    combineLatest([
-      this.store$.select(AppState.getSite),
-      this.actions$.pipe(
-        ofActionSuccessful(
-          UpdateSectionEntryFromSyncAction,
-          UpdateSectionEntryAction,
-          SwapContentsSitesAction,
-        ),
-        filter((action) => {
-          // Skip filter for SwapContentsSitesAction
-          if (action instanceof SwapContentsSitesAction) {
-            return true;
-          }
-          // Apply filter for entry update actions
-          const actions = ['cartTitle', 'cartPrice', 'cartAttributes'];
-          const prop = action.path.split('/').pop();
-          return actions.indexOf(prop) > -1;
-        }),
-        startWith(null), // Emit initial value so combineLatest starts immediately
-      ),
-    ])
-      .pipe(
-        filter(([site]) => site !== null),
-        map(([site, action]) => ({
-          site,
-          forceRefresh: action !== null,
-        })),
-        distinct(({ site, forceRefresh }) =>
-          forceRefresh ? this.counter++ : site,
-        ),
-        switchMap(({ site, forceRefresh }) =>
-          this.stateService
-            .getInitialState(site, 'products', forceRefresh)
-            .pipe(
-              take(1),
-              map((products) => ({ site, products })),
-            ),
-        ),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(({ site, products }) => {
-        dispatch(new InitShopProductsAction({ [site]: products[site] }));
-      });
-  }
+  /**
+   * The products endpoint adds the rows of products for sale since, so new products are listed.
+   * Cancels the load still running, so a slower earlier response can't replace the newer stock.
+   */
+  @Action(LoadShopProductsAction, { cancelUncompleted: true })
+  loadProducts({ patchState }: StateContext<ShopProductsModel>) {
+    const site = this.store$.selectSnapshot(AppState.getSite);
 
-  @Action(InitShopProductsAction)
-  initShopProducts(
-    { patchState }: StateContext<ShopProductsModel>,
-    action: InitShopProductsAction,
-  ) {
-    patchState(action.payload);
+    // The shop's URLs come with its state, still loading in an editor just opened on the shop
+    return this.store$.select(ShopState.getURLs).pipe(
+      filter((urls) => !!urls.products),
+      take(1),
+      switchMap((urls) =>
+        this.appStateService.sync(urls.products, { site }, 'GET'),
+      ),
+      tap((response: { message: string; data: ShopProductsModel }) => {
+        patchState({ [site]: response.data[site] });
+      }),
+      catchError((error: HttpErrorResponse | Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      }),
+    );
   }
 
   @Action(UpdateShopProductAction)
@@ -137,7 +82,6 @@ export class ShopProductsState implements NgxsOnInit {
   ) {
     const currentSite = this.store$.selectSnapshot(AppState.getSite);
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
-    const state = getState();
 
     return this.appStateService
       .sync(
@@ -150,8 +94,9 @@ export class ShopProductsState implements NgxsOnInit {
       )
       .pipe(
         tap((response) => {
+          // The products as they are now: a load may have replaced them during the save
           patchState({
-            [currentSite]: state[currentSite].map((product) => {
+            [currentSite]: getState()[currentSite].map((product) => {
               if (product.id !== action.id) {
                 return product;
               }

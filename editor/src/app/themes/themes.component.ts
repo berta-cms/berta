@@ -111,7 +111,7 @@ export class ThemesComponent implements OnInit {
         next: () => {
           const url =
             window.location.origin +
-            (this.appState.site ? '/' + this.appState.site : '') +
+            (this.appState.site ? '/' + this.appState.site + '/' : '/') +
             '?preview=1';
           window.open(url, '_blank');
         },

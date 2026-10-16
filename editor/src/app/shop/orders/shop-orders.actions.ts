@@ -11,12 +11,6 @@ export class DeleteShopOrdersSiteAction {
   constructor(public payload: string) {}
 }
 
-/* Init: */
-export class InitShopOrdersAction {
-  public static type = 'SHOP_ORDERS:INIT';
-  constructor(public payload: any) {}
-}
-
 export class LoadShopOrdersPageAction {
   static readonly type = 'SHOP_ORDERS:LOAD_PAGE';
   constructor(

@@ -57,10 +57,13 @@ class BertaTemplate extends BertaBase
                     $templateName = 'default';
                 }
             }
-            // save in settings
-            $settings = new Settings(false);
-            $settings->update('template', 'template', ['value' => $templateName]);
-            $settings->save();
+            // Remember the default template, once there is a storage folder to keep it in.
+            // Until then the setup wizard reports the missing folder.
+            if (is_writable(self::$options['XML_ROOT'])) {
+                $settings = new Settings(false);
+                $settings->update('template', 'template', ['value' => $templateName]);
+                $settings->save();
+            }
         }
 
         $this->name = $templateName;

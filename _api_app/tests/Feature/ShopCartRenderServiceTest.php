@@ -4,6 +4,7 @@ use App\Plugins\Shop\ShopCartRenderService;
 use App\Plugins\Shop\ShopSettingsDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
     skipWithoutShopPlugin();
@@ -37,6 +38,67 @@ function renderSiteCart(string $bertaRoot, array $shop = []): string
         false,
     );
 }
+
+it('gives the site script the cart page to open after PayPal, on the site only', function (bool $isEditMode, string $link, ?string $cartUrl) {
+    $html = (string) (new ShopCartRenderService)->renderCartLink(
+        Request::create('http://shop.test/'),
+        'blog',
+        [],
+        [],
+        [['name' => 'cart', 'title' => 'Cart', '@attributes' => ['type' => 'shopping_cart', 'published' => 1]]],
+        null,
+        true,
+        false,
+        $isEditMode,
+    );
+
+    expect($html)->toContain("href=\"{$link}\"");
+    $cartUrl === null
+        ? expect($html)->not->toContain('data-cart-url')
+        : expect($html)->toContain("data-cart-url=\"{$cartUrl}\"");
+})->with([
+    'on the site' => [false, "javascript:openShoppingCart('/blog/cart/');", '/blog/cart/'],
+    'in the editor' => [true, '?site=blog&section=cart', null],
+]);
+
+describe('PayPal buttons', function () {
+    $restSettings = ['paypalClientId' => 'client-id', 'paypalClientSecret' => 'client-secret', 'paypalCurrencyCode' => 'EUR'];
+
+    it('start with the client ID, script and currency of a shop with REST credentials', function () use ($restSettings) {
+        Http::fake();
+
+        expect(renderSiteCart($this->bertaRoot, [...$restSettings, 'paypalSandbox' => 'yes']))->toContain(
+            '<div id="shoppingCartOuter" class="cart" data-paypal-client-id="client-id"'
+            . ' data-paypal-sdk-url="https://www.sandbox.paypal.com/web-sdk/v6/core" data-paypal-currency="EUR">'
+        );
+        Http::assertNothingSent();
+    });
+
+    it('are left out, so the cart keeps the redirect to PayPal', function (array $shop) {
+        expect(renderSiteCart($this->bertaRoot, $shop))->toContain('<div id="shoppingCartOuter" class="cart">');
+    })->with([
+        'Classic credentials' => [['paypalUserName' => 'seller_api1.berta.test', 'paypalUserPassword' => 'secret', 'paypalSignature' => 'signature']],
+        'no PayPal credentials' => [[]],
+        'bank transfer only' => [[...$restSettings, 'paymentMethod' => 'bank']],
+    ]);
+
+    it('are left out in the editor', function () use ($restSettings) {
+        writeShopSettings($this->bertaRoot, $restSettings);
+
+        $html = (string) (new ShopCartRenderService)->render(
+            '',
+            ['template' => ['template' => 'messy-0.4.2']],
+            (new ShopSettingsDataService(''))->get(),
+            [],
+            Request::create('http://shop.test/cart'),
+            [['name' => 'cart', 'title' => 'Cart', '@attributes' => ['type' => 'shopping_cart']]],
+            'cart',
+            true,
+        );
+
+        expect($html)->toContain('<div id="shoppingCartOuter" class="cart">');
+    });
+});
 
 it('preselects bank transfer when PayPal is not set up', function () {
     $html = renderSiteCart($this->bertaRoot);

@@ -123,7 +123,7 @@ class LocalValetDriver extends BasicValetDriver
             return $this->passthroughRoute($path, $uri);
         }
 
-        if (! $this->isActualFile($path) && ! $this->endsWith($uri, 'index.php') && ! $this->endsWith($uri, '/')) {
+        if (! $this->isActualFile($path) && ! $this->endsWith($uri, 'index.php') && ! $this->endsWith($uri, '/sitemap.xml') && ! $this->endsWith($uri, '/')) {
             return [self::REDIRECT, $uri . '/'];
         }
 

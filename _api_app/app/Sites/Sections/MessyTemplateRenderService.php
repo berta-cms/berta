@@ -341,7 +341,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
             }
             $link = '?' . implode('&', $parts);
         } else {
-            $link = '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+            $link = Helpers::sitePath($urlParts, $isPreviewMode);
         }
 
         return [

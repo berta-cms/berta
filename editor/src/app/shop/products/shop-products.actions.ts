@@ -22,10 +22,9 @@ export class DeleteShopProductSiteAction {
   constructor(public payload: string) {}
 }
 
-/* Init: */
-export class InitShopProductsAction {
-  public static type = 'SHOP_PRODUCT:INIT';
-  constructor(public payload: any) {}
+/** Loads the current site's products with their stock and reservations */
+export class LoadShopProductsAction {
+  static readonly type = 'SHOP_PRODUCT:LOAD';
 }
 
 /* Reset: */

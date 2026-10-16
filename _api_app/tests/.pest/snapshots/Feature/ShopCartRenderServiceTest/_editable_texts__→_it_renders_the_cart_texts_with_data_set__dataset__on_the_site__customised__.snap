@@ -209,6 +209,8 @@
         <span>Custom cartTextFillRequiredFields</span>
       </p>
 
+            <p class="cart-message cart-message--error js-cart-payment-message hidden" role="alert"></p>
+
       <div class="cart-pay-button js-cart-checkout-slot">
                   <button type="button" class="cart-button cart-button--primary js-cart-checkout-button">Custom cartTextCheckoutButton</button>
               </div>

@@ -1,24 +1,5 @@
-import { startWith } from 'rxjs';
-import {
-  take,
-  filter,
-  switchMap,
-  distinct,
-  map,
-  tap,
-  catchError,
-} from 'rxjs/operators';
-import {
-  State,
-  StateContext,
-  NgxsOnInit,
-  Selector,
-  Action,
-  Store,
-  Actions,
-  ofActionSuccessful,
-} from '@ngxs/store';
-import { ShopStateService } from '../shop-state.service';
+import { tap, catchError, filter, take, switchMap } from 'rxjs/operators';
+import { State, StateContext, Selector, Action, Store } from '@ngxs/store';
 import { ShopState } from '../shop.state';
 import { AppState } from '../../app-state/app.state';
 import { AppStateService } from '../../app-state/app-state.service';
@@ -26,16 +7,12 @@ import {
   RenameShopOrdersSiteAction,
   DeleteShopOrdersSiteAction,
   ResetShopOrdersAction,
-  InitShopOrdersAction,
   LoadShopOrdersPageAction,
   UpdateShopOrderStatusAction,
   UpdateShopOrderNotesAction,
 } from './shop-orders.actions';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DestroyRef, inject, Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Injectable } from '@angular/core';
 
 export interface ShopOrdersPage {
   orders: any[];
@@ -57,7 +34,7 @@ const defaultState: ShopOrdersModel = {};
   defaults: defaultState,
 })
 @Injectable()
-export class ShopOrdersState implements NgxsOnInit {
+export class ShopOrdersState {
   @Selector([ShopOrdersState, AppState.getSite])
   static getCurrentSiteOrdersPage(
     state: ShopOrdersModel,
@@ -66,87 +43,46 @@ export class ShopOrdersState implements NgxsOnInit {
     return state[site];
   }
 
-  private destroyRef = inject(DestroyRef);
-  private counter = 0;
-
   constructor(
     private store$: Store,
-    private stateService: ShopStateService,
     private appStateService: AppStateService,
-    private actions$: Actions,
   ) {}
 
-  ngxsOnInit({ dispatch }: StateContext<ShopOrdersModel>) {
-    combineLatest([
-      this.store$.select(AppState.getSite),
-      this.actions$.pipe(
-        ofActionSuccessful(SwapContentsSitesAction),
-        startWith(null), // Emit initial value so combineLatest starts immediately
-      ),
-    ])
-      .pipe(
-        filter(([site]) => site !== null),
-        map(([site, action]) => ({
-          site,
-          isSwapSitesContentsAction: action !== null,
-        })),
-        distinct(({ site, isSwapSitesContentsAction }) =>
-          isSwapSitesContentsAction ? this.counter++ : site,
-        ),
-        switchMap(({ site, isSwapSitesContentsAction }) =>
-          this.stateService
-            .getInitialState(site, 'orders', isSwapSitesContentsAction)
-            .pipe(
-              take(1),
-              map((orders) => ({ site, orders })),
-            ),
-        ),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(({ site, orders }) => {
-        dispatch(new InitShopOrdersAction({ [site]: orders[site] }));
-      });
-  }
-
-  @Action(InitShopOrdersAction)
-  initShopOrders(
-    { patchState }: StateContext<ShopOrdersModel>,
-    action: InitShopOrdersAction,
-  ) {
-    patchState(action.payload);
-  }
-
-  @Action(LoadShopOrdersPageAction)
+  /** Cancels the load still running, so a slower earlier response can't replace the newer page */
+  @Action(LoadShopOrdersPageAction, { cancelUncompleted: true })
   loadOrdersPage(
     { patchState }: StateContext<ShopOrdersModel>,
     action: LoadShopOrdersPageAction,
   ) {
     const site = this.store$.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
-    return this.appStateService
-      .sync(
-        syncURLs.orders,
-        {
-          site,
-          page: action.page,
-          ...(action.statusFilter ? { status: action.statusFilter } : {}),
-        },
-        'GET',
-      )
-      .pipe(
-        tap((response: { message: string; data: ShopOrdersModel }) => {
-          patchState({ [site]: response.data[site] });
-        }),
-        catchError((error: HttpErrorResponse | Error) => {
-          if (error instanceof HttpErrorResponse) {
-            console.error(error.error.message);
-          } else {
-            console.error(error.message);
-          }
-          throw error;
-        }),
-      );
+    // The shop's URLs come with its state, still loading in an editor just opened on the shop
+    return this.store$.select(ShopState.getURLs).pipe(
+      filter((urls) => !!urls.orders),
+      take(1),
+      switchMap((urls) =>
+        this.appStateService.sync(
+          urls.orders,
+          {
+            site,
+            page: action.page,
+            ...(action.statusFilter ? { status: action.statusFilter } : {}),
+          },
+          'GET',
+        ),
+      ),
+      tap((response: { message: string; data: ShopOrdersModel }) => {
+        patchState({ [site]: response.data[site] });
+      }),
+      catchError((error: HttpErrorResponse | Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      }),
+    );
   }
 
   /**

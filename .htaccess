@@ -73,6 +73,7 @@ RewriteRule .* - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !index.php$
+RewriteCond %{REQUEST_URI} !/sitemap\.xml$
 RewriteCond %{REQUEST_URI} !^(.*)/$
 RewriteRule ^(.*)$ /$1/ [R=301,L]
 

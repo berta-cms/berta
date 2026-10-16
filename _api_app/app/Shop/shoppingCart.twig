@@ -1,5 +1,6 @@
 {#
-  The shopping cart section's page. On the other pages shop.js loads it into a dialog.
+  The shop's cart, which shop.js loads from the cart section (?shopping_cart=1) into its dialog. The site has no page
+  of its own for the cart section, the editor shows it to edit the cart's texts.
 
   `cart-*` classes style the cart, `js-cart-*` classes are shop.js's hooks and carry no styles. In the editor the
   same markup shows every part of the cart, with its texts editable in place.
@@ -11,7 +12,9 @@
   </{{ tag }}>
 {%- endmacro %}
 {% import _self as cart %}
-<div id="shoppingCartOuter" class="cart">
+{# A shop with PayPal's REST credentials gets PayPal's buttons, which start with these #}
+<div id="shoppingCartOuter" class="cart"
+  {%- if paypalButtons %} data-paypal-client-id="{{ paypalButtons.client_id }}" data-paypal-sdk-url="{{ paypalButtons.sdk_url }}" data-paypal-currency="{{ paypalButtons.currency }}"{% endif %}>
   <h1 id="shoppingCartTitle" class="cart-title">{{ cartTitle }}</h1>
 
   <div id="shoppingCartEmpty" class="cart-title{% if not isEditMode %} hidden{% endif %}">
@@ -265,6 +268,9 @@
       <p class="cart-message cart-message--error js-cart-required-message{% if not isEditMode %} hidden{% endif %}" role="alert">
         {{ cart.text(fillRequiredFields, 'Please fill in all required fields', isEditMode) }}
       </p>
+
+      {# How a PayPal payment went when it didn't go through #}
+      <p class="cart-message cart-message--error js-cart-payment-message hidden" role="alert"></p>
 
       <div class="cart-pay-button js-cart-checkout-slot">
         {% if isEditMode %}

@@ -594,6 +594,17 @@ class Helpers
     }
 
     /**
+     * A page's address on the site: its site, section and tag, ending in a slash. That's the form the
+     * web server answers, .htaccess redirects every other one to it.
+     *
+     * @param  array<string>  $urlParts  The site, section and tag names the address has, none for the front page
+     */
+    public static function sitePath(array $urlParts, bool $isPreviewMode = false): string
+    {
+        return '/' . ($urlParts ? implode('/', $urlParts) . '/' : '') . ($isPreviewMode ? '?preview=1' : '');
+    }
+
+    /**
      * Whether the shop plugin is licensed for the requested domain
      */
     public static function isShopEnabled(?string $host): bool

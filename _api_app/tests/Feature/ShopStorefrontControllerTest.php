@@ -235,6 +235,22 @@ function returnFromPaypal(string $token): TestResponse
     return get(storefrontUrl('paypal/return', ['token' => $token, 'PayerID' => 'PAYER1']));
 }
 
+/**
+ * The site's front page, where PayPal's return sends the customer of a paid order with its number
+ */
+function paidReturnUrl(string $orderId): string
+{
+    return 'http://shop.test/?shop_payment=paid&shop_order=' . $orderId;
+}
+
+/**
+ * The number of the year's nth order
+ */
+function orderNumber(int $nth): string
+{
+    return now()->year . "-{$nth}";
+}
+
 function capturesSent(): int
 {
     return Http::recorded(fn (HttpRequest $request) => str_ends_with($request->url(), '/capture')
@@ -1034,9 +1050,10 @@ describe('PayPal return', function () {
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
 
-        $response = returnFromPaypal($paypalToken)->assertRedirect('http://shop.test/?shop_payment=paid');
+        $response = returnFromPaypal($paypalToken);
 
         $order = shopDb()->table('client')->where('session_id', 'checkout')->first();
+        $response->assertRedirect(paidReturnUrl($order->order_id));
         expect($order)->paypal->toEqual(1)->status->toBe('paid')->price_total->toEqual(105);
         expect(File::json(shopFile("paypal/{$paypalToken}.json")))->order_id->toBe($order->order_id);
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
@@ -1052,7 +1069,7 @@ describe('PayPal return', function () {
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => $method])->assertOk();
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         expect(shopDb()->table('client')->where('session_id', 'checkout')->first())
             ->payment_method->toBe($method)
@@ -1109,7 +1126,7 @@ describe('PayPal return', function () {
         shopCheckout(fillShopBasket([[SHOP_CHAIR]]), ['payment_method' => 'paypal'])->assertOk();
         shopCheckout(fillShopBasket([[SHOP_TSHIRT, 'S']]))->assertOk()->assertJsonPath('data.order_id', '2026-1');
 
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(2)));
 
         expect(shopDb()->table('client')->where('session_id', 'checkout')->pluck('order_id', 'payment_method')->all())
             ->toBe(['paypal' => '2026-2', 'bank_transfer' => '2026-1']);
@@ -1123,7 +1140,7 @@ describe('PayPal return', function () {
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
         addToShopBasket(SHOP_TSHIRT, 'S', $token)->assertOk();
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         expect(shopDb()->table('orders')->join('product', 'product.id', '=', 'orders.id_product')->pluck('orders.paid', 'product.name')->all())
             ->toEqual(['Chair' => 1, 'T-shirt S' => 0]);
@@ -1138,7 +1155,7 @@ describe('PayPal return', function () {
         travel(31)->minutes();
         postJson(storefrontUrl('stock'), ['uniqids' => [SHOP_CHAIR]])->assertJsonPath('data.0.instock', 1);
 
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         expect(shopDb()->table('orders')->where('paid', 1)->count())->toBe(1)
             ->and(shopDb()->table('product')->where('uniqid', SHOP_CHAIR)->value('instock'))->toEqual(0);
@@ -1176,9 +1193,9 @@ describe('PayPal return', function () {
         fakeNvp();
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         expect(capturesSent())->toBe(1);
         Mail::assertSent(ShopOrderMail::class, 2);
@@ -1198,7 +1215,7 @@ describe('PayPal return', function () {
         returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=unconfirmed');
         expect(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeFalse();
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
         expect(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeTrue();
         Http::assertSent(fn (HttpRequest $request) => str_ends_with($request->url(), '/capture')
             && $request->header('PayPal-Request-Id') === ['capture-' . SHOP_REST_TOKEN]);
@@ -1221,7 +1238,7 @@ describe('PayPal return', function () {
         postJson(storefrontUrl('stock'), ['uniqids' => [SHOP_CHAIR]])->assertJsonPath('data.0.instock', 1);
         returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=unconfirmed');
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(2)));
 
         expect(capturesSent())->toBe(2);
         expect(shopDb()->table('orders')->join('product', 'product.id', '=', 'orders.id_product')->pluck('orders.paid', 'product.name')->all())
@@ -1243,7 +1260,7 @@ describe('PayPal return', function () {
         });
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         $bankCheckout->assertConflict();
         expect(shopDb()->table('client')->where('session_id', 'checkout')->pluck('payment_method')->all())->toBe(['paypal']);
@@ -1261,7 +1278,7 @@ describe('PayPal return', function () {
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
         shopDb()->statement("CREATE TRIGGER fail_checkout BEFORE UPDATE OF session_id ON client WHEN NEW.session_id = 'checkout' BEGIN SELECT RAISE(ABORT, 'disk I/O error'); END");
 
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => $mail->hasTo('seller@berta.test')
             && $mail->order['order_id'] === '2026-1');
@@ -1276,7 +1293,7 @@ describe('PayPal return', function () {
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
 
-        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_NVP_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         expect(shopDb()->table('client')->where('session_id', 'checkout')->exists())->toBeTrue();
         Exceptions::assertReported(TransportException::class);
@@ -1294,33 +1311,47 @@ describe('PayPal return', function () {
         expect(shopDb()->table('client')->where('session_id', $token)->exists())->toBeTrue()
             ->and(capturesSent())->toBe(0);
     });
+
+    it('sends the customer back to the page they checked out from with the paid order number', function () {
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'paypal', 'return_path' => '/shop/?tag=chairs'])->assertOk();
+
+        returnFromPaypal(SHOP_NVP_TOKEN)
+            ->assertRedirect('http://shop.test/shop/?tag=chairs&shop_payment=paid&shop_order=' . orderNumber(1));
+    });
+
+    it('sends the customer who cancels back to the page they checked out from, on the site', function (string $returnPath, string $returnUrl) {
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+        shopCheckout($token, ['payment_method' => 'paypal', 'return_path' => $returnPath])->assertOk();
+
+        get(storefrontUrl('paypal/cancel', ['token' => SHOP_NVP_TOKEN]))->assertRedirect($returnUrl);
+    })->with([
+        'a section page' => ['/shop/?tag=chairs', 'http://shop.test/shop/?tag=chairs&shop_payment=cancelled'],
+        'a path that looks like another host' => ['//evil.test/', 'http://shop.test//evil.test/?shop_payment=cancelled'],
+    ]);
+
+    it('refuses a return page that is not a path on the site', function (string $returnPath) {
+        writeShopSettings($this->bertaRoot, nvpSettings());
+        fakeNvp();
+        $token = fillShopBasket([[SHOP_CHAIR]]);
+
+        shopCheckout($token, ['payment_method' => 'paypal', 'return_path' => $returnPath])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('return_path');
+    })->with([
+        'another host' => 'https://evil.test/',
+        'a userinfo' => '@evil.test/',
+        'a header after a line break' => "/shop/\r\nX-Injected: 1",
+        'a fragment' => '/shop/#top',
+        'a backslash' => '/\evil.test/',
+    ]);
 });
 
 describe('PayPal buttons', function () {
-    it('returns the client ID, script and currency the buttons start with', function () {
-        writeShopSettings($this->bertaRoot, [...restSettings(), 'paypalSandbox' => 'yes']);
-
-        getJson(storefrontUrl('paypal/buttons'))
-            ->assertOk()
-            ->assertExactJson(['message' => '', 'data' => [
-                'client_id' => 'client-id',
-                'sdk_url' => 'https://www.sandbox.paypal.com/web-sdk/v6/core',
-                'currency' => 'EUR',
-            ]]);
-    });
-
-    it('returns 404 so the cart keeps the redirect to PayPal', function (Closure $settings) {
-        writeShopSettings($this->bertaRoot, $settings());
-
-        getJson(storefrontUrl('paypal/buttons'))->assertNotFound();
-
-        Http::assertNothingSent();
-    })->with([
-        'Classic credentials' => fn () => nvpSettings(),
-        'no PayPal credentials' => fn () => [],
-        'bank transfer only' => fn () => [...restSettings(), 'paymentMethod' => 'bank'],
-    ]);
-
     it('saves and emails an order paid with the buttons, and returns its number', function () {
         Mail::fake();
         travelTo(Carbon::parse('2026-10-12 10:00:00'));
@@ -1466,7 +1497,7 @@ describe('invoices', function () {
         $token = fillShopBasket([[SHOP_CHAIR]]);
         shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
 
-        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+        returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
 
         $invoice = File::get(shopFile('invoices/invoice-2026-1.pdf'));
         Mail::assertSent(ShopOrderMail::class, fn (ShopOrderMail $mail) => ! $mail->forSeller
@@ -1518,7 +1549,7 @@ it('lists only the paid products of an order for the shop admin', function () {
     $token = fillShopBasket([[SHOP_CHAIR]]);
     shopCheckout($token, ['payment_method' => 'paypal'])->assertOk();
     addToShopBasket(SHOP_TSHIRT, 'S', $token)->assertOk();
-    returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect('http://shop.test/?shop_payment=paid');
+    returnFromPaypal(SHOP_REST_TOKEN)->assertRedirect(paidReturnUrl(orderNumber(1)));
     actingAs(new User);
 
     $orders = getJson('http://shop.test' . route('orders', [], false))->assertOk()->json('data')['']['orders'];

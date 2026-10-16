@@ -100,7 +100,7 @@ class SitesHeaderRenderService
 
             return '?' . implode('&', $parts);
         } else {
-            return '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+            return Helpers::sitePath($urlParts, $isPreviewMode);
         }
     }
 

@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../app-state/app.state';
+import { delayedIndicator } from '../shared/delayed-indicator';
+import {
+  PendingRequestsService,
+  whileRequestsPending,
+} from '../shared/pending-requests';
 import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
 import { AiAssistantState } from '../ai-assistant/ai-assistant.state';
@@ -11,10 +16,7 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
   selector: 'berta-header',
   template: `
     <header>
-      <div
-        class="loading"
-        [style.display]="(isLoading$ | async) ? 'block' : ''"
-      ></div>
+      <div class="loading" [class.bt-shown]="showsLoading$ | async"></div>
       @if (isLoggedIn$ | async) {
         <div class="bt-menu">
           @if (!(isSetup$ | async)) {
@@ -89,7 +91,6 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
       }
 
       header .loading {
-        display: none;
         content: '';
         position: absolute;
         width: 100%;
@@ -106,6 +107,17 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
         background-size: 200% 200%;
         animation: barberpole 15s linear infinite;
         z-index: 1;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.2s,
+          visibility 0s 0.2s;
+      }
+
+      header .loading.bt-shown {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.2s;
       }
 
       @keyframes barberpole {
@@ -146,14 +158,23 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
 export class HeaderComponent {
   user$: Observable<UserStateModel>;
   isLoggedIn$: Observable<boolean>;
-  isLoading$: Observable<boolean>;
+  /**
+   * A quick load shows no loading bar, so it doesn't flash. Once on, the bar stays until the last
+   * request has ended.
+   */
+  showsLoading$: Observable<boolean>;
   isSetup$: Observable<boolean>;
   isAiOpen$: Observable<boolean>;
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    pendingRequests: PendingRequestsService,
+  ) {
     this.user$ = this.store.select((state) => state.user);
     this.isLoggedIn$ = this.store.select(UserState.isLoggedIn);
-    this.isLoading$ = this.store.select(AppState.getShowLoading);
+    this.showsLoading$ = this.store
+      .select(AppState.getShowLoading)
+      .pipe(whileRequestsPending(pendingRequests.count$), delayedIndicator());
     this.isSetup$ = this.store.select(AppState.isSetup);
     this.isAiOpen$ = this.store.select(AiAssistantState.isOpen);
   }

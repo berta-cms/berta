@@ -50,6 +50,33 @@ function htaccessRefuses(string $uri): bool
 }
 
 /**
+ * Whether the root .htaccess redirects a request for no file to its address with a trailing slash
+ */
+function htaccessAddsSlash(string $uri): bool
+{
+    $lines = array_map('trim', file(bertaRepositoryRoot() . '/.htaccess', FILE_IGNORE_NEW_LINES));
+    $ruleLine = array_search('RewriteRule ^(.*)$ /$1/ [R=301,L]', $lines, true);
+
+    // The rule's address conditions are the negated RewriteCond lines right above it, each of them must pass
+    $patterns = [];
+    for ($i = $ruleLine - 1; $i >= 0 && preg_match('/^RewriteCond %\{REQUEST_URI\} !(\S+)/', $lines[$i], $match); $i--) {
+        $patterns[] = $match[1];
+    }
+
+    if ($ruleLine === false || $patterns === []) {
+        throw new RuntimeException('The trailing slash rule of .htaccess was not found');
+    }
+
+    foreach ($patterns as $pattern) {
+        if (preg_match('#' . str_replace('#', '\#', $pattern) . '#', $uri)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * How LocalValetDriver routes a request: "not_found", "static" or another of its route types
  */
 function valetDriverRoute(string $sitePath, string $uri): string
@@ -95,4 +122,20 @@ it('serves media, also in folders named like the shop files folder', function (s
     'multisite site media' => '/storage/-sites/second/media/photo.jpg',
     'a media folder sharing the name' => '/storage/media/_shop_files/photo.jpg',
     'a site named like the folder' => '/storage/-sites/_shop_files/media/photo.jpg',
+]);
+
+it('redirects a page to its address with the trailing slash', function (string $uri) {
+    expect(htaccessAddsSlash($uri))->toBeTrue()
+        ->and(valetDriverRoute($this->sitePath, $uri))->toBe('redirect');
+})->with([
+    'a section' => '/shop',
+    'a multisite section' => '/second/shop',
+]);
+
+it('serves the sitemap at its own address', function (string $uri) {
+    expect(htaccessAddsSlash($uri))->toBeFalse()
+        ->and(valetDriverRoute($this->sitePath, $uri))->toBe('php');
+})->with([
+    'the root site' => '/sitemap.xml',
+    'a multisite site' => '/second/sitemap.xml',
 ]);

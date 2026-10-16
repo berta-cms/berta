@@ -225,6 +225,8 @@
         <span class="xNgEditable xProperty-cartTextFillRequiredFields xCaption-Please+fill+in+all+required+fields" data-path="blog/settings/siteTexts/cartTextFillRequiredFields" data-empty-caption="Please fill in all required fields">Custom cartTextFillRequiredFields</span>
       </p>
 
+            <p class="cart-message cart-message--error js-cart-payment-message hidden" role="alert"></p>
+
       <div class="cart-pay-button js-cart-checkout-slot">
                   <div class="cart-button cart-button--primary"><span class="xNgEditable xProperty-cartTextCheckoutButton xCaption-Checkout+and+pay" data-path="blog/settings/siteTexts/cartTextCheckoutButton" data-empty-caption="Checkout and pay">Custom cartTextCheckoutButton</span></div>
               </div>

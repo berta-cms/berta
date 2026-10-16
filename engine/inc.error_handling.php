@@ -1,10 +1,13 @@
 <?php
 
-if (empty($ERROR_REPORTING_HIDE_ERRORS)) {
-    error_reporting(E_ALL);
-    @ini_set('display_errors', 1);
-}
-@trigger_error(''); 				// reset the error_get_last function
+// Error details are shown on the page only with APP_DEBUG, they are logged either way
+define('ERRORS_DISPLAY', (bool) config('app.debug'));
+error_reporting(E_ALL);
+@ini_set('display_errors', ERRORS_DISPLAY ? '1' : '0');
+
+// Laravel boots before this file and its .env loader reads a file that may not exist yet (fresh install).
+// error_get_last() keeps such errors, even ones suppressed with @, they must not reach errorHandler_fatal.
+error_clear_last();
 set_error_handler('errorHandler');	// for normal errors
 ob_start('errorHandler_fatal');		// for fatal errors
 errorHandler_setFatal(E_ALL ^ E_NOTICE ^ E_WARNING); // will die on any error except E_NOTICE
@@ -14,8 +17,14 @@ define('ERRORS_DIRNAME', $_SERVER['DOCUMENT_ROOT'] /* '/home/virtual/www/mccann/
 function errorHandler_fatal($buffer)
 {
     $error = @error_get_last();
-    if ($error && ($error['type'] & error_reporting()) && ($error['message'] != '')) {
+    // Only the errors that stop the script, set_error_handler can't catch them. errorHandler has shown the others.
+    $fatalErrors = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR;
+    if ($error && ($error['type'] & $fatalErrors & error_reporting())) {
         $err = errorHandler($error['type'], $error['message'], $error['file'], $error['line'], false, true);
+
+        if (! ERRORS_DISPLAY) {
+            return 'Server error';
+        }
 
         return $err ? $err : '???';
     } else {
@@ -151,7 +160,9 @@ function errorHandler($errno, $errstr, $errfile, $errline, $context = false, $bD
     if ($bDoReturn) {
         return $str;
     } else {
-        echo $str;
+        if (ERRORS_DISPLAY) {
+            echo $str;
+        }
         if (isset($GLOBALS['error_fatal'])) {
             if ($GLOBALS['error_fatal'] & $errno) {
                 exit('fatal');

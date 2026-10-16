@@ -2,6 +2,8 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\Helpers;
+
 class SitemapRenderService
 {
     private function getTags($sectionTags)
@@ -42,7 +44,7 @@ class SitemapRenderService
         $host = $request->getHost();
         $scheme = $request->getScheme();
 
-        return "{$scheme}://{$host}/" . implode('/', $urlParts);
+        return "{$scheme}://{$host}" . Helpers::sitePath($urlParts);
     }
 
     private function getViewData(

@@ -1,10 +1,20 @@
-import { Component, ElementRef } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Actions, Store, ofActionSuccessful } from '@ngxs/store';
+import { Observable, merge } from 'rxjs';
+import { filter, finalize } from 'rxjs/operators';
 
 import { AppState } from '../../app-state/app.state';
 import { stringToCurrency } from '../../shared/helpers';
+import { SwapContentsSitesAction } from '../../sites/sites-state/sites.actions';
+import { RefreshIndicator } from '../../shared/refresh-indicator';
 import { ShopSettingsState } from '../settings/shop-settings.state';
 import { ShopStateService } from '../shop-state.service';
 import { ShopState } from '../shop.state';
@@ -43,12 +53,13 @@ const PAYMENT_METHODS: Record<string, string> = {
         <div class="bt-sh-orders-actions">
           <button
             type="button"
+            class="bt-sh-refresh"
             title="Load the newest orders"
-            [disabled]="isLoading"
-            (click)="goToPage(1, ordersPage.statusFilter)"
+            [class.bt-loading]="loading.showsLoading"
+            (click)="goToPage(1, activeStatusFilter(ordersPage))"
           >
             <bt-icon-refresh></bt-icon-refresh>
-            {{ isLoading ? 'Refreshing…' : 'Refresh' }}
+            Refresh
           </button>
         </div>
         <div
@@ -59,13 +70,10 @@ const PAYMENT_METHODS: Record<string, string> = {
           @for (chip of filterChips; track chip.title) {
             <button
               type="button"
-              [class.bt-active]="
-                (ordersPage.statusFilter ?? null) === chip.value
-              "
+              [class.bt-active]="activeStatusFilter(ordersPage) === chip.value"
               [attr.aria-pressed]="
-                (ordersPage.statusFilter ?? null) === chip.value
+                activeStatusFilter(ordersPage) === chip.value
               "
-              [disabled]="isLoading"
               (click)="goToPage(1, chip.value)"
             >
               {{ chip.title }}
@@ -253,7 +261,7 @@ const PAYMENT_METHODS: Record<string, string> = {
           <button
             type="button"
             class="button"
-            [disabled]="isLoading || ordersPage.page <= 1"
+            [disabled]="ordersPage.page <= 1"
             (click)="goToPage(ordersPage.page - 1, ordersPage.statusFilter)"
           >
             ‹ Prev
@@ -262,7 +270,7 @@ const PAYMENT_METHODS: Record<string, string> = {
           <button
             type="button"
             class="button"
-            [disabled]="isLoading || ordersPage.page >= ordersPage.lastPage"
+            [disabled]="ordersPage.page >= ordersPage.lastPage"
             (click)="goToPage(ordersPage.page + 1, ordersPage.statusFilter)"
           >
             Next ›
@@ -271,13 +279,21 @@ const PAYMENT_METHODS: Record<string, string> = {
       }
     }
   `,
+  host: {
+    // The listed orders fade only while a slow load is still running
+    '[class.bt-sh-orders-loading]': 'loading.isLoading && loading.showsLoading',
+    '[attr.aria-busy]': 'loading.isLoading',
+  },
   standalone: false,
 })
-export class ShopOrdersComponent {
+export class ShopOrdersComponent implements OnInit, OnDestroy {
   ordersPage$: Observable<ShopOrdersPage>;
   currency$: Observable<string>;
   invoicesEnabled$: Observable<boolean>;
-  isLoading = false;
+  readonly loading = new RefreshIndicator();
+  private destroyRef = inject(DestroyRef);
+  /** The status chosen while its orders load, undefined while none are loading */
+  pendingStatusFilter: string | null | undefined;
   /** The orders without notes whose notes field the shop owner has opened */
   notesOpenedFor = new Set<number>();
   /** The orders whose invoice is being downloaded */
@@ -297,6 +313,7 @@ export class ShopOrdersComponent {
 
   constructor(
     private store: Store,
+    private actions$: Actions,
     private elementRef: ElementRef<HTMLElement>,
     private shopStateService: ShopStateService,
   ) {
@@ -309,14 +326,56 @@ export class ShopOrdersComponent {
     );
   }
 
-  goToPage(page: number, statusFilter: string | null) {
-    this.isLoading = true;
-    this.store
-      .dispatch(new LoadShopOrdersPageAction(page, statusFilter))
-      .pipe(finalize(() => (this.isLoading = false)))
+  ngOnInit() {
+    // Shoppers place orders while the editor is open: the newest orders of the chosen status load
+    // as the shop opens, for each site it shows, and for the site whose contents were swapped in
+    merge(
+      this.store.select(AppState.getSite).pipe(filter((site) => site !== null)),
+      this.actions$.pipe(ofActionSuccessful(SwapContentsSitesAction)),
+    )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.elementRef.nativeElement.scrollIntoView({ block: 'start' });
+        const ordersPage = this.store.selectSnapshot(
+          ShopOrdersState.getCurrentSiteOrdersPage,
+        );
+
+        this.loadPage(1, ordersPage?.statusFilter ?? null).subscribe({
+          // The service shows the error
+          error: () => {},
+        });
       });
+  }
+
+  ngOnDestroy() {
+    this.loading.destroy();
+  }
+
+  /** The chosen status chip: the one clicked, before its orders have loaded */
+  activeStatusFilter(ordersPage: ShopOrdersPage): string | null {
+    return this.pendingStatusFilter !== undefined
+      ? this.pendingStatusFilter
+      : (ordersPage.statusFilter ?? null);
+  }
+
+  /** Shows a page of orders from its top */
+  goToPage(page: number, statusFilter: string | null) {
+    this.loadPage(page, statusFilter).subscribe({
+      next: () => {
+        this.elementRef.nativeElement.scrollIntoView({ block: 'start' });
+      },
+      // The service shows the error
+      error: () => {},
+    });
+  }
+
+  /** A load started while another runs cancels the other */
+  private loadPage(page: number, statusFilter: string | null) {
+    this.pendingStatusFilter = statusFilter;
+
+    return this.loading.track(
+      this.store.dispatch(new LoadShopOrdersPageAction(page, statusFilter)),
+      () => (this.pendingStatusFilter = undefined),
+    );
   }
 
   updateStatus(orderId: number, status: string) {

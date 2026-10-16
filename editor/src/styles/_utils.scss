@@ -1,3 +1,15 @@
 .hidden {
   display: none;
 }
+
+// The refresh icon of a button loading through a RefreshIndicator: a half turn in its
+// REFRESH_ICON_HALF_TURN
+@keyframes bt-refresh-spin {
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+.bt-loading bt-icon-refresh svg {
+  animation: bt-refresh-spin 0.5s linear infinite;
+}

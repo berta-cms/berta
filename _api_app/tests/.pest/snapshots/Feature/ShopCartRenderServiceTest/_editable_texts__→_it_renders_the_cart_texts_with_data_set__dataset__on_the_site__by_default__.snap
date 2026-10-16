@@ -203,6 +203,8 @@
         <span>Please fill in all required fields</span>
       </p>
 
+            <p class="cart-message cart-message--error js-cart-payment-message hidden" role="alert"></p>
+
       <div class="cart-pay-button js-cart-checkout-slot">
                   <button type="button" class="cart-button cart-button--primary js-cart-checkout-button">Checkout and pay</button>
               </div>
