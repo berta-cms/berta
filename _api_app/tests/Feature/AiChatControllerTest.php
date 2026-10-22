@@ -3,6 +3,8 @@
 use App\Plugins\AiAssistant\AiChatController;
 use App\Plugins\AiAssistant\AiChatRequest;
 use App\Plugins\AiAssistant\AssistantAgent;
+use App\Plugins\AiAssistant\SiteContentReader;
+use Illuminate\Support\Facades\File;
 
 use function Pest\Laravel\post;
 
@@ -334,4 +336,37 @@ it('includes galleries section in system prompt', function () {
         ->toContain('fullscreen')
         ->toContain('file_index')
         ->toContain('manual');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('describes current sections in the system prompt', function () {
+    $bertaRoot = sys_get_temp_dir() . '/berta_ai_sections_' . uniqid();
+    File::ensureDirectoryExists($bertaRoot . '/storage');
+    config(['app.old_berta_root' => $bertaRoot]);
+    file_put_contents(
+        $bertaRoot . '/storage/sections.xml',
+        '<?xml version="1.0" encoding="utf-8"?><sections>'
+        . '<section published="1" entry_count="3"><name><![CDATA[works]]></name><title><![CDATA[Works]]></title></section>'
+        . '<section published="0" type="shop" entry_count="2"><name><![CDATA[shop]]></name><title><![CDATA[Shop]]></title>'
+        . '<seoTitle><![CDATA[Buy prints]]></seoTitle><seoKeywords><![CDATA[prints, art]]></seoKeywords><seoDescription><![CDATA[Prints shop]]></seoDescription></section>'
+        . '<section><name><![CDATA[about]]></name><title><![CDATA[About]]></title></section>'
+        . '</sections>',
+    );
+
+    try {
+        $controller = new AiChatController;
+        $method = new ReflectionMethod($controller, 'buildSectionsSection');
+
+        $result = $method->invoke($controller, (new SiteContentReader)->sections());
+    } finally {
+        File::deleteDirectory($bertaRoot);
+    }
+
+    expect($result)->toContain(
+        "### Current Sections\n"
+        . "  order 0: \"Works\" (name: works, type: default, published: 1)\n"
+        . "  order 1: \"Shop\" (name: shop, type: shop, published: 0)\n"
+        . "    SEO — title: \"Buy prints\", keywords: \"prints, art\", description: \"Prints shop\"\n"
+        . "  order 2: \"About\" (name: about, type: default, published: 1)\n"
+        . "\n### Operations",
+    );
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
