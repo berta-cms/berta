@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.26",
-    "@angular/cli": "^21.2.26",
+    "@angular/cli": "^21.2.28",
     "@angular/compiler-cli": "^21.2.25",
     "@angular/language-service": "^21.2.25",
     "@ngxs/devtools-plugin": "~21.0.0",
