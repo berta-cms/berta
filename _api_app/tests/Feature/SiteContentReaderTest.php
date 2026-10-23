@@ -118,6 +118,19 @@ describe('entries', function () {
             ->and($reader->showsEntryTitles('missing'))->toBeFalse();
     });
 
+    it('reads one entry like the entry list', function () {
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works"><entry><id><![CDATA[1]]></id><content><title><![CDATA[First]]></title></content></entry></blog>',
+        );
+        $reader = new SiteContentReader;
+
+        expect($reader->entryContent('works', '1'))->toBe($reader->entries('works')[0])
+            ->and($reader->entryContent('works', '99'))->toBeNull()
+            ->and($reader->entryContent('missing', '1'))->toBeNull()
+            ->and($reader->entryContent('../storage/blog.works', '1'))->toBeNull();
+    });
+
     it('reads no entries for sections that do not exist', function (string $section) {
         file_put_contents($this->bertaRoot . '/storage/blog.missing.xml', '<?xml version="1.0" encoding="utf-8"?><blog><entry><id>1</id></entry></blog>');
 
