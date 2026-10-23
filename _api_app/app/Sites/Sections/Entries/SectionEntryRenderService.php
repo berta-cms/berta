@@ -36,6 +36,14 @@ class SectionEntryRenderService
     }
 
     /**
+     * Whether entry titles are shown: on the "default" template and in portfolio sections.
+     */
+    public static function showsEntryTitles(string $templateName, ?string $sectionType): bool
+    {
+        return $sectionType == 'portfolio' || $templateName == 'default';
+    }
+
+    /**
      * Prepare data for view
      */
     public function getViewData(
@@ -57,7 +65,7 @@ class SectionEntryRenderService
         $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
 
-        if (($sectionType == 'portfolio' || $templateName == 'default') && ($isEditMode || (isset($entry['content']['title']) && ! empty($entry['content']['title'])))) {
+        if (self::showsEntryTitles($templateName, $sectionType) && ($isEditMode || (isset($entry['content']['title']) && ! empty($entry['content']['title'])))) {
             $entryTitle = view('Sites/Sections/Entries/_entryTitle', array_merge($entry, [
                 'attributes' => [
                     'title' => Helpers::arrayToHtmlAttributes([

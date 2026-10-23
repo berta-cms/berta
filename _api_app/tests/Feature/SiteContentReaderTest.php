@@ -45,3 +45,82 @@ it('normalizes sections from storage', function () {
 it('returns no sections when the site has no sections file', function () {
     expect((new SiteContentReader)->sections())->toBe([]);
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+describe('entries', function () {
+    beforeEach(function () {
+        // Site settings (for the template) read the engine's setting definitions.
+        linkBertaEngine($this->bertaRoot);
+        writeTemplate($this->bertaRoot, 'default');
+        file_put_contents(
+            $this->bertaRoot . '/storage/sections.xml',
+            '<?xml version="1.0" encoding="utf-8"?><sections><section><name><![CDATA[works]]></name><title><![CDATA[Works]]></title></section></sections>',
+        );
+    });
+
+    it('normalizes entries of a section', function () {
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works">'
+            . '<entry><id><![CDATA[7]]></id>'
+            . '<mediaCacheData type="row"><file type="image" src="a.jpg"/><file type="video" src="b.mp4"/></mediaCacheData>'
+            . '<content><title><![CDATA[Series]]></title><description><![CDATA[<p>Text</p>]]></description></content></entry>'
+            . '<entry><id><![CDATA[8]]></id><mediaCacheData type="slideshow"></mediaCacheData><content></content></entry>'
+            . '</blog>',
+        );
+
+        expect((new SiteContentReader)->entries('works'))->toBe([
+            [
+                'id' => '7', 'title' => 'Series', 'description' => '<p>Text</p>', 'order' => 0,
+                'gallery' => ['type' => 'row', 'file_count' => 2, 'image_count' => 1, 'video_count' => 1],
+            ],
+            [
+                'id' => '8', 'title' => '', 'description' => '', 'order' => 1,
+                'gallery' => ['type' => 'slideshow', 'file_count' => 0, 'image_count' => 0, 'video_count' => 0],
+            ],
+        ]);
+    });
+
+    it('leaves out entry titles where the template does not show them', function () {
+        writeTemplate($this->bertaRoot, 'messy-0.4.2');
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works"><entry><id><![CDATA[1]]></id><content><title><![CDATA[Hidden]]></title></content></entry></blog>',
+        );
+
+        $reader = new SiteContentReader;
+
+        expect($reader->showsEntryTitles('works'))->toBeFalse()
+            ->and($reader->entries('works')[0])->not->toHaveKey('title');
+    });
+
+    it('keeps entry titles in portfolio sections on any template', function () {
+        writeTemplate($this->bertaRoot, 'messy-0.4.2');
+        file_put_contents(
+            $this->bertaRoot . '/storage/sections.xml',
+            '<?xml version="1.0" encoding="utf-8"?><sections><section type="portfolio"><name><![CDATA[works]]></name><title><![CDATA[Works]]></title></section></sections>',
+        );
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works"><entry><id><![CDATA[1]]></id><content><title><![CDATA[Project]]></title></content></entry></blog>',
+        );
+
+        $reader = new SiteContentReader;
+
+        expect($reader->showsEntryTitles('works'))->toBeTrue()
+            ->and($reader->entries('works')[0]['title'])->toBe('Project');
+    });
+
+    it('knows which sections exist', function () {
+        $reader = new SiteContentReader;
+
+        expect($reader->hasSection('works'))->toBeTrue()
+            ->and($reader->hasSection('missing'))->toBeFalse()
+            ->and($reader->showsEntryTitles('missing'))->toBeFalse();
+    });
+
+    it('reads no entries for sections that do not exist', function (string $section) {
+        file_put_contents($this->bertaRoot . '/storage/blog.missing.xml', '<?xml version="1.0" encoding="utf-8"?><blog><entry><id>1</id></entry></blog>');
+
+        expect((new SiteContentReader)->entries($section))->toBe([]);
+    })->with(['missing', '../storage/blog.missing', '']);
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
