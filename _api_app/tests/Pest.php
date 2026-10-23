@@ -16,7 +16,8 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->in('Feature');
+// Plugins (separate repositories in app/Plugins) keep their own tests in their tests folder.
+pest()->extend(TestCase::class)->in('Feature', '../app/Plugins/*/tests');
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,32 @@ function skipWithoutShopPlugin(): void
 }
 
 /**
+ * Links the legacy engine into a temporary Berta root. Site settings read the engine's
+ * definitions, and an anonymous request's auth check logs out through the legacy engine.
+ */
+function linkBertaEngine(string $bertaRoot): void
+{
+    // The real Berta root, as in config/app.php; tests may already point app.old_berta_root elsewhere
+    $realRoot = dirname(base_path());
+    File::ensureDirectoryExists($bertaRoot . '/engine');
+
+    foreach (['engine/_classes', 'engine/lang', 'engine/inc.setting-definition.php', 'engine/inc.font-options.php', 'engine/inc.version.php', '_templates'] as $path) {
+        symlink("{$realRoot}/{$path}", "{$bertaRoot}/{$path}");
+    }
+}
+
+/**
+ * Sets the main site's template in a temporary Berta root. Needs linkBertaEngine() to be read.
+ */
+function writeTemplate(string $bertaRoot, string $template): void
+{
+    file_put_contents(
+        $bertaRoot . '/storage/settings.xml',
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?><settings><template><template><![CDATA[{$template}]]></template></template></settings>",
+    );
+}
+
+/**
  * A temporary Berta root for the shop plugin's tests, with its shop database and file cache
  *
  * @return string The root's path, for the test to delete afterwards
@@ -81,13 +108,8 @@ function setUpShopTestRoot(): string
     $realRoot = config('app.old_berta_root');
     $bertaRoot = sys_get_temp_dir() . '/berta_shop_' . uniqid();
     File::ensureDirectoryExists($bertaRoot . '/storage');
-    File::ensureDirectoryExists($bertaRoot . '/engine');
     File::ensureDirectoryExists($bertaRoot . '/_plugin_shop');
-    // Site settings read the engine's definitions, and an anonymous request's auth check logs
-    // out through the legacy engine
-    foreach (['engine/_classes', 'engine/lang', 'engine/inc.setting-definition.php', 'engine/inc.font-options.php', 'engine/inc.version.php', '_templates'] as $path) {
-        symlink("{$realRoot}/{$path}", "{$bertaRoot}/{$path}");
-    }
+    linkBertaEngine($bertaRoot);
     File::copy($realRoot . '/_plugin_shop/inc.setting-definition.php', $bertaRoot . '/_plugin_shop/inc.setting-definition.php');
     File::put($bertaRoot . '/engine/hosting', json_encode(['emailFromAddress' => 'shop@berta.test']));
 
