@@ -1,0 +1,74 @@
+berta:
+  installed: 1
+siteTexts (Texts in the website):
+  siteHeading (Site heading — Name of your site. Visible in all sections.): 
+template (Template):
+  template (Template — Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.): messy-0.4.2
+theme (Theme):
+  theme (Choose theme — Themes are ready made sites with predefined design settings.): /themes
+texts (Texts):
+  ownerName (Your name — Your name will be put in a meta-tag in the code of your site. You can choose any name ;)): 
+  pageTitle (Page title (title bar) — Text that appears in the bowser title bar): My site
+  metaDescription (<META> description — Short site description. It should not be longer than one or two sentences.): Personal portfolio built with Berta
+  unknownKey: kept
+pageLayout (Page layout):
+  favicon (Favicon — Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.): 
+  gridStep (Grid step — Distance in pixels for snap-to-grid dragging.): 10
+  showGrid (Show gridlines — Choose "yes" to show gridlines in background. Available only in Messy template.): no
+  gridColor (Gridlines color): black
+navigation (Navigation):
+  landingSectionVisible (Is first section visible in menu? — Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.): yes
+  landingSectionPageHeadingVisible (Show page heading in first section? — Choose "no" to hide page heading in first section.): yes
+  landingSectionMenuVisible (Show menu in first section? — Choose "no" to hide the menu in first section.): yes
+  alwaysSelectTag (Always auto-select a submenu item? — Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.): yes
+  backToTopEnabled (Enable navigation to page top — Shows navigation button at the bottom when page is scrolled.): no
+entryLayout (Entry layout):
+  galleryFullScreenSettings (Gallery fullscreen settings:): 
+  galleryFullScreenDefault (Is enabled by default — Enables gallery fullscreen mode for new entries.): yes
+  galleryFullScreenBackground (Background color — Color of the fullscreen gallery background.): black
+  galleryFullScreenImageNumbers (Image numbers — Enables fullscreen gallery slide numbers.): yes
+  galleryFullScreenCaptionAlign (Caption alignment — Positioning of the image caption text.): left
+  group_gallery (Image gallery appearance:): 
+  gallerySlideshowAutoRewind (Slideshow loop mode): no
+  gallerySlideNumberVisibilityDefault (Show slideshow image numbers — Set the default state of image number visibility in slideshow galleries.): yes
+media (Media):
+  imagesSmallWidth (Small image width — Maximum size of a small image (visible if 'Small images' are switched on in the gallery editor). These settings don't affect original image.): 200
+  imagesSmallHeight (Small image height): 200
+  imagesMediumWidth (Medium image width — Maximum size of a medium image (visible if 'Medium images' are switched on in the gallery editor). These settings don't affect original image.): 400
+  imagesMediumHeight (Medium image height): 400
+  imagesLargeWidth (Large image width — Maximum size of a large image (visible if 'Large images' are switched on in the gallery editor). These settings don't affect original image.): 600
+  imagesLargeHeight (Large image height): 600
+socialMediaLinks (Social media buttons):
+  location (Location — Location of social media buttons. Content of additional text or additional footer will be replaced.): footer
+socialMediaButtons (Custom social media buttons):
+  socialMediaHTML (HTML code — Paste or write your HTML code here.): 
+  socialMediaJS (Javascript code — Paste or write your Javascript code here.): 
+  socialMediaLocation (Location — Location of social media buttons. Content of additional text or additional footer will be replaced.): footer
+banners (Banners):
+  banner1_image (Banner image (1) — <span class="warning">Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.</span>): 
+  banner1_link (Banner link (1) — Banner link 'https://' should be in front of the address): 
+  banner2_image (Banner image (2)): 
+  banner2_link (Banner link (2)): 
+  banner3_image (Banner image (3)): 
+  banner3_link (Banner link (3)): 
+  banner4_image (Banner image (4)): 
+  banner4_link (Banner link (4)): 
+  banner5_image (Banner image (5)): 
+  banner5_link (Banner link (5)): 
+  banner6_image (Banner image (6)): 
+  banner6_link (Banner link (6)): 
+  banner7_image (Banner image (7)): 
+  banner7_link (Banner link (7)): 
+  banner8_image (Banner image (8)): 
+  banner8_link (Banner link (8)): 
+  banner9_image (Banner image (9)): 
+  banner9_link (Banner link (9)): 
+  banner10_image (Banner image (10)): 
+  banner10_link (Banner link (10)): 
+language (Language):
+  language (Interface language — Choose language of interface.): en
+settings (Other settings):
+  googleAnalyticsId (Google Analytics measurement ID — How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.): 
+  googleTagManagerContainerId (Google Tag Manager container ID — How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.): 
+  googleSiteVerification (Google site verification tag — Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.): 
+  jsInclude (Javascript include — Javascript code included right before closing &lt;/body&gt; element. Learn more how to <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.): 

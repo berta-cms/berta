@@ -175,3 +175,41 @@ describe('entry gallery', function () {
         'path outside storage' => ['../storage/blog.works', '1'],
     ]);
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+describe('site settings', function () {
+    beforeEach(function () {
+        // Site settings read the engine's setting definitions.
+        linkBertaEngine($this->bertaRoot);
+        file_put_contents(
+            $this->bertaRoot . '/storage/settings.xml',
+            '<?xml version="1.0" encoding="utf-8"?><settings>'
+            . '<berta><installed><![CDATA[1]]></installed></berta>'
+            . '<siteTexts><siteHeading><![CDATA[Acme]]></siteHeading></siteTexts>'
+            . '<texts><pageTitle><![CDATA[My site]]></pageTitle><unknownKey><![CDATA[kept]]></unknownKey></texts>'
+            . '<socialMediaLinks><links><link><url><![CDATA[https://x.com]]></url><icon><![CDATA[x]]></icon></link></links></socialMediaLinks>'
+            . '</settings>',
+        );
+    });
+
+    it('describes settings with their titles and leaves out the internal group', function () {
+        $groups = collect((new SiteContentReader)->siteSettings())->keyBy('name');
+        $texts = collect($groups['texts']['settings'])->keyBy('key');
+
+        expect($groups->keys())->not->toContain('berta')
+            // Not on the settings page, but real site content: the site heading and footer texts.
+            ->and(collect($groups['siteTexts']['settings'])->keyBy('key')['siteHeading']['value'])->toBe('Acme')
+            ->and($groups['texts']['title'])->toBeString()
+            ->and($texts['pageTitle']['value'])->toBe('My site')
+            ->and($texts['pageTitle']['title'])->toBeString()
+            ->and($texts['pageTitle']['items'])->toBeNull()
+            ->and($texts['unknownKey'])->toBe(['key' => 'unknownKey', 'title' => null, 'description' => null, 'value' => 'kept', 'items' => null]);
+    });
+
+    it('lists the entries of list settings as items', function () {
+        $groups = collect((new SiteContentReader)->siteSettings())->keyBy('name');
+        $links = collect($groups['socialMediaLinks']['settings'])->keyBy('key')['links'];
+
+        expect($links['value'])->toBe('')
+            ->and($links['items'])->toBe([['icon' => 'x', 'url' => 'https://x.com']]);
+    });
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');

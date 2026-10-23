@@ -1,9 +1,11 @@
 <?php
 
+use App\Configuration\SiteSettingsConfigService;
 use App\Plugins\AiAssistant\AiChatController;
 use App\Plugins\AiAssistant\AiChatRequest;
 use App\Plugins\AiAssistant\AssistantAgent;
 use App\Plugins\AiAssistant\SiteContentReader;
+use App\Sites\Settings\SiteSettingsDataService;
 use Illuminate\Support\Facades\File;
 
 use function Pest\Laravel\post;
@@ -369,4 +371,34 @@ it('describes current sections in the system prompt', function () {
         . "  order 2: \"About\" (name: about, type: default, published: 1)\n"
         . "\n### Operations",
     );
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('describes current site settings in the system prompt', function () {
+    $bertaRoot = sys_get_temp_dir() . '/berta_ai_settings_' . uniqid();
+    File::ensureDirectoryExists($bertaRoot . '/storage');
+    linkBertaEngine($bertaRoot);
+    config(['app.old_berta_root' => $bertaRoot]);
+    file_put_contents(
+        $bertaRoot . '/storage/settings.xml',
+        '<?xml version="1.0" encoding="utf-8"?><settings>'
+        . '<berta><installed><![CDATA[1]]></installed></berta>'
+        . '<texts><pageTitle><![CDATA[My site]]></pageTitle><unknownKey><![CDATA[kept]]></unknownKey></texts>'
+        . '<socialMediaLinks><links><link><url><![CDATA[https://x.com]]></url><icon><![CDATA[x]]></icon></link></links><location><![CDATA[footer]]></location></socialMediaLinks>'
+        . '</settings>',
+    );
+
+    try {
+        $controller = new AiChatController;
+        $method = new ReflectionMethod($controller, 'formatCurrentSettings');
+
+        $result = $method->invoke($controller, (new SiteSettingsDataService(''))->getState(), (new SiteSettingsConfigService)->get());
+    } finally {
+        File::deleteDirectory($bertaRoot);
+    }
+
+    expect($result)->toContain('texts (')
+        ->and($result)->toContain('  pageTitle (')
+        ->and($result)->toContain('  unknownKey: kept')
+        ->and($result)->not->toContain('https://x.com')
+        ->and($result)->toMatchSnapshot();
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
