@@ -213,3 +213,41 @@ describe('site settings', function () {
             ->and($links['items'])->toBe([['icon' => 'x', 'url' => 'https://x.com']]);
     });
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+describe('design settings', function () {
+    beforeEach(function () {
+        // Design settings read the template's setting definitions.
+        linkBertaEngine($this->bertaRoot);
+    });
+
+    it('describes the active template settings with their titles', function () {
+        writeTemplate($this->bertaRoot, 'messy-0.4.2');
+        file_put_contents(
+            $this->bertaRoot . '/storage/settings.messy.xml',
+            '<?xml version="1.0" encoding="utf-8"?><settings><generalFontSettings><color><![CDATA[#ff0000]]></color></generalFontSettings></settings>',
+        );
+
+        $design = (new SiteContentReader)->designSettings();
+        $groups = collect($design['groups'])->keyBy('name');
+        $color = collect($groups['generalFontSettings']['settings'])->keyBy('key')['color'];
+
+        expect($design['template'])->toBe('messy-0.4.2')
+            ->and($groups['generalFontSettings']['title'])->toBeString()
+            ->and($color['value'])->toBe('#ff0000')
+            ->and($color['title'])->toBeString()
+            // Settings the site never changed come with the template's defaults.
+            ->and($groups['menu']['settings'])->not->toBeEmpty();
+    });
+
+    it('reads the installed template when the site names an unknown one', function (string $template) {
+        writeTemplate($this->bertaRoot, $template);
+
+        $design = (new SiteContentReader)->designSettings();
+
+        expect($design['template'])->toBe('messy-0.4.2')
+            ->and($design['groups'])->not->toBeEmpty();
+    })->with([
+        'older version' => 'messy-0.3.0',
+        'not installed' => 'missing-1.0.0',
+    ]);
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');

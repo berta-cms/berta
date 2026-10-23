@@ -3,6 +3,7 @@
 use App\Http\Middleware\SetupMiddleware;
 use App\Models\User;
 use App\Plugins\AiAssistant\Mcp\BertaSiteServer;
+use App\Plugins\AiAssistant\Mcp\Tools\GetDesignSettingsTool;
 use App\Plugins\AiAssistant\Mcp\Tools\GetEntryGalleryTool;
 use App\Plugins\AiAssistant\Mcp\Tools\GetSiteSettingsTool;
 use App\Plugins\AiAssistant\Mcp\Tools\ListEntriesTool;
@@ -211,5 +212,41 @@ describe('get-site-settings tool', function () {
                 fn ($groups) => $groups->pluck('name')->doesntContain('berta')
                     && collect($groups->firstWhere('name', 'texts')['settings'])->firstWhere('key', 'pageTitle')['value'] === 'My site',
             ));
+    });
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+describe('get-design-settings tool', function () {
+    beforeEach(function () {
+        $this->bertaRoot = sys_get_temp_dir() . '/berta_mcp_' . uniqid();
+        File::ensureDirectoryExists($this->bertaRoot . '/storage');
+        config(['app.old_berta_root' => $this->bertaRoot]);
+        linkBertaEngine($this->bertaRoot);
+        writeTemplate($this->bertaRoot, 'messy-0.4.2');
+        file_put_contents(
+            $this->bertaRoot . '/storage/settings.messy.xml',
+            '<?xml version="1.0" encoding="utf-8"?><settings><generalFontSettings><color><![CDATA[#ff0000]]></color></generalFontSettings></settings>',
+        );
+
+        // SetupMiddleware reconciles the real .env file on every request.
+        withoutMiddleware(SetupMiddleware::class);
+    });
+
+    afterEach(function () {
+        File::deleteDirectory($this->bertaRoot);
+    });
+
+    // Settings normalization is covered in SiteContentReaderTest.
+    it('returns the design settings of the active template as structured content', function () {
+        BertaSiteServer::actingAs(new User)
+            ->tool(GetDesignSettingsTool::class)
+            ->assertOk()
+            // The hosting gateway offers the tool under this name.
+            ->assertName('get-design-settings')
+            ->assertStructuredContent(fn (AssertableJson $json) => $json
+                ->where('template', 'messy-0.4.2')
+                ->where(
+                    'groups',
+                    fn ($groups) => collect($groups->firstWhere('name', 'generalFontSettings')['settings'])->firstWhere('key', 'color')['value'] === '#ff0000',
+                ));
     });
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
