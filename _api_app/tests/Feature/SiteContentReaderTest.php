@@ -124,3 +124,41 @@ describe('entries', function () {
         expect((new SiteContentReader)->entries($section))->toBe([]);
     })->with(['missing', '../storage/blog.missing', '']);
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+// File type, extension and caption normalization is pinned in GetEntryGalleryToolTest.
+describe('entry gallery', function () {
+    beforeEach(function () {
+        file_put_contents(
+            $this->bertaRoot . '/storage/sections.xml',
+            '<?xml version="1.0" encoding="utf-8"?><sections><section><name><![CDATA[works]]></name><title><![CDATA[Works]]></title></section></sections>',
+        );
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works">'
+            . '<entry><id><![CDATA[1]]></id><mediaCacheData type="row"><file src="untyped.png"/></mediaCacheData></entry>'
+            . '<entry><id><![CDATA[2]]></id><content></content></entry>'
+            . '</blog>',
+        );
+    });
+
+    it('treats files without a type as images', function () {
+        $gallery = (new SiteContentReader)->entryGallery('works', '1');
+
+        expect($gallery['files'])->toBe([['type' => 'image', 'extension' => 'png', 'src' => 'untyped.png', 'caption' => '']])
+            ->and($gallery['image_count'])->toBe(1);
+    });
+
+    it('describes an entry without gallery as empty', function () {
+        expect((new SiteContentReader)->entryGallery('works', '2'))->toBe([
+            'settings' => [], 'file_count' => 0, 'image_count' => 0, 'video_count' => 0, 'files' => [],
+        ]);
+    });
+
+    it('finds no gallery for unknown sections or entries', function (string $section, string $entryId) {
+        expect((new SiteContentReader)->entryGallery($section, $entryId))->toBeNull();
+    })->with([
+        'unknown entry' => ['works', '99'],
+        'unknown section' => ['missing', '1'],
+        'path outside storage' => ['../storage/blog.works', '1'],
+    ]);
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');

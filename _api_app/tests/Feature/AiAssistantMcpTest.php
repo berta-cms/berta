@@ -3,6 +3,7 @@
 use App\Http\Middleware\SetupMiddleware;
 use App\Models\User;
 use App\Plugins\AiAssistant\Mcp\BertaSiteServer;
+use App\Plugins\AiAssistant\Mcp\Tools\GetEntryGalleryTool;
 use App\Plugins\AiAssistant\Mcp\Tools\ListEntriesTool;
 use App\Plugins\AiAssistant\Mcp\Tools\ListSectionsTool;
 use Firebase\JWT\JWT;
@@ -115,5 +116,65 @@ describe('list-entries tool', function () {
         BertaSiteServer::actingAs(new User)
             ->tool(ListEntriesTool::class, [])
             ->assertHasErrors(['Provide the section name. Call list-sections to see the sections.']);
+    });
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+describe('get-entry-gallery tool', function () {
+    beforeEach(function () {
+        $this->bertaRoot = sys_get_temp_dir() . '/berta_mcp_' . uniqid();
+        File::ensureDirectoryExists($this->bertaRoot . '/storage');
+        config(['app.old_berta_root' => $this->bertaRoot]);
+        file_put_contents(
+            $this->bertaRoot . '/storage/sections.xml',
+            '<?xml version="1.0" encoding="utf-8"?><sections><section><name><![CDATA[works]]></name><title><![CDATA[Works]]></title></section></sections>',
+        );
+        file_put_contents(
+            $this->bertaRoot . '/storage/blog.works.xml',
+            '<?xml version="1.0" encoding="utf-8"?><blog section="works"><entry><id><![CDATA[5]]></id>'
+            . '<mediaCacheData type="row"><file type="image" src="a.jpg"><![CDATA[Caption]]></file></mediaCacheData></entry></blog>',
+        );
+
+        // SetupMiddleware reconciles the real .env file on every request.
+        withoutMiddleware(SetupMiddleware::class);
+    });
+
+    afterEach(function () {
+        File::deleteDirectory($this->bertaRoot);
+    });
+
+    // Gallery normalization is covered in SiteContentReaderTest and GetEntryGalleryToolTest.
+    it('returns the gallery of an entry as structured content', function () {
+        BertaSiteServer::actingAs(new User)
+            ->tool(GetEntryGalleryTool::class, ['section' => 'works', 'entry_id' => '5'])
+            ->assertOk()
+            // The hosting gateway offers the tool under this name.
+            ->assertName('get-entry-gallery')
+            ->assertStructuredContent([
+                'section' => 'works',
+                'entry_id' => '5',
+                'settings' => ['type' => 'row'],
+                'file_count' => 1,
+                'image_count' => 1,
+                'video_count' => 0,
+                'files' => [['type' => 'image', 'extension' => 'jpg', 'src' => 'a.jpg', 'caption' => 'Caption']],
+            ]);
+    });
+
+    it('rejects unknown sections and entries', function (array $arguments, string $error) {
+        BertaSiteServer::actingAs(new User)
+            ->tool(GetEntryGalleryTool::class, $arguments)
+            ->assertHasErrors([$error]);
+    })->with([
+        'unknown section' => [['section' => '../sections', 'entry_id' => '5'], 'Section "../sections" not found. Call list-sections to see the sections.'],
+        'unknown entry' => [['section' => 'works', 'entry_id' => '99'], 'Entry "99" not found in section "works". Call list-entries to see the entries.'],
+    ]);
+
+    it('requires the section and entry', function () {
+        BertaSiteServer::actingAs(new User)
+            ->tool(GetEntryGalleryTool::class, [])
+            ->assertHasErrors([
+                'Provide the section name. Call list-sections to see the sections.',
+                'Provide the entry ID. Call list-entries to see the entries of the section.',
+            ]);
     });
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
