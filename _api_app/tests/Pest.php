@@ -16,7 +16,8 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->in('Feature');
+// Plugins (separate repositories in app/Plugins) keep their own tests in their tests folder.
+pest()->extend(TestCase::class)->in('Feature', '../app/Plugins/*/tests');
 
 /*
 |--------------------------------------------------------------------------
