@@ -88,6 +88,22 @@ function linkBertaEngine(string $bertaRoot): void
 }
 
 /**
+ * Puts the website in a temporary Berta root on a hosting plan with these features, as UserModel reads them.
+ * Needs linkBertaEngine().
+ *
+ * @param  list<string>  $features
+ * @param  array<string, int>  $limits  e.g. ['ai_assistant_daily' => 10]
+ */
+function givePlanFeatures(string $bertaRoot, array $features, array $limits = []): void
+{
+    File::ensureDirectoryExists($bertaRoot . '/engine/config');
+    File::put($bertaRoot . '/engine/config/inc.conf.php', "<?php\n\$options['AUTH_user'] = 'owner';\n\$options['AUTH_password'] = 'password';\n");
+    symlink(dirname(base_path()) . '/engine/inc.hosting.php', $bertaRoot . '/engine/inc.hosting.php');
+    File::put($bertaRoot . '/engine/hosting', json_encode(['login' => 'https://berta.me/login', 'plans' => [['id' => '2', 'features' => $features, 'limits' => $limits]]]));
+    File::put($bertaRoot . '/engine/plan', '2');
+}
+
+/**
  * Sets the main site's template in a temporary Berta root. Needs linkBertaEngine() to be read.
  */
 function writeTemplate(string $bertaRoot, string $template): void
