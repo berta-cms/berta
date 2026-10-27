@@ -2,6 +2,8 @@
 
 namespace App\Sites\TemplateSettings;
 
+use App\Configuration\SettingValueValidator;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
 use App\Shared\Helpers;
 use Illuminate\Http\Request;
@@ -16,6 +18,12 @@ class SiteTemplateSettingsController extends Controller
         $site = $path_arr[0];
         $template = $path_arr[2];
         $templateSettingsDataService = new SiteTemplateSettingsDataService($site, $template);
+
+        // "<site>/template-settings/<template>/<group>/<key>"
+        $definition = count($path_arr) === 5 && $path_arr[4] !== '_' ? ((new SiteTemplatesConfigService)->get()[$template]['templateConf'][$path_arr[3]][$path_arr[4]] ?? null) : null;
+        if ($error = (new SettingValueValidator)->errorFor($json['value'], $definition)) {
+            return response()->json(['path' => $json['path'], 'value' => $json['value'], 'error_message' => $error], 422);
+        }
 
         $res = $templateSettingsDataService->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
