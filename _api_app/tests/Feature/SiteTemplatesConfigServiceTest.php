@@ -13,17 +13,12 @@ it('translates the template settings into the editor\'s language', function () {
     expect($templates['messy-0.4.2']['templateConf']['settings']['_']['title'])->toBe('Dažādi');
 });
 
-it('adds the shop\'s section types to a template on a domain with the shop', function (string $host, bool $hasShop) {
-    if ($hasShop) {
-        skipWithoutShopPlugin();
-    }
-    app()->instance('request', Request::create("http://{$host}/"));
+// With the shop plugin, its tests cover the domain with the shop.
+it('leaves the shop\'s section types out on a domain without the shop', function () {
+    app()->instance('request', Request::create('http://other.test/'));
 
     $sectionTypes = (new SiteTemplatesConfigService)->get()['messy-0.4.2']['sectionTypes'];
 
-    expect(array_key_exists('shop', $sectionTypes))->toBe($hasShop)
-        ->and(array_key_exists('shopping_cart', $sectionTypes))->toBe($hasShop);
-})->with([
-    'with the shop' => ['shop.test', true],
-    'without it' => ['other.test', false],
-]);
+    expect($sectionTypes)->not->toHaveKey('shop')
+        ->and($sectionTypes)->not->toHaveKey('shopping_cart');
+});
