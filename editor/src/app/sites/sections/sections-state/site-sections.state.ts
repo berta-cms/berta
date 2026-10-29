@@ -162,7 +162,7 @@ export class SiteSectionsState implements NgxsOnInit {
     { dispatch }: StateContext<SiteSectionStateModel[]>,
     action: CloneSectionAction,
   ) {
-    dispatch(new CreateSectionAction(action.section));
+    return dispatch(new CreateSectionAction(action.section));
   }
 
   @Action(UpdateSiteSectionAction)

@@ -1,4 +1,13 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  DestroyRef,
+  inject,
+  Injector,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store } from '@ngxs/store';
@@ -7,9 +16,11 @@ import { take, map, switchMap } from 'rxjs/operators';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UpdateInputFocus } from '../app-state/app.actions';
 import {
+  CloneSiteAction,
   CreateSiteAction,
   ReOrderSitesAction,
 } from './sites-state/sites.actions';
+import { SiteComponent } from './site.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -22,6 +33,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           [site]="site"
           [sites]="sites$ | async"
           (inputFocus)="updateComponentFocus($event)"
+          (clone)="cloneSite(site)"
         ></berta-site>
       }
     </div>
@@ -32,7 +44,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class SitesComponent implements OnInit {
+  @ViewChildren(SiteComponent) siteComponents: QueryList<SiteComponent>;
+
   destroyRef: DestroyRef;
+  private injector = inject(Injector);
   sites$: Observable<SiteStateModel[]>;
   sitesList: SiteStateModel[];
 
@@ -55,29 +70,55 @@ export class SitesComponent implements OnInit {
   }
 
   createSite() {
-    this.sites$
-      .pipe(
-        take(1),
-        map((sites: SiteStateModel[]) => {
-          return sites.map((site) => site.name);
-        }),
-        switchMap((siteNames) =>
-          this.store.dispatch(new CreateSiteAction()).pipe(
-            switchMap(() => this.store.selectOnce((state) => state.sites)),
-            map((sitesState: SiteStateModel[]) => {
-              return sitesState.find(
-                (site) => siteNames.indexOf(site.name) === -1,
-              );
-            }),
-          ),
+    this.addSite(new CreateSiteAction()).subscribe((newSite) => {
+      if (!newSite) {
+        return;
+      }
+      this.router.navigate([], { queryParams: { site: newSite.name } });
+    });
+  }
+
+  // Opens the copy and puts the cursor in its title
+  cloneSite(site: SiteStateModel) {
+    this.addSite(new CloneSiteAction(site)).subscribe((newSite) => {
+      if (!newSite) {
+        return;
+      }
+      this.router
+        .navigate([], { queryParams: { site: newSite.name } })
+        .then(() => {
+          afterNextRender(
+            () => {
+              this.siteComponents
+                .find((component) => component.site.name === newSite.name)
+                ?.focusTitle();
+            },
+            { injector: this.injector },
+          );
+        });
+    });
+  }
+
+  /** Dispatches an action that adds a site and returns the added site */
+  private addSite(
+    action: CreateSiteAction | CloneSiteAction,
+  ): Observable<SiteStateModel | undefined> {
+    return this.sites$.pipe(
+      take(1),
+      map((sites: SiteStateModel[]) => {
+        return sites.map((site) => site.name);
+      }),
+      switchMap((siteNames) =>
+        this.store.dispatch(action).pipe(
+          switchMap(() => this.store.selectOnce((state) => state.sites)),
+          map((sitesState: SiteStateModel[]) => {
+            return sitesState.find(
+              (site) => siteNames.indexOf(site.name) === -1,
+            );
+          }),
         ),
-      )
-      .subscribe((newSite) => {
-        if (!newSite) {
-          return;
-        }
-        this.router.navigate([], { queryParams: { site: newSite.name } });
-      });
+      ),
+    );
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
