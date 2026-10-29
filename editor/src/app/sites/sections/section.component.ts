@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { take, filter, switchMap, map } from 'rxjs/operators';
@@ -6,12 +14,10 @@ import { Store } from '@ngxs/store';
 import { PopupService } from '../../popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { TemplateTranslationsModel } from '../template-settings/site-templates.interface';
-import {
-  DeleteSiteSectionAction,
-  CloneSectionAction,
-} from './sections-state/site-sections.actions';
+import { DeleteSiteSectionAction } from './sections-state/site-sections.actions';
 import { AppState } from '../../app-state/app.state';
 import { SettingConfigModel } from '../../shared/interfaces';
+import { InlineTextInputComponent } from '../../inputs/inline-text-input.component';
 
 @Component({
   selector: 'berta-section',
@@ -20,6 +26,7 @@ import { SettingConfigModel } from '../../shared/interfaces';
       <h3>
         <berta-inline-text-input
           [value]="section.title"
+          placeholder="Section title"
           [class.clickable-text]="isClickableText"
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateTextField('title', $event)"
@@ -47,7 +54,7 @@ import { SettingConfigModel } from '../../shared/interfaces';
             [published]="[1, '1'].includes(section['@attributes'].published)"
           ></berta-icon-publish>
         </button>
-        <button title="copy" (click)="cloneSection()">
+        <button title="copy" (click)="clone.emit()">
           <bt-icon-clone></bt-icon-clone>
         </button>
         <button title="delete" class="delete" (click)="deleteSection()">
@@ -150,6 +157,9 @@ export class SectionComponent implements OnInit {
     section: string | number;
     data: { [k: string]: any };
   }>();
+  @Output() clone = new EventEmitter<void>();
+
+  @ViewChild(InlineTextInputComponent) titleInput: InlineTextInputComponent;
 
   isClickableText: boolean;
 
@@ -158,6 +168,7 @@ export class SectionComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private popupService: PopupService,
+    private elementRef: ElementRef<HTMLElement>,
   ) {}
 
   ngOnInit() {
@@ -202,8 +213,11 @@ export class SectionComponent implements OnInit {
     });
   }
 
-  cloneSection() {
-    this.store.dispatch(new CloneSectionAction(this.section));
+  focusTitle() {
+    this.elementRef.nativeElement
+      .querySelector('h3')
+      .scrollIntoView({ block: 'nearest' });
+    this.titleInput.startEditing();
   }
 
   deleteSection() {

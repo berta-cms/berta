@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  Injector,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store } from '@ngxs/store';
@@ -14,11 +21,13 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 import {
   UpdateSiteSectionAction,
   CreateSectionAction,
+  CloneSectionAction,
   RenameSiteSectionAction,
   ReOrderSiteSectionsAction,
 } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 import { TemplateTranslationsModel } from '../template-settings/site-templates.interface';
+import { SectionComponent } from './section.component';
 
 interface SectionData {
   section: SiteSectionStateModel;
@@ -46,6 +55,7 @@ interface SectionData {
           [translations]="translations$ | async"
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateSection(sd, $event)"
+          (clone)="cloneSection(sd.section)"
         ></berta-section>
       }
     </div>
@@ -56,6 +66,13 @@ interface SectionData {
   standalone: false,
 })
 export class SiteSectionsComponent implements OnInit {
+  // Going from /sections to /sections/:section replaces this component, so
+  // the section whose title gets the cursor after navigating is kept here
+  private static pendingTitleFocus: string | null = null;
+
+  @ViewChildren(SectionComponent)
+  sectionComponents: QueryList<SectionComponent>;
+
   sectionsData$: Observable<SectionData[]>;
   sectionsList: SectionData[];
   sectionTypes$: Observable<{ value: string; title: string }[]>;
@@ -66,6 +83,7 @@ export class SiteSectionsComponent implements OnInit {
     private store: Store,
     private router: Router,
     private route: ActivatedRoute,
+    private injector: Injector,
   ) {}
 
   ngOnInit() {
@@ -186,6 +204,14 @@ export class SiteSectionsComponent implements OnInit {
 
     this.route.paramMap.subscribe((params) => {
       this.currentSection = params['params']['section'];
+
+      if (
+        this.currentSection &&
+        this.currentSection === SiteSectionsComponent.pendingTitleFocus
+      ) {
+        SiteSectionsComponent.pendingTitleFocus = null;
+        this.focusSectionTitle(this.currentSection);
+      }
     });
   }
 
@@ -195,20 +221,47 @@ export class SiteSectionsComponent implements OnInit {
 
   createSection() {
     this.store.dispatch(new CreateSectionAction()).subscribe({
-      next: () => {
-        const currentSite = this.store.selectSnapshot(AppState.getSite);
-        const createdSection = this.store
-          .selectSnapshot((state) => state.siteSections)
-          .filter((section) => section.site_name === currentSite)
-          .reduce((prev, current) => {
-            return prev.order > current.order ? prev : current;
-          });
-        this.router.navigate(['/sections', createdSection.name], {
-          queryParamsHandling: 'preserve',
-        });
-      },
+      next: () => this.openNewSection(this.getLastSection().name),
       error: (error) => console.error(error),
     });
+  }
+
+  cloneSection(section: SiteSectionStateModel) {
+    this.store.dispatch(new CloneSectionAction(section)).subscribe({
+      next: () => this.openNewSection(this.getLastSection().name),
+      error: (error) => console.error(error),
+    });
+  }
+
+  private getLastSection(): SiteSectionStateModel {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    return this.store
+      .selectSnapshot((state) => state.siteSections)
+      .filter((section) => section.site_name === currentSite)
+      .reduce((prev, current) => {
+        return prev.order > current.order ? prev : current;
+      });
+  }
+
+  // Opens the section's settings, shows its page in the preview and
+  // puts the cursor in its title
+  private openNewSection(sectionName: string) {
+    SiteSectionsComponent.pendingTitleFocus = sectionName;
+    this.router.navigate(['/sections', sectionName], {
+      queryParams: { section: sectionName },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  private focusSectionTitle(sectionName: string) {
+    afterNextRender(
+      () => {
+        this.sectionComponents
+          .find((component) => component.section.name === sectionName)
+          ?.focusTitle();
+      },
+      { injector: this.injector },
+    );
   }
 
   updateSection(sectionData, updateEvent) {
