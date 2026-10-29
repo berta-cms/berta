@@ -44,6 +44,14 @@ class SectionEntryRenderService
     }
 
     /**
+     * Whether entries can be moved into a section of this type: not into external links or the shopping cart.
+     */
+    public static function acceptsEntries(?string $sectionType): bool
+    {
+        return ! in_array($sectionType, ['external_link', 'shopping_cart'], true);
+    }
+
+    /**
      * Prepare data for view
      */
     public function getViewData(
@@ -181,9 +189,8 @@ class SectionEntryRenderService
             // Exclude current section, external link and shopping cart
             $sections = array_filter($sections, function ($s) use ($section) {
                 $isCurrentSection = $s['name'] === $section['name'];
-                $validSectionType = empty($s['@attributes']['type']) ? true : ! in_array($s['@attributes']['type'], ['external_link', 'shopping_cart']);
 
-                return ! $isCurrentSection && $validSectionType;
+                return ! $isCurrentSection && self::acceptsEntries($s['@attributes']['type'] ?? null);
             });
 
             $entryContents = view('Sites/Sections/Entries/_entryEditor', [
