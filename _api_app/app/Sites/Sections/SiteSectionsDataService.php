@@ -331,7 +331,7 @@ class SiteSectionsDataService extends Storage
         if ($prop === 'title') {
             $old_name = $sectionName;
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
-            $new_name = $this->getUniqueSlug($value);
+            $new_name = $this->getUniqueSlug($value, $sectionName);
 
             if (empty($value)) {
                 $ret['value'] = $old_title;
@@ -697,7 +697,11 @@ class SiteSectionsDataService extends Storage
      * Private methods
      ************************************************************/
 
-    private function getUniqueSlug($title)
+    /**
+     * A section name for the title that no other section has. $currentName is the renamed section's own name,
+     * which it may keep, e.g. when only the title's case changes.
+     */
+    private function getUniqueSlug($title, ?string $currentName = null)
     {
         $sections['section'] = $this->get();
         $title = trim($title);
@@ -708,7 +712,7 @@ class SiteSectionsDataService extends Storage
 
         $slug = Helpers::slugify($title, '-', '\._-', true);
         $slug = $slug ?: '_';
-        $names = array_values(array_column($sections['section'], 'name'));
+        $names = array_values(array_diff(array_column($sections['section'], 'name'), [$currentName]));
 
         $notUnique = true;
         $i = 1;

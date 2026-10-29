@@ -136,6 +136,14 @@ it('keeps an entry in its folder when the new folder name is in use', function (
         ->and($this->storage . '/media/news2/sea.jpg')->toBeFile();
 });
 
+it('keeps the section name and its folders when only the title case changes', function () {
+    $saved = (new SiteSectionsDataService)->saveValueByPath('/section/1/title', 'NEWS');
+
+    expect($saved['section']['name'])->toBe('news')
+        ->and($saved['section']['title'])->toBe('NEWS')
+        ->and(mediaFolders('news'))->toBe(['1' => 'news2', '2' => 'news-old']);
+});
+
 it('keeps the background where it is when its folder can not be renamed', function () {
     writeMediaFile($this->storage, 'gallery-background/other.jpg');
 
