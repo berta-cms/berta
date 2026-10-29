@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StateController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\EditorSync;
+use App\Http\Middleware\RenewEditorToken;
 use App\Http\Middleware\SetupMiddleware;
 use App\Setup\ServerRequirementsController;
 use App\Sites\Sections\Entries\SectionEntriesController;
@@ -24,17 +26,20 @@ Route::middleware(SetupMiddleware::class)->group(function () {
     Route::get('v1/requirements', [ServerRequirementsController::class, 'index'])->name('requirements');
 });
 
-Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->group(function () {
-    Route::patch('user/changepassword', [AuthController::class, 'changePassword']);
+Route::middleware([SetupMiddleware::class, Authenticate::class, RenewEditorToken::class, EditorSync::class])->prefix('v1')->group(function () {
+    // Changes no site data, so other editor windows aren't asked to reload (EditorSync).
+    Route::patch('user/changepassword', [AuthController::class, 'changePassword'])->name('user_change_password')->withoutMiddleware(EditorSync::class);
     Route::get('state/{site?}', [StateController::class, 'get']);
     Route::get('locale-settings', [StateController::class, 'getLocaleSettings'])->name('locale_settings');
+    Route::get('change-marker', [StateController::class, 'getChangeMarker'])->name('change_marker');
 
     // Sites
     Route::post('sites', [SitesController::class, 'create'])->name('sites');
     Route::patch('sites', [SitesController::class, 'update']);
     Route::put('sites', [SitesController::class, 'order']);
     Route::delete('sites', [SitesController::class, 'delete']);
-    Route::post('sites/theme-preview', [SitesController::class, 'themePreview'])->name('site_theme_preview');
+    // Builds a preview copy, not the live site (EditorSync).
+    Route::post('sites/theme-preview', [SitesController::class, 'themePreview'])->name('site_theme_preview')->withoutMiddleware(EditorSync::class);
     Route::put('sites/theme-apply', [SitesController::class, 'themeApply'])->name('site_theme_apply');
     Route::put('sites/swap-contents-between-sites', [SitesController::class, 'swapContentsBetweenSites'])->name('site_swap_contents_between_sites');
     Route::get('sites/render-menu/{site?}', [SitesController::class, 'renderMenu']);
@@ -59,7 +64,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->
     ])->name('site_template_settings_reset_to_defaults');
 });
 
-Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sites')->group(function () {
+Route::middleware([SetupMiddleware::class, Authenticate::class, RenewEditorToken::class, EditorSync::class])->prefix('v1/sites')->group(function () {
     Route::post('sections', [SiteSectionsController::class, 'create'])->name('site_sections');
     Route::patch('sections', [SiteSectionsController::class, 'update']);
     Route::patch('sections/reset', [SiteSectionsController::class, 'reset'])->name('site_sections_reset');
@@ -89,7 +94,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     Route::put('sections/tags', [SectionTagsController::class, 'order'])->name('section_tags');
 });
 
-Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sites/sections')->group(function () {
+Route::middleware([SetupMiddleware::class, Authenticate::class, RenewEditorToken::class, EditorSync::class])->prefix('v1/sites/sections')->group(function () {
     Route::patch('entries', [SectionEntriesController::class, 'update'])->name('section_entries');
     Route::post('entries', [SectionEntriesController::class, 'create']);
     Route::put('entries', [SectionEntriesController::class, 'order']);
@@ -108,7 +113,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     ]);
 });
 
-Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/plugin')->group(function () {
+Route::middleware([SetupMiddleware::class, Authenticate::class, RenewEditorToken::class])->prefix('v1/plugin')->group(function () {
     $app_path = app_path();
     foreach (scandir("{$app_path}/Plugins") as $fileOrDir) {
         if (in_array($fileOrDir, ['.', '..'])) {

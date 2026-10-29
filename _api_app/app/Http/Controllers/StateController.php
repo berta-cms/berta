@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Shared\ChangeMarker;
 use App\Shared\Helpers;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -38,6 +39,7 @@ class StateController extends Controller
             'siteThemeApply' => route('site_theme_apply'),
             'siteSwapContentsBetweenSites' => route('site_swap_contents_between_sites'),
             'localeSettings' => route('locale_settings'),
+            'changeMarker' => route('change_marker'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
@@ -137,6 +139,14 @@ class StateController extends Controller
     public function getSentryDSN()
     {
         return response(env('SENTRY_FRONTEND_DSN', ''))->header('Content-Type', 'text/plain; charset=UTF-8');
+    }
+
+    /**
+     * The website's latest change, for an editor window coming back into view (EditorSync also sends it as headers)
+     */
+    public function getChangeMarker(): JsonResponse
+    {
+        return response()->json((new ChangeMarker)->current());
     }
 
     /**

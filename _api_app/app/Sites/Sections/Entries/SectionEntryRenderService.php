@@ -36,6 +36,22 @@ class SectionEntryRenderService
     }
 
     /**
+     * Whether entry titles are shown: on the "default" template and in portfolio sections.
+     */
+    public static function showsEntryTitles(string $templateName, ?string $sectionType): bool
+    {
+        return $sectionType == 'portfolio' || $templateName == 'default';
+    }
+
+    /**
+     * Whether entries can be moved into a section of this type: not into external links or the shopping cart.
+     */
+    public static function acceptsEntries(?string $sectionType): bool
+    {
+        return ! in_array($sectionType, ['external_link', 'shopping_cart'], true);
+    }
+
+    /**
      * Prepare data for view
      */
     public function getViewData(
@@ -57,7 +73,7 @@ class SectionEntryRenderService
         $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
 
-        if (($sectionType == 'portfolio' || $templateName == 'default') && ($isEditMode || (isset($entry['content']['title']) && ! empty($entry['content']['title'])))) {
+        if (self::showsEntryTitles($templateName, $sectionType) && ($isEditMode || (isset($entry['content']['title']) && ! empty($entry['content']['title'])))) {
             $entryTitle = view('Sites/Sections/Entries/_entryTitle', array_merge($entry, [
                 'attributes' => [
                     'title' => Helpers::arrayToHtmlAttributes([
@@ -173,9 +189,8 @@ class SectionEntryRenderService
             // Exclude current section, external link and shopping cart
             $sections = array_filter($sections, function ($s) use ($section) {
                 $isCurrentSection = $s['name'] === $section['name'];
-                $validSectionType = empty($s['@attributes']['type']) ? true : ! in_array($s['@attributes']['type'], ['external_link', 'shopping_cart']);
 
-                return ! $isCurrentSection && $validSectionType;
+                return ! $isCurrentSection && self::acceptsEntries($s['@attributes']['type'] ?? null);
             });
 
             $entryContents = view('Sites/Sections/Entries/_entryEditor', [

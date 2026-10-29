@@ -506,22 +506,35 @@ class SectionEntriesDataService extends Storage
             $blog['@attributes']['section'] = $this->SECTION_NAME;
 
             if (isset($blog[self::$ROOT_LIST_ELEMENT])) {
+                $referencedFolders = $this->mediaFolderReferences();
+                $copiedFolders = [];
+
                 foreach ($blog[self::$ROOT_LIST_ELEMENT] as $idx => $entry) {
                     $blog[self::$ROOT_LIST_ELEMENT][$idx]['uniqid'] = uniqid();
                     $blog[self::$ROOT_LIST_ELEMENT][$idx]['date'] = date('d.m.Y H:i:s');
                     $blog[self::$ROOT_LIST_ELEMENT][$idx]['updated'] = date('d.m.Y H:i:s');
 
-                    if (isset($entry['mediafolder'])) {
-                        $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder'] = str_replace(
-                            $name,
-                            $this->SECTION_NAME,
-                            $entry['mediafolder']
-                        );
+                    if (! empty($entry['mediafolder'])) {
+                        // A new folder for each copy: an entry's folder isn't always named after its section, and a
+                        // folder shared with the original would lose its files when either one is deleted.
+                        $mediafolder = $this->newMediaFolder($referencedFolders);
 
-                        $this->copyFolder(
-                            realpath($this->MEDIA_ROOT) . '/' . $entry['mediafolder'],
-                            realpath($this->MEDIA_ROOT) . '/' . $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder']
-                        );
+                        if ($mediafolder !== null) {
+                            $copiedFolders[] = $mediafolder;
+                        }
+
+                        if ($mediafolder === null || ! $this->copyFolder(
+                            $this->MEDIA_ROOT . '/' . $entry['mediafolder'],
+                            $this->MEDIA_ROOT . '/' . $mediafolder
+                        )) {
+                            foreach ($copiedFolders as $copiedFolder) {
+                                $this->delFolder($this->MEDIA_ROOT . '/' . $copiedFolder);
+                            }
+
+                            return ['error_message' => 'Can\'t copy the media files of the entries! Check permissions and free disk space.'];
+                        }
+
+                        $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder'] = $mediafolder;
                     }
                 }
             }
@@ -598,14 +611,17 @@ class SectionEntriesDataService extends Storage
         $entries['@attributes']['section'] = $new_name;
 
         if (isset($entries[self::$ROOT_LIST_ELEMENT])) {
-            foreach ($entries[self::$ROOT_LIST_ELEMENT] as $key => $entry) {
-                if (isset($entry['mediafolder'])) {
-                    $old_media = realpath($this->MEDIA_ROOT) . '/' . $entry['mediafolder'];
-                    $new_name = $new_name . $entry['id'];
-                    $new_media = realpath($this->MEDIA_ROOT) . '/' . $new_name;
+            $referencedFolders = $this->mediaFolderReferences();
 
-                    if (@rename($old_media, $new_media)) {
-                        $entries[self::$ROOT_LIST_ELEMENT][$key]['mediafolder'] = $new_name;
+            foreach ($entries[self::$ROOT_LIST_ELEMENT] as $key => $entry) {
+                if (! empty($entry['mediafolder'])) {
+                    $mediafolder = $new_name . $entry['id'];
+                    $old_media = realpath($this->MEDIA_ROOT) . '/' . $entry['mediafolder'];
+                    $new_media = realpath($this->MEDIA_ROOT) . '/' . $mediafolder;
+
+                    // Skip a name that exists or another gallery refers to: the entry keeps its folder instead of sharing one.
+                    if (! isset($referencedFolders[$mediafolder]) && ! file_exists($new_media) && @rename($old_media, $new_media)) {
+                        $entries[self::$ROOT_LIST_ELEMENT][$key]['mediafolder'] = $mediafolder;
                     }
                 }
             }
@@ -622,8 +638,10 @@ class SectionEntriesDataService extends Storage
 
         // delete media files
         if (array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and ! empty($entries[self::$ROOT_LIST_ELEMENT])) {
+            $referencedOutside = $this->mediaFoldersReferencedOutside($this->SECTION_NAME);
+
             foreach ($entries[self::$ROOT_LIST_ELEMENT] as $entry) {
-                if (! empty($entry['mediafolder'])) {
+                if (! empty($entry['mediafolder']) && ! isset($referencedOutside[$entry['mediafolder']])) {
                     $mediaFolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'];
 
                     if (file_exists($mediaFolder)) {
@@ -665,14 +683,6 @@ class SectionEntriesDataService extends Storage
      */
     public function createEntry($newEntry, $beforeEntry, $tag)
     {
-        $mediafolder = $this->SECTION_NAME;
-        $counter = 1;
-        do {
-            $new_mediafolder = $mediafolder . $counter;
-            $counter++;
-        } while (file_exists($this->MEDIA_ROOT . '/' . $new_mediafolder));
-        $mediafolder = $new_mediafolder;
-
         $siteSettingsDataService = new SiteSettingsDataService($this->SITE);
         $siteSettings = $siteSettingsDataService->getState();
         $template = $siteSettings['template']['template'];
@@ -690,12 +700,13 @@ class SectionEntriesDataService extends Storage
             $galleryFullScreen = $siteSettings['entryLayout']['galleryFullScreenDefault'];
         }
 
-        if (! @mkdir($this->MEDIA_ROOT . '/' . $mediafolder, 0777)) {
-            $ret['value'] = $mediafolder;
-            $ret['error_message'] = 'Can\'t create media folder! Check permissions.';
-            $ret['status_code'] = 400;
+        $mediafolder = $this->newMediaFolder();
 
-            return $ret;
+        if ($mediafolder === null) {
+            return [
+                'error_message' => 'Can\'t create media folder! Check permissions.',
+                'status_code' => 400,
+            ];
         }
 
         $entries = $this->get();
@@ -706,11 +717,16 @@ class SectionEntriesDataService extends Storage
         // In case creating entry from existing entry from other section
         // Update references
         if ($newEntry) {
-            if (isset($newEntry['mediafolder'])) {
-                $this->copyFolder(
-                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $newEntry['mediafolder'],
-                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $mediafolder
-                );
+            if (! empty($newEntry['mediafolder']) && ! $this->copyFolder(
+                $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $newEntry['mediafolder'],
+                $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $mediafolder
+            )) {
+                $this->delFolder($this->MEDIA_ROOT . '/' . $mediafolder);
+
+                return [
+                    'error_message' => 'Can\'t copy the media files of the entry! Check permissions and free disk space.',
+                    'status_code' => 400,
+                ];
             }
 
             $newEntry = array_replace_recursive($newEntry, [
@@ -850,6 +866,11 @@ class SectionEntriesDataService extends Storage
         $toSectionEntriesDS = new self($this->SITE, $toSection);
         $data = $toSectionEntriesDS->createEntry($entry, null, null);
 
+        // Without a copy in the other section, deleting the entry here would lose it and its files.
+        if (isset($data['error_message'])) {
+            return $data;
+        }
+
         $deletedEntry = $this->deleteEntry($entryId);
         $data['deleted_entry'] = $deletedEntry;
 
@@ -869,8 +890,9 @@ class SectionEntriesDataService extends Storage
 
         $entry = $entries['entry'][$entry_order];
 
-        // Delete entry media folder
-        if (isset($entry['mediafolder']) && ! empty($entry['mediafolder'])) {
+        // Delete entry media folder, unless another gallery refers to it too
+        if (! empty($entry['mediafolder'])
+            && ! isset($this->mediaFoldersReferencedOutside($this->SECTION_NAME, (string) $entry['id'])[$entry['mediafolder']])) {
             $this->delFolder($this->MEDIA_ROOT . '/' . $entry['mediafolder']);
         }
 
@@ -937,6 +959,26 @@ class SectionEntriesDataService extends Storage
         if (! empty($this->SECTION_TITLE)) {
             $this->SECTION_TITLE = $title;
         }
+    }
+
+    /**
+     * Creates an empty media folder for an entry of this section, named after the section, and returns its name;
+     * null when it can't be created. Names another gallery refers to are skipped even when their folder is missing,
+     * so no two galleries end up sharing one.
+     *
+     * @param  array<string, mixed>|null  $referencedFolders  The site's media folder references, when the caller already has them
+     */
+    private function newMediaFolder(?array $referencedFolders = null): ?string
+    {
+        $referencedFolders ??= $this->mediaFolderReferences();
+        $counter = 1;
+
+        do {
+            $mediafolder = $this->SECTION_NAME . $counter;
+            $counter++;
+        } while (isset($referencedFolders[$mediafolder]) || file_exists($this->MEDIA_ROOT . '/' . $mediafolder));
+
+        return @mkdir($this->MEDIA_ROOT . '/' . $mediafolder, 0777) ? $mediafolder : null;
     }
 
     public function galleryOrder($section_name, $entry_id, $new_files)

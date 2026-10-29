@@ -259,6 +259,10 @@ class SiteSectionsDataService extends Storage
         $entries = new SectionEntriesDataService($this->SITE, 'clone-of-' . $name, 'clone of ' . $title);
         $section_entries = $entries->create($name);
 
+        if (isset($section_entries['error_message'])) {
+            return $section_entries;
+        }
+
         $section = $sections[$section_order];
         $section['name'] = $section_entries['name'];
         $section['title'] = $section_entries['title'];
@@ -268,10 +272,15 @@ class SiteSectionsDataService extends Storage
         if (isset($section['mediafolder'])) {
             $section['mediafolder'] = $section_entries['name'] . '-background';
 
-            $this->copyFolder(
+            if (! $this->copyFolder(
                 realpath($this->MEDIA_ROOT) . '/' . $sections[$section_order]['mediafolder'],
                 realpath($this->MEDIA_ROOT) . '/' . $section['mediafolder']
-            );
+            )) {
+                $this->delFolder(realpath($this->MEDIA_ROOT) . '/' . $section['mediafolder']);
+                (new SectionEntriesDataService($this->SITE, $section_entries['name']))->delete();
+
+                return ['error_message' => 'Can\'t copy the background files of the section! Check permissions and free disk space.'];
+            }
         }
 
         $section_order = count($sections);
@@ -322,7 +331,7 @@ class SiteSectionsDataService extends Storage
         if ($prop === 'title') {
             $old_name = $sectionName;
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
-            $new_name = $this->getUniqueSlug($value);
+            $new_name = $this->getUniqueSlug($value, $sectionName);
 
             if (empty($value)) {
                 $ret['value'] = $old_title;
@@ -341,19 +350,21 @@ class SiteSectionsDataService extends Storage
                 );
 
                 // Rename section background path
-                if (isset($sections['section'][$order]['mediafolder'])) {
+                if (! empty($sections['section'][$order]['mediafolder'])) {
                     $mediafolder = $new_name . '-background';
+                    $old_media = realpath($this->MEDIA_ROOT) . '/' . $sections['section'][$order]['mediafolder'];
+                    $new_media = realpath($this->MEDIA_ROOT) . '/' . $mediafolder;
 
-                    @rename(
-                        realpath($this->MEDIA_ROOT) . '/' . $sections['section'][$order]['mediafolder'],
-                        realpath($this->MEDIA_ROOT) . '/' . $mediafolder
-                    );
-
-                    $this->setValueByPath(
-                        $sections,
-                        'section/' . $order . '/mediafolder',
-                        $mediafolder
-                    );
+                    // Keep pointing at the files when the folder can't be renamed, or the new name exists or another gallery refers to it
+                    if (! isset($this->mediaFolderReferences()[$mediafolder])
+                        && ! file_exists($new_media)
+                        && (! file_exists($old_media) || @rename($old_media, $new_media))) {
+                        $this->setValueByPath(
+                            $sections,
+                            'section/' . $order . '/mediafolder',
+                            $mediafolder
+                        );
+                    }
                 }
 
                 $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
@@ -453,7 +464,8 @@ class SiteSectionsDataService extends Storage
             // delete section media
             $section = $sections['section'][$section_idx];
 
-            if (array_key_exists('mediafolder', $section) and ! empty($section['mediafolder'])) {
+            if (array_key_exists('mediafolder', $section) and ! empty($section['mediafolder'])
+                and ! isset($this->mediaFoldersReferencedOutside($name)[$section['mediafolder']])) {
                 $mediaFolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'];
 
                 if (file_exists($mediaFolder)) {
@@ -685,7 +697,11 @@ class SiteSectionsDataService extends Storage
      * Private methods
      ************************************************************/
 
-    private function getUniqueSlug($title)
+    /**
+     * A section name for the title that no other section has. $currentName is the renamed section's own name,
+     * which it may keep, e.g. when only the title's case changes.
+     */
+    private function getUniqueSlug($title, ?string $currentName = null)
     {
         $sections['section'] = $this->get();
         $title = trim($title);
@@ -696,7 +712,7 @@ class SiteSectionsDataService extends Storage
 
         $slug = Helpers::slugify($title, '-', '\._-', true);
         $slug = $slug ?: '_';
-        $names = array_values(array_column($sections['section'], 'name'));
+        $names = array_values(array_diff(array_column($sections['section'], 'name'), [$currentName]));
 
         $notUnique = true;
         $i = 1;

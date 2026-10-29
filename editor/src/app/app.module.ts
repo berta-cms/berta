@@ -50,6 +50,7 @@ import * as Sentry from '@sentry/angular';
 import { Router } from '@angular/router';
 import { sentryInitFactory } from './sentry/sentry-init.factory';
 import { pendingRequestsInterceptor } from './shared/pending-requests';
+import { editorSyncInterceptor } from './shared/editor-sync';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,7 @@ import { pendingRequestsInterceptor } from './shared/pending-requests';
     { provide: APP_BASE_HREF, useValue: '/engine/' },
     provideHttpClient(
       withInterceptorsFromDi(),
-      withInterceptors([pendingRequestsInterceptor]),
+      withInterceptors([pendingRequestsInterceptor, editorSyncInterceptor]),
     ),
   ],
 })

@@ -120,9 +120,13 @@ export class AppStateService {
       }),
       tap(() => this.hideLoading()),
       catchError((error) => {
-        // 429 responses are handled by the specific feature (e.g. AI chat panel),
-        // so skip the generic error notification to avoid a duplicate message.
-        if (!(error instanceof HttpErrorResponse) || error.status !== 429) {
+        // 429 responses are handled by the specific feature (e.g. AI chat panel), and 409 (the
+        // website was changed elsewhere) by the editor sync popup, so skip the generic error
+        // notification to avoid a duplicate message.
+        if (
+          !(error instanceof HttpErrorResponse) ||
+          ![409, 429].includes(error.status)
+        ) {
           this.showError(error, data);
         }
         this.hideLoading();

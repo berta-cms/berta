@@ -13,6 +13,7 @@ import { UserStateModel } from './user.state.model';
 import {
   UserLoginAction,
   UserLogoutAction,
+  UserTokenRenewedAction,
   SetUserNextUrlAction,
 } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
@@ -127,6 +128,20 @@ export class UserState implements NgxsOnInit {
         });
       }),
     );
+  }
+
+  @Action(UserTokenRenewedAction)
+  renewToken(
+    { getState, patchState }: StateContext<UserStateModel>,
+    action: UserTokenRenewedAction,
+  ) {
+    // A response may arrive after logout; it must not log the user back in.
+    if (!getState().token) {
+      return;
+    }
+
+    window.localStorage.setItem('token', action.token);
+    patchState({ token: action.token });
   }
 
   @Action(UserLogoutAction)
