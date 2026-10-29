@@ -1,9 +1,11 @@
 import {
   Component,
+  ElementRef,
   OnInit,
   Input,
   Output,
   EventEmitter,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,7 +16,6 @@ import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import {
   DeleteSiteAction,
-  CloneSiteAction,
   UpdateSiteAction,
   RenameSiteAction,
   SwapContentsSitesAction,
@@ -23,6 +24,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
 import { Dialog } from '@angular/cdk/dialog';
 import { SitesSwapContentsComponent } from './sites-swap-contents.component';
 import { AppState } from '../app-state/app.state';
+import { InlineTextInputComponent } from '../inputs/inline-text-input.component';
 
 @Component({
   selector: 'berta-site',
@@ -34,7 +36,9 @@ import { AppState } from '../app-state/app.state';
       <h3>
         <div class="control-line">
           <berta-inline-text-input
+            #titleInput
             [value]="site.title"
+            placeholder="Site title"
             (inputFocus)="updateComponentFocus($event)"
             (update)="updateField('title', $event)"
           ></berta-inline-text-input>
@@ -58,7 +62,7 @@ import { AppState } from '../app-state/app.state';
             </button>
           }
 
-          <button title="copy" (click)="cloneSite()">
+          <button title="copy" (click)="clone.emit()">
             <bt-icon-clone></bt-icon-clone>
           </button>
 
@@ -120,6 +124,9 @@ export class SiteComponent implements OnInit {
   @Input('sites') sites: SiteStateModel[];
 
   @Output() inputFocus = new EventEmitter();
+  @Output() clone = new EventEmitter<void>();
+
+  @ViewChild('titleInput') titleInput: InlineTextInputComponent;
 
   currentSiteSlug$: Observable<AppStateModel['site']>;
   dialog = inject(Dialog);
@@ -132,6 +139,7 @@ export class SiteComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private popupService: PopupService,
+    private elementRef: ElementRef<HTMLElement>,
   ) {
     this.currentSiteSlug$ = this.store.select(AppState.getSite);
   }
@@ -175,30 +183,11 @@ export class SiteComponent implements OnInit {
     }
   }
 
-  cloneSite() {
-    this.store
-      .select((state) => state.sites)
-      .pipe(
-        take(1),
-        map((sites: SiteStateModel[]) => {
-          return sites.map((site) => site.name);
-        }),
-        switchMap((siteNames) =>
-          this.store.dispatch(new CloneSiteAction(this.site)).pipe(
-            switchMap(() => this.store.select((state) => state.sites)),
-            take(1),
-            map((sitesState: SiteStateModel[]) =>
-              sitesState.find((site) => siteNames.indexOf(site.name) === -1),
-            ),
-          ),
-        ),
-      )
-      .subscribe((newSite) => {
-        if (!newSite) {
-          return;
-        }
-        this.router.navigate([], { queryParams: { site: newSite.name } });
-      });
+  focusTitle() {
+    this.elementRef.nativeElement
+      .querySelector('h3')
+      .scrollIntoView({ block: 'nearest' });
+    this.titleInput.startEditing();
   }
 
   swapContentsBetweenOtherSite() {

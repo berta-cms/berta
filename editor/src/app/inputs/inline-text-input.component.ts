@@ -4,14 +4,18 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
   selector: 'berta-inline-text-input',
   template: `
     @if (!focus) {
-      <span class="input-placeholder" (click)="onTextClick()">{{
-        value || '...'
-      }}</span>
+      <span
+        class="input-placeholder"
+        [class.is-empty]="!value"
+        (click)="onTextClick()"
+        >{{ value || placeholder || '...' }}</span
+      >
     }
     @if (focus) {
       <input
         bertaAutofocus
         [value]="value"
+        [placeholder]="placeholder || ''"
         (focus)="onFocus()"
         (keydown)="updateField($event)"
         (blur)="onBlur($event)"
@@ -48,12 +52,17 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
       :host.clickable-text .input-placeholder {
         cursor: pointer;
       }
+
+      .input-placeholder.is-empty {
+        opacity: 0.5;
+      }
     `,
   ],
   standalone: false,
 })
 export class InlineTextInputComponent implements OnInit {
   @Input() value: string;
+  @Input() placeholder: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
   @Output() textClick = new EventEmitter();
@@ -68,6 +77,10 @@ export class InlineTextInputComponent implements OnInit {
 
   onTextClick() {
     this.textClick.emit(true);
+  }
+
+  startEditing() {
+    this.onFocus();
   }
 
   onFocus() {
