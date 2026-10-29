@@ -305,30 +305,93 @@ class Storage
     }
 
     /**
+     * Copies a folder with its subfolders. Returns false when a folder can't be made or a file can't be copied,
+     * so callers can keep the original; a missing source has nothing to copy and returns true.
+     *
      * @param  list<string>  $skipFolders  Folders at the top of $src left out of the copy
      */
-    protected function copyFolder($src, $dst, array $skipFolders = [])
+    protected function copyFolder($src, $dst, array $skipFolders = []): bool
     {
         if (! is_dir($src)) {
-            return;
+            return true;
+        }
+
+        if (! is_dir($dst) && ! @mkdir($dst, 0777, true)) {
+            return false;
         }
 
         $dir = opendir($src);
-        @mkdir($dst, 0777, true);
+        $copied = true;
 
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
                     if (! in_array($file, ['-sites', $this->PREVIEW_FOLDER, ...$skipFolders])) {
-                        self::copyFolder($src . '/' . $file, $dst . '/' . $file);
+                        $copied = self::copyFolder($src . '/' . $file, $dst . '/' . $file) && $copied;
                     }
                 } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
+                    $copied = copy($src . '/' . $file, $dst . '/' . $file) && $copied;
                 }
             }
         }
 
         closedir($dir);
+
+        return $copied;
+    }
+
+    /**
+     * The site's media folders, each with the entry galleries ([section, entry id]) and section backgrounds
+     * ([section, null]) that refer to it. Sites made by older Berta versions can have folders that more than one refers to.
+     *
+     * @return array<string, list<array{0: string, 1: string|null}>>
+     */
+    protected function mediaFolderReferences(): array
+    {
+        $root = dirname($this->MEDIA_ROOT);
+        $references = [];
+
+        foreach (glob($root . '/blog.*.xml') ?: [] as $file) {
+            $section = substr(basename($file), strlen('blog.'), -strlen('.xml'));
+            $blog = $this->xmlFile2array($file);
+
+            foreach ($this->asList($blog['entry'] ?? []) as $entry) {
+                if (is_array($entry) && ! empty($entry['mediafolder'])) {
+                    $references[$entry['mediafolder']][] = [$section, (string) ($entry['id'] ?? '')];
+                }
+            }
+        }
+
+        $sections = $this->xmlFile2array($root . '/sections.xml');
+
+        foreach ($this->asList($sections['section'] ?? []) as $section) {
+            if (is_array($section) && ! empty($section['mediafolder'])) {
+                $references[$section['mediafolder']][] = [(string) ($section['name'] ?? ''), null];
+            }
+        }
+
+        return $references;
+    }
+
+    /**
+     * Media folders that something other than the given entry refers to, or, without an entry, something outside the
+     * given section and its entries. Deleting keeps these, so a shared folder never loses another gallery's files.
+     *
+     * @return array<string, true>
+     */
+    protected function mediaFoldersReferencedOutside(string $section, ?string $entryId = null): array
+    {
+        $referencedOutside = [];
+
+        foreach ($this->mediaFolderReferences() as $folder => $references) {
+            foreach ($references as [$referencingSection, $referencingEntryId]) {
+                if ($referencingSection !== $section || ($entryId !== null && $referencingEntryId !== $entryId)) {
+                    $referencedOutside[$folder] = true;
+                }
+            }
+        }
+
+        return $referencedOutside;
     }
 
     public function moveFolderContents($src, $dst, $ignore = [])
