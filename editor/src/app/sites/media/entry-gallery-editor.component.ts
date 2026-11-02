@@ -490,6 +490,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               @if (file['@attributes'].type === 'image') {
                 <div class="media image">
                   <img
+                    loading="lazy"
                     draggable="false"
                     src="{{ currentSite.mediaUrl }}/{{
                       currentEntry.mediafolder

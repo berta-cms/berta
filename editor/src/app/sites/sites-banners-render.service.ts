@@ -50,11 +50,13 @@ export class SitesBannersRenderService {
     const width = banner.image_width || null;
     const height = banner.image_height || null;
 
-    return toImageHtmlAttributes(siteSlug, {
-      filename: banner.image,
-      width,
-      height,
-    });
+    return (
+      toImageHtmlAttributes(siteSlug, {
+        filename: banner.image,
+        width,
+        height,
+      }) + ' loading="lazy"'
+    );
   }
 
   getViewData(siteSlug, siteSettings, isResponsive) {

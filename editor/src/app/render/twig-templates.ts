@@ -322,12 +322,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       {% for item in items %}
         {% if item.type == 'image' %}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {% else %}
           <div class="xGalleryItem xGalleryItemType-video">
-            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+            <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -364,12 +364,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       {%- for item in items -%}
         {%- if item.type == 'image' -%}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {%- else -%}
           <div class="xGalleryItem xGalleryItemType-video">
-            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+            <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -405,12 +405,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       {% for item in items %}
         {% if item.type == 'image' %}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {% else %}
           <div class="xGalleryItem xGalleryItemType-video">
-            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+            <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -436,12 +436,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       {% for item in items %}
         {% if item.type == 'image' %}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {% else %}
           <div class="xGalleryItem xGalleryItemType-video">
-            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+            <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -478,12 +478,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       {%- for item in items -%}
         {%- if item.type == 'image' -%}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {%- else -%}
           <div class="xGalleryItem xGalleryItemType-video">
-            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+            <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -532,12 +532,12 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             <div class="swiper-slide">
               {% if item.type == 'image' %}
                 <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-                  <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+                  <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}"{% if loadFirstImageEagerly and loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
                   <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
                 </div>
               {% else %}
                 <div class="xGalleryItem xGalleryItemType-video">
-                  <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+                  <video width="{{ item.width }}" controls controlsList="nodownload" preload="metadata"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
                     <source src="{{ item.original }}" type="video/mp4">
                   </video>
                   <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
@@ -699,9 +699,9 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <a href="{{ entry.item.url }}">
         {% endif %}
         {% if entry.item.galleryItem.type == 'image' %}
-          <img src="{{ entry.item.galleryItem.src }}" width="{{ entry.item.galleryItem.width }}" height="{{ entry.item.galleryItem.height }}"{% if entry.item.galleryItem.srcset %} srcset="{{ entry.item.galleryItem.srcset }}"{% endif %} alt="{{ entry.item.galleryItem.alt|raw }}">
+          <img src="{{ entry.item.galleryItem.src }}" width="{{ entry.item.galleryItem.width }}" height="{{ entry.item.galleryItem.height }}"{% if entry.item.galleryItem.srcset %} srcset="{{ entry.item.galleryItem.srcset }}"{% endif %} alt="{{ entry.item.galleryItem.alt|raw }}"{% if entry.item.loadEagerly %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
         {% else %}
-          <video width="{{ entry.item.galleryItem.width }}" controls controlsList="nodownload"{% if entry.item.galleryItem.poster %} poster="{{ entry.item.galleryItem.poster }}"{% endif %}{% if entry.item.galleryItem.autoplay %} data-autoplay="1"{% endif %}>
+          <video width="{{ entry.item.galleryItem.width }}" controls controlsList="nodownload" preload="metadata"{% if entry.item.galleryItem.poster %} poster="{{ entry.item.galleryItem.poster }}"{% endif %}{% if entry.item.galleryItem.autoplay %} data-autoplay="1"{% endif %}>
             <source src="{{ entry.item.galleryItem.original }}" type="video/mp4">
           </video>
         {% endif %}
@@ -846,7 +846,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   'Sites/Sections/gridView': `<div id="xGridView">
   {% for item in items %}
     <div class="box">
-      <a href="{{ item.url }}"><img class="xGridItem" src="{{ item.src }}" /></a>
+      <a href="{{ item.url }}"><img class="xGridItem" src="{{ item.src }}"{% if item.width %} width="{{ item.width }}" height="{{ item.height }}" loading="lazy"{% endif %} /></a>
     </div>
   {% endfor %}
 </div>

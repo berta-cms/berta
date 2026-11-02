@@ -58,6 +58,9 @@ export class PortfolioThumbnailsRenderService {
       attributes: toHtmlAttributes({
         src: galleryItem.src,
         srcset: galleryItem.srcset,
+        width: galleryItem.width ? String(galleryItem.width) : null,
+        height: galleryItem.height ? String(galleryItem.height) : null,
+        loading: 'lazy',
       }),
     };
   }
