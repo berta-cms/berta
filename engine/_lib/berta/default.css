@@ -45,16 +45,25 @@ br.clear {
   clear: both;
 }
 
+.xGalleryType-link.bt-has-hover .xGallery {
+  position: relative;
+}
+
+/* The hover image lies hidden over the first one instead of display: none,
+   so its lazy loading starts together with the first image */
 .xGalleryType-link.bt-has-hover .xGalleryItem:last-child {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
 }
 
 .xGalleryType-link.bt-has-hover a:hover .xGalleryItem:first-child {
-  display: none;
+  visibility: hidden;
 }
 
 .xGalleryType-link.bt-has-hover a:hover .xGalleryItem:last-child {
-  display: block;
+  visibility: visible;
 }
 
 .xGalleryType-row>.xGallery {
@@ -315,6 +324,7 @@ div.xGalleryItem .xGalleryImageVideoBack {
 .portfolioThumbnail img {
   display: inline-block;
   max-width: 100%;
+  height: auto;
 }
 
 .portfolioThumbnail span {

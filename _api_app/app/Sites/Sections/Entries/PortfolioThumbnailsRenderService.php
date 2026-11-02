@@ -7,7 +7,7 @@ use App\Shared\ImageHelpers;
 
 class PortfolioThumbnailsRenderService
 {
-    private function getFirstEntryImage($siteSettings, $storageService, $entry)
+    private function getFirstEntryImage($siteSettings, $storageService, $entry, bool $loadEagerly)
     {
         $image = null;
 
@@ -33,6 +33,10 @@ class PortfolioThumbnailsRenderService
         $attributes = Helpers::arrayToHtmlAttributes([
             'src' => $image['src'],
             'srcset' => $image['srcset'],
+            'width' => $image['width'],
+            'height' => $image['height'],
+            'loading' => $loadEagerly ? null : 'lazy',
+            'fetchpriority' => $loadEagerly ? 'high' : null,
         ]);
 
         return [
@@ -42,11 +46,16 @@ class PortfolioThumbnailsRenderService
 
     private function getViewData($siteSettings, $storageService, $entries, $isEditMode)
     {
-        $entries = array_map(function ($entry) use ($siteSettings, $storageService, $isEditMode) {
+        // The first thumbnail is usually what visitors see first, so it is not lazy loaded
+        $isEagerImageNeeded = true;
+        $entries = array_map(function ($entry) use ($siteSettings, $storageService, $isEditMode, &$isEagerImageNeeded) {
             $title = ! empty($entry['content']['title']) ? $entry['content']['title'] : 'entry-' . $entry['id'];
             $entry['caption'] = ! empty($entry['content']['title']) ? $entry['content']['title'] : ($isEditMode ? $title : null);
             $entry['slug'] = Helpers::slugify($title, '-', '-');
-            $entry['image'] = $this->getFirstEntryImage($siteSettings, $storageService, $entry);
+            $entry['image'] = $this->getFirstEntryImage($siteSettings, $storageService, $entry, $isEagerImageNeeded);
+            if ($entry['image']) {
+                $isEagerImageNeeded = false;
+            }
 
             return $entry;
         }, $entries);

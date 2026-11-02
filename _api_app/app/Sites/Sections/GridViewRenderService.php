@@ -40,8 +40,16 @@ class GridViewRenderService
     private function getImageItems($siteSlug, $currentSection, $tagSlug, $storageService, $isPreviewMode, $isEditMode)
     {
         $items = array_map(function ($item) use ($siteSlug, $currentSection, $tagSlug, $storageService, $isPreviewMode, $isEditMode) {
+            $gridImage = $currentSection['mediafolder'] . '/' . config('app.grid_image_prefix') . $item['@attributes']['src'];
             $item['url'] = $this->getUrl($siteSlug, $currentSection, $tagSlug, $isPreviewMode, $isEditMode);
-            $item['src'] = $storageService->MEDIA_URL . '/' . $currentSection['mediafolder'] . '/' . config('app.grid_image_prefix') . $item['@attributes']['src'];
+            $item['src'] = $storageService->MEDIA_URL . '/' . $gridImage;
+
+            // The masonry layout measures the boxes before lazy loaded images arrive, so they need their size
+            $gridImagePath = $storageService->MEDIA_ROOT . '/' . $gridImage;
+            $gridImageSize = is_file($gridImagePath) ? getimagesize($gridImagePath) : false;
+            if ($gridImageSize) {
+                [$item['width'], $item['height']] = $gridImageSize;
+            }
 
             return $item;
         }, $currentSection['mediaCacheData']['file']);

@@ -165,8 +165,9 @@ var BertaGallerySlideshow = class {
             }.bind(this));
           }, this);
 
+          // A video's size is known from its metadata, which is all it preloads
           swiperEl.querySelectorAll('video').forEach(function (video) {
-            video.addEventListener('loadeddata', function () {
+            video.addEventListener('loadedmetadata', function () {
               this.gallerySwiper.update();
             }.bind(this), { once: true });
           }, this);

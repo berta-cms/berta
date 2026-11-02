@@ -165,9 +165,11 @@ var BertaGalleryColumn = class {
     switch (mType) {
       case 'image':
         var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
+        // loading comes before srcset and src, otherwise the browser starts loading right away
         var image = window.BertaHelpers.createElement('img', {
           'width': mWidth,
           'height': mHeight,
+          'loading': 'lazy',
           'srcset': this.srcset,
           'alt': altText,
           'src': src
@@ -202,6 +204,7 @@ var BertaGalleryColumn = class {
           'class': 'xGalleryItem xGalleryItemType-video',
           'controls': true,
           'controlsList': 'nodownload',
+          'preload': 'metadata',
           'poster': src && src.charAt(0) !== '#' ? src : null,
         });
 

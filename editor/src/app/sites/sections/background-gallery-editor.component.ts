@@ -300,6 +300,7 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
             >
               <div class="media image">
                 <img
+                  loading="lazy"
                   draggable="false"
                   src="{{ currentSite.mediaUrl }}/{{
                     currentSection.mediafolder

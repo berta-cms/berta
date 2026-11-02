@@ -54,6 +54,7 @@ class SitesBannersRenderService
             [
                 'width' => ! empty($banner->width) ? $banner->width : null,
                 'height' => ! empty($banner->height) ? $banner->height : null,
+                'loading' => 'lazy',
             ]
         );
 
