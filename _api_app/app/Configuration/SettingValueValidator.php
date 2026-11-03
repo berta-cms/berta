@@ -41,7 +41,7 @@ class SettingValueValidator
         }
 
         return match ($definition['format'] ?? 'text') {
-            'select', 'fontselect' => $this->selectError($value, $definition),
+            'select', 'fontselect', 'toggle' => $this->selectError($value, $definition),
             'color' => $this->colorError($value, $definition),
             'text' => $this->textError($value, $definition),
             default => null,

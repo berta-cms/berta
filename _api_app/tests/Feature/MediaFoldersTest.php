@@ -180,3 +180,17 @@ it('keeps media folders that other sections use when a section is deleted', func
         ->and($this->storage . '/media/photographs-background')->not->toBeDirectory()
         ->and($this->storage . '/blog.photographs.xml')->not->toBeFile();
 });
+
+it('keeps a gallery file in a folder another gallery refers to, and still deletes one in its own folder', function () {
+    // photographs entry 1 has its gallery in news1, which news entry 2 refers to as well.
+    writeBlog($this->storage, 'news', ['1' => 'news2', '2' => 'news1']);
+    writeMediaFile($this->storage, 'news1/x.jpg');
+    writeMediaFile($this->storage, 'news2/x.jpg');
+
+    (new SectionEntriesDataService('', 'photographs'))->galleryDelete('photographs', '1', 'x.jpg');
+    (new SectionEntriesDataService('', 'news'))->galleryDelete('news', '1', 'x.jpg');
+
+    expect($this->storage . '/media/news1/x.jpg')->toBeFile()
+        ->and($this->storage . '/media/news2/x.jpg')->not->toBeFile()
+        ->and((new SectionEntriesDataService('', 'photographs'))->get()['entry'][0]['mediaCacheData']['file'])->toBe([]);
+});

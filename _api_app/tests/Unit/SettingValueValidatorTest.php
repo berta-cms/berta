@@ -6,6 +6,7 @@ it('accepts values the editor accepts', function (string $value, array $definiti
     expect((new SettingValueValidator([]))->error($value, $definition))->toBeNull();
 })->with([
     'select value' => ['bold', ['format' => 'select', 'values' => ['normal', 'bold']]],
+    'toggle value' => ['yes', ['format' => 'toggle', 'values' => ['yes', 'no']]],
     'font by its CSS value' => ['"Comic Sans MS", cursive', ['format' => 'fontselect', 'values' => ['"Comic Sans MS", cursive' => 'Comic Sans MS']]],
     'hex color' => ['#00ff00', ['format' => 'color']],
     'short hex color' => ['#0f0', ['format' => 'color']],
@@ -28,6 +29,7 @@ it('refuses values the editor refuses', function (string $value, array $definiti
     expect((new SettingValueValidator([]))->error($value, $definition))->toContain($error);
 })->with([
     'value not allowed' => ['heavy', ['format' => 'select', 'values' => ['normal', 'bold']], 'normal | bold'],
+    'toggle value not allowed' => ['maybe', ['format' => 'toggle', 'values' => ['yes', 'no']], 'yes | no'],
     'font by its name' => ['Comic Sans MS', ['format' => 'fontselect', 'values' => ['"Comic Sans MS", cursive' => 'Comic Sans MS']], 'allowed values'],
     'not a color' => ['red', ['format' => 'color'], 'color'],
     'missing css unit' => ['12', ['format' => 'text', 'css_units' => true], 'CSS unit'],

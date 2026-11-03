@@ -1230,8 +1230,10 @@ class SectionEntriesDataService extends Storage
                 return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
-            $mediafolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'] . '/';
-            $this->deleteMedia($mediafolder, $file);
+            // Keep the file when another gallery refers to the folder, as it may show the file too
+            if (! isset($this->mediaFoldersReferencedOutside($this->SECTION_NAME, (string) $entry['id'])[$entry['mediafolder']])) {
+                $this->deleteMedia($this->MEDIA_ROOT . '/' . $entry['mediafolder'] . '/', $file);
+            }
 
             $file = current(array_splice($files, $file_order, 1));
 
