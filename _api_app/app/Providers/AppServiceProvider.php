@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Shared\ImageHelpers;
+use App\Shared\UndoFiles;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,5 +47,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('not_corrupted_image', function ($attribute, $value, $parameters) {
             return ! ImageHelpers::isCorrupted($value);
         });
+
+        // Public pages boot the app without terminating it, so a shutdown function is what runs on every web request.
+        if (! $this->app->runningInConsole()) {
+            register_shutdown_function(fn () => rescue(fn () => (new UndoFiles)->cleanUpIfDue()));
+        }
     }
 }

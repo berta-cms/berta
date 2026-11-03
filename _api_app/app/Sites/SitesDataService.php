@@ -8,6 +8,7 @@ use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Shared\UndoFiles;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -166,8 +167,8 @@ class SitesDataService extends Storage
             }
 
             $dir = $this->XML_SITES_ROOT . '/' . $name;
-            // The shop files belong to the source's orders, which the clone doesn't keep
-            $this->copyFolder($src, $dir, [self::SHOP_FILES_FOLDER]);
+            // The shop files belong to the source's orders, and the undo files to its changes, which the clone doesn't keep
+            $this->copyFolder($src, $dir, [self::SHOP_FILES_FOLDER, UndoFiles::FOLDER]);
         } else {
             @mkdir($dir, 0777, true);
         }
@@ -282,7 +283,7 @@ class SitesDataService extends Storage
 
         // generate new preview content
         // for now just copy all the existing contents to preview
-        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT, [self::SHOP_FILES_FOLDER]);
+        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT, [self::SHOP_FILES_FOLDER, UndoFiles::FOLDER]);
 
         // Merge site settings
         $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);

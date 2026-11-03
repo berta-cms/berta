@@ -47,8 +47,9 @@ RewriteCond %{REQUEST_URI} !^/engine/editor.*
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /engine/dist/index.html [L]
 
-# A site's private shop files: invoices and payment records
+# A site's private shop files: invoices and payment records; and deleted files kept for undo
 RewriteCond %{REQUEST_URI} ^/storage/(-sites/[^/]+/)?_shop_files/ [OR]
+RewriteCond %{REQUEST_URI} ^/storage/_undo_files/ [OR]
 RewriteCond %{REQUEST_URI} ^/storage.*\.(xml|sqlite|db|log|php)$ [OR]
 RewriteCond %{REQUEST_URI} ^/storage/$ [OR]
 RewriteCond %{REQUEST_URI} ^/_templates/$
