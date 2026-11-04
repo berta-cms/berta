@@ -130,6 +130,17 @@ export class DeleteSiteSectionsAction {
   constructor(public siteName: string) {}
 }
 
+/**
+ * Replaces a site's sections with the given ones, fresh from the server.
+ */
+export class ReplaceSiteSectionsAction {
+  static readonly type = 'SITE_SECTIONS:REPLACE';
+  constructor(
+    public siteName: string,
+    public sections: SiteSectionStateModel[],
+  ) {}
+}
+
 export class ResetSiteSectionsAction {
   static readonly type = 'SITE_SECTIONS:RESET';
 }

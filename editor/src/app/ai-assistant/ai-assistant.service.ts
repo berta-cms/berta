@@ -1,53 +1,60 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppStateService } from '../app-state/app-state.service';
 
+import { AppStateService } from '../app-state/app-state.service';
+import { SiteStateModel } from '../sites/sites-state/site-state.model';
+import { SiteSettingsSiteResponse } from '../sites/settings/site-settings.interface';
+import { SitesTemplateSettingsSiteResponse } from '../sites/template-settings/site-template-settings.interface';
+import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sections-state.model';
+import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
+import { SectionTagsInterface } from '../sites/sections/tags/section-tags-state.model';
+
+/** One changed value of a change, as the server's change log records it. */
 export interface AiChangeItem {
   group: string;
-  setting: string;
+  key: string;
+  previous: string;
   value: string;
-  previous_value?: string | null;
 }
 
-export interface AiSectionChangeItem {
-  operation: 'create' | 'clone' | 'update' | 'delete' | 'reorder';
-  name?: string;
-  title?: string;
-  property?: string;
-  value?: string;
-  previous_value?: string | null;
-  order?: number;
+/** A change the chat made, logged on the server, so it can be undone. */
+export interface AiChange {
+  change_id: string;
+  tool: string;
+  subsite: string;
+  kind: string;
+  action: string;
+  items: AiChangeItem[];
 }
 
-export interface AiEntryChangeItem {
-  operation: 'create' | 'update' | 'delete';
-  section?: string;
-  entry_id?: string;
-  value?: string;
-  previous_value?: string | null;
-  description?: string;
+/** Fresh data of a site's parts that changes touched, in the shapes the state endpoint gives them. */
+export interface AiSiteData {
+  settings?: SiteSettingsSiteResponse;
+  template_settings?: SitesTemplateSettingsSiteResponse;
+  sections?: SiteSectionStateModel[];
+  entries?: { [sectionName: string]: SectionEntry[] };
+  tags?: { section: SectionTagsInterface[] };
 }
 
-export interface AiGalleryChangeItem {
-  operation: 'update_setting' | 'update_caption';
-  section?: string;
-  entry_id?: string;
-  setting?: string;
-  file_index?: number;
-  value?: string;
-  previous_value?: string | null;
+/** The parts of the editor's data that changes touched, read fresh by the server. */
+export interface AiRefresh {
+  sites?: SiteStateModel[];
+  site_data: { [siteName: string]: AiSiteData };
 }
 
 export interface AiChatResponse {
   reply: string;
-  is_undo: boolean;
-  design_changes: AiChangeItem[];
-  settings_changes: AiChangeItem[];
-  section_changes: AiSectionChangeItem[];
-  entry_changes: AiEntryChangeItem[];
-  gallery_changes: AiGalleryChangeItem[];
+  changes: AiChange[];
+  refresh: AiRefresh;
   daily_usage?: { count: number; limit: number };
+}
+
+export interface AiUndoResponse {
+  undone: string[];
+  refusal: string | null;
+  changes: AiChange[];
+  refresh: AiRefresh;
 }
 
 @Injectable({
@@ -60,18 +67,27 @@ export class AiAssistantService {
     message: string,
     history: { role: string; content: string }[],
     site: string,
-    template: string,
-    changeHistory: { user_message: string; design_changes: AiChangeItem[]; settings_changes: AiChangeItem[]; section_changes: AiSectionChangeItem[]; entry_changes: AiEntryChangeItem[]; gallery_changes: AiGalleryChangeItem[] }[] = [],
   ): Observable<AiChatResponse> {
     return this.appStateService
-      .sync('aiChat', { message, history, site, template, change_history: changeHistory }, 'POST')
+      .sync('aiChat', { message, history, site }, 'POST')
       .pipe(map((response: any) => response.data as AiChatResponse));
+  }
+
+  /** Undoes changes of a reply on the server, without the AI. */
+  undo(changeIds: string[]): Observable<AiUndoResponse> {
+    return this.appStateService
+      .sync('aiUndo', { change_ids: changeIds }, 'POST')
+      .pipe(map((response: any) => response.data as AiUndoResponse));
   }
 
   getQuota(): Observable<{ count: number; limit: number }> {
     return this.appStateService
       .sync('aiQuota', {}, 'GET')
-      .pipe(map((response: any) => response.data as { count: number; limit: number }));
+      .pipe(
+        map(
+          (response: any) => response.data as { count: number; limit: number },
+        ),
+      );
   }
 
   feedback(
@@ -81,7 +97,16 @@ export class AiAssistantService {
     conversation: { role: string; content: string }[],
   ): Observable<void> {
     return this.appStateService
-      .sync('aiFeedback', { vote, user_message: userMessage, assistant_message: assistantMessage, conversation }, 'POST')
+      .sync(
+        'aiFeedback',
+        {
+          vote,
+          user_message: userMessage,
+          assistant_message: assistantMessage,
+          conversation,
+        },
+        'POST',
+      )
       .pipe(map(() => undefined));
   }
 }
