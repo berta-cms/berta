@@ -59,6 +59,10 @@ class StateController extends Controller
             $state['urls']['aiUndo'] = route('ai_undo');
         }
 
+        if (Route::has('ai_approve')) {
+            $state['urls']['aiApprove'] = route('ai_approve');
+        }
+
         if (Route::has('ai_quota')) {
             $state['urls']['aiQuota'] = route('ai_quota');
         }

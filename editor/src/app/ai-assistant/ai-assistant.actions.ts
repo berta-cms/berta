@@ -1,4 +1,4 @@
-import { AiChange } from './ai-assistant.service';
+import { AiApproval, AiChange } from './ai-assistant.service';
 
 export class ToggleAiAssistantAction {
   static readonly type = 'AI_ASSISTANT:TOGGLE';
@@ -14,6 +14,17 @@ export class AiReplyReceivedAction {
   constructor(
     public reply: string,
     public changes: AiChange[],
+    public approvals: AiApproval[] = [],
+  ) {}
+}
+
+/** Approves or rejects a delete the assistant message at this index waits on. */
+export class ResolveAiApprovalAction {
+  static readonly type = 'AI_ASSISTANT:RESOLVE_APPROVAL';
+  constructor(
+    public messageIndex: number,
+    public approvalId: string,
+    public approve: boolean,
   ) {}
 }
 

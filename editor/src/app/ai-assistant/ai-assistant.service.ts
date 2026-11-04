@@ -43,9 +43,25 @@ export interface AiRefresh {
   site_data: { [siteName: string]: AiSiteData };
 }
 
+/** A delete the chat parked on the server until the user approves or rejects it. */
+export interface AiApproval {
+  id: string;
+  tool: string;
+  summary: string;
+}
+
+export interface AiApproveResponse {
+  approved: boolean;
+  /** The tool's message when it refused, e.g. because the item is gone. */
+  error?: string | null;
+  changes?: AiChange[];
+  refresh?: AiRefresh;
+}
+
 export interface AiChatResponse {
   reply: string;
   changes: AiChange[];
+  approvals?: AiApproval[];
   refresh: AiRefresh;
   daily_usage?: { count: number; limit: number };
 }
@@ -78,6 +94,13 @@ export class AiAssistantService {
     return this.appStateService
       .sync('aiUndo', { change_ids: changeIds }, 'POST')
       .pipe(map((response: any) => response.data as AiUndoResponse));
+  }
+
+  /** Runs or drops a delete the chat parked for approval, without the AI. */
+  approve(id: string, approve: boolean): Observable<AiApproveResponse> {
+    return this.appStateService
+      .sync('aiApprove', { id, approve }, 'POST')
+      .pipe(map((response: any) => response.data as AiApproveResponse));
   }
 
   getQuota(): Observable<{ count: number; limit: number }> {

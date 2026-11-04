@@ -6,6 +6,7 @@ import {
   AiReplyReceivedAction,
   SendAiMessageAction,
   UndoAiMessageAction,
+  ResolveAiApprovalAction,
 } from './ai-assistant.actions';
 import { AiAssistantService, AiChange } from './ai-assistant.service';
 import { AiAssistantState, AiAssistantStateModel } from './ai-assistant.state';
@@ -35,12 +36,17 @@ describe('AiAssistantState', () => {
       messages: [],
       isLoading: false,
       undoingIndex: null,
+      resolvingApprovalId: null,
       loadedSite: '',
       dailyLimitMessage: null,
       dailyUsage: null,
       pendingInput: null,
     };
-    service = jasmine.createSpyObj('AiAssistantService', ['chat', 'undo']);
+    service = jasmine.createSpyObj('AiAssistantService', [
+      'chat',
+      'undo',
+      'approve',
+    ]);
     mirror = jasmine.createSpy('mirror').and.returnValue(of(null));
     state = new AiAssistantState(
       {
@@ -169,5 +175,114 @@ describe('AiAssistantState', () => {
         changes: [CHANGE],
       }),
     );
+  });
+
+  describe('deletes waiting for approval', () => {
+    const APPROVAL = {
+      id: 'A1',
+      tool: 'delete-section',
+      summary: 'Delete section "works"',
+    };
+    const DELETE: AiChange = {
+      ...CHANGE,
+      change_id: '9',
+      tool: 'delete-section',
+      action: 'delete',
+    };
+
+    beforeEach(() => {
+      model.messages = [
+        {
+          role: 'assistant',
+          content: 'Approve below.',
+          approvals: [{ ...APPROVAL, status: 'pending' }],
+        },
+      ];
+    });
+
+    it('keeps the approvals of a reply as pending', () => {
+      model.messages = [];
+      service.chat.and.returnValue(
+        of({
+          reply: 'Approve below.',
+          changes: [],
+          approvals: [APPROVAL],
+          refresh: { site_data: {} },
+        }),
+      );
+
+      state
+        .sendMessage(context, new SendAiMessageAction('Delete works'))
+        .subscribe();
+
+      expect(model.messages[1].approvals).toEqual([
+        { ...APPROVAL, status: 'pending' },
+      ]);
+    });
+
+    it('deletes on approval, shows it in the editor, and lets the reply undo it', () => {
+      service.approve.and.returnValue(
+        of({
+          approved: true,
+          error: null,
+          changes: [DELETE],
+          refresh: REFRESH,
+        }),
+      );
+
+      state
+        .resolveApproval(context, new ResolveAiApprovalAction(0, 'A1', true))
+        .subscribe();
+
+      expect(service.approve).toHaveBeenCalledWith('A1', true);
+      expect(mirror).toHaveBeenCalledWith([DELETE], REFRESH);
+      expect(model.messages[0].approvals![0].status).toBe('approved');
+      expect(model.messages[0].changes).toEqual([DELETE]);
+      expect(model.resolvingApprovalId).toBeNull();
+    });
+
+    it('keeps everything on rejection', () => {
+      service.approve.and.returnValue(of({ approved: false }));
+
+      state
+        .resolveApproval(context, new ResolveAiApprovalAction(0, 'A1', false))
+        .subscribe();
+
+      expect(mirror).not.toHaveBeenCalled();
+      expect(model.messages[0].approvals![0].status).toBe('rejected');
+      expect(model.messages[0].changes).toBeUndefined();
+    });
+
+    it('tells when the approval expired', () => {
+      service.approve.and.returnValue(throwError(() => ({ status: 404 })));
+
+      state
+        .resolveApproval(context, new ResolveAiApprovalAction(0, 'A1', true))
+        .subscribe();
+
+      expect(model.messages[0].approvals![0].status).toBe('expired');
+    });
+
+    it('shows why an approved delete failed', () => {
+      service.approve.and.returnValue(
+        of({
+          approved: true,
+          error: 'Section "works" not found.',
+          changes: [],
+          refresh: { site_data: {} },
+        }),
+      );
+
+      state
+        .resolveApproval(context, new ResolveAiApprovalAction(0, 'A1', true))
+        .subscribe();
+
+      expect(model.messages[0].approvals![0]).toEqual(
+        jasmine.objectContaining({
+          status: 'failed',
+          error: 'Section "works" not found.',
+        }),
+      );
+    });
   });
 });

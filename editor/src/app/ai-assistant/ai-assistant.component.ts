@@ -16,6 +16,7 @@ import {
   ToggleAiAssistantAction,
   SubmitAiFeedbackAction,
   UndoAiMessageAction,
+  ResolveAiApprovalAction,
 } from './ai-assistant.actions';
 import { AppState } from '../app-state/app.state';
 
@@ -93,7 +94,11 @@ const EXAMPLE_PROMPTS = [
                 </div>
               </div>
             }
-            @for (msg of messages$ | async; track $index) {
+            @for (
+              msg of messages$ | async;
+              track $index;
+              let msgIndex = $index
+            ) {
               <div
                 class="ai-message"
                 [class.ai-message--user]="msg.role === 'user'"
@@ -101,6 +106,63 @@ const EXAMPLE_PROMPTS = [
               >
                 @if (msg.role === 'assistant') {
                   <span [innerHTML]="msg.content | markdown"></span>
+                  @for (approval of msg.approvals ?? []; track approval.id) {
+                    <div class="ai-approval">
+                      <span class="ai-approval-summary">{{
+                        approval.summary
+                      }}</span>
+                      @switch (approval.status) {
+                        @case ('pending') {
+                          <div class="ai-approval-actions">
+                            <button
+                              class="ai-approve-btn"
+                              [disabled]="
+                                (resolvingApprovalId$ | async) !== null
+                              "
+                              (click)="
+                                resolveApproval(msgIndex, approval.id, true)
+                              "
+                            >
+                              {{
+                                (resolvingApprovalId$ | async) === approval.id
+                                  ? 'Deleting…'
+                                  : 'Approve'
+                              }}
+                            </button>
+                            <button
+                              class="ai-reject-btn"
+                              [disabled]="
+                                (resolvingApprovalId$ | async) !== null
+                              "
+                              (click)="
+                                resolveApproval(msgIndex, approval.id, false)
+                              "
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        }
+                        @case ('approved') {
+                          <span class="ai-approval-status">Deleted</span>
+                        }
+                        @case ('rejected') {
+                          <span class="ai-approval-status">Kept</span>
+                        }
+                        @case ('expired') {
+                          <span
+                            class="ai-approval-status ai-approval-status--error"
+                            >This request expired; ask again.</span
+                          >
+                        }
+                        @case ('failed') {
+                          <span
+                            class="ai-approval-status ai-approval-status--error"
+                            >{{ approval.error }}</span
+                          >
+                        }
+                      }
+                    </div>
+                  }
                   @if (msg.changes?.length || msg.undone) {
                     <div class="ai-undo">
                       @if (msg.changes?.length) {
@@ -496,6 +558,57 @@ const EXAMPLE_PROMPTS = [
         font-weight: 600;
       }
 
+      .ai-approval {
+        margin-top: 8px;
+        padding: 6px 8px;
+        border: 1px solid #e3c9c9;
+        border-radius: 4px;
+        background: #fdf6f6;
+        font-size: 12px;
+      }
+
+      .ai-approval-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 6px;
+      }
+
+      .ai-approve-btn,
+      .ai-reject-btn {
+        border-radius: 3px;
+        padding: 2px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .ai-approve-btn {
+        border: 1px solid #a33;
+        background: #a33;
+        color: #fff;
+      }
+
+      .ai-reject-btn {
+        border: 1px solid #ccc;
+        background: none;
+        color: #555;
+      }
+
+      .ai-approve-btn:disabled,
+      .ai-reject-btn:disabled {
+        cursor: default;
+        opacity: 0.6;
+      }
+
+      .ai-approval-status {
+        display: block;
+        margin-top: 4px;
+        color: #777;
+      }
+
+      .ai-approval-status--error {
+        color: #a33;
+      }
+
       .ai-undo {
         margin-top: 6px;
       }
@@ -564,6 +677,7 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
   messages$: Observable<AiMessage[]>;
   isLoading$: Observable<boolean>;
   undoingIndex$: Observable<number | null>;
+  resolvingApprovalId$: Observable<string | null>;
   dailyLimitMessage$: Observable<string | null>;
   dailyUsage$: Observable<{ count: number; limit: number } | null>;
   hasFeedback$: Observable<boolean>;
@@ -584,6 +698,9 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
     this.messages$ = this.store.select(AiAssistantState.messages);
     this.isLoading$ = this.store.select(AiAssistantState.isLoading);
     this.undoingIndex$ = this.store.select(AiAssistantState.undoingIndex);
+    this.resolvingApprovalId$ = this.store.select(
+      AiAssistantState.resolvingApprovalId,
+    );
     this.dailyLimitMessage$ = this.store.select(
       AiAssistantState.dailyLimitMessage,
     );
@@ -647,6 +764,12 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
   clearChat(event: Event) {
     event.preventDefault();
     this.store.dispatch(new ClearAiChatAction());
+  }
+
+  resolveApproval(messageIndex: number, approvalId: string, approve: boolean) {
+    this.store.dispatch(
+      new ResolveAiApprovalAction(messageIndex, approvalId, approve),
+    );
   }
 
   undo(messageIndex: number) {

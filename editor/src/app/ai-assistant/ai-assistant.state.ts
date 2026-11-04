@@ -6,18 +6,30 @@ import { catchError, concatMap, finalize, tap } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
 import { UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLoginAction } from '../user/user.actions';
-import { AiAssistantService, AiChange } from './ai-assistant.service';
+import {
+  AiApproval,
+  AiAssistantService,
+  AiChange,
+} from './ai-assistant.service';
 import { AiChangesMirrorService } from './ai-changes-mirror.service';
 import {
   ToggleAiAssistantAction,
   SendAiMessageAction,
   AiReplyReceivedAction,
   UndoAiMessageAction,
+  ResolveAiApprovalAction,
   ClearAiChatAction,
   SubmitAiFeedbackAction,
   FetchAiQuotaAction,
   AiQuotaFetchedAction,
 } from './ai-assistant.actions';
+
+/** A delete an assistant reply waits on, and what became of it. */
+export interface AiMessageApproval extends AiApproval {
+  status: 'pending' | 'approved' | 'rejected' | 'expired' | 'failed';
+  /** Why the approved delete failed, e.g. because the item is gone. */
+  error?: string;
+}
 
 export interface AiMessage {
   role: 'user' | 'assistant';
@@ -29,6 +41,8 @@ export interface AiMessage {
   undone?: boolean;
   /** Why they couldn't be undone, e.g. because they were changed since. */
   undoRefusal?: string;
+  /** Deletes the reply waits on; approving one adds its changes to the reply's. */
+  approvals?: AiMessageApproval[];
 }
 
 export interface AiAssistantStateModel {
@@ -37,6 +51,8 @@ export interface AiAssistantStateModel {
   isLoading: boolean;
   /** The index of the message whose changes are being undone. */
   undoingIndex: number | null;
+  /** The id of the approval being resolved. */
+  resolvingApprovalId: string | null;
   loadedSite: string | null;
   dailyLimitMessage: string | null;
   dailyUsage: { count: number; limit: number } | null;
@@ -50,6 +66,7 @@ const defaults: AiAssistantStateModel = {
   messages: [],
   isLoading: false,
   undoingIndex: null,
+  resolvingApprovalId: null,
   loadedSite: null,
   dailyLimitMessage: null,
   dailyUsage: null,
@@ -59,7 +76,8 @@ const defaults: AiAssistantStateModel = {
 /**
  * The editor's AI chat. The server's agent reads and changes the site with the same tools AI apps use over MCP;
  * each reply comes with the changes it made and the fresh data of what they touched, which AiChangesMirrorService
- * shows in the editor and the preview. A reply's changes are undone on the server, without the AI. Each site's
+ * shows in the editor and the preview. A reply's changes are undone on the server, without the AI. Deletes wait for
+ * the user's approval: a reply lists them, and approving runs one on the server, without the AI. Each site's
  * conversation is kept in the browser.
  */
 @State<AiAssistantStateModel>({
@@ -86,6 +104,11 @@ export class AiAssistantState {
   @Selector()
   static undoingIndex(state: AiAssistantStateModel) {
     return state.undoingIndex;
+  }
+
+  @Selector()
+  static resolvingApprovalId(state: AiAssistantStateModel) {
+    return state.resolvingApprovalId;
   }
 
   @Selector()
@@ -196,6 +219,7 @@ export class AiAssistantState {
                   new AiReplyReceivedAction(
                     response.reply,
                     response.changes ?? [],
+                    response.approvals ?? [],
                   ),
                 ),
               ),
@@ -232,6 +256,14 @@ export class AiAssistantState {
         role: 'assistant',
         content: action.reply,
         ...(action.changes.length ? { changes: action.changes } : {}),
+        ...(action.approvals.length
+          ? {
+              approvals: action.approvals.map((approval) => ({
+                ...approval,
+                status: 'pending' as const,
+              })),
+            }
+          : {}),
       },
     ];
     patchState({ messages, isLoading: false });
@@ -292,6 +324,87 @@ export class AiAssistantState {
       );
   }
 
+  @Action(ResolveAiApprovalAction)
+  resolveApproval(
+    { patchState, getState }: StateContext<AiAssistantStateModel>,
+    action: ResolveAiApprovalAction,
+  ) {
+    const approval = getState().messages[action.messageIndex]?.approvals?.find(
+      (pending) => pending.id === action.approvalId,
+    );
+
+    if (
+      approval?.status !== 'pending' ||
+      getState().resolvingApprovalId !== null
+    ) {
+      return EMPTY;
+    }
+
+    patchState({ resolvingApprovalId: action.approvalId });
+
+    const settle = (
+      update: Partial<AiMessageApproval>,
+      changes: AiChange[] = [],
+    ) => {
+      const messages = getState().messages.map((message, index) =>
+        index !== action.messageIndex
+          ? message
+          : {
+              ...message,
+              // The approved delete can be undone with the reply's other changes.
+              ...(changes.length
+                ? {
+                    changes: [...(message.changes ?? []), ...changes],
+                    undone: false,
+                  }
+                : {}),
+              approvals: (message.approvals ?? []).map((pending) =>
+                pending.id === action.approvalId
+                  ? { ...pending, ...update }
+                  : pending,
+              ),
+            },
+      );
+      patchState({ messages, resolvingApprovalId: null });
+      this.saveMessages(messages);
+    };
+
+    return this.aiAssistantService
+      .approve(action.approvalId, action.approve)
+      .pipe(
+        concatMap((response) => {
+          if (!response.approved) {
+            settle({ status: 'rejected' });
+            return EMPTY;
+          }
+
+          const changes = response.changes ?? [];
+
+          return this.changesMirror
+            .mirror(changes, response.refresh ?? { site_data: {} })
+            .pipe(
+              finalize(() =>
+                settle(
+                  response.error
+                    ? { status: 'failed', error: response.error }
+                    : { status: 'approved' },
+                  changes,
+                ),
+              ),
+            );
+        }),
+        catchError((error) => {
+          if (error?.status === 404) {
+            settle({ status: 'expired' });
+          } else {
+            console.error('AI assistant approval error:', error);
+            patchState({ resolvingApprovalId: null });
+          }
+          return EMPTY;
+        }),
+      );
+  }
+
   @Action(SubmitAiFeedbackAction)
   submitFeedback(
     { getState, patchState }: StateContext<AiAssistantStateModel>,
@@ -337,6 +450,7 @@ export class AiAssistantState {
       messages: [],
       isLoading: false,
       undoingIndex: null,
+      resolvingApprovalId: null,
       dailyLimitMessage: null,
       pendingInput: null,
     });
