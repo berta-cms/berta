@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  * new change. Requests without the editor window header (other clients, older editors) pass unchecked, and so do
  * writes of a window that hasn't seen a change yet (no change header), e.g. a save retried right after login.
  * Routes that change no site data opt out with withoutMiddleware(), so other windows aren't asked to reload for them.
+ * Routes whose handler marks the changes it makes itself (e.g. the AI chat, whose agent may change nothing or many
+ * things) use the MARKED_BY_HANDLER parameter: the write is still refused when the window missed a change, but isn't
+ * marked as a change of its own, and the answer carries the latest marker, the handler's changes included.
  */
 class EditorSync
 {
@@ -34,11 +37,16 @@ class EditorSync
     public const CHANGE_SOURCE_HEADER = 'X-Berta-Change-Source';
 
     /**
+     * Route middleware parameter, as EditorSync::class . ':' . EditorSync::MARKED_BY_HANDLER.
+     */
+    public const MARKED_BY_HANDLER = 'marked-by-handler';
+
+    /**
      * Handle an incoming request.
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $mode = ''): Response
     {
         $markers = new ChangeMarker;
         $editor = (string) $request->header(self::EDITOR_HEADER, '');
@@ -56,7 +64,9 @@ class EditorSync
 
         $response = $next($request);
 
-        if ($isEditorWrite && $this->saved($response)) {
+        if ($mode === self::MARKED_BY_HANDLER) {
+            $latest = $markers->current();
+        } elseif ($isEditorWrite && $this->saved($response)) {
             $latest = $this->markSaved($markers, $latest, $editor);
         }
 

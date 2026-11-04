@@ -226,6 +226,47 @@ it('tells a window about a change someone else made while its save ran', functio
         ->and((new ChangeMarker)->current())->toMatchArray(['writer' => EDITOR_WINDOW_A, 'source' => 'editor']);
 });
 
+describe('routes whose handler marks its own changes', function () {
+    it('marks nothing itself, and answers with the change the handler marked', function () {
+        $request = Request::create('/_api/v1/plugin/ai/chat', 'POST', server: ['HTTP_X_BERTA_EDITOR' => EDITOR_WINDOW_A, 'HTTP_X_BERTA_CHANGE' => '']);
+        $handlerChange = null;
+
+        $response = (new EditorSync)->handle($request, function () use (&$handlerChange) {
+            $handlerChange = (new ChangeMarker)->touch(ChangeMarker::SOURCE_AGENT, EDITOR_WINDOW_A);
+
+            return response()->json([]);
+        }, EditorSync::MARKED_BY_HANDLER);
+
+        expect($response->headers->get('X-Berta-Change'))->toBe($handlerChange['token'])
+            ->and($response->headers->get('X-Berta-Change-Writer'))->toBe(EDITOR_WINDOW_A)
+            ->and((new ChangeMarker)->current())->toBe($handlerChange);
+    });
+
+    it('marks no change when the handler made none', function () {
+        $request = Request::create('/_api/v1/plugin/ai/chat', 'POST', server: ['HTTP_X_BERTA_EDITOR' => EDITOR_WINDOW_A, 'HTTP_X_BERTA_CHANGE' => '']);
+
+        (new EditorSync)->handle($request, fn () => response()->json([]), EditorSync::MARKED_BY_HANDLER);
+
+        expect((new ChangeMarker)->current()['token'])->toBe('');
+    });
+
+    it('still refuses a window that missed a change', function () {
+        $marker = (new ChangeMarker)->touch(ChangeMarker::SOURCE_EDITOR, EDITOR_WINDOW_B);
+        $request = Request::create('/_api/v1/plugin/ai/chat', 'POST', server: ['HTTP_X_BERTA_EDITOR' => EDITOR_WINDOW_A, 'HTTP_X_BERTA_CHANGE' => 'older']);
+        $handled = false;
+
+        $response = (new EditorSync)->handle($request, function () use (&$handled) {
+            $handled = true;
+
+            return response()->json([]);
+        }, EditorSync::MARKED_BY_HANDLER);
+
+        expect($response->getStatusCode())->toBe(409)
+            ->and($handled)->toBeFalse()
+            ->and($response->headers->get('X-Berta-Change'))->toBe($marker['token']);
+    });
+});
+
 it('keeps the earlier change when the cache cannot store the save', function () {
     Cache::shouldReceive('get')->andReturn(['token' => 'earlier', 'writer' => EDITOR_WINDOW_B, 'source' => 'editor']);
     Cache::shouldReceive('forever')->andThrow(new RuntimeException('Read-only cache.'));
