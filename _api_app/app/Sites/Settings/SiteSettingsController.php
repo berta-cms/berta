@@ -2,6 +2,8 @@
 
 namespace App\Sites\Settings;
 
+use App\Configuration\SettingValueValidator;
+use App\Configuration\SiteSettingsConfigService;
 use App\Http\Controllers\Controller;
 use App\Shared\Helpers;
 use Illuminate\Http\Request;
@@ -44,6 +46,12 @@ class SiteSettingsController extends Controller
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
         $settingsDataService = new SiteSettingsDataService($site);
+
+        // "<site>/settings/<group>/<key>"; deeper paths are entries of list settings
+        $definition = count($path_arr) === 4 && $path_arr[3] !== '_' ? ((new SiteSettingsConfigService)->get()[$path_arr[2]][$path_arr[3]] ?? null) : null;
+        if ($error = (new SettingValueValidator)->errorFor($json['value'], $definition)) {
+            return response()->json(['path' => $json['path'], 'value' => $json['value'], 'error_message' => $error], 422);
+        }
 
         $res = $settingsDataService->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done

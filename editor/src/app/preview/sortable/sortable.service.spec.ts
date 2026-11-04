@@ -14,6 +14,13 @@ interface Point {
  * Drives the service with synthetic pointer events against a real
  * same-origin iframe, the way the preview uses it.
  */
+/**
+ * The synthetic pointer's id. Not 1, the real mouse's id in Chrome: moving the real mouse over the
+ * test page while a spec drags would otherwise move the synthetic drag too (rare failures in a
+ * visible browser, e.g. auto-scroll stopping).
+ */
+const POINTER_ID = 9;
+
 describe('SortableService', () => {
   let iframe: HTMLIFrameElement;
   let doc: Document;
@@ -103,7 +110,7 @@ describe('SortableService', () => {
         bubbles: true,
         cancelable: true,
         isPrimary: true,
-        pointerId: 1,
+        pointerId: POINTER_ID,
         button: 0,
         clientX: point.x,
         clientY: point.y,
@@ -431,7 +438,10 @@ describe('SortableService', () => {
       el('.xEntriesList').outerHTML = ENTRIES_HTML(['1', '2', '3']);
       // Fired at the document once the capturing list is gone.
       doc.dispatchEvent(
-        new PointerEvent('lostpointercapture', { bubbles: true, pointerId: 1 }),
+        new PointerEvent('lostpointercapture', {
+          bubbles: true,
+          pointerId: POINTER_ID,
+        }),
       );
 
       expect(doc.documentElement.classList).not.toContain('xSorting');
@@ -660,7 +670,7 @@ describe('SortableService', () => {
 
       pointer('pointermove', link, at(el('#tag-b'), 0.8, 0.5));
 
-      expect(capture).toHaveBeenCalledOnceWith(1);
+      expect(capture).toHaveBeenCalledOnceWith(POINTER_ID);
       expect(capture.calls.mostRecent().object).toBe(el('.subMenu'));
     });
 

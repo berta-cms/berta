@@ -1,3 +1,5 @@
+import { AiApproval, AiChange } from './ai-assistant.service';
+
 export class ToggleAiAssistantAction {
   static readonly type = 'AI_ASSISTANT:TOGGLE';
 }
@@ -7,17 +9,29 @@ export class SendAiMessageAction {
   constructor(public message: string) {}
 }
 
-export class AiMessageReceivedAction {
-  static readonly type = 'AI_ASSISTANT:MESSAGE_RECEIVED';
+export class AiReplyReceivedAction {
+  static readonly type = 'AI_ASSISTANT:REPLY_RECEIVED';
   constructor(
     public reply: string,
-    public designChanges: { group: string; setting: string; value: string; previous_value?: string | null }[],
-    public settingsChanges: { group: string; setting: string; value: string; previous_value?: string | null }[],
-    public sectionChanges: { operation: string; name?: string; title?: string; property?: string; value?: string; previous_value?: string | null; order?: number }[],
-    public isUndo: boolean = false,
-    public entryChanges: { operation: 'create' | 'update' | 'delete'; section?: string; entry_id?: string; value?: string; previous_value?: string | null; description?: string }[] = [],
-    public galleryChanges: { operation: 'update_setting' | 'update_caption'; section?: string; entry_id?: string; setting?: string; file_index?: number; value?: string; previous_value?: string | null }[] = [],
+    public changes: AiChange[],
+    public approvals: AiApproval[] = [],
   ) {}
+}
+
+/** Approves or rejects a delete the assistant message at this index waits on. */
+export class ResolveAiApprovalAction {
+  static readonly type = 'AI_ASSISTANT:RESOLVE_APPROVAL';
+  constructor(
+    public messageIndex: number,
+    public approvalId: string,
+    public approve: boolean,
+  ) {}
+}
+
+/** Undoes the changes of the assistant message at this index. */
+export class UndoAiMessageAction {
+  static readonly type = 'AI_ASSISTANT:UNDO_MESSAGE';
+  constructor(public messageIndex: number) {}
 }
 
 export class ClearAiChatAction {
@@ -35,5 +49,8 @@ export class AiQuotaFetchedAction {
 
 export class SubmitAiFeedbackAction {
   static readonly type = 'AI_ASSISTANT:SUBMIT_FEEDBACK';
-  constructor(public messageIndex: number, public vote: 'up' | 'down') {}
+  constructor(
+    public messageIndex: number,
+    public vote: 'up' | 'down',
+  ) {}
 }

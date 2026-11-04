@@ -43,6 +43,7 @@ import {
   UpdateEntryGalleryVideoPosterAction,
   UpdateEntryGalleryImageCropAction,
   SwapContentsSitesSectionsEntriesAction,
+  ReplaceSectionEntriesAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -372,6 +373,27 @@ export class SectionEntriesState implements NgxsOnInit {
     const newState = { ...getState() };
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  @Action(ReplaceSectionEntriesAction)
+  replaceSectionEntries(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: ReplaceSectionEntriesAction,
+  ) {
+    const replaced = Object.keys(action.entriesBySection);
+    const kept = (getState()[action.siteName] ?? []).filter(
+      (entry) =>
+        !replaced.includes(entry.sectionName) &&
+        (action.sectionNames === null ||
+          action.sectionNames.includes(entry.sectionName)),
+    );
+
+    patchState({
+      [action.siteName]: [
+        ...kept,
+        ...replaced.flatMap((section) => action.entriesBySection[section]),
+      ],
+    });
   }
 
   @Action(ResetSectionEntriesAction)

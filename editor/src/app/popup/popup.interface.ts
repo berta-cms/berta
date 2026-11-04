@@ -1,7 +1,7 @@
 import { PopupService } from './popup.service';
 
 export interface PopupState {
-  type: 'error' | 'warning' | 'info' | 'success' | Object;
+  type: 'error' | 'warn' | 'info' | 'success' | Object;
   content: any;
   showOverlay?: boolean;
   isModal?: boolean;

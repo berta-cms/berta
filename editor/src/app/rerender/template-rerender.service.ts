@@ -41,6 +41,7 @@ import {
 import {
   DeleteSiteAction,
   ReOrderSitesAction,
+  SiteContentRefreshedAction,
   SwapContentsSitesAction,
   UpdateSiteAction,
 } from '../sites/sites-state/sites.actions';
@@ -92,7 +93,9 @@ export class TemplateRerenderService {
         compList = info.socialMediaComp;
         break;
       case TemplateRerenderService.SITE_TEXTS:
-        if (info.siteTexts) { compList.push(info.siteTexts); }
+        if (info.siteTexts) {
+          compList.push(info.siteTexts);
+        }
         break;
     }
 
@@ -213,6 +216,36 @@ export class TemplateRerenderService {
         const viewData = this.renderService.getViewData();
         replaceContent(iframe.contentDocument, 'sitesMenu', viewData.sitesMenu);
         iframe.contentWindow.dispatchEvent(new Event('sitesMenuRerendered'));
+      });
+  }
+
+  /**
+   * Re-renders the menus, entries and portfolio thumbnails after the store got fresh content of a site from the
+   * server, e.g. after AI chat changes.
+   */
+  public handleSiteContentRefreshRerender(
+    iframe: HTMLIFrameElement,
+  ): Subscription {
+    return this.actions$
+      .pipe(ofActionSuccessful(SiteContentRefreshedAction))
+      .subscribe(() => {
+        const viewData = this.renderService.getViewData();
+
+        replaceContent(iframe.contentDocument, 'sitesMenu', viewData.sitesMenu);
+        replaceContent(
+          iframe.contentDocument,
+          'sectionsMenu',
+          viewData.sectionsMenu,
+        );
+        replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries);
+        replaceContent(
+          iframe.contentDocument,
+          'portfolioThumbnails',
+          viewData.portfolioThumbnails,
+        );
+        iframe.contentWindow.dispatchEvent(new Event('sitesMenuRerendered'));
+        iframe.contentWindow.dispatchEvent(new Event('sectionsMenuRerendered'));
+        notifyEntriesRerendered(iframe);
       });
   }
 

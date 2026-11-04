@@ -31,6 +31,7 @@ import {
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
   InitSiteSectionsAction,
+  ReplaceSiteSectionsAction,
   UpdateSiteSectionBackgroundFromSyncAction,
   AddSiteSectionAction,
   ReOrderSiteSectionsAction,
@@ -779,23 +780,32 @@ export class SiteSectionsState implements NgxsOnInit {
     { setState }: StateContext<SiteSectionStateModel[]>,
     action: InitSiteSectionsAction,
   ) {
-    let sections = action.payload;
+    setState(
+      action.payload instanceof Array
+        ? action.payload.map((section) => SiteSectionsState.withType(section))
+        : action.payload,
+    );
+  }
 
-    if (action.payload instanceof Array) {
-      sections = action.payload.map((section) => {
-        if (!section['@attributes']) {
-          section = { ...section, '@attributes': {} };
-        }
-        if (!section['@attributes']['type']) {
-          section['@attributes'] = {
-            ...section['@attributes'],
-            type: 'default',
-          };
-        }
-        return section;
-      });
-    }
+  @Action(ReplaceSiteSectionsAction)
+  replaceSiteSections(
+    { getState, setState }: StateContext<SiteSectionStateModel[]>,
+    action: ReplaceSiteSectionsAction,
+  ) {
+    setState([
+      ...getState().filter((section) => section.site_name !== action.siteName),
+      ...action.sections.map((section) => SiteSectionsState.withType(section)),
+    ]);
+  }
 
-    setState(sections);
+  /** The section with its type, "default" when the server stores none. */
+  private static withType(
+    section: SiteSectionStateModel,
+  ): SiteSectionStateModel {
+    const attributes = section['@attributes'] ?? {};
+
+    return attributes['type']
+      ? { ...section, '@attributes': attributes }
+      : { ...section, '@attributes': { ...attributes, type: 'default' } };
   }
 }
