@@ -7,8 +7,6 @@ use Detection\MobileDetect;
 
 class SectionBackgroundGalleryRenderService
 {
-    private $USED_IN_TEMPLATES = ['messy'];
-
     private function getWrapperAttributes($currentSection, $isEditMode)
     {
         $attributes['id'] = 'xBackground';
@@ -123,9 +121,7 @@ class SectionBackgroundGalleryRenderService
         $request,
         $isEditMode
     ) {
-        $templateName = explode('-', $siteSettings['template']['template'])[0];
-
-        if (! in_array($templateName, $this->USED_IN_TEMPLATES)) {
+        if (! SectionBackgroundSettings::shownOn($siteSettings['template']['template'])) {
             return '';
         }
 

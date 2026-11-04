@@ -1230,12 +1230,18 @@ class SectionEntriesDataService extends Storage
                 return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
-            // Keep the file when another gallery refers to the folder, as it may show the file too
-            if (! isset($this->mediaFoldersReferencedOutside($this->SECTION_NAME, (string) $entry['id'])[$entry['mediafolder']])) {
-                $this->deleteMedia($this->MEDIA_ROOT . '/' . $entry['mediafolder'] . '/', $file);
-            }
-
+            $poster = (string) ($files[$file_order]['@attributes']['poster_frame'] ?? '');
             $file = current(array_splice($files, $file_order, 1));
+
+            if (! $this->isMediaFolderReferencedElsewhere((string) $entry['mediafolder'], $this->SECTION_NAME, (string) $entry['id'])) {
+                $folder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'];
+                $this->removeImageWithThumbnails($folder, $file['@attributes']['src']);
+
+                // A video's poster goes with it, unless another file of the gallery uses that image too.
+                if ($poster !== '' && ! in_array($poster, self::galleryFileNames($files), true)) {
+                    $this->removeImageWithThumbnails($folder, $poster);
+                }
+            }
 
             $entries['entry'][$entry_order]['mediaCacheData']['file'] = array_filter($files, function ($f) use ($file) {
                 return $f['@attributes']['src'] != $file;
@@ -1252,24 +1258,6 @@ class SectionEntriesDataService extends Storage
         }
 
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
-    }
-
-    // @todo video poster should also be removed
-    private function deleteMedia($folder, $file = '')
-    {
-        @unlink($folder . $file);
-
-        if ($handle = opendir($folder)) {
-            while (false !== ($f = readdir($handle))) {
-                if (! $file || strpos($f, $file) !== false) {
-                    if (substr($f, 0, 1) == '_') {
-                        @unlink($folder . $f);
-                    }
-                }
-            }
-
-            closedir($handle);
-        }
     }
 
     /**

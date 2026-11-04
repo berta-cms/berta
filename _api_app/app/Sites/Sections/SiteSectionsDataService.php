@@ -534,11 +534,7 @@ class SiteSectionsDataService extends Storage
         if ($section_order !== false) {
             $section = &$sections['section'][$section_order];
 
-            if (! isset($section['mediaCacheData'])) {
-                return ['error_message' => 'File "' . $file . '" not found!'];
-            }
-
-            $files = $this->asList($section['mediaCacheData']['file']);
+            $files = $this->asList($section['mediaCacheData']['file'] ?? []);
             $file_order = array_search(
                 $file,
                 array_column(
@@ -554,8 +550,9 @@ class SiteSectionsDataService extends Storage
                 return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
-            $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
-            $this->deleteMedia($mediafolder, $file);
+            if (! $this->isMediaFolderReferencedElsewhere((string) $section['mediafolder'], $name)) {
+                $this->removeImageWithThumbnails($this->MEDIA_ROOT . '/' . $section['mediafolder'], $file);
+            }
 
             $file = current(array_splice($files, $file_order, 1));
 
@@ -729,23 +726,6 @@ class SiteSectionsDataService extends Storage
         }
 
         return $slug;
-    }
-
-    private function deleteMedia($folder, $file = '')
-    {
-        @unlink($folder . $file);
-
-        if ($handle = opendir($folder)) {
-            while (false !== ($f = readdir($handle))) {
-                if (! $file || strpos($f, $file) !== false) {
-                    if (substr($f, 0, 1) == '_') {
-                        @unlink($folder . $f);
-                    }
-                }
-            }
-
-            closedir($handle);
-        }
     }
 
     /**

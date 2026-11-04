@@ -194,3 +194,87 @@ it('keeps a gallery file in a folder another gallery refers to, and still delete
         ->and($this->storage . '/media/news2/x.jpg')->not->toBeFile()
         ->and((new SectionEntriesDataService('', 'photographs'))->get()['entry'][0]['mediaCacheData']['file'])->toBe([]);
 });
+
+it('keeps a background file in a folder an entry refers to, and still deletes one in its own folder', function () {
+    // The news background is in news2, the folder of news entry 1.
+    file_put_contents(
+        $this->storage . '/sections.xml',
+        '<?xml version="1.0" encoding="utf-8"?><sections>'
+        . '<section tags_behavior="invisible" published="1"><name><![CDATA[photographs]]></name><title><![CDATA[Photographs]]></title>'
+        . '<mediafolder><![CDATA[photographs-background]]></mediafolder><mediaCacheData><file type="image" src="bg.jpg"><![CDATA[]]></file></mediaCacheData></section>'
+        . '<section tags_behavior="invisible" published="1"><name><![CDATA[news]]></name><title><![CDATA[News]]></title>'
+        . '<mediafolder><![CDATA[news2]]></mediafolder><mediaCacheData><file type="image" src="sea.jpg"><![CDATA[]]></file></mediaCacheData></section>'
+        . '</sections>',
+    );
+
+    (new SiteSectionsDataService)->backgroundGalleryDelete('photographs', 'bg.jpg');
+    (new SiteSectionsDataService)->backgroundGalleryDelete('news', 'sea.jpg');
+
+    expect($this->storage . '/media/photographs-background/bg.jpg')->not->toBeFile()
+        ->and($this->storage . '/media/news2/sea.jpg')->toBeFile()
+        ->and((new SiteSectionsDataService)->get('news')['mediaCacheData']['file'] ?? [])->toBe([]);
+});
+
+it('deletes a gallery file with its own resized copies, not those of files with similar names', function (string $gallery, string $folder) {
+    file_put_contents(
+        $this->storage . '/sections.xml',
+        '<?xml version="1.0" encoding="utf-8"?><sections>'
+        . '<section tags_behavior="invisible" published="1" entry_count="1"><name><![CDATA[photographs]]></name><title><![CDATA[Photographs]]></title>'
+        . '<mediafolder><![CDATA[photographs-background]]></mediafolder><mediaCacheData><file type="image" src="x.jpg"><![CDATA[]]></file></mediaCacheData></section>'
+        . '<section tags_behavior="invisible" published="1" entry_count="2"><name><![CDATA[news]]></name><title><![CDATA[News]]></title></section>'
+        . '</sections>',
+    );
+    $copies = ['_smallthumb_x.jpg', '_bg_x.jpg', '_grid_x.jpg', '_600x400_x.jpg'];
+    $others = ['ax.jpg', '_smallthumb_ax.jpg', '_600x400_ax.jpg', '_bg_x.jpg.png', 'x.jpg.png'];
+
+    foreach (['x.jpg', ...$copies, ...$others] as $file) {
+        writeMediaFile($this->storage, "{$folder}/{$file}");
+    }
+
+    if ($gallery === 'entry') {
+        (new SectionEntriesDataService('', 'news'))->galleryDelete('news', '1', 'x.jpg');
+    } else {
+        (new SiteSectionsDataService)->backgroundGalleryDelete('photographs', 'x.jpg');
+    }
+
+    expect(array_values(array_diff(scandir($this->storage . "/media/{$folder}"), ['.', '..'])))
+        ->toEqualCanonicalizing($gallery === 'entry' ? [...$others, 'sea.jpg'] : [...$others, 'bg.jpg']);
+})->with([
+    'entry gallery' => ['entry', 'news2'],
+    'background' => ['background', 'photographs-background'],
+]);
+
+it('removes a settings image with its own resized copies only, in the shared media folder', function () {
+    foreach (['logo.png', '_180x180_logo.png', '_16x16_logo.png', 'mylogo.png', '_180x180_mylogo.png', '_smallthumb_mylogo.png'] as $file) {
+        writeMediaFile($this->storage, $file);
+    }
+
+    SiteSectionsDataService::removeImageWithThumbnails($this->storage . '/media', 'logo.png');
+
+    expect(collect(['logo.png', '_180x180_logo.png', '_16x16_logo.png'])->map(fn (string $file): bool => is_file($this->storage . "/media/{$file}"))->all())
+        ->toBe([false, false, false])
+        ->and(collect(['mylogo.png', '_180x180_mylogo.png', '_smallthumb_mylogo.png'])->map(fn (string $file): bool => is_file($this->storage . "/media/{$file}"))->all())
+        ->toBe([true, true, true]);
+});
+
+it('deletes a video with its poster image, unless another file of the gallery uses that image', function () {
+    file_put_contents(
+        $this->storage . '/blog.news.xml',
+        '<?xml version="1.0" encoding="utf-8"?><blog section="news"><entry><id><![CDATA[1]]></id><uniqid><![CDATA[unews1]]></uniqid><mediafolder><![CDATA[news2]]></mediafolder>'
+        . '<mediaCacheData type="slideshow">'
+        . '<file type="video" src="a.mp4" poster_frame="a.jpg"><![CDATA[]]></file>'
+        . '<file type="video" src="b.mp4" poster_frame="shared.jpg"><![CDATA[]]></file>'
+        . '<file type="image" src="shared.jpg"><![CDATA[]]></file>'
+        . '</mediaCacheData></entry></blog>',
+    );
+
+    foreach (['a.mp4', 'a.jpg', '_smallthumb_a.jpg', '_600x400_a.jpg', 'b.mp4', 'shared.jpg', '_smallthumb_shared.jpg'] as $file) {
+        writeMediaFile($this->storage, "news2/{$file}");
+    }
+
+    (new SectionEntriesDataService('', 'news'))->galleryDelete('news', '1', 'a.mp4');
+    (new SectionEntriesDataService('', 'news'))->galleryDelete('news', '1', 'b.mp4');
+
+    expect(array_values(array_diff(scandir($this->storage . '/media/news2'), ['.', '..'])))
+        ->toEqualCanonicalizing(['sea.jpg', 'shared.jpg', '_smallthumb_shared.jpg']);
+});

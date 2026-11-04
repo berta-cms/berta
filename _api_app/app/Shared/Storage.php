@@ -3,7 +3,6 @@
 namespace App\Shared;
 
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
 use Swaggest\JsonSchema\Schema;
 
 class Storage
@@ -217,19 +216,63 @@ class Storage
         return $name . '_' . ($maxFileIdx + 1) . '.' . $extension;
     }
 
-    public static function removeImageWithThumbnails($dir, $fileName)
+    /**
+     * The names of the media files gallery file records use: each file's src and a video's poster image.
+     *
+     * @param  array<int, array<string, mixed>>  $files  raw file records
+     * @return list<string>
+     */
+    public static function galleryFileNames(array $files): array
     {
-        if (file_exists($dir . '/' . $fileName)) {
-            unlink($dir . '/' . $fileName);
+        $names = [];
+
+        foreach ($files as $file) {
+            foreach (['src', 'poster_frame'] as $attribute) {
+                if ((string) ($file['@attributes'][$attribute] ?? '') !== '') {
+                    $names[] = (string) $file['@attributes'][$attribute];
+                }
+            }
         }
 
-        // Remove thumbnails
-        foreach (scandir($dir) as $file) {
-            if (! is_file($dir . '/' . $file) || substr($file, 0, 1) !== '_' || ! Str::endsWith($file, $fileName)) {
-                continue;
-            }
-            unlink($dir . '/' . $file);
+        return $names;
+    }
+
+    /**
+     * Removes an image and its resizedCopies().
+     */
+    public static function removeImageWithThumbnails(string $dir, string $fileName): void
+    {
+        $dir = rtrim($dir, '/');
+
+        if (is_file($dir . '/' . $fileName)) {
+            @unlink($dir . '/' . $fileName);
         }
+
+        foreach (self::resizedCopies($dir, $fileName) as $copy) {
+            @unlink($dir . '/' . $copy);
+        }
+    }
+
+    /**
+     * The names of an image's resized copies in its folder: the editor's thumbnail, the background and grid images
+     * (config app.*_prefix) and the sizes made on demand (_<width>x<height>_, ImageHelpers::getResizedSrc()). Only
+     * copies of exactly this file: those of 11.jpg aren't copies of 1.jpg.
+     *
+     * @return list<string>
+     */
+    public static function resizedCopies(string $dir, string $fileName): array
+    {
+        $dir = rtrim($dir, '/');
+        $prefixes = array_map(
+            fn (string $prefix): string => preg_quote($prefix, '/'),
+            [config('app.small_thumb_prefix'), config('app.bg_image_prefix'), config('app.grid_image_prefix')],
+        );
+        $pattern = '/^(?:' . implode('|', $prefixes) . '|_\d+x\d+_)' . preg_quote($fileName, '/') . '$/';
+
+        return array_values(array_filter(
+            is_dir($dir) ? scandir($dir) : [],
+            fn (string $file): bool => preg_match($pattern, $file) === 1 && is_file($dir . '/' . $file),
+        ));
     }
 
     /**
@@ -392,6 +435,22 @@ class Storage
         }
 
         return $referencedOutside;
+    }
+
+    /**
+     * Whether a gallery other than the given one refers to the media folder: other than the entry's gallery, or,
+     * without an entry id, other than the section's background. Deleting a gallery file keeps it in such a folder,
+     * as the other gallery may show it too.
+     */
+    protected function isMediaFolderReferencedElsewhere(string $folder, string $section, ?string $entryId = null): bool
+    {
+        foreach ($this->mediaFolderReferences()[$folder] ?? [] as $reference) {
+            if ($reference !== [$section, $entryId]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function moveFolderContents($src, $dst, $ignore = [])
