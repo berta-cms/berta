@@ -53,6 +53,19 @@ export class DeleteSiteSectionsEntriesAction {
   constructor(public siteName: string) {}
 }
 
+/**
+ * Replaces the entries of the given sections of a site with fresh ones from the server. With the site's section
+ * names, the entries of sections no longer among them are dropped too.
+ */
+export class ReplaceSectionEntriesAction {
+  static readonly type = 'SECTION_ENTRIES:REPLACE';
+  constructor(
+    public siteName: string,
+    public entriesBySection: { [sectionName: string]: SectionEntry[] },
+    public sectionNames: string[] | null = null,
+  ) {}
+}
+
 export class RenameSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:RENAME';
   constructor(

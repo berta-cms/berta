@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Shared\Helpers;
+use App\User\EditorToken;
 use App\User\UserModel;
-use Firebase\JWT\JWT;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -12,17 +12,11 @@ class AuthController extends Controller
 {
     private $bertaSecurity;
 
-    protected static $expiration_time = 86400; // 24 hours = 86400 seconds
+    protected static $expiration_time = EditorToken::LIFETIME_SECONDS;
 
     protected function generateToken()
     {
-        $app_key = config('app.key');
-        $payload = [
-            'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + self::$expiration_time, // Expiration time
-        ];
-
-        return JWT::encode($payload, $app_key, 'HS256');
+        return (new EditorToken)->issue();
     }
 
     public function authenticate(Request $request)

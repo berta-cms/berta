@@ -23,6 +23,7 @@
         "intervention/image": "^3.11",
         "laravel/ai": "^1.0",
         "laravel/framework": "^13.30",
+        "laravel/mcp": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "mobiledetect/mobiledetectlib": "^4.8",

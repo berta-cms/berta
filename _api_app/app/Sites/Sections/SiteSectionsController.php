@@ -36,6 +36,10 @@ class SiteSectionsController extends Controller
             );
         }
 
+        if (isset($section['error_message'])) {
+            return response()->json($section);
+        }
+
         $tags = $cloneFrom ? new SectionTagsDataService($json['site'], $section['name']) : null;
         $entries = $cloneFrom ? new SectionEntriesDataService($json['site'], $section['name']) : null;
 

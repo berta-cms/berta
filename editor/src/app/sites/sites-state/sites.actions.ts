@@ -63,3 +63,12 @@ export class SwapContentsSitesAction {
   static readonly type = 'SITE:SWAP_CONTENTS';
   constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
 }
+
+/**
+ * The store got fresh content of a site from the server (e.g. after AI chat changes): its sites list, sections,
+ * entries or tags. The preview re-renders its menus and entries, as it does after the editor's own edits.
+ */
+export class SiteContentRefreshedAction {
+  static readonly type = 'SITE:CONTENT_REFRESHED';
+  constructor(public siteName: string) {}
+}
