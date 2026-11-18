@@ -4264,16 +4264,16 @@
         },
         {
             "name": "rcrowe/twigbridge",
-            "version": "v0.14.7",
+            "version": "v0.14.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rcrowe/TwigBridge.git",
-                "reference": "03a767c8d5c1d74d5f14e9fc754619a271822663"
+                "reference": "044b485f85d0e11137f1ee9a08f37cd8cd3fdeb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/03a767c8d5c1d74d5f14e9fc754619a271822663",
-                "reference": "03a767c8d5c1d74d5f14e9fc754619a271822663",
+                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/044b485f85d0e11137f1ee9a08f37cd8cd3fdeb4",
+                "reference": "044b485f85d0e11137f1ee9a08f37cd8cd3fdeb4",
                 "shasum": ""
             },
             "require": {
@@ -4330,9 +4330,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rcrowe/TwigBridge/issues",
-                "source": "https://github.com/rcrowe/TwigBridge/tree/v0.14.7"
+                "source": "https://github.com/rcrowe/TwigBridge/tree/v0.14.8"
             },
-            "time": "2026-03-20T16:59:18+00:00"
+            "time": "2026-10-14T13:18:00+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
