@@ -8,6 +8,7 @@ use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Shared\UndoFiles;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -166,10 +167,11 @@ class SitesDataService extends Storage
             }
 
             $dir = $this->XML_SITES_ROOT . '/' . $name;
-            // The shop files belong to the source's orders, which the clone doesn't keep
-            $this->copyFolder($src, $dir, [self::SHOP_FILES_FOLDER]);
+            // The shop files belong to the source's orders, and the undo files to its changes, which the clone doesn't keep
+            $this->copyFolder($src, $dir, [self::SHOP_FILES_FOLDER, UndoFiles::FOLDER]);
         } else {
             @mkdir($dir, 0777, true);
+            (new SiteSettingsDataService($name))->createDefaultFile();
         }
 
         $site = [
@@ -282,7 +284,7 @@ class SitesDataService extends Storage
 
         // generate new preview content
         // for now just copy all the existing contents to preview
-        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT, [self::SHOP_FILES_FOLDER]);
+        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT, [self::SHOP_FILES_FOLDER, UndoFiles::FOLDER]);
 
         // Merge site settings
         $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
@@ -317,6 +319,11 @@ class SitesDataService extends Storage
         $sites['site'] = $this->get();
         $order = array_search($name, array_column($sites['site'], 'name'));
 
+        // The main site has no folder of its own: its name would point at the folder of all subsites.
+        if ((string) $name === '') {
+            return ['error_message' => 'The main site can not be deleted!'];
+        }
+
         if ($order !== false) {
             $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->delFolder($dir);
@@ -327,6 +334,33 @@ class SitesDataService extends Storage
         }
 
         return ['error_message' => 'Site "' . $name . '" not found!'];
+    }
+
+    /**
+     * Adds back the record of a deleted subsite whose storage folder is in place again, at the end: the counterpart
+     * of delete(), for undoing it.
+     *
+     * @param  array<string, mixed>  $record  the site's record as delete() returned it
+     * @return array<string, mixed> the record, or error_message
+     */
+    public function restore(array $record): array
+    {
+        $name = (string) ($record['name'] ?? '');
+        $sites['site'] = $this->get();
+
+        if ($name === '' || in_array($name, array_map('strval', array_column($sites['site'], 'name')), true)) {
+            return ['error_message' => 'Site "' . $name . '" can not be restored: a site with this name exists.'];
+        }
+
+        if (! is_dir($this->XML_SITES_ROOT . '/' . $name)) {
+            return ['error_message' => 'Site "' . $name . '" can not be restored: its storage folder is missing.'];
+        }
+
+        $sites['site'][] = $record;
+        $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->SITES = [];
+
+        return $record;
     }
 
     /**

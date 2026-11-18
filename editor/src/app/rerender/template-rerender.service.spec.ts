@@ -6,6 +6,7 @@ import { TemplateRenderService } from '../render/template-render.service';
 import { AddSectionEntryFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { HandleSiteSettingsChildrenChangesAction } from '../sites/settings/site-settings.actions';
 import { SiteSettingChildrenHandler } from './types/components';
+import { SiteContentRefreshedAction } from '../sites/sites-state/sites.actions';
 
 describe('TemplateRerenderService', () => {
   const ENTRY =
@@ -75,6 +76,27 @@ describe('TemplateRerenderService', () => {
 
       expect(dispatchedEvents()).toEqual(['entriesRerendered']);
     });
+  });
+
+  it('rerenders the menus and entries after fresh content came from the server', () => {
+    doc.body.innerHTML =
+      '<div id="sitesMenu"></div><div id="sectionsMenu"></div><ol id="pageEntries"></ol>';
+    viewData.sitesMenu = '<ul class="sites"></ul>';
+    viewData.sectionsMenu = '<ul class="sections"></ul>';
+    viewData.entries = ENTRY;
+    viewData.portfolioThumbnails = '';
+    service.handleSiteContentRefreshRerender(iframe);
+
+    succeed(new SiteContentRefreshedAction(''));
+
+    expect(doc.querySelector('#sitesMenu .sites')).not.toBeNull();
+    expect(doc.querySelector('#sectionsMenu .sections')).not.toBeNull();
+    expect(doc.querySelectorAll('#pageEntries .xEntry').length).toBe(1);
+    expect(dispatchedEvents()).toEqual([
+      'sitesMenuRerendered',
+      'sectionsMenuRerendered',
+      'entriesRerendered',
+    ]);
   });
 
   it('rerenders site settings on a page without entries', () => {

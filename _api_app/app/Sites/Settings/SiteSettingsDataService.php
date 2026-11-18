@@ -318,6 +318,26 @@ class SiteSettingsDataService extends Storage
     }
 
     /**
+     * Writes a new site's settings file with the default template, as the engine does when it first loads a site
+     * without one, so its settings can be saved right away. Does nothing when the file exists.
+     */
+    public function createDefaultFile(): void
+    {
+        if (file_exists($this->XML_FILE)) {
+            return;
+        }
+
+        $settings = [];
+
+        foreach (self::$DEFAULT_SITE_SETTINGS as $path => $value) {
+            $this->setValueByPath($settings, $path, str_contains($path, 'lastUpdated') ? gmdate($value, time()) . ' GMT' : $value);
+        }
+
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->SITE_SETTINGS = [];
+    }
+
+    /**
      * Returns settings of site as an array
      *
      * @return array Array of site settings

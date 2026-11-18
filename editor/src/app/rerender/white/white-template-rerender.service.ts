@@ -43,6 +43,11 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
 
     const sitesMenuSubscr = this.handleSitesMenuRerender(iframe);
 
+    // menus and entries after fresh content from the server, e.g. AI chat changes
+
+    const siteContentRefreshSubscr =
+      this.handleSiteContentRefreshRerender(iframe);
+
     // sites sections crud
     const siteSectionSubscr = this.handleSiteSectionsRerender(iframe);
 
@@ -85,6 +90,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
       });
 
     this.unsubscribe(win, [
+      siteContentRefreshSubscr,
       iframeHardReloadSubscr,
       sitesMenuSubscr,
       siteSectionSubscr,

@@ -112,6 +112,7 @@ class LocalValetDriver extends BasicValetDriver
 
         if (
             preg_match('#^/storage/(-sites/[^/]+/)?_shop_files/#', $uri)
+            || preg_match('#^/storage/_undo_files/#', $uri)
             || preg_match('#^/storage.*\.(xml|sqlite|db|log|php)$#', $uri)
             || $uri === '/storage/'
             || $uri === '/_templates/'

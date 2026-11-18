@@ -112,6 +112,14 @@ it('refuses the shop files of the root site and of a multisite site', function (
     'a multisite site payment record' => '/storage/-sites/second/_shop_files/paypal/5O190127TN364715T.json',
 ]);
 
+it('refuses deleted files kept for undo', function () {
+    $uri = '/storage/_undo_files/12/media/news3/photo.jpg';
+    putWebFile($this->sitePath, $uri);
+
+    expect(htaccessRefuses($uri))->toBeTrue()
+        ->and(valetDriverRoute($this->sitePath, $uri))->toBe('not_found');
+});
+
 it('serves media, also in folders named like the shop files folder', function (string $uri) {
     putWebFile($this->sitePath, $uri);
 
@@ -122,6 +130,8 @@ it('serves media, also in folders named like the shop files folder', function (s
     'multisite site media' => '/storage/-sites/second/media/photo.jpg',
     'a media folder sharing the name' => '/storage/media/_shop_files/photo.jpg',
     'a site named like the folder' => '/storage/-sites/_shop_files/media/photo.jpg',
+    'a media folder named like the undo files folder' => '/storage/media/_undo_files/photo.jpg',
+    'a site named like the undo files folder' => '/storage/-sites/_undo_files/media/photo.jpg',
 ]);
 
 it('redirects a page to its address with the trailing slash', function (string $uri) {
