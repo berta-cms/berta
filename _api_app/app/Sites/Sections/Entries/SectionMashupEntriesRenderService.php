@@ -197,6 +197,14 @@ class SectionMashupEntriesRenderService
             return $entry;
         }, $entries);
 
+        // The first picture is usually what visitors see first, so it is not lazy loaded
+        foreach ($entries as $index => $entry) {
+            if (isset($entry['item']['galleryItem']['type']) && $entry['item']['galleryItem']['type'] === 'image') {
+                $entries[$index]['item']['loadEagerly'] = true;
+                break;
+            }
+        }
+
         return $entries;
     }
 

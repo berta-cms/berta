@@ -129,7 +129,8 @@ class GalleryRowRenderService extends EntryGalleryRenderService
         $storageService,
         $isEditMode,
         $isLoopAvailable,
-        $asRowGallery
+        $asRowGallery,
+        bool $loadFirstImageEagerly = false
     ) {
         if ($isEditMode && empty($entry['mediaCacheData']['file'])) {
             return view('Sites/Sections/Entries/Galleries/editEmptyGallery');
@@ -147,6 +148,7 @@ class GalleryRowRenderService extends EntryGalleryRenderService
             null,
             null
         );
+        $data['loadFirstImageEagerly'] = $loadFirstImageEagerly;
 
         $view = view('Sites/Sections/Entries/Galleries/galleryRow', $data);
 
@@ -162,7 +164,8 @@ class GalleryRowRenderService extends EntryGalleryRenderService
                 $storageService,
                 $isEditMode,
                 false,
-                true
+                true,
+                $loadFirstImageEagerly
             );
         }
 

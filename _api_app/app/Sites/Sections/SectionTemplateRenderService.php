@@ -287,8 +287,17 @@ abstract class SectionTemplateRenderService
         $isShopAvailable
     ) {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+        // Portfolio entries are hidden until their thumbnail is clicked
+        $isEagerImageNeeded = ! isset($currentSection['@attributes']['type']) || $currentSection['@attributes']['type'] !== 'portfolio';
         $entriesHTML = '';
         foreach ($entries as $entry) {
+            // The page's first gallery image is usually what visitors see first, so it is not lazy loaded
+            $files = isset($entry['mediaCacheData']['file']) ? Helpers::asList($entry['mediaCacheData']['file']) : [];
+            $loadFirstImageEagerly = $isEagerImageNeeded && isset($files[0]['@attributes']['type']) && $files[0]['@attributes']['type'] === 'image';
+            if ($loadFirstImageEagerly) {
+                $isEagerImageNeeded = false;
+            }
+
             $entriesHTML .= $this->sectionEntryRS->render(
                 $siteSlug,
                 $sections,
@@ -298,7 +307,8 @@ abstract class SectionTemplateRenderService
                 $siteTemplateSettings,
                 $storageService,
                 $isEditMode,
-                $isShopAvailable
+                $isShopAvailable,
+                $loadFirstImageEagerly
             );
         }
 

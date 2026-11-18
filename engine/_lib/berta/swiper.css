@@ -63,3 +63,15 @@
   max-width: 100%;
   height: auto !important;
 }
+
+/* Faded slides lie on top of each other, so the browser would lazy load all of
+   them at once. Images of slides that are not the current, previous or next one
+   are not displayed, and lazy images that are not displayed don't load, so they
+   load once their slide is next to the current one. They are hidden only after
+   the 0.3s fade, so the fading out slide stays visible. Before Swiper starts,
+   only the first slide's image is displayed. */
+.xGalleryType-slideshow:not([data-as-row-gallery]) .swiper:not(.swiper-initialized) .swiper-slide:not(:first-child) img[loading="lazy"],
+.xGalleryType-slideshow:not([data-as-row-gallery]) .swiper-initialized .swiper-slide:not(.swiper-slide-active, .swiper-slide-prev, .swiper-slide-next) img[loading="lazy"] {
+  display: none;
+  transition: display 0s 0.3s allow-discrete;
+}

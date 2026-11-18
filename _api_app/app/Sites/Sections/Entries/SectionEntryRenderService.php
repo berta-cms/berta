@@ -63,7 +63,8 @@ class SectionEntryRenderService
         $siteTemplateSettings,
         $storageService,
         $isEditMode,
-        $isShopAvailable
+        $isShopAvailable,
+        bool $loadFirstImageEagerly = false
     ) {
         $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : null;
         $isShopAvailable = $isShopAvailable && $sectionType == 'shop';
@@ -118,7 +119,8 @@ class SectionEntryRenderService
             $storageService,
             $isEditMode,
             true,
-            false
+            false,
+            $loadFirstImageEagerly
         );
 
         // Shop plugin related data
@@ -326,7 +328,8 @@ class SectionEntryRenderService
         $siteTemplateSettings,
         $storageService,
         $isEditMode,
-        $isShopAvailable
+        $isShopAvailable,
+        bool $loadFirstImageEagerly = false
     ): string {
         $data = $this->getViewData(
             $site,
@@ -337,7 +340,8 @@ class SectionEntryRenderService
             $siteTemplateSettings,
             $storageService,
             $isEditMode,
-            $isShopAvailable
+            $isShopAvailable,
+            $loadFirstImageEagerly
         );
 
         return view('Sites/Sections/Entries/entry', $data)->render();

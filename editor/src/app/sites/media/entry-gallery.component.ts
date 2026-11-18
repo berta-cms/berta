@@ -21,6 +21,7 @@ import { SiteStateModel } from '../sites-state/site-state.model';
             @if (file['@attributes'].type === 'image') {
               <div class="media image">
                 <img
+                  loading="lazy"
                   src="{{ currentSite.mediaUrl }}/{{
                     entry.mediafolder
                   }}/_smallthumb_{{ file['@attributes'].src }}"

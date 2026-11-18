@@ -1,7 +1,7 @@
 <div id="xGridView">
   {% for item in items %}
     <div class="box">
-      <a href="{{ item.url }}"><img class="xGridItem" src="{{ item.src }}" /></a>
+      <a href="{{ item.url }}"><img class="xGridItem" src="{{ item.src }}"{% if item.width %} width="{{ item.width }}" height="{{ item.height }}" loading="lazy"{% endif %} /></a>
     </div>
   {% endfor %}
 </div>

@@ -15,7 +15,8 @@ abstract class EntryGalleryRenderService
         $storageService,
         $isEditMode,
         $isLoopAvailable,
-        $asRowGallery
+        $asRowGallery,
+        bool $loadFirstImageEagerly = false
     );
 
     public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
