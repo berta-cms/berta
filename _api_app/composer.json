@@ -20,7 +20,7 @@
         "ext-openssl": "*",
         "barryvdh/laravel-dompdf": "^3.1",
         "firebase/php-jwt": "^7.0",
-        "intervention/image": "^3.11",
+        "intervention/image": "^4.4",
         "laravel/ai": "^1.0",
         "laravel/framework": "^13.30",
         "laravel/mcp": "^1.0",
