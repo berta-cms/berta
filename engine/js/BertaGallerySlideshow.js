@@ -165,12 +165,21 @@ var BertaGallerySlideshow = class {
             }.bind(this));
           }, this);
 
-          // A video's size is known from its metadata, which is all it preloads
+          // A video's size is known from its metadata, which is all it preloads.
+          // A cached video may already have it before the slideshow starts.
+          var hasVideoMetadata = false;
           swiperEl.querySelectorAll('video').forEach(function (video) {
+            if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+              hasVideoMetadata = true;
+              return;
+            }
             video.addEventListener('loadedmetadata', function () {
               this.gallerySwiper.update();
             }.bind(this), { once: true });
           }, this);
+          if (hasVideoMetadata) {
+            this.gallerySwiper.update();
+          }
 
           updateVideos(this.gallerySwiper);
         }.bind(this));
