@@ -565,7 +565,7 @@ class ImageHelpers
         $imageManager = new ImageManager(new Driver);
 
         $imageManager
-            ->read($path)
+            ->decodePath($path)
             ->scaleDown(config('app.image_max_width'), config('app.image_max_height'))
             ->save($path, progressive: true);
     }

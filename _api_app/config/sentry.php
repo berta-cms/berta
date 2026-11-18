@@ -7,7 +7,7 @@
  */
 return [
 
-    // @see https://docs.sentry.io/product/sentry-basics/dsn-explainer/
+    // @see https://docs.sentry.io/concepts/key-terms/dsn-explainer/
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
 
     // @see https://spotlightjs.com/
@@ -23,20 +23,38 @@ return [
     // When left empty or `null` the Laravel environment will be used (usually discovered from `APP_ENV` in your `.env`)
     'environment' => env('SENTRY_ENVIRONMENT'),
 
+    // Override the organization ID used for trace continuation checks.
+    'org_id' => env('SENTRY_ORG_ID') === null ? null : (int) env('SENTRY_ORG_ID'),
+
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#sample_rate
     'sample_rate' => env('SENTRY_SAMPLE_RATE') === null ? 1.0 : (float) env('SENTRY_SAMPLE_RATE'),
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#traces_sample_rate
     'traces_sample_rate' => env('SENTRY_TRACES_SAMPLE_RATE') === null ? null : (float) env('SENTRY_TRACES_SAMPLE_RATE'),
 
-    // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#profiles-sample-rate
+    // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#profiles_sample_rate
     'profiles_sample_rate' => env('SENTRY_PROFILES_SAMPLE_RATE') === null ? null : (float) env('SENTRY_PROFILES_SAMPLE_RATE'),
+
+    // Only continue incoming traces when the organization IDs are compatible with this SDK instance.
+    'strict_trace_continuation' => env('SENTRY_STRICT_TRACE_CONTINUATION', false),
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#enable_logs
     'enable_logs' => env('SENTRY_ENABLE_LOGS', false),
 
+    // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#enable_metrics
+    'enable_metrics' => env('SENTRY_ENABLE_METRICS', true),
+
+    // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#log_flush_threshold
+    'log_flush_threshold' => env('SENTRY_LOG_FLUSH_THRESHOLD') === null ? null : (int) env('SENTRY_LOG_FLUSH_THRESHOLD'),
+
+    // The minimum log level that will be sent to Sentry as logs using the `sentry_logs` logging channel
+    'logs_channel_level' => env('SENTRY_LOG_LEVEL', env('SENTRY_LOGS_LEVEL', env('LOG_LEVEL', 'debug'))),
+
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#send_default_pii
     'send_default_pii' => env('SENTRY_SEND_DEFAULT_PII', false),
+
+    // Configures which data is collected automatically, `null` keeps collecting data based on `send_default_pii`
+    'data_collection' => null,
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore_exceptions
     // 'ignore_exceptions' => [],
@@ -45,6 +63,9 @@ return [
     'ignore_transactions' => [
         // Ignore Laravel's default health URL
         '/up',
+
+        // Ignore the Laravel Horizon, Laravel Telescope and Laravel Debugbar routes
+        '/^\/(horizon|telescope|_debugbar)(\/|$)/',
     ],
 
     // Breadcrumb specific configuration
@@ -61,7 +82,8 @@ return [
         // Capture SQL queries as breadcrumbs
         'sql_queries' => env('SENTRY_BREADCRUMBS_SQL_QUERIES_ENABLED', true),
 
-        // Capture SQL query bindings (parameters) in SQL query breadcrumbs
+        // Capture SQL query bindings (parameters) in SQL query breadcrumbs, ignored when `data_collection` is set
+        // This option will be migrated to `data_collection.database_query_data` in the next major version
         'sql_bindings' => env('SENTRY_BREADCRUMBS_SQL_BINDINGS_ENABLED', false),
 
         // Capture queue job information as breadcrumbs
@@ -77,6 +99,15 @@ return [
         'notifications' => env('SENTRY_BREADCRUMBS_NOTIFICATIONS_ENABLED', true),
     ],
 
+    // Crons monitoring specific configuration
+    'crons' => [
+        // Monitor every scheduled task as if `->sentryMonitor()` was called on it
+        'monitor_scheduled_tasks' => env('SENTRY_CRONS_MONITOR_SCHEDULED_TASKS', false),
+
+        // Commands, job classes, task names or monitor slugs of tasks that are not monitored automatically, `*` is a wildcard
+        'exclude_scheduled_tasks' => [],
+    ],
+
     // Performance monitoring specific configuration
     'tracing' => [
         // Trace queue jobs as their own transactions (this enables tracing for queue jobs)
@@ -88,7 +119,8 @@ return [
         // Capture SQL queries as spans
         'sql_queries' => env('SENTRY_TRACE_SQL_QUERIES_ENABLED', true),
 
-        // Capture SQL query bindings (parameters) in SQL query spans
+        // Capture SQL query bindings (parameters) in SQL query spans, ignored when `data_collection` is set
+        // This option will be migrated to `data_collection.database_query_data` in the next major version
         'sql_bindings' => env('SENTRY_TRACE_SQL_BINDINGS_ENABLED', false),
 
         // Capture where the SQL query originated from on the SQL query spans
@@ -105,6 +137,12 @@ return [
 
         // Capture HTTP client requests as spans
         'http_client_requests' => env('SENTRY_TRACE_HTTP_CLIENT_REQUESTS_ENABLED', true),
+
+        // Capture where the HTTP client request originated from on the HTTP client request spans
+        'http_client_requests_origin' => env('SENTRY_TRACE_HTTP_CLIENT_REQUESTS_ORIGIN_ENABLED', true),
+
+        // Define a threshold in milliseconds for HTTP client requests to resolve their origin
+        'http_client_requests_origin_threshold_ms' => env('SENTRY_TRACE_HTTP_CLIENT_REQUESTS_ORIGIN_THRESHOLD_MS', 250),
 
         // Capture Laravel cache events (hits, writes etc.) as spans
         'cache' => env('SENTRY_TRACE_CACHE_ENABLED', true),
@@ -124,6 +162,24 @@ return [
         // Configures if the performance trace should continue after the response has been sent to the user until the application terminates
         // This is required to capture any spans that are created after the response has been sent like queue jobs dispatched using `dispatch(...)->afterResponse()` for example
         'continue_after_response' => env('SENTRY_TRACE_CONTINUE_AFTER_RESPONSE', true),
+
+        // Capture AI agent interactions as spans (requires laravel/ai)
+        'gen_ai' => env('SENTRY_TRACE_GEN_AI_ENABLED', true),
+
+        // Capture AI invoke_agent spans
+        'gen_ai_invoke_agent' => env('SENTRY_TRACE_GEN_AI_INVOKE_AGENT_ENABLED', true),
+
+        // Capture AI chat spans
+        'gen_ai_chat' => env('SENTRY_TRACE_GEN_AI_CHAT_ENABLED', true),
+
+        // Capture AI execute_tool spans
+        'gen_ai_execute_tool' => env('SENTRY_TRACE_GEN_AI_EXECUTE_TOOL_ENABLED', true),
+
+        // Capture AI embeddings spans
+        'gen_ai_embeddings' => env('SENTRY_TRACE_GEN_AI_EMBEDDINGS_ENABLED', true),
+
+        // Capture AI evaluate spans for classifications (requires laravel/ai 1.0+)
+        'gen_ai_evaluate' => env('SENTRY_TRACE_GEN_AI_EVALUATE_ENABLED', true),
 
         // Enable the tracing integrations supplied by Sentry (recommended)
         'default_integrations' => env('SENTRY_TRACE_DEFAULT_INTEGRATIONS_ENABLED', true),

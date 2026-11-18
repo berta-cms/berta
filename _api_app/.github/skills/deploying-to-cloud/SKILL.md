@@ -72,7 +72,7 @@ Commands follow a CRUD pattern: `resource:list`, `resource:get`, `resource:creat
 
 Available resources: `application`, `environment`, `instance`, `database-cluster`, `database`, `cache`, `bucket`, `domain`, `websocket-cluster`, `background-process`, `secret`, `command`, `deployment`.
 
-Some resources have additional commands (e.g., `domain:verify`, `database:open`, `instance:sizes`, `cache:types`). Discover these via `cloud -h`.
+Some resources have additional commands (e.g., `domain:verify`, `database:open`, `instance:sizes`, `cache:types`, `database:types`, `<resource>:metrics`). Discover these via `cloud -h`.
 
 Never hardcode command signatures. Always run `cloud <command> -h` to discover options at runtime.
 
@@ -101,7 +101,7 @@ Determine the task and follow the matching path:
   cloud deploy:monitor -n
   ```
 
-- Environment variables: `cloud environment:variables -n --force`
+- Environment variables: `cloud environment:variables -n --force`. To copy keys from the local `.env` and deploy in one step: `cloud deploy {app_name} {environment} -n --push-env-keys=KEY_ONE,KEY_TWO`
 
 - Secrets: `echo "$VALUE" | cloud secret:create --name=NAME --json -n`, then `cloud environment-secret:attach`
 
@@ -110,6 +110,10 @@ Determine the task and follow the matching path:
 - Monorepo (application in a subdirectory): add `--root-directory=<subdir>` to `cloud ship` or `cloud application:create`.
 
 - Custom domain: `cloud domain:create --json -n`, then `cloud domain:verify -n`.
+
+- Edge cache: `cloud environment:purge-edge-cache {environment} -n` purges everything; pass one of `--path=/blog/post`, `--prefix=/blog/`, or `--tag=<cache-tag>` to purge less. Tags need a dedicated edge network.
+
+- Laravel Cloud domain: `cloud environment:vanity-domain {environment} --name=<subdomain> --deploy -n --force`. Pass only the first part of the domain. The new domain takes effect on the next deploy, which `--deploy` starts and monitors. It can change only once every 30 minutes, so confirm with the user first.
 
 - Repository defaults: `cloud repo:config {application} -n` sets repository-local application and organization defaults. Pass `--organization=<id|name|slug>` when the user has multiple organizations.
 
@@ -125,7 +129,7 @@ For multi-step operations, see [reference/checklists.md](reference/checklists.md
 4. Fix the issue and rerun the command.
 5. If the same error occurs after one fix, stop and ask the user rather than repeating the operation.
 
-Always run `cloud deploy:monitor -n` after every deploy. If it fails, inspect the deployment status and logs and show the user what went wrong before attempting a fix.
+Always run `cloud deploy:monitor -n` after every deploy. If it fails, run `cloud deployment:logs {deploymentId} --json -n` to find the build or deploy step with `"status": "failed"` and read its `output`. Show the user what went wrong before attempting a fix.
 
 ### Subagent Delegation
 
@@ -134,7 +138,9 @@ Delegate high-output operations to subagents using the Task tool to keep the mai
 Delegate these to a subagent:
 - `cloud deploy:monitor -n` — deployment logs can be very long
 - `cloud deployment:get --json -n` — full deployment details
+- `cloud deployment:logs --json -n` — every step's full build or deploy output
 - `cloud <resource>:list --json -n` — listing many resources produces large JSON
+- `cloud <resource>:metrics --json -n` — every data point is included; narrow it with `--fields` (e.g. `--fields=period,cpuUsage.average`)
 - `cloud command:run` — when output may be long
 - `cloud usage --detailed --json -n` — the payload includes details for every database, cache, bucket, websocket, and application
 - Fetching docs from https://cloud.laravel.com/docs/llms.txt via `WebFetch`
@@ -149,7 +155,7 @@ Keep in the main context:
 Follow these rules:
 - Flag selection — always use the documented combos above
 - Deploy sequence — deploy then monitor, never skip monitoring
-- Destructive commands — always confirm with the user first, show the command and wait for approval. This includes deleting applications, environments, databases, caches, buckets, domains, or secrets.
+- Destructive commands — always confirm with the user first, show the command and wait for approval. This includes deleting applications, environments, databases, caches, buckets, domains, or secrets, and detaching Resend.
 - Error loop — diagnose, fix once, ask user if it fails again
 
 Use judgment for:
@@ -166,18 +172,38 @@ Secrets are encrypted values shared across the organization and attached to envi
 cloud secret:list --json -n
 echo "$VALUE" | cloud secret:create --name=STRIPE_KEY --json -n
 cloud environment-secret:attach {environment} {secretId} -n
+cloud environment-secret:detach {environment} {secretId} --force -n
 cloud environment-secret:list {environment} --json -n
 ```
 
 Pipe the value in. `--value=` works, but leaves the plaintext in shell history and the process list.
 
-`secret:update`, `secret:delete`, and `environment-secret:attach` take secret IDs, not names — names are not unique. Read IDs from `cloud secret:list --json -n`.
+`secret:update`, `secret:delete`, `environment-secret:attach`, and `environment-secret:detach` take secret IDs, not names — names are not unique. Read IDs from `cloud secret:list --json -n`.
 
-There is no `secret:get`, and no way to detach a secret from a single environment. `secret:delete` removes it and detaches it everywhere.
+There is no `secret:get`. `environment-secret:detach` removes a secret from one environment and keeps it; `secret:delete` deletes it and detaches it everywhere.
 
 Secrets need the `sodium` PHP extension. No other command does.
 
-Redeploy affected environments after creating, updating, attaching, or deleting a secret.
+Redeploy affected environments after creating, updating, attaching, detaching, or deleting a secret.
+
+### Email (Resend)
+
+Resend sends an environment's email. Connecting a Resend account and verifying sending domains happen in the dashboard; the CLI cannot do either. When `resend:attach` reports no verified sending domains, give the user the integration settings link from the error.
+
+```shell
+cloud resend:domains --status=verified --json -n
+cloud resend:attach {environment} --from-address=hello@{verifiedDomain} --from-name="My App" --json -n
+cloud resend:update {environment} --from-address=team@{verifiedDomain} --json -n
+cloud resend:keys {environment} --json -n
+cloud resend:detach {environment} --force -n
+```
+
+- The sender address must use a verified sending domain. `--from-name` defaults to the application name.
+- `resend:attach` creates a new sending key. To share one with another environment, pass `--reuse-key-id` with an ID from `resend:keys`.
+- Attaching makes Cloud set `RESEND_API_KEY`, `MAIL_MAILER`, `MAIL_FROM_ADDRESS`, and `MAIL_FROM_NAME`, replacing any the environment already had.
+- The application needs `resend/resend-php`. Under `-n`, `resend:attach` only warns when it is missing; run `composer require resend/resend-php` in the project.
+- Detaching deletes the sending key unless another environment uses it.
+- Redeploy the environment after attaching, updating, or detaching Resend.
 
 ### Remote Access
 
