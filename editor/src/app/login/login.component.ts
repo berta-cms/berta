@@ -33,11 +33,14 @@ import { ServerRequirementsService } from '../setup/server-requirements/server-r
               <berta-loading></berta-loading>
             </div>
           } @else {
-            @if (
-              appState.isBertaHosting &&
-              (appState.facebookLoginUrl || appState.googleLoginUrl)
-            ) {
+            @if (appState.isBertaHosting && appState.googleLoginUrl) {
               <div class="form-group social-login">
+                <!--
+                  Facebook login is hidden until the Facebook app is approved.
+                  To enable it, uncomment this button and add
+                  appState.facebookLoginUrl to the condition above:
+                  (appState.facebookLoginUrl || appState.googleLoginUrl)
+
                 @if (appState.facebookLoginUrl) {
                   <a
                     href="{{ appState.facebookLoginUrl }}?remote_redirect={{
@@ -49,6 +52,7 @@ import { ServerRequirementsService } from '../setup/server-requirements/server-r
                     <p>Log in with Facebook</p></a
                   >
                 }
+                -->
                 @if (appState.googleLoginUrl) {
                   <a
                     href="{{ appState.googleLoginUrl }}?remote_redirect={{
