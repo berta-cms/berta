@@ -33,26 +33,37 @@ import { ServerRequirementsService } from '../setup/server-requirements/server-r
               <berta-loading></berta-loading>
             </div>
           } @else {
-            @if (appState.isBertaHosting) {
+            @if (appState.isBertaHosting && appState.googleLoginUrl) {
               <div class="form-group social-login">
-                <a
-                  href="{{ appState.loginUrl }}?remote_redirect={{
-                    appState.authenticateUrl
-                  }}&amp;provider=facebook"
-                  class="button facebook"
-                >
-                  <bt-icon-facebook></bt-icon-facebook>
-                  <p>Log in with Facebook</p></a
-                >
-                <a
-                  href="{{ appState.loginUrl }}?remote_redirect={{
-                    appState.authenticateUrl
-                  }}&amp;provider=google"
-                  class="button google"
-                >
-                  <bt-icon-google></bt-icon-google>
-                  <p>Sign in with Google</p></a
-                >
+                <!--
+                  Facebook login is hidden until the Facebook app is approved.
+                  To enable it, uncomment this button and add
+                  appState.facebookLoginUrl to the condition above:
+                  (appState.facebookLoginUrl || appState.googleLoginUrl)
+
+                @if (appState.facebookLoginUrl) {
+                  <a
+                    href="{{ appState.facebookLoginUrl }}?remote_redirect={{
+                      appState.authenticateUrl
+                    }}"
+                    class="button facebook"
+                  >
+                    <bt-icon-facebook></bt-icon-facebook>
+                    <p>Log in with Facebook</p></a
+                  >
+                }
+                -->
+                @if (appState.googleLoginUrl) {
+                  <a
+                    href="{{ appState.googleLoginUrl }}?remote_redirect={{
+                      appState.authenticateUrl
+                    }}"
+                    class="button google"
+                  >
+                    <bt-icon-google></bt-icon-google>
+                    <p>Sign in with Google</p></a
+                  >
+                }
                 <p>or</p>
               </div>
             }
