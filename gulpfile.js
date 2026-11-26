@@ -1,7 +1,6 @@
 const { src, dest, watch, series, parallel } = require("gulp");
 const clean = require("gulp-clean");
 const autoprefixer = require("gulp-autoprefixer").default;
-const sourcemaps = require("gulp-sourcemaps");
 const gulpif = require("gulp-if");
 const postcss = require("gulp-postcss");
 const postcssUrl = require("postcss-url");
@@ -129,8 +128,7 @@ const isVendorPreMinifiedCss = (file) => !/swiper-bundle\.min\.css$/.test(file.p
 const shouldMinifyCss = (file) => production && isVendorPreMinifiedCss(file);
 
 const backendCss = () => {
-  return src(backendCssFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(backendCssFiles, { sourcemaps: production })
     .pipe(
       gulpif(
         isVendorPreMinifiedCss,
@@ -147,13 +145,11 @@ const backendCss = () => {
         cascade: false,
       })
     )
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest("engine/css"));
+    .pipe(dest("engine/css", { sourcemaps: production && "./maps" }));
 };
 
 const frontendCss = () => {
-  return src(frontendCssFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(frontendCssFiles, { sourcemaps: production })
     .pipe(
       gulpif(
         isVendorPreMinifiedCss,
@@ -171,13 +167,11 @@ const frontendCss = () => {
         cascade: false,
       })
     )
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest("engine/css"));
+    .pipe(dest("engine/css", { sourcemaps: production && "./maps" }));
 };
 
 const templateCss = (scssFiles, outputDestination) => {
-  return src(scssFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(scssFiles, { sourcemaps: production })
     .pipe(
       sass({
         style: production ? "compressed" : "expanded",
@@ -189,8 +183,7 @@ const templateCss = (scssFiles, outputDestination) => {
         cascade: false,
       })
     )
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest(outputDestination));
+    .pipe(dest(outputDestination, { sourcemaps: production && "./maps" }));
 };
 
 const templatesCss = (cb) => {
@@ -208,8 +201,7 @@ const templatesCss = (cb) => {
 };
 
 const backendJs = () => {
-  return src(backendJsFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(backendJsFiles, { sourcemaps: production })
     .pipe(
       gulpif(
         (file) => production && !/\.min\.js$/i.test(file.path),
@@ -217,13 +209,11 @@ const backendJs = () => {
       )
     )
     .pipe(concat("backend.min.js"))
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest("engine/js"));
+    .pipe(dest("engine/js", { sourcemaps: production && "./maps" }));
 };
 
 const frontendJs = () => {
-  return src(frontendJsFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(frontendJsFiles, { sourcemaps: production })
     .pipe(
       gulpif(
         (file) => production && !/\.min\.js$/i.test(file.path),
@@ -231,8 +221,7 @@ const frontendJs = () => {
       )
     )
     .pipe(concat("frontend.min.js"))
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest("engine/js"));
+    .pipe(dest("engine/js", { sourcemaps: production && "./maps" }));
 };
 
 const backendNgJsLint = () => {
@@ -240,8 +229,7 @@ const backendNgJsLint = () => {
 };
 
 const backendNgJs = () => {
-  return src(backendNgJsFiles)
-    .pipe(gulpif(production, sourcemaps.init()))
+  return src(backendNgJsFiles, { sourcemaps: production })
     .pipe(concat("ng-backend.min.js"))
     .pipe(
       gulpif(
@@ -249,8 +237,7 @@ const backendNgJs = () => {
         minifyJs()
       )
     )
-    .pipe(gulpif(production, sourcemaps.write("/maps")))
-    .pipe(dest("engine/js"));
+    .pipe(dest("engine/js", { sourcemaps: production && "./maps" }));
 };
 
 const tasks = series(
