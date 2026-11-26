@@ -20,8 +20,6 @@ composer install
 php artisan test --compact                        # Run all tests
 php artisan test --compact --filter=TestName      # Run specific test
 vendor/bin/pint --dirty                           # Format changed PHP files
-npm run dev                                       # Vite dev server
-npm run build                                     # Build assets
 ```
 
 ### Angular Editor (`editor/`)
@@ -42,7 +40,7 @@ npm run dev       # Gulp watch (compiles Sass for themes/templates)
 npm run build     # Gulp production build
 ```
 
-Compiled output (`engine/css/*.min.css`, `engine/js/*.min.js`, `_templates/*/style.css`, etc.) is gitignored, same as `editor/`'s and `_api_app/`'s build output — run `npm run build` once after cloning before the site can render.
+Compiled output (`engine/css/*.min.css`, `engine/js/*.min.js`, `_templates/*/style.css`, etc.) is gitignored, same as `editor/`'s build output — run `npm run build` once after cloning before the site can render.
 
 ## Architecture
 
