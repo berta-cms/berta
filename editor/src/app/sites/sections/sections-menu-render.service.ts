@@ -110,7 +110,7 @@ export class SectionsMenuRenderService {
 
     if (
       tag['@attributes'].name === tagSlug &&
-      section.name === currentSection.name
+      section.name === currentSection?.name
     ) {
       classList.push('selected');
     }
@@ -152,14 +152,14 @@ export class SectionsMenuRenderService {
             if (
               isResponsive &&
               siteTemplateSettings.tagsMenu.alwaysOpen !== 'yes' &&
-              currentSection.name !== section.name
+              currentSection?.name !== section.name
             ) {
               return false;
             }
             break;
 
           case 'white':
-            if (currentSection.name !== section.name) {
+            if (currentSection?.name !== section.name) {
               return false;
             }
             break;

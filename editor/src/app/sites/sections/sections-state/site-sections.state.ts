@@ -19,6 +19,7 @@ import {
 } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
+import { UpdateAppStateAction } from '../../../app-state/app.actions';
 import {
   UpdateSiteSectionAction,
   UpdateSiteSectionFromSyncAction,
@@ -592,6 +593,20 @@ export class SiteSectionsState implements NgxsOnInit {
               };
             }),
           );
+
+          // The preview re-renders when this action completes, before the
+          // route catches up with the new name, so the section shown in the
+          // preview moves to the new name here.
+          if (
+            this.store.selectSnapshot(AppState.getSite) ===
+              action.section.site_name &&
+            this.store.selectSnapshot(AppState.getSection) ===
+              action.section.name
+          ) {
+            dispatch(
+              new UpdateAppStateAction({ section: response.section.name }),
+            );
+          }
 
           // Section related data rename
           dispatch(
