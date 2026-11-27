@@ -17,7 +17,6 @@
     "gulp-postcss": "^10.0.0",
     "gulp-replace": "^1.1.4",
     "gulp-sass": "^6.0.1",
-    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jshint": "^2.13.6",
     "postcss-url": "^10.1.4",
@@ -33,5 +32,11 @@
   "scripts": {
     "dev": "./node_modules/.bin/gulp",
     "build": "./node_modules/.bin/gulp build"
+  },
+  "overrides": {
+    "jshint": {
+      "lodash": "^4.18.1",
+      "minimatch": "^3.1.5"
+    }
   }
 }
