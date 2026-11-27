@@ -44,7 +44,7 @@ berta-login {
       transition: background-color 0.2s;
 
       & p {
-        margin-top: 0;
+        margin: 0;
         font-size: 1rem;
         flex-grow: 2;
       }
@@ -75,7 +75,7 @@ berta-login {
 
       &.google {
         background-color: variables.$google-color;
-        margin-bottom: 20px;
+        margin-bottom: 0;
 
         & bt-icon-google {
           background-color: variables.$white;
@@ -98,14 +98,18 @@ berta-login {
       }
     }
 
-    p {
-      margin-bottom: 0;
+    > p {
+      margin: 1.3em 0 0;
     }
   }
 
   .setup-notice {
+    background-color: variables.$grey-1;
+    border-left: 3px solid variables.$berta-accent;
     font-size: variables.$input-font-size;
-    margin: 0 1.3em;
+    line-height: 1.4;
+    margin: 0 1.3em 20px;
+    padding: 0.75em 1em;
   }
 
   .error-message {
@@ -116,7 +120,7 @@ berta-login {
 
   form {
     flex-grow: 1;
-    margin: 20px 1.3em;
+    margin: 0 1.3em 20px;
 
     .form-group {
       margin: 1.3em 0;

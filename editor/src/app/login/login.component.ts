@@ -22,7 +22,14 @@ import { ServerRequirementsService } from '../setup/server-requirements/server-r
     @if (appState$ | async; as appState) {
       @if (!(isLoggedIn$ | async)) {
         <div class="login-container setting-group">
-          <h3><img src="/engine/layout/berta.png" /></h3>
+          <h3>
+            <img
+              src="/engine/layout/berta.svg"
+              width="48"
+              height="48"
+              alt="Berta"
+            />
+          </h3>
           @if (isNotInstalled$ | async) {
             <p class="setup-notice">
               Your site is not yet set up. Log in to create your website.
